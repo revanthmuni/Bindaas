@@ -74,7 +74,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
         view.findViewById(R.id.choose_file_btn).setOnClickListener(this);
         view.findViewById(R.id.send_btn).setOnClickListener(this);
 
-
         return view;
     }
 
