@@ -122,13 +122,11 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 {
                     if(check_permissions())
                         openCameraIntent();
-
                 }
 
                 else if (options[item].equals("Choose from Gallery"))
 
                 {
-
                     if(check_permissions()) {
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
