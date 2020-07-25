@@ -55,6 +55,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     TextView file_name_txt;
     String base_64;
 
+    //change
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
