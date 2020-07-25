@@ -66,7 +66,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
         username_edit=view.findViewById(R.id.username_edit);
         fullname_edit=view.findViewById(R.id.fullname_edit);
-
         username_edit.setText(Variables.sharedPreferences.getString(Variables.u_name,""));
         fullname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name,"")+" "+Variables.sharedPreferences.getString(Variables.l_name,""));
 
