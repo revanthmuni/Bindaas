@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainMenuFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:fitsSystemWindows="true"
+    tools:context="com.tachyon.bindaas.Main_Menu.MainMenuActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.tachyon.bindaas.Main_Menu.Custom_ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="-1dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:gravity="center"
+            app:tabBackground="@drawable/drawable_bottom_navigation_background"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#33000000"
+            app:tabMode="fixed"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="0dp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            app:tabTextColor="@color/dimgray" />
+
+        <!--  <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="48dp"
+              android:scaleType="fitXY"
+              android:src="@drawable/black_gradient"
+              android:layout_alignParentBottom="true"/>-->
+
+    </RelativeLayout>
+
+</FrameLayout>
