@@ -56,6 +56,8 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     String base_64;
 
     //change
+    //one
+    //two
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
