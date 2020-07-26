@@ -115,7 +115,7 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
         String s = datalist.get(i).name();
         holder.fiter_txt.setText(s);
         if (Preview_Video_A.select_postion == i) {
-            holder.ivPhoto.setBackgroundColor(context.getResources().getColor(R.color.redcolor));
+            holder.ivPhoto.setBackgroundColor(context.getResources().getColor(R.color.themecolor));
         }
         holder.ivPhoto.setImage(image);
 

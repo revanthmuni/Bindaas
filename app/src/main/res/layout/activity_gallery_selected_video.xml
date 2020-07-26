@@ -59,23 +59,23 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:layout_marginTop="40dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="10dp"
-            android:id="@+id/next_btn"
             android:layout_above="@+id/recylerview"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/themecolor"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:text="Next"
             android:textColor="@color/white"
-            android:background="@color/redcolor"
-            android:layout_alignParentRight="true"/>
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
 
     </RelativeLayout>

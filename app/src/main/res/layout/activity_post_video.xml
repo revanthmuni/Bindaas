@@ -82,18 +82,18 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/redcolor"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="25dp"
+                android:background="@color/themecolor">
 
                 <TextView
+                    android:id="@+id/post_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Post Video"
                     android:padding="15dp"
+                    android:text="Post Video"
+                    android:textColor="@color/white"
                     android:textSize="14dp"
-                    android:textStyle="bold"
-                    android:id="@+id/post_btn"
-                    android:textColor="@color/white"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

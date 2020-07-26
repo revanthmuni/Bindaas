@@ -23,17 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/d_bottom_gray_line">
+
             <ImageButton
+                android:id="@+id/Goback"
                 android:layout_width="50dp"
                 android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
-                android:background="@android:color/transparent"
-                android:id="@+id/Goback"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
+                android:background="@android:color/transparent"
                 android:scaleType="fitStart"
-                android:tint="@color/redcolor"
                 android:src="@drawable/ic_back"
-                android:layout_centerVertical="true"/>
+                android:tint="@color/themecolor" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="28dp"
