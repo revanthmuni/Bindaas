@@ -269,6 +269,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                     case R.id.user_pic:
                         OpenProfile(item,false);
+                        break;
                     case R.id.username:
                         onPause();
                         OpenProfile(item, false);
@@ -563,41 +564,58 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         playerView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
+                private static final int SWIPE_THRESHOLD = 1;
+                private static final int SWIPE_VELOCITY_THRESHOLD = 1;
+
                 @Override
-                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                    super.onFling(e1, e2, velocityX, velocityY);
-                    float deltaX = e2.getX() - e1.getX();
-                    float deltaXAbs = Math.abs(deltaX);
-
-                    if (Math.abs(e1.getY() - e2.getY()) > 250) {
-                        return false;
-                    }
-
-                    /* positive value means right to left direction */
-                    final float distance = e1.getX() - e2.getX();
-                    final boolean enoughSpeed = Math.abs(velocityX) > 100;
-                    if (distance > 120 && enoughSpeed) {
-                        OpenProfile(item, true);
-                        // right to left swipe
-                        return true;
-                    } else {
-                        // oooou, it didn't qualify; do nothing
-                        return false;
-                    }
-                    // Only when swipe distance between minimal and maximal distance value then we treat it as effective swipe
-                    /*if ((deltaXAbs > 100) && (deltaXAbs < 1000)) {
-                        if (Math.abs(deltaX) > 100 && Math.abs(velocityX) > 150) {
-                            if (deltaX < 0) {
-                                OpenProfile(item, true);
-//                                onSwipeRight();
-                            }
-    //                        result = true;
-                        }
-                        if (deltaX > 0) {
-                        }
-                    }*/
-
+                public boolean onDown(MotionEvent e) {
+                    return true;
                 }
+
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    boolean result = false;
+                    try {
+                        float diffY = e2.getY() - e1.getY();
+                        float diffX = e2.getX() - e1.getX();
+                        if (Math.abs(diffX) > Math.abs(diffY)) {
+                            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffX > 0) {
+                                    onSwipeRight();
+                                } else {
+                                    onSwipeLeft();
+                                }
+                                result = true;
+                            }
+                        }
+                        else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffY > 0) {
+                                onSwipeBottom();
+                            } else {
+                                onSwipeTop();
+                            }
+                            result = true;
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                    return result;
+                }
+
+                public void onSwipeRight() {
+                    OpenProfile(item, true);
+                }
+
+                public void onSwipeLeft() {
+                    OpenProfile(item, true);
+                }
+
+                public void onSwipeTop() {
+                }
+
+                public void onSwipeBottom() {
+                }
+
+
 
 
                 @Override
