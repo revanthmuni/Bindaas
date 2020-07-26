@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="@drawable/layout_bg">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -22,11 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:padding="0dp"
                 app:controller_layout_id="@layout/item_player_controler"
                 app:resize_mode="fixed_height"
                 app:show_timeout="1000"
-                app:shutter_background_color="@color/black" />
+                android:background="@drawable/layout_bg"/>
 
             <LinearLayout
                 android:id="@+id/side_menu"

@@ -859,10 +859,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(item.fb_id)){
 
             TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
-            /*if (profile!= null){
+            if (profile!= null){
                 profile.select();
-            }*/
-            profile.select();
+            }
+            //profile.select();
 
         }else {
 

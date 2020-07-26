@@ -433,8 +433,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 fans_count_txt.setText(data.optString("total_fans"));
 
                 heart_count_txt.setText(data.optString("total_heart"));
-
-                tvLikesCount.setText("(" + data.optString("total_heart") + ")");
+                tvLikesCount.setText("(" + data.optString("my_liked_videos") + ")");
 
                 if (!data.optString("fb_id").
                         equals(Variables.sharedPreferences.getString(Variables.u_id, ""))) {

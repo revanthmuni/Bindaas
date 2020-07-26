@@ -196,7 +196,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
 
-                for (int i = msgArray.length() - 1; i >= 1; i--) {
+                for (int i = msgArray.length() - 1; i >= 0; i--) {
                     JSONObject object = msgArray.getJSONObject(i);
 
                     Log.d("resp", object.toString());
