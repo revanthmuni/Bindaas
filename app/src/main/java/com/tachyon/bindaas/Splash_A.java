@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 
@@ -17,7 +18,7 @@ public class Splash_A extends AppCompatActivity {
 
 
     CountDownTimer countDownTimer;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class Splash_A extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
 

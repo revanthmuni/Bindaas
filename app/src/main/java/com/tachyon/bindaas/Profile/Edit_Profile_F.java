@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AlertDialog;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -418,6 +419,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                     filelocation.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            Log.d("Profile_Image", "onSuccess: "+uri.toString());
                             Call_Api_For_image(uri.toString());
                         }
                     });

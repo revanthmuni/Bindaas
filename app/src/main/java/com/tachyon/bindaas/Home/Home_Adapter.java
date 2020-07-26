@@ -82,7 +82,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             }
             holder.sound_name.setSelected(true);
 
-
             holder.desc_txt.setText(item.video_description);
             Log.d("VideoDEC", "onBindViewHolder: "+item.video_description);
 
@@ -91,7 +90,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     .centerCrop()
                     .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
                     .resize(100, 100).into(holder.user_pic);
-
 
             if ((item.sound_name == null || item.sound_name.equals(""))
                     || item.sound_name.equals("null")) {
