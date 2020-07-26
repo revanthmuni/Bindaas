@@ -560,7 +560,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                // tvUserNotifications.setText(notifications);
                // tvUserChat.setText(messages);
 
-                tvLikesCount.setText("(" + data.optString("total_heart") + ")");
+                tvLikesCount.setText("(" + data.optString("my_liked_videos") + ")");
 
 
                 JSONArray user_videos = data.getJSONArray("user_videos");
