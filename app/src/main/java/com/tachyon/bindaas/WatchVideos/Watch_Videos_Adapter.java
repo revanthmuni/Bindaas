@@ -20,6 +20,7 @@ import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adapter.CustomViewHolder> {
 
@@ -59,41 +60,40 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
         final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
         Log.d("TAG", "onBindViewHolder: ");
+        holder.like_image.setImageDrawable(item.liked.equals("1")?context.getResources().getDrawable(R.drawable.ic_like_fill):
+                context.getResources().getDrawable(R.drawable.ic_like));
+        // holder.setVideoData(item);
+        holder.bind(i, item, listener);
+
+        holder.username.setText(item.username);
 
 
-        try {
-
-            // holder.setVideoData(item);
-            holder.bind(i, item, listener);
-
-            holder.username.setText(item.username);
-
-
-            if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
-                holder.sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
-            } else {
-                holder.sound_name.setText(item.sound_name);
-            }
-            holder.sound_name.setSelected(true);
+        holder.like_txt.setText("0");
+        if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
+            holder.sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
+        } else {
+            holder.sound_name.setText(item.sound_name);
+        }
+        holder.sound_name.setSelected(true);
 
 
-            holder.desc_txt.setText(item.video_description);
-            Log.d("VideoDEC", "onBindViewHolder: "+item.video_description);
+        holder.desc_txt.setText(item.video_description);
+        Log.d("VideoDEC", "onBindViewHolder: "+item.video_description);
 
-            Picasso.with(context).
-                    load(item.profile_pic)
-                    .centerCrop()
-                    .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                    .resize(100, 100).into(holder.user_pic);
+        Picasso.with(context).
+                load(item.profile_pic)
+                .centerCrop()
+                .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                .resize(100, 100).into(holder.user_pic);
 
 
-            if ((item.sound_name == null || item.sound_name.equals(""))
-                    || item.sound_name.equals("null")) {
+        if ((item.sound_name == null || item.sound_name.equals(""))
+                || item.sound_name.equals("null")) {
 
-                item.sound_pic = item.profile_pic;
+            item.sound_pic = item.profile_pic;
 
-            } else if (item.sound_pic.equals(""))
-                item.sound_pic = "Null";
+        } else if (item.sound_pic.equals(""))
+            item.sound_pic = "Null";
 
 
             /*Picasso.with(context).
@@ -102,38 +102,36 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                     .resize(100, 100).into(holder.sound_image);
 */
 
-            // To load Gif image files
+        // To load Gif image files
             /*Glide.with(context).load(context.getResources().getDrawable(R.drawable.sound))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .into(holder.sound_image);*/
 
 
-            if (item.liked.equals("1")) {
+           /* if (item.liked.equals("1")) {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
             } else {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
-            }
+            }*/
 
 
-            Log.d("LikeData", "onBindViewHolder: "+item.like_count +"::"+item.username +"::"+new Gson().toJson(item));
-            if (dataList.get(i).like_count.equals("0")){
-                holder.like_txt.setText("0");
-            }else {
-                holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
-            }
-            //            holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
-            holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
-
-
-            if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
-                holder.varified_btn.setVisibility(View.VISIBLE);
-            } else {
-                holder.varified_btn.setVisibility(View.GONE);
-            }
-
-        } catch (Exception e) {
-
+        Log.d("TAG", "onBindViewHolder: "+item.like_count +"::"+item.username +"::"+new Gson().toJson(item));
+        if (item.like_count.equals("0")){
+            holder.like_txt.setText("0");
+        }else {
+            holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
         }
+        // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
+        holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
+
+
+        if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
+            holder.varified_btn.setVisibility(View.VISIBLE);
+        } else {
+            holder.varified_btn.setVisibility(View.GONE);
+        }
+        holder.side_menu.setVisibility(View.VISIBLE);
+
     }
 
 
@@ -143,7 +141,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
         TextView username, sound_name;
         ImageView user_pic, sound_image, varified_btn;
 
-        LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout;
+        LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout,side_menu;
         ImageView like_image, comment_image;
         TextView like_txt, desc_txt, comment_txt;
 
@@ -162,6 +160,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             like_layout = view.findViewById(R.id.like_layout);
             like_image = view.findViewById(R.id.like_image);
             like_txt = view.findViewById(R.id.like_txt);
+            side_menu = view.findViewById(R.id.side_menu);
 
 
             comment_layout = view.findViewById(R.id.comment_layout);

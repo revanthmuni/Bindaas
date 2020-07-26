@@ -294,6 +294,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 }
 
                 Set_Adapter();
+                adapter.notifyDataSetChanged();
 
             }else {
                 Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();

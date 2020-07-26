@@ -75,12 +75,11 @@
                         android:layout_width="32dp"
                         android:layout_height="37dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_like" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="likes"
                         android:id="@+id/like_txt"
                         android:shadowColor="@color/black"
                         android:shadowDx="1"
