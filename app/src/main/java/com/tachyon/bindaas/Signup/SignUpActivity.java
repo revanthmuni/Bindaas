@@ -9,15 +9,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -38,6 +47,7 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     TextInputLayout tilEmail, tilPassword, tilRetypePassword, tilFirstName, tilLastName;
 
     TextInputEditText etEmail, etPassword, etRetypePassword, etFirstName, etLastName;
@@ -56,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         activity = this;
+        mAuth = FirebaseAuth.getInstance();
         initialiseToolbar();
         initViews();
     }
@@ -82,10 +93,14 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 KeyboardUtils.hideSoftInput(activity);
                 if (checkValidations()) {
-                    if (CommonUtils.isNetworkAvailable(activity))
-                        Call_Api_For_Signup(
+                    if (CommonUtils.isNetworkAvailable(activity)) {
+                        //Our Server signup
+                        /*Call_Api_For_Signup(
                                 CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis(), email, password, firstName, LastName, "", "local"
-                        );
+                        );*/
+
+                        userSignIn(CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis(), email, password, firstName, LastName, "", "local");
+                    }
                     else {
                         Toast.makeText(activity, "No network connection", Toast.LENGTH_SHORT).show();
                     }
@@ -96,6 +111,73 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    private void userSignIn(final String s, String email, String password,
+                            final String firstName, final String lastName, final String s1, String local) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String appversion = packageInfo.versionName;
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()) {
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user, firstName, lastName);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("firebase", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(activity, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    private void updateUI(FirebaseUser user, String firstName, String lastName) {
+        final String id;
+        final String fname;
+        final String lname;
+        final Uri pic_url;
+        final String email;
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            id = user.getUid();
+
+            fname = firstName;
+            lname = lastName;
+            email = user.getEmail();
+            pic_url = user.getPhotoUrl();
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(firstName + " " + lastName)
+                    .setPhotoUri(pic_url)
+                    .build();
+
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                if (pic_url == null) {
+                                    Call_Api_For_Signup(id, email, password, fname, lname, "null", "local");
+                                } else {
+                                    Call_Api_For_Signup(id, email, password, fname, lname, pic_url.toString(), "local");
+                                }
+                                Log.d("firebase", "User profile updated.");
+                            }
+                        }
+                    });
+        }
+
+    }
 
     private void Call_Api_For_Signup(String id,
                                      String email,
@@ -116,7 +198,7 @@ public class SignUpActivity extends AppCompatActivity {
         JSONObject parameters = new JSONObject();
         try {
 
-            parameters.put("fb_id", "");
+            parameters.put("fb_id", id);
             parameters.put("first_name", "" + f_name);
             parameters.put("last_name", "" + l_name);
             parameters.put("profile_pic", picture);
@@ -136,6 +218,7 @@ public class SignUpActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("firebase", "Call_Api_For_Signup: request :" + new Gson().toJson(parameters));
         Functions.Show_loader(this, false, false);
         ApiRequest.Call_Api(this, Variables.SIGN_UP, parameters, new Callback() {
             @Override
@@ -149,6 +232,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void Parse_signup_data(String loginData) {
+        Log.d("firebase", "Response :Parse_signup_data: " + loginData);
         try {
             JSONObject jsonObject = new JSONObject(loginData);
             String code = jsonObject.optString("code");
@@ -176,8 +260,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                 navigateToMainActivity();
             } else {
-                CommonUtils.showAlert(this,userdata.optString("response"));
-               // Toast.makeText(this, "" + userdata.optString("response"), Toast.LENGTH_SHORT).show();
+                CommonUtils.showAlert(this, userdata.optString("response"));
+                // Toast.makeText(this, "" + userdata.optString("response"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

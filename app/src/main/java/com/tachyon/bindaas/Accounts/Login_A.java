@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.Signup.SignUpActivity;
@@ -166,7 +167,8 @@ public class Login_A extends AppCompatActivity {
 
                 if (checkValidations()) {
                     if (CommonUtils.isNetworkAvailable(activity)) {
-                        callLoginApi(email, password);
+                        //callLoginApi(email, password);
+                        callLoginApiWithFirebase(email, password);
                     } else {
                         Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
                     }
@@ -236,6 +238,56 @@ public class Login_A extends AppCompatActivity {
 
     }
 
+    private void callLoginApiWithFirebase(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("firebase", "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("firebase", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(activity, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String id = user.getUid();
+
+            String username = user.getDisplayName();
+            String sep[] = username.split(" ");
+            String fname = sep[0];
+            String lname = sep[1];
+            Log.d("firebase", "updateUI:"+username);
+            String pic_url;
+            if (user.getPhotoUrl() != null) {
+                pic_url = user.getPhotoUrl().toString();
+            } else {
+                pic_url = "null";
+            }
+            if (fname.equals("") || fname.equals("null"))
+                fname = getResources().getString(R.string.app_name);
+            if (lname.equals("")||lname.equals("null"))
+                lname = "User";
+
+            Call_Api_For_Signup(id, fname, lname, pic_url, "local");
+        }
+
+
+    }
+
     private void callLoginApi(String email, String password) {
         PackageInfo packageInfo = null;
         try {
@@ -269,6 +321,7 @@ public class Login_A extends AppCompatActivity {
         ApiRequest.Call_Api(this, Variables.SIGN_UP, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Toast.makeText(activity, resp, Toast.LENGTH_SHORT).show();
                 Functions.cancel_loader();
                 Parse_signup_data(resp);
 
@@ -565,22 +618,22 @@ public class Login_A extends AppCompatActivity {
             parameters.put("deviceid", Variables.sharedPreferences.getString(Variables.device_id, ""));
             parameters.put("token", MainMenuActivity.token);
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("firebase", "Call_Api_For_Signin: request"+new Gson().toJson(parameters));
         Functions.Show_loader(this, false, false);
         ApiRequest.Call_Api(this, Variables.SignUp, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 Parse_signup_data(resp);
+                Log.d("firebase", "Responce: "+resp);
 
             }
         });
 
     }
-
 
     // if the signup successfull then this method will call and it store the user info in local
     public void Parse_signup_data(String loginData) {
@@ -613,10 +666,9 @@ public class Login_A extends AppCompatActivity {
 
 
             } else {
-                Log.d("Test","se");
-                CommonUtils.showAlert(Login_A.this,userdata.optString("response"));
+                CommonUtils.showAlert(Login_A.this, userdata.optString("response"));
                 //Toast.makeText(this, ""+userdata.optString("response"), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "" + userdata.optString("msg"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + userdata.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

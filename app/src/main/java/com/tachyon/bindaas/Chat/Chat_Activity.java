@@ -179,7 +179,7 @@ public class Chat_Activity extends Fragment {
             senderid_for_check_notification=Receiverid;
             Log.d("TestMessage", (Receiver_pic!=null) + "-" + (Receiver_pic!="") +Receiver_pic + "-" + (Receiver_pic!=" "));
             Log.d("TestMessage", "onCreateView: "+Receiver_pic);
-            if(!Receiver_pic.equals("") ) {
+            if(Receiver_pic != null) {
                 // these two method will get other detail of user like there profile pic link and username
                 Picasso.with(context).load(Receiver_pic)
                         .resize(100, 100)

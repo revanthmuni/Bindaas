@@ -52,7 +52,7 @@ public class RoundedCornerLayout extends RelativeLayout {
         Canvas canvas = new Canvas(mask);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
 
         canvas.drawRect(0, 0, width, height, paint);
 

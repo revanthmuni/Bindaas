@@ -161,9 +161,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             case R.id.back_btn:
                 getActivity().onBackPressed();
                 break;
-            case R.id.profile_refresh:
-                Toast.makeText(context, "refresh", Toast.LENGTH_SHORT).show();
-                break;
+
         }
     }
 

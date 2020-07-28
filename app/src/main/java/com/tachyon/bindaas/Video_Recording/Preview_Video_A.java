@@ -97,7 +97,8 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
             public void onItemClick(View view, int postion, FilterType item) {
                 select_postion=postion;
                 gpuPlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(postion), getApplicationContext()));
-                adapter.notifyDataSetChanged();
+               // adapter.notifyDataSetChanged();
+
             }
         });
         recylerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

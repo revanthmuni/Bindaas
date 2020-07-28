@@ -37,7 +37,10 @@
         <activity android:name=".Signup.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/TextLabel"/>
-
+        <activity
+            android:name=".AudioTrimming.AudioTrimmerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

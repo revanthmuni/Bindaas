@@ -49,6 +49,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.tachyon.bindaas.helper.CommonUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,6 +62,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -487,7 +489,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("username", uname.replaceAll("@", ""));
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            if ( Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")){
+                Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
+                parameters.put("fb_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
+            }else {
+                Toast.makeText(context, "false", Toast.LENGTH_SHORT).show();
+                parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            }
             parameters.put("first_name", firstname_edit.getText().toString());
             parameters.put("last_name", lastname_edit.getText().toString());
 

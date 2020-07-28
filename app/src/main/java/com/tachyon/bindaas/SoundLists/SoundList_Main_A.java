@@ -21,17 +21,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.tachyon.bindaas.AudioTrimming.AudioTrimmerActivity;
 import com.tachyon.bindaas.Main_Menu.Custom_ViewPager;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
-import com.tachyon.bindaas.SimpleClasses.FileUtils;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.SoundLists.FavouriteSounds.Favourite_Sound_F;
@@ -46,6 +47,7 @@ import java.io.IOException;
 
 public class SoundList_Main_A extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int ADD_AUDIO = 2009;
     protected TabLayout tablayout;
 
     protected Custom_ViewPager pager;
@@ -99,7 +101,9 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
 
             case R.id.fabAddAudioFromLocal:
                 if (checkReadExternalStoragePermission()) {
-                    getAudioFileFromLocal();
+                    startActivityForResult(new Intent(this, AudioTrimmerActivity.class), ADD_AUDIO);
+                    overridePendingTransition(0, 0);
+                    //getAudioFileFromLocal();
                 } else {
                     requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
                 }
@@ -127,6 +131,20 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_AUDIO) {
+            Uri uri = data.getData();
+            Log.d("Audio_file", "onActivityResult: "+uri);
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    /*Uri uri = data.getData();
+                    Log.d("Audio_file", "onActivityResult: "+uri);*/
+                    //audio trim result will be saved at below path
+                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
+                    Toast.makeText(this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 2000) {
                 Uri uri = data.getData();

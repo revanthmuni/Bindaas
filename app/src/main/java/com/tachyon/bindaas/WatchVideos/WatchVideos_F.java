@@ -156,11 +156,11 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             }
             else if(appLinkData==null){
                 data_list = (ArrayList<Home_Get_Set>) bundle.getSerializableExtra("arraylist");
-                 position=bundle.getIntExtra("position",0);
-                 Set_Adapter();
+                position=bundle.getIntExtra("position",0);
+                Set_Adapter();
             }
             else {
-                 link=appLinkData.toString();
+                link=appLinkData.toString();
                 String[] parts = link.split("=");
                 video_id=parts[1];
                 Call_Api_For_get_Allvideos(parts[1]);
@@ -191,7 +191,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         keyboardHeightProvider = new KeyboardHeightProvider(this);
 
 
-       findViewById(R.id.WatchVideo_F).post(new Runnable() {
+        findViewById(R.id.WatchVideo_F).post(new Runnable() {
             public void run() {
                 keyboardHeightProvider.start();
             }
@@ -209,13 +209,14 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             startActivity(new Intent(this, MainMenuActivity.class));
             finish();
         }else {
-        super.onBackPressed();
+            super.onBackPressed();
         }
 
     }
 
     // Bottom two function will call the api and get all the videos form api and parse the json data
     private void Call_Api_For_get_Allvideos(String id) {
+
 
         if(MainMenuActivity.token==null)
             MainMenuActivity.token= FirebaseInstanceId.getInstance().getToken();
@@ -229,6 +230,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
@@ -294,7 +297,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 }
 
                 Set_Adapter();
-                adapter.notifyDataSetChanged();
 
             }else {
                 Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
@@ -434,46 +436,46 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                     case R.id.shared_layout:
 
-                            final VideoAction_F fragment = new VideoAction_F(item.video_id, new Fragment_Callback() {
-                                @Override
-                                public void Responce(Bundle bundle) {
+                        final VideoAction_F fragment = new VideoAction_F(item.video_id, new Fragment_Callback() {
+                            @Override
+                            public void Responce(Bundle bundle) {
 
-                                    if (bundle.getString("action").equals("save")) {
-                                        Save_Video(item);
-                                    }
-                                    if (bundle.getString("action").equals("delete")) {
-
-                                            Functions.Show_loader(WatchVideos_F.this, false, false);
-                                            Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, item.video_id, new API_CallBack() {
-                                                @Override
-                                                public void ArrayData(ArrayList arrayList) {
-
-                                                }
-
-                                                @Override
-                                                public void OnSuccess(String responce) {
-
-                                                    Functions.cancel_loader();
-                                                    finish();
-
-                                                }
-
-                                                @Override
-                                                public void OnFail(String responce) {
-
-                                                }
-                                            });
-
-                                    }
+                                if (bundle.getString("action").equals("save")) {
+                                    Save_Video(item);
                                 }
-                            });
+                                if (bundle.getString("action").equals("delete")) {
 
-                            Bundle bundle = new Bundle();
-                            bundle.putString("video_id", item.video_id);
-                            bundle.putString("user_id", item.fb_id);
-                            fragment.setArguments(bundle);
+                                    Functions.Show_loader(WatchVideos_F.this, false, false);
+                                    Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, item.video_id, new API_CallBack() {
+                                        @Override
+                                        public void ArrayData(ArrayList arrayList) {
 
-                            fragment.show(getSupportFragmentManager(), "");
+                                        }
+
+                                        @Override
+                                        public void OnSuccess(String responce) {
+
+                                            Functions.cancel_loader();
+                                            finish();
+
+                                        }
+
+                                        @Override
+                                        public void OnFail(String responce) {
+
+                                        }
+                                    });
+
+                                }
+                            }
+                        });
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("video_id", item.video_id);
+                        bundle.putString("user_id", item.fb_id);
+                        fragment.setArguments(bundle);
+
+                        fragment.show(getSupportFragmentManager(), "");
 
                         break;
 
@@ -495,7 +497,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             }
         });
 
-
+        adapter.setHasStableIds(true);
+        recyclerView.setAdapter(adapter);
 
 
         // this is the scroll listener of recycler view which will tell the current item number
@@ -509,8 +512,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 //here we find the current item number
-                Log.d("TAG", "onScrolled: ");
-
                 final int scrollOffset = recyclerView.computeVerticalScrollOffset();
                 final int height = recyclerView.getHeight();
                 int page_no=scrollOffset / height;
@@ -525,9 +526,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             }
         });
 
-        adapter.setHasStableIds(true);
-
-        recyclerView.setAdapter(adapter);
+        recyclerView.scrollToPosition(position);
 
     }
 
@@ -554,6 +553,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -565,6 +565,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         Send_Comments(data_list.get(currentPage).fb_id,data_list.get(currentPage).video_id, comment_txt);
                     }
 
+
+
                 }
                 else {
                     Toast.makeText(context, "Please Login into app", Toast.LENGTH_SHORT).show();
@@ -572,6 +574,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 break;
         }
     }
+
+
+
 
     @Override
     public void onDataSent(String yourData) {
@@ -581,6 +586,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         data_list.add(currentPage,item);
         adapter.notifyDataSetChanged();
     }
+
+
 
     public void Set_Player(final int currentPage){
 
@@ -597,19 +604,25 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 .createMediaSource(Uri.parse(item.video_url));
 
         if(!Variables.is_secure_info)
-        Log.d(Variables.tag,item.video_url);
+            Log.d(Variables.tag,item.video_url);
+
 
         player.prepare(videoSource);
 
         player.setRepeatMode(Player.REPEAT_MODE_ALL);
         player.addListener(this);
 
+
+
         View layout=layoutManager.findViewByPosition(currentPage);
         PlayerView playerView=layout.findViewById(R.id.playerview);
         playerView.setPlayer(player);
 
+
         player.setPlayWhenReady(true);
         privious_player=player;
+
+
 
         final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
         playerView.setOnTouchListener(new View.OnTouchListener() {
@@ -689,9 +702,13 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             }
         }).handle(desc_txt);
 
-        /*LinearLayout soundimage = (LinearLayout)layout.findViewById(R.id.sound_image_layout);
+
+
+
+
+        LinearLayout soundimage = (LinearLayout)layout.findViewById(R.id.sound_image_layout);
         Animation aniRotate = AnimationUtils.loadAnimation(context,R.anim.d_clockwise_rotation);
-        soundimage.startAnimation(aniRotate);*/
+        soundimage.startAnimation(aniRotate);
 
         if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
             Functions.Call_Api_For_update_view(WatchVideos_F.this,item.video_id);
@@ -859,10 +876,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(item.fb_id)){
 
             TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
-            if (profile!= null){
+            /*if (profile!= null){
                 profile.select();
-            }
-            //profile.select();
+            }*/
+            profile.select();
 
         }else {
 
@@ -951,10 +968,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     CharSequence[] options;
     private void Show_video_option(final Home_Get_Set home_get_set) {
 
-         options = new CharSequence[]{ "Save Video","Cancel" };
+        options = new CharSequence[]{ "Save Video","Cancel" };
 
-         if(home_get_set.fb_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
-        options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
+        if(home_get_set.fb_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+            options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
 
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context,R.style.AlertDialogCustom);
 
@@ -969,7 +986,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 if (options[item].equals("Save Video"))
                 {
                     if(Functions.Checkstoragepermision(WatchVideos_F.this))
-                        Save_Video(home_get_set);
+
+                    Save_Video(home_get_set);
 
                 }
 
@@ -978,9 +996,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        if (privious_player!=null){
-                            privious_player.setPlayWhenReady(false);
-                        }
                         Functions.Show_loader(WatchVideos_F.this, false, false);
                         Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, home_get_set.video_id, new API_CallBack() {
                             @Override
@@ -991,17 +1006,14 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             @Override
                             public void OnSuccess(String responce) {
 
-                                Toast.makeText(context, responce, Toast.LENGTH_SHORT).show();
                                 Functions.cancel_loader();
-                                Functions.Show_Alert(context,"Delete Video",responce);
-                                onBackPressed();
                                 finish();
 
                             }
 
                             @Override
                             public void OnFail(String responce) {
-                                Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+
                             }
                         });
                     }
@@ -1025,7 +1037,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     public void Save_Video(final Home_Get_Set item){
-
+        if (privious_player != null) {
+            privious_player.setPlayWhenReady(false);
+        }
         JSONObject params=new JSONObject();
         try {
             params.put("video_id",item.video_id);
@@ -1087,6 +1101,11 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                                 public void onDownloadComplete() {
                                     Functions.cancel_determinent_loader();
                                     Scan_file(item);
+                                    if (privious_player != null) {
+                                        privious_player.setPlayWhenReady(true);
+                                    }
+                                    Toast.makeText(context, "Video Saved", Toast.LENGTH_SHORT).show();
+
                                 }
 
                                 @Override
@@ -1215,7 +1234,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             p_bar.setVisibility(View.VISIBLE);
         }
         else if(playbackState==Player.STATE_READY){
-             p_bar.setVisibility(View.GONE);
+            p_bar.setVisibility(View.GONE);
         }
 
     }
@@ -1250,7 +1269,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     public void onSeekProcessed() {
 
 
-}
+    }
 
 
 

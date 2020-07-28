@@ -442,7 +442,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             e.printStackTrace();
         }
 
-
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
@@ -451,11 +450,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             }
         });
 
-
     }
 
     public void Singal_Video_Parse_data(int pos, String responce) {
 
+        Log.d("Home_F", "Singal_Video_Parse_data: "+responce);
         try {
             JSONObject jsonObject = new JSONObject(responce);
             String code = jsonObject.optString("code");
@@ -1022,6 +1021,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         ApiRequest.Call_Api(context, Variables.downloadFile, params, new Callback() {
             @Override
             public void Responce(String resp) {
+                Log.d("save_video", "Responce: "+resp);
                 Functions.cancel_loader();
                 try {
                     JSONObject responce = new JSONObject(resp);
