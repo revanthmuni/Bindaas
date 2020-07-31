@@ -126,12 +126,12 @@ public class UserVideo_F extends Fragment {
         is_api_run=true;
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("my_fb_id",Variables.sharedPreferences.getString(Variables.u_id,""));
+            parameters.put("my_user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
             if(is_my_profile){
-                parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,""));
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id,""));
             }
             else{
-                parameters.put("fb_id", user_id);
+                parameters.put("user_id", user_id);
             }
 
         } catch (JSONException e) {
@@ -172,14 +172,14 @@ public class UserVideo_F extends Fragment {
                         JSONObject itemdata = user_videos.optJSONObject(i);
 
                         Home_Get_Set item=new Home_Get_Set();
-                        item.fb_id=user_id;
+                        item.user_id=user_id;
 
                         item.first_name=user_info.optString("first_name");
                         item.last_name=user_info.optString("last_name");
                         item.profile_pic=user_info.optString("profile_pic");
                         item.verified=user_info.optString("verified");
 
-                        Log.d("resp", item.fb_id+" "+item.first_name);
+                        Log.d("resp", item.user_id+" "+item.first_name);
 
                         JSONObject count=itemdata.optJSONObject("count");
                         item.like_count=count.optString("like_count");

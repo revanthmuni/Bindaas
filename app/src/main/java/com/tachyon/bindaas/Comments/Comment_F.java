@@ -178,7 +178,7 @@ public class Comment_F extends RootFragment {
     private void ShowCommentOption(final Comment_Get_Set home_get_set, final int position) {
         final String userId = Variables.sharedPreferences.getString(Variables.u_id, "");
 
-        if (!home_get_set.fb_id.equals(userId))
+        if (!home_get_set.user_id.equals(userId))
             options = new CharSequence[]{"Flag Comment", "Cancel"};
         else
             options = new CharSequence[]{"Delete Comment", "Cancel"};

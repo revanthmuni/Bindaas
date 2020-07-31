@@ -41,6 +41,7 @@ import com.tachyon.bindaas.AudioTrimming.customAudioViews.SoundFile;
 import com.tachyon.bindaas.AudioTrimming.customAudioViews.WaveformView;
 import com.tachyon.bindaas.AudioTrimming.utils.Utility;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -197,6 +198,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         txtAudioReset.setOnClickListener(this);
 
         mHandler.postDelayed(mTimerRunnable, 100);
+
+//        pickUpFile();
     }
 
 
@@ -341,6 +344,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 Bundle conData = new Bundle();
                 conData.putString("INTENT_AUDIO_FILE", mFile.getAbsolutePath());
                 Intent intent = new Intent();
+                intent.putExtra("file",mFile);
                 intent.putExtras(conData);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -1093,7 +1097,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         Thread mSaveSoundFileThread = new Thread() {
             public void run() {
                 // Try AAC first.
-                String outPath = makeRingtoneFilename("Bindaas_"+ Calendar.getInstance().getTimeInMillis(), Utility.AUDIO_FORMAT);
+                String outPath = makeRingtoneFilename(Variables.SelectedAudio_AAC, Utility.AUDIO_FORMAT);
                 if (outPath == null) {
                     Log.e(" >> ", "Unable to find unique filename");
                     return;
@@ -1181,7 +1185,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         if (!externalRootDir.endsWith("/")) {
             externalRootDir += "/";
         }
-        subDir = "Bindaas/Cropped/";
+        subDir = "Bindaas/";
         String parentDir = externalRootDir + subDir;
 
         // Create the parent directory

@@ -299,7 +299,7 @@ public class Login_A extends AppCompatActivity {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", "");
+            parameters.put("user_id", "");
             parameters.put("first_name", "");
             parameters.put("last_name", "");
             parameters.put("profile_pic", "");
@@ -607,7 +607,7 @@ public class Login_A extends AppCompatActivity {
         JSONObject parameters = new JSONObject();
         try {
 
-            parameters.put("fb_id", id);
+            parameters.put("user_id", id);
             parameters.put("first_name", "" + f_name);
             parameters.put("last_name", "" + l_name);
             parameters.put("profile_pic", picture);
@@ -644,7 +644,7 @@ public class Login_A extends AppCompatActivity {
             JSONObject userdata = jsonArray.getJSONObject(0);
             if (code.equals("200")) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(Variables.u_id, userdata.optString("fb_id"));
+                editor.putString(Variables.u_id, userdata.optString("user_id"));
                 editor.putString(Variables.f_name, userdata.optString("first_name"));
                 editor.putString(Variables.l_name, userdata.optString("last_name"));
                 editor.putString(Variables.u_name, userdata.optString("username"));

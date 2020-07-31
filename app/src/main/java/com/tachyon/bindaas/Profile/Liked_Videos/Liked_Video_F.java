@@ -126,9 +126,9 @@ public class Liked_Video_F extends Fragment {
         try {
 
             if (is_my_profile) {
-                parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
             } else {
-                parameters.put("fb_id", user_id);
+                parameters.put("user_id", user_id);
             }
 
         } catch (JSONException e) {
@@ -171,7 +171,7 @@ public class Liked_Video_F extends Fragment {
                         JSONObject itemdata = user_videos.optJSONObject(i);
 
                         Home_Get_Set item = new Home_Get_Set();
-                        item.fb_id = itemdata.optString("fb_id");
+                        item.user_id = itemdata.optString("user_id");
 
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");

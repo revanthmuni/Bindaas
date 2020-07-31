@@ -201,7 +201,7 @@ public class Taged_Videos_F extends RootFragment {
         progress_bar.setVisibility(View.VISIBLE);
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id,""));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id,""));
             parameters.put("tag", tag_txt);
             parameters.put("token", MainMenuActivity.token);
 
@@ -236,9 +236,9 @@ public class Taged_Videos_F extends RootFragment {
                         JSONObject user_info=itemdata.optJSONObject("user_info");
 
                         Home_Get_Set item=new Home_Get_Set();
-                        item.fb_id=itemdata.optString("fb_id");
+                        item.user_id=itemdata.optString("user_id");
 
-                        Log.d("resp", item.fb_id);
+                        Log.d("resp", item.user_id);
 
                         item.first_name=user_info.optString("first_name");
                         item.last_name=user_info.optString("last_name");

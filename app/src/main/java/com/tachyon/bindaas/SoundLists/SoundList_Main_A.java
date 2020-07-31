@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tachyon.bindaas.AudioTrimming.AudioTrimmerActivity;
 import com.tachyon.bindaas.Main_Menu.Custom_ViewPager;
 import com.tachyon.bindaas.R;
@@ -47,7 +48,7 @@ import java.io.IOException;
 
 public class SoundList_Main_A extends AppCompatActivity implements View.OnClickListener {
 
-    private static final int ADD_AUDIO = 2009;
+    private static int ADD_AUDIO = 2009;
     protected TabLayout tablayout;
 
     protected Custom_ViewPager pager;
@@ -101,27 +102,28 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
 
             case R.id.fabAddAudioFromLocal:
                 if (checkReadExternalStoragePermission()) {
-                    startActivityForResult(new Intent(this, AudioTrimmerActivity.class), ADD_AUDIO);
                     overridePendingTransition(0, 0);
-                    //getAudioFileFromLocal();
+                    getAudioFileFromLocal();
                 } else {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ADD_AUDIO);
                 }
         }
     }
 
     private void getAudioFileFromLocal() {
-        Intent intent_upload = new Intent();
+        /*Intent intent_upload = new Intent();
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent_upload, 2000);
+        startActivityForResult(intent_upload, 2000);*/
+        startActivityForResult(new Intent(this, AudioTrimmerActivity.class), ADD_AUDIO);
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 1000) {
+        if (requestCode == ADD_AUDIO) {
             if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getAudioFileFromLocal();
             }
@@ -132,42 +134,52 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == ADD_AUDIO) {
+        /*if (requestCode == ADD_AUDIO) {
             Uri uri = data.getData();
             Log.d("Audio_file", "onActivityResult: "+uri);
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    /*Uri uri = data.getData();
-                    Log.d("Audio_file", "onActivityResult: "+uri);*/
+                    *//*Uri uri = data.getData();
+                    Log.d("Audio_file", "onActivityResult: "+uri);*//*
                     //audio trim result will be saved at below path
                     String path = data.getExtras().getString("INTENT_AUDIO_FILE");
                     Toast.makeText(this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
                 }
             }
-        }
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 2000) {
+        }*/
+        if (requestCode == ADD_AUDIO) {
+            if (resultCode == RESULT_OK) {
+
                 Uri uri = data.getData();
-                if (uri != null) {
+                if (data != null) {
+                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
+                    File fi = (File) data.getExtras().get("file");
+                    Toast.makeText(this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
+
+                    Log.d("Audio_Test", ""+path);
                     JSONObject params = new JSONObject();
-                    final File oldFile = new File(uri.toString());
-                    final File file = CommonUtils.getAudioFilePath(this, uri);
+                    final File oldFile = new File(path);
+                    final File file = CommonUtils.getAudioFilePath(this, Uri.parse(path));
+                   // Log.d("Audio_Test", "cropped file Path is : "+fi.getAbsolutePath());
                     String audioString;
                     try {
-                        audioString = CommonUtils.encodeFileToBase64Binary(Uri.fromFile(file));
+                        audioString = CommonUtils.encodeFileToBase64Binary(Uri.fromFile(fi));
                         Functions.Show_loader(this, false, false);
                         String user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
 
                         params.put("user_id", user_id);
                         params.put("file_name", oldFile.getName());
                         params.put("data", audioString);
+                        Log.d("Audio_Test", "onActivityResult data: "+audioString);
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
 
+                   /* Log.d("Audio_Test", "onActivityResult: "+new Gson().toJson(params));
                     ApiRequest.Call_Api(this, Variables.POST_AUDIO, params, new Callback() {
                         @Override
                         public void Responce(String resp) {
+                            Log.d("Audio_Test", "Responce: "+resp);
                             Functions.cancel_loader();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
@@ -191,7 +203,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                             }
                         }
                     });
-
+*/
                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 }
             }

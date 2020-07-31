@@ -150,7 +150,7 @@ public class Following_F extends Fragment {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id",user_id);
+            parameters.put("user_id",user_id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,7 +182,7 @@ public class Following_F extends Fragment {
                     JSONObject follow_Status=profile_data.optJSONObject("follow_Status");
 
                     Following_Get_Set item=new Following_Get_Set();
-                    item.fb_id=profile_data.optString("fb_id");
+                    item.user_id=profile_data.optString("user_id");
                     item.first_name=profile_data.optString("first_name");
                     item.last_name=profile_data.optString("last_name");
                     item.bio=profile_data.optString("bio");
@@ -228,7 +228,7 @@ public class Following_F extends Fragment {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id",user_id);
+            parameters.put("user_id",user_id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -259,7 +259,7 @@ public class Following_F extends Fragment {
                     JSONObject follow_Status=profile_data.optJSONObject("follow_Status");
 
                     Following_Get_Set item=new Following_Get_Set();
-                    item.fb_id=profile_data.optString("fb_id");
+                    item.user_id=profile_data.optString("user_id");
                     item.first_name=profile_data.optString("first_name");
                     item.last_name=profile_data.optString("last_name");
                     item.bio=profile_data.optString("bio");
@@ -307,7 +307,7 @@ public class Following_F extends Fragment {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                  transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
             Bundle args = new Bundle();
-            args.putString("user_id",item.fb_id);
+            args.putString("user_id",item.user_id);
             args.putString("user_name",item.first_name+" "+item.last_name);
             args.putString("user_pic",item.profile_pic);
             profile_f.setArguments(args);
@@ -327,7 +327,7 @@ public class Following_F extends Fragment {
 
         Functions.Call_Api_For_Follow_or_unFollow(getActivity(),
                 Variables.sharedPreferences.getString(Variables.u_id,""),
-                item.fb_id,
+                item.user_id,
                 send_status,
                 new API_CallBack() {
                     @Override

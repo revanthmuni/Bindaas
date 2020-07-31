@@ -134,7 +134,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -178,7 +178,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
 
                         JSONObject user_info = itemdata.optJSONObject("user_info");
-                        item.fb_id = user_info.optString("fb_id");
+                        item.user_id = user_info.optString("user_id");
                         item.username = user_info.optString("username");
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");

@@ -93,7 +93,7 @@ public class ReportVideo extends AppCompatActivity {
                     callFlagCommentApi(commentId, radioButton.getText().toString());
                 } else {
                     FlagVideoRequest flagVideoRequest = new FlagVideoRequest();
-                    flagVideoRequest.setFb_id(videoItem.fb_id);
+                    flagVideoRequest.setFb_id(videoItem.user_id);
                     flagVideoRequest.setVideo_id(videoItem.video_id);
                     flagVideoRequest.setReason(radioButton.getText().toString());
                     callFlagVideoApi(flagVideoRequest);
@@ -110,7 +110,7 @@ public class ReportVideo extends AppCompatActivity {
         try {
             parameters.put("comment_id", commentId);
             parameters.put("reason", reason);
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

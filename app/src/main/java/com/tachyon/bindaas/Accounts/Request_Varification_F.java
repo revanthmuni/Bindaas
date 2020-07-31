@@ -367,7 +367,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     public void Call_api(){
         JSONObject params=new JSONObject();
         try {
-            params.put("fb_id",Variables.user_id);
+            params.put("user_id",Variables.user_id);
             params.put("Full name",fullname_edit.getText().toString());
             params.put("Username",username_edit.getText().toString());
             params.put("attachment",base_64);

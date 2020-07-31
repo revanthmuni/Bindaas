@@ -440,7 +440,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("image_link", image_link);
 
         } catch (JSONException e) {
@@ -491,10 +491,10 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             parameters.put("username", uname.replaceAll("@", ""));
             if ( Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")){
                 Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
-                parameters.put("fb_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
+                parameters.put("user_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
             }else {
                 Toast.makeText(context, "false", Toast.LENGTH_SHORT).show();
-                parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             }
             parameters.put("first_name", firstname_edit.getText().toString());
             parameters.put("last_name", lastname_edit.getText().toString());

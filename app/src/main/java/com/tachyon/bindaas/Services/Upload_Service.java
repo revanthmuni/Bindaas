@@ -133,7 +133,7 @@ public class Upload_Service extends Service {
                         JSONObject parameters = new JSONObject();
 
                         try {
-                            parameters.put("fb_id", sharedPreferences.getString(Variables.u_id, ""));
+                            parameters.put("user_id", sharedPreferences.getString(Variables.u_id, ""));
                             parameters.put("sound_id", Variables.Selected_sound_id);
                             parameters.put("description", description);
 

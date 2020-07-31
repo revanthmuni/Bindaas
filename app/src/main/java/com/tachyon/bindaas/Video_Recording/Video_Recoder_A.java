@@ -560,6 +560,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 if (data != null) {
 
                     if (data.getStringExtra("isSelected").equals("yes")) {
+                        Toast.makeText(this, ""+data.getStringExtra("sound_name"), Toast.LENGTH_SHORT).show();
                         add_sound_txt.setText(data.getStringExtra("sound_name"));
                         Variables.Selected_sound_id = data.getStringExtra("sound_id");
                         PreparedAudio();

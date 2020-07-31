@@ -310,7 +310,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                             Bundle bundle = new Bundle();
                             bundle.putString("video_id", item.video_id);
-                            bundle.putString("user_id", item.fb_id);
+                            bundle.putString("user_id", item.user_id);
                             fragment.setArguments(bundle);
                             fragment.show(getChildFragmentManager(), "");
                         }
@@ -348,7 +348,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            Log.d("test--", "Call_Api_For_get_Allvideos: "+Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", MainMenuActivity.token);
 
         } catch (JSONException e) {
@@ -377,7 +378,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
                     Home_Get_Set item = new Home_Get_Set();
-                    item.fb_id = itemdata.optString("fb_id");
+                    item.user_id = itemdata.optString("user_id");
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
@@ -434,7 +435,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", Variables.sharedPreferences.getString(Variables.device_token, "Null"));
             parameters.put("video_id", data_list.get(postion).video_id);
 
@@ -463,7 +464,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
                     Home_Get_Set item = new Home_Get_Set();
-                    item.fb_id = itemdata.optString("fb_id");
+                    item.user_id = itemdata.optString("user_id");
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
@@ -708,7 +709,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         if (currentPage + 1 < data_list.size()) {
             HttpProxyCacheServer proxy = Bindaas.getProxy(context);
             proxy.getProxyUrl(data_list.get(currentPage + 1).video_url);
-
         }
     }
 
@@ -741,7 +741,14 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mainlayout.removeView(iv);
+                mainlayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainlayout.removeView(iv);
+                    }
+                }, 500);
+
+//                mainlayout.removeView(iv);
             }
 
             @Override
@@ -851,7 +858,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
         args.putString("video_id", item.video_id);
-        args.putString("user_id", item.fb_id);
+        args.putString("user_id", item.user_id);
         comment_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, comment_f).commit();
@@ -867,7 +874,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         /*Bundle args = new Bundle();
         args.putString("video_id", item.video_id);
-        args.putString("user_id", item.fb_id);
+        args.putString("user_id", item.user_id);
         comment_f.setArguments(args);*/
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, discover_F).commit();
@@ -876,7 +883,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
-        if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.fb_id)) {
+        if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
             TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
             profile.select();
@@ -898,7 +905,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             }
 
             Bundle args = new Bundle();
-            args.putString("user_id", item.fb_id);
+            args.putString("user_id", item.user_id);
             args.putString("user_name", item.first_name + " " + item.last_name);
             args.putString("user_pic", item.profile_pic);
             profile_f.setArguments(args);
@@ -928,7 +935,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     private void Show_video_option(final Home_Get_Set home_get_set) {
         String user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
         final String[] options;
-        if (home_get_set.fb_id.equals(user_id))
+        if (home_get_set.user_id.equals(user_id))
             options = new String[]{"Save Video", "Delete Video", "Cancel"};
         else
             options = new String[]{"Save Video", "Flag Video", "Cancel"};

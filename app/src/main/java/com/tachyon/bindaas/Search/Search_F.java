@@ -121,7 +121,7 @@ public class Search_F extends RootFragment {
                     JSONObject data=msg.optJSONObject(i);
 
                     Users_Model user=new Users_Model();
-                    user.fb_id=data.optString("fb_id");
+                    user.user_id=data.optString("user_id");
                     user.username=data.optString("username");
                     user.first_name=data.optString("first_name");
                     user.last_name=data.optString("last_name");
@@ -145,7 +145,7 @@ public class Search_F extends RootFragment {
                     public void onItemClick(View view, int pos, Object object) {
 
                         Users_Model item=(Users_Model) object;
-                        Open_Profile(item.fb_id,item.first_name,item.last_name,item.profile_pic);
+                        Open_Profile(item.user_id,item.first_name,item.last_name,item.profile_pic);
 
 
                     }
@@ -174,7 +174,7 @@ public class Search_F extends RootFragment {
                 for (int i=0;i<msgArray.length();i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
                     Home_Get_Set item=new Home_Get_Set();
-                    item.fb_id=itemdata.optString("fb_id");
+                    item.user_id=itemdata.optString("user_id");
 
                     JSONObject user_info=itemdata.optJSONObject("user_info");
 
@@ -225,7 +225,7 @@ public class Search_F extends RootFragment {
                             OpenWatchVideo(item.video_id);
                         }
                         else {
-                            Open_Profile(item.fb_id,item.first_name,item.last_name,item.profile_pic);
+                            Open_Profile(item.user_id,item.first_name,item.last_name,item.profile_pic);
                         }
 
                     }

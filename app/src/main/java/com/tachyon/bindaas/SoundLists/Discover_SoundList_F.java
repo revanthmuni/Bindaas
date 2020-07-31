@@ -164,7 +164,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -430,7 +430,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("sound_id", item.id);
             if (item.fav.equals("1"))
                 parameters.put("fav", "0");
