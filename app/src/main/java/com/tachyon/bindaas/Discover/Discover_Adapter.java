@@ -3,6 +3,8 @@ package com.tachyon.bindaas.Discover;
 import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +67,15 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
         public CustomViewHolder(View view) {
             super(view);
+            try {
 
-            horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
-            title = view.findViewById(R.id.title);
+                horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
+                title = view.findViewById(R.id.title);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
 
@@ -76,16 +84,22 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
     @Override
     public void onBindViewHolder(final Discover_Adapter.CustomViewHolder holder, final int i) {
+        try {
 
-        Discover_Get_Set item = datalist_filter.get(i);
+            Discover_Get_Set item = datalist_filter.get(i);
 
-        holder.title.setText(item.title);
+            holder.title.setText(item.title);
 
-        Horizontal_Adapter adapter = new Horizontal_Adapter(context, item.arrayList);
-        holder.horizontal_reycerview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-        holder.horizontal_reycerview.setAdapter(adapter);
+            Horizontal_Adapter adapter = new Horizontal_Adapter(context, item.arrayList);
+            holder.horizontal_reycerview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            holder.horizontal_reycerview.setAdapter(adapter);
 
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -157,7 +171,14 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
             public CustomViewHolder(View view) {
                 super(view);
-                video_thumbnail = view.findViewById(R.id.video_thumbnail);
+                try {
+
+                    video_thumbnail = view.findViewById(R.id.video_thumbnail);
+                } catch (Exception e) {
+                    Log.d("Exception", "getMessage: " + e
+                            .getMessage());
+                    e.printStackTrace();
+                }
 
             }
 

@@ -137,79 +137,95 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         setContentView(R.layout.fragment_watchvideo);
         context=this;
 
-        if(Variables.sharedPreferences==null){
-            Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,Context.MODE_PRIVATE);
+        try {
+
+
+            if(Variables.sharedPreferences==null){
+                Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,Context.MODE_PRIVATE);
+            }
+
+            p_bar=findViewById(R.id.p_bar);
+
+
+
+            Intent bundle = getIntent();
+            if(bundle!=null){
+
+                Uri appLinkData = bundle.getData();
+                video_id=bundle.getStringExtra("video_id");
+
+                if(video_id!=null){
+                    Call_Api_For_get_Allvideos(video_id);
+                }
+                else if(appLinkData==null){
+                    data_list = (ArrayList<Home_Get_Set>) bundle.getSerializableExtra("arraylist");
+                    position=bundle.getIntExtra("position",0);
+                    Set_Adapter();
+                }
+                else {
+                    link=appLinkData.toString();
+                    String[] parts = link.split("=");
+                    video_id=parts[1];
+                    Call_Api_For_get_Allvideos(parts[1]);
+                }
+
+            }
+
+
+
+
+            findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    onBackPressed();
+
+                }
+            });
+
+
+            write_layout=findViewById(R.id.write_layout);
+            message_edit=findViewById(R.id.message_edit);
+            send_btn=findViewById(R.id.send_btn);
+            send_btn.setOnClickListener(this);
+
+            send_progress=findViewById(R.id.send_progress);
+
+            keyboardHeightProvider = new KeyboardHeightProvider(this);
+
+
+            findViewById(R.id.WatchVideo_F).post(new Runnable() {
+                public void run() {
+                    keyboardHeightProvider.start();
+                }
+            });
+
+
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-        p_bar=findViewById(R.id.p_bar);
-
-
-
-        Intent bundle = getIntent();
-        if(bundle!=null){
-
-            Uri appLinkData = bundle.getData();
-            video_id=bundle.getStringExtra("video_id");
-
-            if(video_id!=null){
-                Call_Api_For_get_Allvideos(video_id);
-            }
-            else if(appLinkData==null){
-                data_list = (ArrayList<Home_Get_Set>) bundle.getSerializableExtra("arraylist");
-                position=bundle.getIntExtra("position",0);
-                Set_Adapter();
-            }
-            else {
-                link=appLinkData.toString();
-                String[] parts = link.split("=");
-                video_id=parts[1];
-                Call_Api_For_get_Allvideos(parts[1]);
-            }
-
-        }
-
-
-
-
-        findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                onBackPressed();
-
-            }
-        });
-
-
-        write_layout=findViewById(R.id.write_layout);
-        message_edit=findViewById(R.id.message_edit);
-        send_btn=findViewById(R.id.send_btn);
-        send_btn.setOnClickListener(this);
-
-        send_progress=findViewById(R.id.send_progress);
-
-        keyboardHeightProvider = new KeyboardHeightProvider(this);
-
-
-        findViewById(R.id.WatchVideo_F).post(new Runnable() {
-            public void run() {
-                keyboardHeightProvider.start();
-            }
-        });
-
-
-
     }
 
 
     @Override
     public void onBackPressed() {
 
-        if(video_id!=null && link!=null){
-            startActivity(new Intent(this, MainMenuActivity.class));
-            finish();
-        }else {
-            super.onBackPressed();
+
+        try {
+
+            if(video_id!=null && link!=null){
+                startActivity(new Intent(this, MainMenuActivity.class));
+                finish();
+            }else {
+                super.onBackPressed();
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -218,29 +234,36 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     private void Call_Api_For_get_Allvideos(String id) {
 
 
-        if(MainMenuActivity.token==null)
-            MainMenuActivity.token= FirebaseInstanceId.getInstance().getToken();
-
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
-            parameters.put("token",MainMenuActivity.token);
-            parameters.put("video_id",id);
 
-        } catch (JSONException e) {
+            if(MainMenuActivity.token==null)
+                MainMenuActivity.token= FirebaseInstanceId.getInstance().getToken();
+
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id,"0"));
+                parameters.put("token",MainMenuActivity.token);
+                parameters.put("video_id",id);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Parse_data(resp);
+                }
+            });
+
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
             e.printStackTrace();
         }
-
-
-
-        ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                Parse_data(resp);
-            }
-        });
-
-
     }
 
     public void Parse_data(String responce){
@@ -401,132 +424,141 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     public void Set_Adapter(){
-        recyclerView=findViewById(R.id.recylerview);
-        layoutManager=new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(false);
 
-        SnapHelper snapHelper =  new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
+        try {
+
+            recyclerView=findViewById(R.id.recylerview);
+            layoutManager=new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(false);
+
+            SnapHelper snapHelper =  new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerView);
 
 
-        adapter=new Watch_Videos_Adapter(context, data_list, new Watch_Videos_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int postion,final Home_Get_Set item, View view) {
+            adapter=new Watch_Videos_Adapter(context, data_list, new Watch_Videos_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int postion,final Home_Get_Set item, View view) {
 
-                switch(view.getId()){
+                    switch(view.getId()){
 
-                    case R.id.user_pic:
-                        onPause();
+                        case R.id.user_pic:
+                            onPause();
 
-                        OpenProfile(item,false);
-                        break;
+                            OpenProfile(item,false);
+                            break;
 
-                    case R.id.like_layout:
-                        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
-                            Like_Video(postion, item);
-                        }else {
-                            Toast.makeText(context, "Please Login.", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-
-                    case R.id.comment_layout:
-                        OpenComment(item);
-                        break;
-
-                    case R.id.shared_layout:
-
-                        final VideoAction_F fragment = new VideoAction_F(item.video_id, new Fragment_Callback() {
-                            @Override
-                            public void Responce(Bundle bundle) {
-
-                                if (bundle.getString("action").equals("save")) {
-                                    Save_Video(item);
-                                }
-                                if (bundle.getString("action").equals("delete")) {
-
-                                    Functions.Show_loader(WatchVideos_F.this, false, false);
-                                    Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, item.video_id, new API_CallBack() {
-                                        @Override
-                                        public void ArrayData(ArrayList arrayList) {
-
-                                        }
-
-                                        @Override
-                                        public void OnSuccess(String responce) {
-
-                                            Functions.cancel_loader();
-                                            finish();
-
-                                        }
-
-                                        @Override
-                                        public void OnFail(String responce) {
-
-                                        }
-                                    });
-
-                                }
+                        case R.id.like_layout:
+                            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                                Like_Video(postion, item);
+                            }else {
+                                Toast.makeText(context, "Please Login.", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                            break;
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("video_id", item.video_id);
-                        bundle.putString("user_id", item.user_id);
-                        fragment.setArguments(bundle);
+                        case R.id.comment_layout:
+                            OpenComment(item);
+                            break;
 
-                        fragment.show(getSupportFragmentManager(), "");
+                        case R.id.shared_layout:
 
-                        break;
+                            final VideoAction_F fragment = new VideoAction_F(item.video_id, new Fragment_Callback() {
+                                @Override
+                                public void Responce(Bundle bundle) {
+
+                                    if (bundle.getString("action").equals("save")) {
+                                        Save_Video(item);
+                                    }
+                                    if (bundle.getString("action").equals("delete")) {
+
+                                        Functions.Show_loader(WatchVideos_F.this, false, false);
+                                        Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, item.video_id, new API_CallBack() {
+                                            @Override
+                                            public void ArrayData(ArrayList arrayList) {
+
+                                            }
+
+                                            @Override
+                                            public void OnSuccess(String responce) {
+
+                                                Functions.cancel_loader();
+                                                finish();
+
+                                            }
+
+                                            @Override
+                                            public void OnFail(String responce) {
+
+                                            }
+                                        });
+
+                                    }
+                                }
+                            });
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("video_id", item.video_id);
+                            bundle.putString("user_id", item.user_id);
+                            fragment.setArguments(bundle);
+
+                            fragment.show(getSupportFragmentManager(), "");
+
+                            break;
 
 
-                    case R.id.sound_image_layout:
-                        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
-                            if(check_permissions()) {
-                                Intent intent = new Intent(WatchVideos_F.this, VideoSound_A.class);
-                                intent.putExtra("data", item);
-                                startActivity(intent);
+                        case R.id.sound_image_layout:
+                            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                                if(check_permissions()) {
+                                    Intent intent = new Intent(WatchVideos_F.this, VideoSound_A.class);
+                                    intent.putExtra("data", item);
+                                    startActivity(intent);
+                                }
+                            }else {
+                                Toast.makeText(context, "Please Login.", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Toast.makeText(context, "Please Login.", Toast.LENGTH_SHORT).show();
-                        }
 
-                        break;
+                            break;
+                    }
+
                 }
+            });
 
-            }
-        });
-
-        adapter.setHasStableIds(true);
-        recyclerView.setAdapter(adapter);
+            adapter.setHasStableIds(true);
+            recyclerView.setAdapter(adapter);
 
 
-        // this is the scroll listener of recycler view which will tell the current item number
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            // this is the scroll listener of recycler view which will tell the current item number
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
 
-            }
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //here we find the current item number
-                final int scrollOffset = recyclerView.computeVerticalScrollOffset();
-                final int height = recyclerView.getHeight();
-                int page_no=scrollOffset / height;
-
-                if(page_no!=currentPage ){
-                    currentPage=page_no;
-
-                    Privious_Player();
-                    Set_Player(currentPage);
                 }
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    //here we find the current item number
+                    final int scrollOffset = recyclerView.computeVerticalScrollOffset();
+                    final int height = recyclerView.getHeight();
+                    int page_no=scrollOffset / height;
 
-            }
-        });
+                    if(page_no!=currentPage ){
+                        currentPage=page_no;
 
-        recyclerView.scrollToPosition(position);
+                        Privious_Player();
+                        Set_Player(currentPage);
+                    }
+
+                }
+            });
+
+            recyclerView.scrollToPosition(position);
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -543,14 +575,22 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     @Override
     public void onKeyboardHeightChanged(int height, int orientation) {
 
-        Log.d(Variables.tag,""+height);
-        if(height<0) {
-            privious_height= Math.abs(height);;
-        }
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(write_layout.getWidth(), write_layout.getHeight());
-        params.bottomMargin = height+privious_height;
-        write_layout.setLayoutParams(params);
 
+        try {
+
+            Log.d(Variables.tag,""+height);
+            if(height<0) {
+                privious_height= Math.abs(height);;
+            }
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(write_layout.getWidth(), write_layout.getHeight());
+            params.bottomMargin = height+privious_height;
+            write_layout.setLayoutParams(params);
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -580,127 +620,138 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     @Override
     public void onDataSent(String yourData) {
-        int comment_count =Integer.parseInt(yourData);
-        Home_Get_Set item=data_list.get(currentPage);
-        item.video_comment_count=""+comment_count;
-        data_list.add(currentPage,item);
-        adapter.notifyDataSetChanged();
+
+        try {
+
+            int comment_count =Integer.parseInt(yourData);
+            Home_Get_Set item=data_list.get(currentPage);
+            item.video_comment_count=""+comment_count;
+            data_list.add(currentPage,item);
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
 
     public void Set_Player(final int currentPage){
 
-        final Home_Get_Set item= data_list.get(currentPage);
-        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1*1024, 1*1024, 500, 1024).createDefaultLoadControl();
 
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-        final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector,loadControl);
+        try {
 
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
+            final Home_Get_Set item= data_list.get(currentPage);
+            DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1*1024, 1*1024, 500, 1024).createDefaultLoadControl();
 
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(item.video_url));
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+            final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector,loadControl);
 
-        if(!Variables.is_secure_info)
-            Log.d(Variables.tag,item.video_url);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                    Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
 
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(item.video_url));
 
-        player.prepare(videoSource);
-
-        player.setRepeatMode(Player.REPEAT_MODE_ALL);
-        player.addListener(this);
+            if(!Variables.is_secure_info)
+                Log.d(Variables.tag,item.video_url);
 
 
+            player.prepare(videoSource);
 
-        View layout=layoutManager.findViewByPosition(currentPage);
-        PlayerView playerView=layout.findViewById(R.id.playerview);
-        playerView.setPlayer(player);
-
-
-        player.setPlayWhenReady(true);
-        privious_player=player;
+            player.setRepeatMode(Player.REPEAT_MODE_ALL);
+            player.addListener(this);
 
 
 
-        final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
-        playerView.setOnTouchListener(new View.OnTouchListener() {
-            private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+            View layout=layoutManager.findViewByPosition(currentPage);
+            PlayerView playerView=layout.findViewById(R.id.playerview);
+            playerView.setPlayer(player);
 
-                @Override
-                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                    super.onFling(e1, e2, velocityX, velocityY);
-                    float deltaX = e1.getX() - e2.getX();
-                    float deltaXAbs = Math.abs(deltaX);
-                    // Only when swipe distance between minimal and maximal distance value then we treat it as effective swipe
-                    if((deltaXAbs > 100) && (deltaXAbs < 1000)) {
-                        if(deltaX > 0)
-                        {
-                            OpenProfile(item,true);
+
+            player.setPlayWhenReady(true);
+            privious_player=player;
+
+
+
+            final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
+            playerView.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        super.onFling(e1, e2, velocityX, velocityY);
+                        float deltaX = e1.getX() - e2.getX();
+                        float deltaXAbs = Math.abs(deltaX);
+                        // Only when swipe distance between minimal and maximal distance value then we treat it as effective swipe
+                        if((deltaXAbs > 100) && (deltaXAbs < 1000)) {
+                            if(deltaX > 0)
+                            {
+                                OpenProfile(item,true);
+                            }
                         }
+
+
+                        return true;
                     }
 
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        super.onSingleTapUp(e);
+                        if(!player.getPlayWhenReady()){
+                            privious_player.setPlayWhenReady(true);
+                        }else{
+                            privious_player.setPlayWhenReady(false);
+                        }
 
+
+                        return true;
+                    }
+
+                    @Override
+                    public void onLongPress(MotionEvent e) {
+                        super.onLongPress(e);
+                        Show_video_option(item);
+
+                    }
+
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+
+                        if(!player.getPlayWhenReady()){
+                            privious_player.setPlayWhenReady(true);
+                        }
+
+                        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+
+                            Show_heart_on_DoubleTap(item, mainlayout, e);
+                            Like_Video(currentPage, item);
+
+                        }else {
+                            Toast.makeText(context, "Please Login into ", Toast.LENGTH_SHORT).show();
+                        }
+                        return super.onDoubleTap(e);
+
+                    }
+                });
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    gestureDetector.onTouchEvent(event);
                     return true;
-                }
-
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    super.onSingleTapUp(e);
-                    if(!player.getPlayWhenReady()){
-                        privious_player.setPlayWhenReady(true);
-                    }else{
-                        privious_player.setPlayWhenReady(false);
-                    }
-
-
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    super.onLongPress(e);
-                    Show_video_option(item);
-
-                }
-
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-
-                    if(!player.getPlayWhenReady()){
-                        privious_player.setPlayWhenReady(true);
-                    }
-
-                    if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
-
-                        Show_heart_on_DoubleTap(item, mainlayout, e);
-                        Like_Video(currentPage, item);
-
-                    }else {
-                        Toast.makeText(context, "Please Login into ", Toast.LENGTH_SHORT).show();
-                    }
-                    return super.onDoubleTap(e);
-
                 }
             });
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gestureDetector.onTouchEvent(event);
-                return true;
-            }
-        });
+            TextView desc_txt=layout.findViewById(R.id.desc_txt);
+            HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+                @Override
+                public void onHashTagClicked(String hashTag) {
 
-        TextView desc_txt=layout.findViewById(R.id.desc_txt);
-        HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
-            @Override
-            public void onHashTagClicked(String hashTag) {
+                    OpenHashtag(hashTag);
 
-                OpenHashtag(hashTag);
-
-            }
-        }).handle(desc_txt);
+                }
+            }).handle(desc_txt);
 
 
 
@@ -710,10 +761,15 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         Animation aniRotate = AnimationUtils.loadAnimation(context,R.anim.d_clockwise_rotation);
         soundimage.startAnimation(aniRotate);*/
 
-        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
-            Functions.Call_Api_For_update_view(WatchVideos_F.this,item.video_id);
+            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
+                Functions.Call_Api_For_update_view(WatchVideos_F.this,item.video_id);
 
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
 
         //Call_Api_For_Singlevideos(currentPage);
@@ -723,9 +779,17 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // when we swipe for another video this will relaese the privious player
     SimpleExoPlayer privious_player;
     public void Privious_Player(){
-        if(privious_player!=null) {
-            privious_player.removeListener(this);
-            privious_player.release();
+
+        try {
+
+            if(privious_player!=null) {
+                privious_player.removeListener(this);
+                privious_player.release();
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -734,46 +798,53 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     public void Show_heart_on_DoubleTap(Home_Get_Set item,final RelativeLayout mainlayout,MotionEvent e){
 
-        int x = (int) e.getX()-100;
-        int y = (int) e.getY()-100;
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        final ImageView iv = new ImageView(getApplicationContext());
-        lp.setMargins(x, y, 0, 0);
-        iv.setLayoutParams(lp);
-        if(item.liked.equals("1"))
-            iv.setImageDrawable(getResources().getDrawable(
-                    R.drawable.ic_like));
-        else
-            iv.setImageDrawable(getResources().getDrawable(
-                    R.drawable.ic_like_fill));
 
-        mainlayout.addView(iv);
-        Animation fadeoutani = AnimationUtils.loadAnimation(context,R.anim.fade_out);
+        try {
 
-        fadeoutani.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            int x = (int) e.getX()-100;
+            int y = (int) e.getY()-100;
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            final ImageView iv = new ImageView(getApplicationContext());
+            lp.setMargins(x, y, 0, 0);
+            iv.setLayoutParams(lp);
+            if(item.liked.equals("1"))
+                iv.setImageDrawable(getResources().getDrawable(
+                        R.drawable.ic_like));
+            else
+                iv.setImageDrawable(getResources().getDrawable(
+                        R.drawable.ic_like_fill));
 
-            }
+            mainlayout.addView(iv);
+            Animation fadeoutani = AnimationUtils.loadAnimation(context,R.anim.fade_out);
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mainlayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainlayout.removeView(iv);
-                    }
-                }, 500);
-            }
+            fadeoutani.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
+                }
 
-            }
-        });
-        iv.startAnimation(fadeoutani);
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mainlayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainlayout.removeView(iv);
+                        }
+                    }, 500);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            iv.startAnimation(fadeoutani);
+        } catch (Exception ee) {
+            Log.d("Exception", "getMessage: " + ee.getMessage());
+            ee.printStackTrace();
+        }
 
     }
 
@@ -782,41 +853,48 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set){
 
-        String action=home_get_set.liked;
+        try {
 
-        if(action.equals("1")){
-            action="0";
-            home_get_set.like_count=""+(Integer.parseInt(home_get_set.like_count) -1);
-        }else {
-            action="1";
-            home_get_set.like_count=""+(Integer.parseInt(home_get_set.like_count) +1);
+            String action=home_get_set.liked;
+
+            if(action.equals("1")){
+                action="0";
+                home_get_set.like_count=""+(Integer.parseInt(home_get_set.like_count) -1);
+            }else {
+                action="1";
+                home_get_set.like_count=""+(Integer.parseInt(home_get_set.like_count) +1);
+            }
+
+
+            data_list.remove(position);
+            home_get_set.liked=action;
+            data_list.add(position,home_get_set);
+            adapter.notifyDataSetChanged();
+
+
+            Functions.Call_Api_For_like_video(this, home_get_set.video_id,action ,new API_CallBack() {
+
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+
+                }
+
+                @Override
+                public void OnSuccess(String responce) {
+                    Log.d("Test Call_Api", "OnSuccess:Call_Api_For_like_video "+responce);
+                }
+
+                @Override
+                public void OnFail(String responce) {
+                    Log.d("Test Call_Api", "OnFail:Call_Api_For_like_video "+responce);
+
+                }
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-
-        data_list.remove(position);
-        home_get_set.liked=action;
-        data_list.add(position,home_get_set);
-        adapter.notifyDataSetChanged();
-
-
-        Functions.Call_Api_For_like_video(this, home_get_set.video_id,action ,new API_CallBack() {
-
-            @Override
-            public void ArrayData(ArrayList arrayList) {
-
-            }
-
-            @Override
-            public void OnSuccess(String responce) {
-                Log.d("Test Call_Api", "OnSuccess:Call_Api_For_like_video "+responce);
-            }
-
-            @Override
-            public void OnFail(String responce) {
-                Log.d("Test Call_Api", "OnFail:Call_Api_For_like_video "+responce);
-
-            }
-        });
     }
 
 
@@ -859,18 +937,26 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     // this will open the comment screen
     public void OpenComment(Home_Get_Set item) {
-        int comment_count=Integer.parseInt(item.video_comment_count);
-        Fragment_Data_Send fragment_data_send=this;
 
-        Comment_F comment_f = new Comment_F(comment_count,fragment_data_send);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("video_id",item.video_id);
-        args.putString("user_id",item.user_id);
-        comment_f.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.WatchVideo_F, comment_f).commit();
+        try {
+
+            int comment_count=Integer.parseInt(item.video_comment_count);
+            Fragment_Data_Send fragment_data_send=this;
+
+            Comment_F comment_f = new Comment_F(comment_count,fragment_data_send);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("video_id",item.video_id);
+            args.putString("user_id",item.user_id);
+            comment_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.WatchVideo_F, comment_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -879,39 +965,47 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenProfile(Home_Get_Set item,boolean from_right_to_left) {
 
-        if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(item.user_id)){
 
-            TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
+        try {
+
+            if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(item.user_id)){
+
+                TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
             /*if (profile!= null){
                 profile.select();
             }*/
-            profile.select();
+                profile.select();
 
-        }else {
+            }else {
 
-            Profile_F profile_f = new Profile_F(new Fragment_Callback() {
-                @Override
-                public void Responce(Bundle bundle) {
+                Profile_F profile_f = new Profile_F(new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
 
-                   // Call_Api_For_Singlevideos(currentPage);
+                        // Call_Api_For_Singlevideos(currentPage);
 
-                }
-            });
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    }
+                });
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            if(from_right_to_left)
-                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-            else
-                transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+                if(from_right_to_left)
+                    transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                else
+                    transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
 
-            Bundle args = new Bundle();
-            args.putString("user_id", item.user_id);
-            args.putString("user_name",item.first_name+" "+item.last_name);
-            args.putString("user_pic",item.profile_pic);
-            profile_f.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.WatchVideo_F, profile_f).commit();
+                Bundle args = new Bundle();
+                args.putString("user_id", item.user_id);
+                args.putString("user_name",item.first_name+" "+item.last_name);
+                args.putString("user_pic",item.profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.WatchVideo_F, profile_f).commit();
 
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
 
@@ -921,36 +1015,44 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     public void Send_Comments(final String user_id, String video_id, final String comment){
 
-        send_progress.setVisibility(View.VISIBLE);
-        send_btn.setVisibility(View.GONE);
 
-        Functions.Call_Api_For_Send_Comment(this, video_id,comment ,new API_CallBack() {
-            @Override
-            public void ArrayData(ArrayList arrayList) {
+        try {
 
-                message_edit.setText(null);
-                send_progress.setVisibility(View.GONE);
-                send_btn.setVisibility(View.VISIBLE);
+            send_progress.setVisibility(View.VISIBLE);
+            send_btn.setVisibility(View.GONE);
 
-                int comment_count=Integer.parseInt(data_list.get(currentPage).video_comment_count);
-                comment_count++;
-                onDataSent(""+comment_count);
+            Functions.Call_Api_For_Send_Comment(this, video_id,comment ,new API_CallBack() {
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+
+                    message_edit.setText(null);
+                    send_progress.setVisibility(View.GONE);
+                    send_btn.setVisibility(View.VISIBLE);
+
+                    int comment_count=Integer.parseInt(data_list.get(currentPage).video_comment_count);
+                    comment_count++;
+                    onDataSent(""+comment_count);
 
 
-            }
+                }
 
-            @Override
-            public void OnSuccess(String responce) {
+                @Override
+                public void OnSuccess(String responce) {
 
-            }
+                }
 
-            @Override
-            public void OnFail(String responce) {
+                @Override
+                public void OnFail(String responce) {
 
-            }
-        });
+                }
+            });
 
-        SendPushNotification(user_id,comment);
+            SendPushNotification(user_id,comment);
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -959,83 +1061,99 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenHashtag(String tag) {
 
-        Taged_Videos_F taged_videos_f = new Taged_Videos_F();
-        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("tag", tag);
-        taged_videos_f.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.WatchVideo_F, taged_videos_f).commit();
 
+        try {
+
+            Taged_Videos_F taged_videos_f = new Taged_Videos_F();
+            FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("tag", tag);
+            taged_videos_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.WatchVideo_F, taged_videos_f).commit();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
     CharSequence[] options;
     private void Show_video_option(final Home_Get_Set home_get_set) {
 
-        options = new CharSequence[]{ "Save Video","Cancel" };
+        try {
 
-        if(home_get_set.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
-            options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
 
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context,R.style.AlertDialogCustom);
+            options = new CharSequence[]{ "Save Video","Cancel" };
 
-        builder.setTitle(null);
+            if(home_get_set.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+                options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
 
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context,R.style.AlertDialogCustom);
 
-            @Override
+            builder.setTitle(null);
 
-            public void onClick(DialogInterface dialog, int item) {
+            builder.setItems(options, new DialogInterface.OnClickListener() {
 
-                if (options[item].equals("Save Video"))
-                {
-                    if(Functions.Checkstoragepermision(WatchVideos_F.this))
+                @Override
 
-                    Save_Video(home_get_set);
+                public void onClick(DialogInterface dialog, int item) {
 
-                }
+                    if (options[item].equals("Save Video"))
+                    {
+                        if(Functions.Checkstoragepermision(WatchVideos_F.this))
 
-                else if(options[item].equals("Delete Video")){
-                    if(Variables.is_secure_info){
-                        Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
+                            Save_Video(home_get_set);
+
                     }
-                    else {
-                        Functions.Show_loader(WatchVideos_F.this, false, false);
-                        Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, home_get_set.video_id, new API_CallBack() {
-                            @Override
-                            public void ArrayData(ArrayList arrayList) {
 
-                            }
+                    else if(options[item].equals("Delete Video")){
+                        if(Variables.is_secure_info){
+                            Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Functions.Show_loader(WatchVideos_F.this, false, false);
+                            Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, home_get_set.video_id, new API_CallBack() {
+                                @Override
+                                public void ArrayData(ArrayList arrayList) {
 
-                            @Override
-                            public void OnSuccess(String responce) {
+                                }
 
-                                Functions.cancel_loader();
-                                finish();
+                                @Override
+                                public void OnSuccess(String responce) {
 
-                            }
+                                    Functions.cancel_loader();
+                                    finish();
 
-                            @Override
-                            public void OnFail(String responce) {
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void OnFail(String responce) {
+
+                                }
+                            });
+                        }
                     }
+
+                    else if (options[item].equals("Cancel")) {
+
+                        dialog.dismiss();
+
+                    }
+
                 }
 
-                else if (options[item].equals("Cancel")) {
+            });
 
-                    dialog.dismiss();
-
-                }
-
-            }
-
-        });
-
-        builder.show();
+            builder.show();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -1043,6 +1161,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     public void Save_Video(final Home_Get_Set item){
+
         if (privious_player != null) {
             privious_player.setPlayWhenReady(false);
         }

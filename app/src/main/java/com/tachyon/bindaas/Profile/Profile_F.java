@@ -105,13 +105,20 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         context = getContext();
 
-        getActivity();
+        try {
 
-        bundle = getArguments();
-        if (bundle != null) {
-            user_id = bundle.getString("user_id");
-            user_name = bundle.getString("user_name");
-            user_pic = bundle.getString("user_pic");
+            getActivity();
+
+            bundle = getArguments();
+            if (bundle != null) {
+                user_id = bundle.getString("user_id");
+                user_name = bundle.getString("user_name");
+                user_pic = bundle.getString("user_pic");
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
         return init();
     }
@@ -167,75 +174,82 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public View init() {
 
-        username = view.findViewById(R.id.username);
-        username2_txt = view.findViewById(R.id.username2_txt);
-        imageView = view.findViewById(R.id.user_image);
-        imageView.setOnClickListener(this);
-        Log.d("Test", username.toString());
-        video_count_txt = view.findViewById(R.id.video_count_txt);
+        try {
 
-        follow_count_txt = view.findViewById(R.id.follow_count_txt);
-        fans_count_txt = view.findViewById(R.id.fan_count_txt);
-        heart_count_txt = view.findViewById(R.id.heart_count_txt);
+            username = view.findViewById(R.id.username);
+            username2_txt = view.findViewById(R.id.username2_txt);
+            imageView = view.findViewById(R.id.user_image);
+            imageView.setOnClickListener(this);
+            Log.d("Test", username.toString());
+            video_count_txt = view.findViewById(R.id.video_count_txt);
 
-        setting_btn = view.findViewById(R.id.setting_btn);
-        setting_btn.setOnClickListener(this);
+            follow_count_txt = view.findViewById(R.id.follow_count_txt);
+            fans_count_txt = view.findViewById(R.id.fan_count_txt);
+            heart_count_txt = view.findViewById(R.id.heart_count_txt);
 
-        back_btn = view.findViewById(R.id.back_btn);
-        back_btn.setOnClickListener(this);
+            setting_btn = view.findViewById(R.id.setting_btn);
+            setting_btn.setOnClickListener(this);
 
-        follow_unfollow_btn = view.findViewById(R.id.follow_unfollow_btn);
-        follow_unfollow_btn.setOnClickListener(this);
+            back_btn = view.findViewById(R.id.back_btn);
+            back_btn.setOnClickListener(this);
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        pager = view.findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(2);
+            follow_unfollow_btn = view.findViewById(R.id.follow_unfollow_btn);
+            follow_unfollow_btn.setOnClickListener(this);
 
-        adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
-        pager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(pager);
+            tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+            pager = view.findViewById(R.id.pager);
+            pager.setOffscreenPageLimit(2);
 
-        setupTabIcons();
+            adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
+            pager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(pager);
 
-        tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
-        top_layout = view.findViewById(R.id.top_layout);
+            setupTabIcons();
 
-        ViewTreeObserver observer = top_layout.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
+            top_layout = view.findViewById(R.id.top_layout);
 
-            @Override
-            public void onGlobalLayout() {
+            ViewTreeObserver observer = top_layout.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                final int height = top_layout.getMeasuredHeight();
+                @Override
+                public void onGlobalLayout() {
 
-                top_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
-                        this);
+                    final int height = top_layout.getMeasuredHeight();
 
-                ViewTreeObserver observer = tabs_main_layout.getViewTreeObserver();
-                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    top_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
+                            this);
 
-                    @Override
-                    public void onGlobalLayout() {
+                    ViewTreeObserver observer = tabs_main_layout.getViewTreeObserver();
+                    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabs_main_layout.getLayoutParams();
-                        params.height = (int) (tabs_main_layout.getMeasuredHeight() + height);
-                        tabs_main_layout.setLayoutParams(params);
-                        tabs_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
-                                this);
+                        @Override
+                        public void onGlobalLayout() {
 
-                    }
-                });
+                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabs_main_layout.getLayoutParams();
+                            params.height = (int) (tabs_main_layout.getMeasuredHeight() + height);
+                            tabs_main_layout.setLayoutParams(params);
+                            tabs_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
+                                    this);
 
-            }
-        });
+                        }
+                    });
 
-        view.findViewById(R.id.following_layout).setOnClickListener(this);
-        view.findViewById(R.id.fans_layout).setOnClickListener(this);
+                }
+            });
 
-        isdataload = true;
+            view.findViewById(R.id.following_layout).setOnClickListener(this);
+            view.findViewById(R.id.fans_layout).setOnClickListener(this);
 
-        Call_Api_For_get_Allvideos();
+            isdataload = true;
 
+            Call_Api_For_get_Allvideos();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -253,65 +267,72 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     private void setupTabIcons() {
 
-        View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
-        ImageView imageView1 = view1.findViewById(R.id.image);
-        imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
-        tvVideosCount = view1.findViewById(R.id.tvCount);
-        tabLayout.getTabAt(0).setCustomView(view1);
+        try {
 
-        View view2 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
-        ImageView imageView2 = view2.findViewById(R.id.image);
-        imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
-        tvLikesCount = view2.findViewById(R.id.tvCount);
-        tvLikesCount.setTextColor(getResources().getColor(R.color.black));
-        tabLayout.getTabAt(1).setCustomView(view2);
+            View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+            ImageView imageView1 = view1.findViewById(R.id.image);
+            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
+            tvVideosCount = view1.findViewById(R.id.tvCount);
+            tabLayout.getTabAt(0).setCustomView(view1);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            View view2 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+            ImageView imageView2 = view2.findViewById(R.id.image);
+            imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
+            tvLikesCount = view2.findViewById(R.id.tvCount);
+            tvLikesCount.setTextColor(getResources().getColor(R.color.black));
+            tabLayout.getTabAt(1).setCustomView(view2);
 
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View v = tab.getCustomView();
-                ImageView image = v.findViewById(R.id.image);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
-                switch (tab.getPosition()) {
-                    case 0:
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    View v = tab.getCustomView();
+                    ImageView image = v.findViewById(R.id.image);
+
+                    switch (tab.getPosition()) {
+                        case 0:
 //                        layout.setBackgroundColor(getResources().getColor(R.color.redcolor));
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
-                        break;
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
+                            break;
 
-                    case 1:
+                        case 1:
 //                        layout.setBackgroundColor(getResources().getColor(R.color.redcolor));
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_color));
-                        break;
-                }
-                tab.setCustomView(v);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View v = tab.getCustomView();
-                ImageView image = v.findViewById(R.id.image);
-
-                switch (tab.getPosition()) {
-                    case 0:
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
-                        break;
-                    case 1:
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
-                        break;
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_color));
+                            break;
+                    }
+                    tab.setCustomView(v);
                 }
 
-                tab.setCustomView(v);
-            }
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    View v = tab.getCustomView();
+                    ImageView image = v.findViewById(R.id.image);
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
+                            break;
+                        case 1:
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
+                            break;
+                    }
 
-            }
+                    tab.setCustomView(v);
+                }
 
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-        Objects.requireNonNull(tabLayout.getTabAt(0)).select();
+                }
+
+            });
+
+            Objects.requireNonNull(tabLayout.getTabAt(0)).select();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -537,62 +558,84 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public void Open_Chat_F() {
 
-        Chat_Activity chat_activity = new Chat_Activity();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("user_id", user_id);
-        args.putString("user_name", user_name);
-        args.putString("user_pic", user_pic);
-        chat_activity.setArguments(args);
-        transaction.addToBackStack(null);
+        try {
 
-        View view = getActivity().findViewById(R.id.MainMenuFragment);
-        if (view != null)
-            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-        else
-            transaction.replace(R.id.Profile_F, chat_activity).commit();
+            Chat_Activity chat_activity = new Chat_Activity();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("user_id", user_id);
+            args.putString("user_name", user_name);
+            args.putString("user_pic", user_pic);
+            chat_activity.setArguments(args);
+            transaction.addToBackStack(null);
 
+            View view = getActivity().findViewById(R.id.MainMenuFragment);
+            if (view != null)
+                transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+            else
+                transaction.replace(R.id.Profile_F, chat_activity).commit();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void Open_Following() {
 
-        Following_F following_f = new Following_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("id", user_id);
-        args.putString("from_where", "following");
-        following_f.setArguments(args);
-        transaction.addToBackStack(null);
+        try {
 
-        View view = getActivity().findViewById(R.id.MainMenuFragment);
+            Following_F following_f = new Following_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("id", user_id);
+            args.putString("from_where", "following");
+            following_f.setArguments(args);
+            transaction.addToBackStack(null);
 
-        if (view != null)
-            transaction.replace(R.id.MainMenuFragment, following_f).commit();
-        else
-            transaction.replace(R.id.Profile_F, following_f).commit();
+            View view = getActivity().findViewById(R.id.MainMenuFragment);
 
+            if (view != null)
+                transaction.replace(R.id.MainMenuFragment, following_f).commit();
+            else
+                transaction.replace(R.id.Profile_F, following_f).commit();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void Open_Followers() {
-        Following_F following_f = new Following_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("id", user_id);
-        args.putString("from_where", "fan");
-        following_f.setArguments(args);
-        transaction.addToBackStack(null);
+
+        try {
+
+            Following_F following_f = new Following_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("id", user_id);
+            args.putString("from_where", "fan");
+            following_f.setArguments(args);
+            transaction.addToBackStack(null);
 
 
-        View view = getActivity().findViewById(R.id.MainMenuFragment);
+            View view = getActivity().findViewById(R.id.MainMenuFragment);
 
-        if (view != null)
-            transaction.replace(R.id.MainMenuFragment, following_f).commit();
-        else
-            transaction.replace(R.id.Profile_F, following_f).commit();
+            if (view != null)
+                transaction.replace(R.id.MainMenuFragment, following_f).commit();
+            else
+                transaction.replace(R.id.Profile_F, following_f).commit();
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 

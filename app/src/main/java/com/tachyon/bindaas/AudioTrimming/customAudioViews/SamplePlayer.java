@@ -19,15 +19,28 @@ package com.tachyon.bindaas.AudioTrimming.customAudioViews;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
 
 import java.nio.ShortBuffer;
 
-public class SamplePlayer {
+import androidx.annotation.Nullable;
+
+public class SamplePlayer extends Exception {
+
+    private static final String TAG = "SamplePlayer";
+
     public interface OnCompletionListener {
         public void onCompletion();
     }
 
     ;
+
+    @Nullable
+    @Override
+    public String getMessage() {
+        Log.d(TAG, "getMessage: "+super.getMessage());
+        return super.getMessage();
+    }
 
     private ShortBuffer mSamples;
     private int mSampleRate;
@@ -101,35 +114,42 @@ public class SamplePlayer {
     }
 
     public void start() {
-        if (isPlaying()) {
-            return;
-        }
-        mKeepPlaying = true;
-        mAudioTrack.flush();
-        mAudioTrack.play();
-        // Setting thread feeding the audio samples to the audio hardware.
-        // (Assumes mChannels = 1 or 2).
-        mPlayThread = new Thread() {
-            public void run() {
-                int position = mPlaybackStart * mChannels;
-                mSamples.position(position);
-                int limit = mNumSamples * mChannels;
-                while (mSamples.position() < limit && mKeepPlaying) {
-                    int numSamplesLeft = limit - mSamples.position();
-                    if (numSamplesLeft >= mBuffer.length) {
-                        mSamples.get(mBuffer);
-                    } else {
-                        for (int i = numSamplesLeft; i < mBuffer.length; i++) {
-                            mBuffer[i] = 0;
-                        }
-                        mSamples.get(mBuffer, 0, numSamplesLeft);
-                    }
-                    // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
-                    mAudioTrack.write(mBuffer, 0, mBuffer.length);
-                }
+        try {
+
+            if (isPlaying()) {
+                return;
             }
-        };
-        mPlayThread.start();
+            mKeepPlaying = true;
+            mAudioTrack.flush();
+            mAudioTrack.play();
+            // Setting thread feeding the audio samples to the audio hardware.
+            // (Assumes mChannels = 1 or 2).
+            mPlayThread = new Thread() {
+                public void run() {
+                    int position = mPlaybackStart * mChannels;
+                    mSamples.position(position);
+                    int limit = mNumSamples * mChannels;
+                    while (mSamples.position() < limit && mKeepPlaying) {
+                        int numSamplesLeft = limit - mSamples.position();
+                        if (numSamplesLeft >= mBuffer.length) {
+                            mSamples.get(mBuffer);
+                        } else {
+                            for (int i = numSamplesLeft; i < mBuffer.length; i++) {
+                                mBuffer[i] = 0;
+                            }
+                            mSamples.get(mBuffer, 0, numSamplesLeft);
+                        }
+                        // TODO(nfaralli): use the write method that takes a ByteBuffer as argument.
+                        mAudioTrack.write(mBuffer, 0, mBuffer.length);
+                    }
+                }
+            };
+            mPlayThread.start();
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void pause() {
@@ -140,36 +160,54 @@ public class SamplePlayer {
     }
 
     public void stop() {
-        if (isPlaying() || isPaused()) {
-            mKeepPlaying = false;
-            mAudioTrack.pause();  // pause() stops the playback immediately.
-            mAudioTrack.stop();   // Unblock mAudioTrack.write() to avoid deadlocks.
-            if (mPlayThread != null) {
-                try {
-                    mPlayThread.join();
-                } catch (InterruptedException e) {
+        try {
+
+            if (isPlaying() || isPaused()) {
+                mKeepPlaying = false;
+                mAudioTrack.pause();  // pause() stops the playback immediately.
+                mAudioTrack.stop();   // Unblock mAudioTrack.write() to avoid deadlocks.
+                if (mPlayThread != null) {
+                    try {
+                        mPlayThread.join();
+                    } catch (InterruptedException e) {
+                    }
+                    mPlayThread = null;
                 }
-                mPlayThread = null;
+                mAudioTrack.flush();  // just in case...
             }
-            mAudioTrack.flush();  // just in case...
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void release() {
-        stop();
-        mAudioTrack.release();
+        try {
+            stop();
+            mAudioTrack.release();
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void seekTo(int msec) {
-        boolean wasPlaying = isPlaying();
-        stop();
-        mPlaybackStart = (int) (msec * (mSampleRate / 1000.0));
-        if (mPlaybackStart > mNumSamples) {
-            mPlaybackStart = mNumSamples;  // Nothing to play...
-        }
-        mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1 - mPlaybackStart);
-        if (wasPlaying) {
-            start();
+        try {
+
+            boolean wasPlaying = isPlaying();
+            stop();
+            mPlaybackStart = (int) (msec * (mSampleRate / 1000.0));
+            if (mPlaybackStart > mNumSamples) {
+                mPlaybackStart = mNumSamples;  // Nothing to play...
+            }
+            mAudioTrack.setNotificationMarkerPosition(mNumSamples - 1 - mPlaybackStart);
+            if (wasPlaying) {
+                start();
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
         }
     }
 

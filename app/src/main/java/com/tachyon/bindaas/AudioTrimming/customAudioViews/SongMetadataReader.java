@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -32,6 +33,7 @@ public class SongMetadataReader {
     public String mAlbum = "";
     public String mGenre = "";
     public int mYear = -1;
+    private static final String TAG = "SongMetadataReader";
 
     public SongMetadataReader(Activity activity, String filename) {
         mActivity = activity;
@@ -44,61 +46,67 @@ public class SongMetadataReader {
     }
 
     private void ReadMetadata() {
-        // Get a map from genre ids to names
-        HashMap<String, String> genreIdMap = new HashMap<String, String>();
-        Cursor c = mActivity.getContentResolver().query(
-                GENRES_URI,
-                new String[]{
-                        MediaStore.Audio.Genres._ID,
-                        MediaStore.Audio.Genres.NAME},
-                null, null, null);
-        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            genreIdMap.put(c.getString(0), c.getString(1));
-        }
-        c.close();
-        mGenre = "";
-        for (String genreId : genreIdMap.keySet()) {
-            c = mActivity.getContentResolver().query(
-                    makeGenreUri(genreId),
-                    new String[]{MediaStore.Audio.Media.DATA},
-                    MediaStore.Audio.Media.DATA + " LIKE \"" + mFilename + "\"",
-                    null, null);
-            if (c.getCount() != 0) {
-                mGenre = genreIdMap.get(genreId);
-                break;
+        try {
+
+            // Get a map from genre ids to names
+            HashMap<String, String> genreIdMap = new HashMap<String, String>();
+            Cursor c = mActivity.getContentResolver().query(
+                    GENRES_URI,
+                    new String[]{
+                            MediaStore.Audio.Genres._ID,
+                            MediaStore.Audio.Genres.NAME},
+                    null, null, null);
+            for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+                genreIdMap.put(c.getString(0), c.getString(1));
             }
             c.close();
-            c = null;
-        }
+            mGenre = "";
+            for (String genreId : genreIdMap.keySet()) {
+                c = mActivity.getContentResolver().query(
+                        makeGenreUri(genreId),
+                        new String[]{MediaStore.Audio.Media.DATA},
+                        MediaStore.Audio.Media.DATA + " LIKE \"" + mFilename + "\"",
+                        null, null);
+                if (c.getCount() != 0) {
+                    mGenre = genreIdMap.get(genreId);
+                    break;
+                }
+                c.close();
+                c = null;
+            }
 
-        Uri uri = MediaStore.Audio.Media.getContentUriForPath(mFilename);
-        c = mActivity.getContentResolver().query(
-                uri,
-                new String[]{
-                        MediaStore.Audio.Media._ID,
-                        MediaStore.Audio.Media.TITLE,
-                        MediaStore.Audio.Media.ARTIST,
-                        MediaStore.Audio.Media.ALBUM,
-                        MediaStore.Audio.Media.YEAR,
-                        MediaStore.Audio.Media.DATA},
-                MediaStore.Audio.Media.DATA + " LIKE \"" + mFilename + "\"",
-                null, null);
-        if (c.getCount() == 0) {
-            mTitle = getBasename(mFilename);
-            mArtist = "";
-            mAlbum = "";
-            mYear = -1;
-            return;
+            Uri uri = MediaStore.Audio.Media.getContentUriForPath(mFilename);
+            c = mActivity.getContentResolver().query(
+                    uri,
+                    new String[]{
+                            MediaStore.Audio.Media._ID,
+                            MediaStore.Audio.Media.TITLE,
+                            MediaStore.Audio.Media.ARTIST,
+                            MediaStore.Audio.Media.ALBUM,
+                            MediaStore.Audio.Media.YEAR,
+                            MediaStore.Audio.Media.DATA},
+                    MediaStore.Audio.Media.DATA + " LIKE \"" + mFilename + "\"",
+                    null, null);
+            if (c.getCount() == 0) {
+                mTitle = getBasename(mFilename);
+                mArtist = "";
+                mAlbum = "";
+                mYear = -1;
+                return;
+            }
+            c.moveToFirst();
+            mTitle = getStringFromColumn(c, MediaStore.Audio.Media.TITLE);
+            if (mTitle == null || mTitle.length() == 0) {
+                mTitle = getBasename(mFilename);
+            }
+            mArtist = getStringFromColumn(c, MediaStore.Audio.Media.ARTIST);
+            mAlbum = getStringFromColumn(c, MediaStore.Audio.Media.ALBUM);
+            mYear = getIntegerFromColumn(c, MediaStore.Audio.Media.YEAR);
+            c.close();
+        }catch (Exception e){
+            Log.d(TAG, "Exception :"+e.getMessage());
+            e.printStackTrace();
         }
-        c.moveToFirst();
-        mTitle = getStringFromColumn(c, MediaStore.Audio.Media.TITLE);
-        if (mTitle == null || mTitle.length() == 0) {
-            mTitle = getBasename(mFilename);
-        }
-        mArtist = getStringFromColumn(c, MediaStore.Audio.Media.ARTIST);
-        mAlbum = getStringFromColumn(c, MediaStore.Audio.Media.ALBUM);
-        mYear = getIntegerFromColumn(c, MediaStore.Audio.Media.YEAR);
-        c.close();
     }
 
     private Uri makeGenreUri(String genreId) {

@@ -49,6 +49,8 @@ import java.io.IOException;
 public class SoundList_Main_A extends AppCompatActivity implements View.OnClickListener {
 
     private static int ADD_AUDIO = 2009;
+
+    private static final String TAG = "Audio_Test";
     protected TabLayout tablayout;
 
     protected Custom_ViewPager pager;
@@ -149,21 +151,24 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
         }*/
         if (requestCode == ADD_AUDIO) {
             if (resultCode == RESULT_OK) {
+                String path = data.getExtras().getString("INTENT_AUDIO_FILE");
+                Uri uri = Uri.fromFile(new File(path));
+                if (uri != null) {
+                    Log.d(TAG, "onActivityResult Uri: " + uri);
+                    Log.d(TAG, "onActivityResult Uri: " + uri.toString());
+                    Log.d(TAG, "onActivityResult Uri: " + String.valueOf(uri));
 
-                Uri uri = data.getData();
-                if (data != null) {
-                    String path = data.getExtras().getString("INTENT_AUDIO_FILE");
-                    File fi = (File) data.getExtras().get("file");
+//                    File fi = (File) data.getExtras().get("file");
                     Toast.makeText(this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
 
-                    Log.d("Audio_Test", ""+path);
+                    Log.d("Audio_Test", "" + path);
                     JSONObject params = new JSONObject();
-                    final File oldFile = new File(path);
-                    final File file = CommonUtils.getAudioFilePath(this, Uri.parse(path));
+                    final File oldFile = new File(uri.toString());
+                    final File file = CommonUtils.getAudioFilePath(this, uri);
                    // Log.d("Audio_Test", "cropped file Path is : "+fi.getAbsolutePath());
                     String audioString;
                     try {
-                        audioString = CommonUtils.encodeFileToBase64Binary(Uri.fromFile(fi));
+                        audioString = CommonUtils.encodeFileToBase64Binary(Uri.fromFile(file));
                         Functions.Show_loader(this, false, false);
                         String user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
 
@@ -175,7 +180,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                     }
 
-                   /* Log.d("Audio_Test", "onActivityResult: "+new Gson().toJson(params));
+                    Log.d("Audio_Test", "onActivityResult: "+new Gson().toJson(params));
                     ApiRequest.Call_Api(this, Variables.POST_AUDIO, params, new Callback() {
                         @Override
                         public void Responce(String resp) {
@@ -203,7 +208,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                             }
                         }
                     });
-*/
+
                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 }
             }

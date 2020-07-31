@@ -16,12 +16,24 @@
 
 package com.tachyon.bindaas.AudioTrimming.customAudioViews;
 
-public class WAVHeader {
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
+public class WAVHeader extends Exception {
     private byte[] mHeader;          // the complete header.
     private int mSampleRate;         // sampling frequency in Hz (e.g. 44100).
     private int mChannels;           // number of channels.
     private int mNumSamples;         // total number of samples per channel.
     private int mNumBytesPerSample;  // number of bytes per sample, all channels included.
+
+    private static final String TAG = "WAVHeader";
+    @Nullable
+    @Override
+    public String getMessage() {
+        Log.d(TAG, "getMessage: "+super.getMessage());
+        return super.getMessage();
+    }
 
     public WAVHeader(int sampleRate, int numChannels, int numSamples) {
         mSampleRate = sampleRate;
@@ -64,6 +76,7 @@ public class WAVHeader {
     }
 
     private void setHeader() {
+
         byte[] header = new byte[46];
         int offset = 0;
         int size;

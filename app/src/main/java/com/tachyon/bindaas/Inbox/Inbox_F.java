@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,67 +65,75 @@ public class Inbox_F extends RootFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_inbox, container, false);
-        context=getContext();
 
-        root_ref= FirebaseDatabase.getInstance().getReference();
+        try {
 
+            context=getContext();
 
-        pbar=view.findViewById(R.id.pbar);
-        inbox_list=view.findViewById(R.id.inboxlist);
-
-        // intialize the arraylist and and inboxlist
-        inbox_arraylist=new ArrayList<>();
-
-        inbox_list = (RecyclerView) view.findViewById(R.id.inboxlist);
-        LinearLayoutManager layout = new LinearLayoutManager(context);
-        inbox_list.setLayoutManager(layout);
-        inbox_list.setHasFixedSize(false);
-        inbox_adapter=new Inbox_Adapter(context, inbox_arraylist, new Inbox_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Inbox_Get_Set item) {
-
-                // if user allow the stroage permission then we open the chat view
-                if(check_ReadStoragepermission())
-                chatFragment(item.getId(),item.getName(),item.getPic());
+            root_ref= FirebaseDatabase.getInstance().getReference();
 
 
-            }
-        }, new Inbox_Adapter.OnLongItemClickListener() {
-            @Override
-            public void onLongItemClick(Inbox_Get_Set item) {
+            pbar=view.findViewById(R.id.pbar);
+            inbox_list=view.findViewById(R.id.inboxlist);
 
-            }
-        });
+            // intialize the arraylist and and inboxlist
+            inbox_arraylist=new ArrayList<>();
 
-        inbox_list.setAdapter(inbox_adapter);
+            inbox_list = (RecyclerView) view.findViewById(R.id.inboxlist);
+            LinearLayoutManager layout = new LinearLayoutManager(context);
+            inbox_list.setLayoutManager(layout);
+            inbox_list.setHasFixedSize(false);
+            inbox_adapter=new Inbox_Adapter(context, inbox_arraylist, new Inbox_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Inbox_Get_Set item) {
+
+                    // if user allow the stroage permission then we open the chat view
+                    if(check_ReadStoragepermission())
+                        chatFragment(item.getId(),item.getName(),item.getPic());
 
 
+                }
+            }, new Inbox_Adapter.OnLongItemClickListener() {
+                @Override
+                public void onLongItemClick(Inbox_Get_Set item) {
 
+                }
+            });
 
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Functions.hideSoftKeyboard(getActivity());
-
-            }
-        });
-
-        view.findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getActivity().onBackPressed();
-
-            }
-        });
+            inbox_list.setAdapter(inbox_adapter);
 
 
 
-        isview_created=true;
 
-        getData();
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Functions.hideSoftKeyboard(getActivity());
+
+                }
+            });
+
+            view.findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    getActivity().onBackPressed();
+
+                }
+            });
+
+
+
+            isview_created=true;
+
+            getData();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -147,42 +157,49 @@ public class Inbox_F extends RootFragment {
     Query inbox_query;
     public void getData() {
 
-        pbar.setVisibility(View.VISIBLE);
+        try {
 
-        inbox_query=root_ref.child("Inbox").child(Variables.user_id).orderByChild("date");
-        eventListener2=new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                inbox_arraylist.clear();
+            pbar.setVisibility(View.VISIBLE);
 
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            inbox_query=root_ref.child("Inbox").child(Variables.user_id).orderByChild("date");
+            eventListener2=new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    inbox_arraylist.clear();
 
-                    Inbox_Get_Set model = ds.getValue(Inbox_Get_Set.class);
-                    model.setId(ds.getKey());
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    inbox_arraylist.add(model);
+                        Inbox_Get_Set model = ds.getValue(Inbox_Get_Set.class);
+                        model.setId(ds.getKey());
+
+                        inbox_arraylist.add(model);
+                    }
+
+                    pbar.setVisibility(View.GONE);
+
+                    if (inbox_arraylist.isEmpty())
+                        view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
+                    else {
+                        view.findViewById(R.id.no_data_layout).setVisibility(View.GONE);
+                        Collections.reverse(inbox_arraylist);
+                        inbox_adapter.notifyDataSetChanged();
+                    }
+
                 }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                pbar.setVisibility(View.GONE);
-
-                if (inbox_arraylist.isEmpty())
-                    view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
-                else {
-                    view.findViewById(R.id.no_data_layout).setVisibility(View.GONE);
-                    Collections.reverse(inbox_arraylist);
-                    inbox_adapter.notifyDataSetChanged();
                 }
+            };
 
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        inbox_query.addValueEventListener(eventListener2);
+            inbox_query.addValueEventListener(eventListener2);
 
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -200,18 +217,25 @@ public class Inbox_F extends RootFragment {
     //open the chat fragment and on item click and pass your id and the other person id in which
     //you want to chat with them and this parameter is that is we move from match list or inbox list
     public void chatFragment(String receiverid, String name, String picture){
-        Chat_Activity chat_activity = new Chat_Activity();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-        Bundle args = new Bundle();
-        args.putString("user_id", receiverid);
-        args.putString("user_name",name);
-        args.putString("user_pic",picture);
+        try {
+            Chat_Activity chat_activity = new Chat_Activity();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-        chat_activity.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.Inbox_F, chat_activity).commit();
+            Bundle args = new Bundle();
+            args.putString("user_id", receiverid);
+            args.putString("user_name",name);
+            args.putString("user_pic",picture);
+
+            chat_activity.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.Inbox_F, chat_activity).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 

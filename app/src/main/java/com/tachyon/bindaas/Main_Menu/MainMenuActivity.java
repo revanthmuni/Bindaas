@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,84 +34,108 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        mainMenuActivity=this;
 
-        intent=getIntent();
+        try {
 
-        setIntent(null);
+            mainMenuActivity=this;
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        Variables.screen_height= displayMetrics.heightPixels;
-        Variables.screen_width= displayMetrics.widthPixels;
+            intent=getIntent();
 
-        Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+            setIntent(null);
 
-        Variables.user_id=Variables.sharedPreferences.getString(Variables.u_id,"");
-        Variables.user_name=Variables.sharedPreferences.getString(Variables.u_name,"");
-        Variables.user_pic=Variables.sharedPreferences.getString(Variables.u_pic,"");
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            Variables.screen_height= displayMetrics.heightPixels;
+            Variables.screen_width= displayMetrics.widthPixels;
 
+            Variables.sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
 
-        token= FirebaseInstanceId.getInstance().getToken();
-        if(token==null || (token.equals("")||token.equals("null")))
-            token=Variables.sharedPreferences.getString(Variables.device_token,"null");
+            Variables.user_id=Variables.sharedPreferences.getString(Variables.u_id,"");
+            Variables.user_name=Variables.sharedPreferences.getString(Variables.u_name,"");
+            Variables.user_pic=Variables.sharedPreferences.getString(Variables.u_pic,"");
 
 
-        if (savedInstanceState == null) {
+            token= FirebaseInstanceId.getInstance().getToken();
+            if(token==null || (token.equals("")||token.equals("null")))
+                token=Variables.sharedPreferences.getString(Variables.device_token,"null");
 
-            initScreen();
 
-        } else {
-            mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().getFragments().get(0);
+            if (savedInstanceState == null) {
+
+                initScreen();
+
+            } else {
+                mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().getFragments().get(0);
+            }
+
+            Functions.make_directry(Variables.app_folder);
+            Functions.make_directry(Variables.draft_app_folder);
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-        Functions.make_directry(Variables.app_folder);
-        Functions.make_directry(Variables.draft_app_folder);
-
     }
 
 
     @Override
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-        if(intent!=null){
-            String type=intent.getStringExtra("type");
-            if(type!=null && type.equalsIgnoreCase("message")){
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Chat_Activity chat_activity = new Chat_Activity();
-                        FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-                        Bundle args = new Bundle();
-                        args.putString("user_id", intent.getStringExtra("user_id"));
-                        args.putString("user_name", intent.getStringExtra("user_name"));
-                        args.putString("user_pic", intent.getStringExtra("user_pic"));
+        try {
 
-                        chat_activity.setArguments(args);
-                        transaction.addToBackStack(null);
-                        transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-                    }
-                },2000);
+            if(intent!=null){
+                String type=intent.getStringExtra("type");
+                if(type!=null && type.equalsIgnoreCase("message")){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Chat_Activity chat_activity = new Chat_Activity();
+                            FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
+                            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
+                            Bundle args = new Bundle();
+                            args.putString("user_id", intent.getStringExtra("user_id"));
+                            args.putString("user_name", intent.getStringExtra("user_name"));
+                            args.putString("user_pic", intent.getStringExtra("user_pic"));
+
+                            chat_activity.setArguments(args);
+                            transaction.addToBackStack(null);
+                            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+                        }
+                    },2000);
+
+                }
             }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
     }
 
     private void initScreen() {
-        mainMenuFragment = new MainMenuFragment();
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, mainMenuFragment)
-                .commit();
 
-        findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
+
+        try {
+            mainMenuFragment = new MainMenuFragment();
+            final FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, mainMenuFragment)
+                    .commit();
+
+            findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 

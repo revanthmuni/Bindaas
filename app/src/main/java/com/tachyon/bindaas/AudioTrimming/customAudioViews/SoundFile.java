@@ -37,10 +37,13 @@ import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
 
-public class SoundFile {
+import androidx.annotation.Nullable;
+
+public class SoundFile extends Exception{
     private ProgressListener mProgressListener = null;
     private File mInputFile = null;
 
+    private static final String TAG = "SoundFile";
     // Member variables representing frame data
     private String mFileType;
     private int mFileSize;
@@ -60,6 +63,13 @@ public class SoundFile {
     private int[] mFrameGains;
     private int[] mFrameLens;
     private int[] mFrameOffsets;
+
+    @Nullable
+    @Override
+    public String getMessage() {
+        Log.d(TAG, "getMessage: "+super.getMessage());
+        return super.getMessage();
+    }
 
     // Progress listener interface.
     public interface ProgressListener {

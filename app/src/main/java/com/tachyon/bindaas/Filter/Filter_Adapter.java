@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +97,15 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
 
         public CustomViewHolder(View view) {
             super(view);
-            fiter_txt = view.findViewById(R.id.filter_txt);
-            ivPhoto = view.findViewById(R.id.iv_photo);
+            try {
+
+                fiter_txt = view.findViewById(R.id.filter_txt);
+                ivPhoto = view.findViewById(R.id.iv_photo);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final int pos, final FilterType item, final Filter_Adapter.OnItemClickListener listener) {

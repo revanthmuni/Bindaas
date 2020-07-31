@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,29 +63,35 @@ public class Notification_Receive extends FirebaseMessagingService {
     @SuppressLint("WrongThread")
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        try {
 
 
-        if (remoteMessage.getData().size() > 0) {
-            sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
-            title = remoteMessage.getData().get("title");
-            if(title!=null)
-                title.replaceAll("@","");
+            if (remoteMessage.getData().size() > 0) {
+                sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+                title = remoteMessage.getData().get("title");
+                if(title!=null)
+                    title.replaceAll("@","");
 
-            message = remoteMessage.getData().get("body");
-            pic=remoteMessage.getData().get("icon");
-            senderid=remoteMessage.getData().get("senderid");
-            receiverid=remoteMessage.getData().get("receiverid");
-            action_type=remoteMessage.getData().get("action_type");
+                message = remoteMessage.getData().get("body");
+                pic=remoteMessage.getData().get("icon");
+                senderid=remoteMessage.getData().get("senderid");
+                receiverid=remoteMessage.getData().get("receiverid");
+                action_type=remoteMessage.getData().get("action_type");
 
-            if(!Chat_Activity.senderid_for_check_notification.equals(senderid)){
+                if(!Chat_Activity.senderid_for_check_notification.equals(senderid)){
 
-                sendNotification sendNotification=new sendNotification(this);
-                sendNotification.execute(pic);
+                    sendNotification sendNotification=new sendNotification(this);
+                    sendNotification.execute(pic);
+
+                }
 
             }
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
 
     }
 
@@ -93,23 +100,30 @@ public class Notification_Receive extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
+        try {
 
-        if(s==null){
+            sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
 
-        }else if(s.equals("null")){
+            if(s==null){
 
+            }else if(s.equals("null")){
+
+            }
+            else if(s.equals("")){
+
+            }
+            else if(s.length()<6){
+
+            }
+            else {
+                sharedPreferences.edit().putString(Variables.device_token, s).commit();
+            }
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-        else if(s.equals("")){
-
-        }
-        else if(s.length()<6){
-
-        }
-        else {
-            sharedPreferences.edit().putString(Variables.device_token, s).commit();
-        }
-
     }
 
 
@@ -157,92 +171,99 @@ public class Notification_Receive extends FirebaseMessagingService {
         protected void onPostExecute(Bitmap result) {
 
             super.onPostExecute(result);
-
-            ShowNotification(ctx,title,message,result);
-
-            if(MainMenuActivity.mainMenuActivity!=null){
+            try {
 
 
-                if(snackbar !=null){
-                    snackbar.getView().setVisibility(View.INVISIBLE);
-                    snackbar.dismiss();
-                }
+                ShowNotification(ctx,title,message,result);
 
-                if(handler!=null && runnable!=null) {
-                    handler.removeCallbacks(runnable);
-                }
+                if(MainMenuActivity.mainMenuActivity!=null){
 
 
-                View layout = MainMenuActivity.mainMenuActivity.getLayoutInflater().inflate(R.layout.item_layout_custom_notification,null);
-                TextView titletxt= layout.findViewById(R.id.username);
-                TextView messagetxt=layout.findViewById(R.id.message);
-                ImageView imageView=layout.findViewById(R.id.user_image);
-                titletxt.setText(title);
-                messagetxt.setText(message);
-
-                if(result!=null)
-                imageView.setImageBitmap(result);
-
-
-                snackbar = Snackbar.make(MainMenuActivity.mainMenuActivity.findViewById(R.id.container), "", Snackbar.LENGTH_LONG);
-
-                Snackbar.SnackbarLayout snackbarLayout= (Snackbar.SnackbarLayout) snackbar.getView();
-                TextView textView = (TextView) snackbarLayout.findViewById(R.id.snackbar_text);
-                textView.setVisibility(View.INVISIBLE);
-
-                final ViewGroup.LayoutParams params = snackbar.getView().getLayoutParams();
-                if (params instanceof CoordinatorLayout.LayoutParams) {
-                    ((CoordinatorLayout.LayoutParams) params).gravity = Gravity.TOP;
-                } else {
-                    ((FrameLayout.LayoutParams) params).gravity = Gravity.TOP;
-                }
-
-                snackbarLayout.setPadding(0,0,0,0);
-                snackbarLayout.addView(layout, 0);
-
-
-                snackbar.getView().setVisibility(View.INVISIBLE);
-
-                snackbar.setCallback(new Snackbar.Callback(){
-                    @Override
-                    public void onShown(Snackbar sb) {
-                        super.onShown(sb);
-                        snackbar.getView().setVisibility(View.VISIBLE);
-                    }
-
-                });
-
-
-                runnable=new Runnable() {
-                    @Override
-                    public void run() {
+                    if(snackbar !=null){
                         snackbar.getView().setVisibility(View.INVISIBLE);
-
-                    }
-                };
-
-                handler.postDelayed(runnable, 2750);
-
-
-                snackbar.setDuration(Snackbar.LENGTH_LONG);
-                snackbar.show();
-
-
-
-                layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
                         snackbar.dismiss();
-                        snackbar.getView().setVisibility(View.INVISIBLE);
-
-                        if(action_type.equals("message"))
-                        chatFragment(senderid,title,pic);
-
                     }
-                });
+
+                    if(handler!=null && runnable!=null) {
+                        handler.removeCallbacks(runnable);
+                    }
 
 
+                    View layout = MainMenuActivity.mainMenuActivity.getLayoutInflater().inflate(R.layout.item_layout_custom_notification,null);
+                    TextView titletxt= layout.findViewById(R.id.username);
+                    TextView messagetxt=layout.findViewById(R.id.message);
+                    ImageView imageView=layout.findViewById(R.id.user_image);
+                    titletxt.setText(title);
+                    messagetxt.setText(message);
+
+                    if(result!=null)
+                        imageView.setImageBitmap(result);
+
+
+                    snackbar = Snackbar.make(MainMenuActivity.mainMenuActivity.findViewById(R.id.container), "", Snackbar.LENGTH_LONG);
+
+                    Snackbar.SnackbarLayout snackbarLayout= (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = (TextView) snackbarLayout.findViewById(R.id.snackbar_text);
+                    textView.setVisibility(View.INVISIBLE);
+
+                    final ViewGroup.LayoutParams params = snackbar.getView().getLayoutParams();
+                    if (params instanceof CoordinatorLayout.LayoutParams) {
+                        ((CoordinatorLayout.LayoutParams) params).gravity = Gravity.TOP;
+                    } else {
+                        ((FrameLayout.LayoutParams) params).gravity = Gravity.TOP;
+                    }
+
+                    snackbarLayout.setPadding(0,0,0,0);
+                    snackbarLayout.addView(layout, 0);
+
+
+                    snackbar.getView().setVisibility(View.INVISIBLE);
+
+                    snackbar.setCallback(new Snackbar.Callback(){
+                        @Override
+                        public void onShown(Snackbar sb) {
+                            super.onShown(sb);
+                            snackbar.getView().setVisibility(View.VISIBLE);
+                        }
+
+                    });
+
+
+                    runnable=new Runnable() {
+                        @Override
+                        public void run() {
+                            snackbar.getView().setVisibility(View.INVISIBLE);
+
+                        }
+                    };
+
+                    handler.postDelayed(runnable, 2750);
+
+
+                    snackbar.setDuration(Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+
+
+                    layout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            snackbar.dismiss();
+                            snackbar.getView().setVisibility(View.INVISIBLE);
+
+                            if(action_type.equals("message"))
+                                chatFragment(senderid,title,pic);
+
+                        }
+                    });
+
+
+                }
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
             }
 
 
@@ -253,72 +274,86 @@ public class Notification_Receive extends FirebaseMessagingService {
 
     public void ShowNotification(Context context, String title, String message,Bitmap bitmap){
 
-        // The id of the channel.
-        final String CHANNEL_ID = "default";
-        final String CHANNEL_NAME = "Default";
+        try {
 
-        Intent notificationIntent = new Intent(context, MainMenuActivity.class);
-        notificationIntent.putExtra("user_id", receiverid);
-        notificationIntent.putExtra("user_name", title);
-        notificationIntent.putExtra("user_pic", pic);
-        notificationIntent.putExtra("message", message);
-        notificationIntent.putExtra("type", action_type);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, 0);
+            // The id of the channel.
+            final String CHANNEL_ID = "default";
+            final String CHANNEL_NAME = "Default";
+
+            Intent notificationIntent = new Intent(context, MainMenuActivity.class);
+            notificationIntent.putExtra("user_id", receiverid);
+            notificationIntent.putExtra("user_name", title);
+            notificationIntent.putExtra("user_pic", pic);
+            notificationIntent.putExtra("message", message);
+            notificationIntent.putExtra("type", action_type);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                    notificationIntent, 0);
 
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel defaultChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(defaultChannel);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel defaultChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(defaultChannel);
+            }
+
+            Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(context,CHANNEL_ID)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setLargeIcon(bitmap)
+                    .setSmallIcon(R.drawable.ic_tic)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setSound(defaultSoundUri)
+                    .setContentIntent(pendingIntent);
+
+            Notification notification = builder.build();
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            notificationManager.notify(100, notification);
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(context,CHANNEL_ID)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setLargeIcon(bitmap)
-                .setSmallIcon(R.drawable.ic_tic)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        Notification notification = builder.build();
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
-        notificationManager.notify(100, notification);
     }
 
 
     public void chatFragment(String receiverid, String name, String picture){
 
-        if(sharedPreferences.getBoolean(Variables.islogin,false)) {
+        try {
 
-            if (MainMenuFragment.tabLayout != null) {
-                TabLayout.Tab tab3 = MainMenuFragment.tabLayout.getTabAt(3);
-                tab3.select();
+            if(sharedPreferences.getBoolean(Variables.islogin,false)) {
+
+                if (MainMenuFragment.tabLayout != null) {
+                    TabLayout.Tab tab3 = MainMenuFragment.tabLayout.getTabAt(3);
+                    tab3.select();
+                }
+
+                Chat_Activity chat_activity = new Chat_Activity();
+                FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+
+                Bundle args = new Bundle();
+                args.putString("user_id", receiverid);
+                args.putString("user_name", name);
+                args.putString("user_pic", picture);
+
+                chat_activity.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+
             }
 
-            Chat_Activity chat_activity = new Chat_Activity();
-            FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-            Bundle args = new Bundle();
-            args.putString("user_id", receiverid);
-            args.putString("user_name", name);
-            args.putString("user_pic", picture);
-
-            chat_activity.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-
     }
 
 

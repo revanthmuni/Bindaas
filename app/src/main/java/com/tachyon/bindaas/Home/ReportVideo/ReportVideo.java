@@ -48,22 +48,31 @@ public class ReportVideo extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_flag_video);
-        init();
-        setListeners();
+        try {
+            init();
+            setListeners();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void init() {
-        flagOptions = getIntent().getStringExtra("FLAG_OPTIONS");
-        if (flagOptions != null && flagOptions.equals("REPORT_COMMENT")) {
-            commentId = getIntent().getStringExtra("COMMENT_ID");
-        } else
-            videoItem = (Home_Get_Set) getIntent().getSerializableExtra("VIDEO_ITEM");
 
-        radioGroup = findViewById(R.id.rg_reports);
-        submit = findViewById(R.id.bt_submit);
-        reason = findViewById(R.id.et_reason);
-        reason.setVisibility(View.GONE);
-        back = findViewById(R.id.back_btn);
+            flagOptions = getIntent().getStringExtra("FLAG_OPTIONS");
+            if (flagOptions != null && flagOptions.equals("REPORT_COMMENT")) {
+                commentId = getIntent().getStringExtra("COMMENT_ID");
+            } else
+                videoItem = (Home_Get_Set) getIntent().getSerializableExtra("VIDEO_ITEM");
+
+            radioGroup = findViewById(R.id.rg_reports);
+            submit = findViewById(R.id.bt_submit);
+            reason = findViewById(R.id.et_reason);
+            reason.setVisibility(View.GONE);
+            back = findViewById(R.id.back_btn);
+
     }
 
     public void setListeners() {
@@ -130,55 +139,76 @@ public class ReportVideo extends AppCompatActivity {
     }
 
     private void callFlagVideoApi(FlagVideoRequest flagVideoRequest) {
-        String flagRequest = new Gson().toJson(flagVideoRequest);
-        Log.d("FlagVideoRequest", flagRequest);
-        JSONObject flagObject = null;
         try {
-            flagObject = new JSONObject(flagRequest);
-        } catch (JSONException e) {
+
+            String flagRequest = new Gson().toJson(flagVideoRequest);
+            Log.d("FlagVideoRequest", flagRequest);
+            JSONObject flagObject = null;
+            try {
+                flagObject = new JSONObject(flagRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Functions.Show_loader(this, false, false);
+            ApiRequest.Call_Api(this, Variables.FLAG_VIDEO, flagObject, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    parseFlagVideo(resp);
+
+                }
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
             e.printStackTrace();
         }
-
-        Functions.Show_loader(this, false, false);
-        ApiRequest.Call_Api(this, Variables.FLAG_VIDEO, flagObject, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                Functions.cancel_loader();
-                parseFlagVideo(resp);
-
-            }
-        });
     }
 
     private void parseFlagVideo(String resp) {
 
-        DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
-        if (response != null) {
-            Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
-            finish();
+        try {
+
+            DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
+            if (response != null) {
+                Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
     }
 
     private void showAlertDialog(final DefaultResponse response) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        try {
 
-        builder.setTitle(null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
-        builder.setMessage(response.getMsg());
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (Integer.parseInt(response.getCode()) == 200) {
-                    dialog.dismiss();
-                    finish();
-                } else {
-                    dialog.dismiss();
+            builder.setTitle(null);
+
+            builder.setMessage(response.getMsg());
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (Integer.parseInt(response.getCode()) == 200) {
+                        dialog.dismiss();
+                        finish();
+                    } else {
+                        dialog.dismiss();
+                    }
                 }
-            }
-        });
+            });
 
-        builder.show();
+            builder.show();
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

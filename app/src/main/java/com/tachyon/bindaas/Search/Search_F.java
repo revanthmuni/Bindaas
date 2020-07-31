@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,16 +62,25 @@ public class Search_F extends RootFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_search, container, false);
-        context=getContext();
 
-        shimmerFrameLayout =view.findViewById(R.id.shimmer_view_container);
-        shimmerFrameLayout.startShimmer();
+        try {
 
-        recyclerView=view.findViewById(R.id.recylerview);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(linearLayoutManager);
+            context=getContext();
 
-        Call_Api();
+            shimmerFrameLayout =view.findViewById(R.id.shimmer_view_container);
+            shimmerFrameLayout.startShimmer();
+
+            recyclerView=view.findViewById(R.id.recylerview);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            Call_Api();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
+
 
         return view;
     }
@@ -246,35 +256,50 @@ public class Search_F extends RootFragment {
 
 
     private void OpenWatchVideo(String video_id) {
-        Intent intent=new Intent(getActivity(), WatchVideos_F.class);
-        intent.putExtra("video_id", video_id);
-        startActivity(intent);
+
+        try {
+
+            Intent intent=new Intent(getActivity(), WatchVideos_F.class);
+            intent.putExtra("video_id", video_id);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void Open_Profile(String fb_id,String first_name,String last_name,String profile_pic){
-        if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(fb_id)){
 
-            TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
-            profile.select();
+        try {
+            if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(fb_id)){
 
-        }else {
+                TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
+                profile.select();
 
-            Profile_F profile_f = new Profile_F(new Fragment_Callback() {
-                @Override
-                public void Responce(Bundle bundle) {
+            }else {
 
-                }
-            });
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-            Bundle args = new Bundle();
-            args.putString("user_id", fb_id);
-            args.putString("user_name", first_name + " " +last_name);
-            args.putString("user_pic", profile_pic);
-            profile_f.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.Search_Main_F, profile_f).commit();
+                Profile_F profile_f = new Profile_F(new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
 
+                    }
+                });
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                Bundle args = new Bundle();
+                args.putString("user_id", fb_id);
+                args.putString("user_name", first_name + " " +last_name);
+                args.putString("user_pic", profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.Search_Main_F, profile_f).commit();
+
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
     }

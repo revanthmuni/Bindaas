@@ -39,8 +39,8 @@
             android:theme="@style/TextLabel"/>
         <activity
             android:name=".AudioTrimming.AudioTrimmerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent" />
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

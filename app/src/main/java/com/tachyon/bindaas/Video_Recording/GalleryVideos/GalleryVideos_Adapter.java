@@ -3,6 +3,8 @@ package com.tachyon.bindaas.Video_Recording.GalleryVideos;
 import android.content.Context;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,13 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
         public CustomViewHolder(View view) {
             super(view);
 
-            thumb_image=view.findViewById(R.id.thumb_image);
+            try {
+
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }            thumb_image=view.findViewById(R.id.thumb_image);
             view_txt=view.findViewById(R.id.view_txt);
 
         }

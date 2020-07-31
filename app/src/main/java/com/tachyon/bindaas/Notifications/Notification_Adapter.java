@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +53,19 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
         public CustomViewHolder(View view) {
             super(view);
-            user_image=view.findViewById(R.id.user_image);
-            username=view.findViewById(R.id.username);
-            message=view.findViewById(R.id.message);
-            watch_btn=view.findViewById(R.id.watch_btn);
 
+            try {
+
+                user_image=view.findViewById(R.id.user_image);
+                username=view.findViewById(R.id.username);
+                message=view.findViewById(R.id.message);
+                watch_btn=view.findViewById(R.id.watch_btn);
+
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
 
         }
 
@@ -85,30 +94,38 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
     public void onBindViewHolder(final Notification_Adapter.CustomViewHolder holder, final int i) {
         holder.setIsRecyclable(false);
 
-        final Notification_Get_Set item=datalist.get(i);
-        holder.username.setText(item.username);
 
-        if(item.profile_pic!=null && !item.profile_pic.equals("")) {
-            Uri uri = Uri.parse(item.profile_pic);
-            holder.user_image.setImageURI(uri);
+        try {
+
+            final Notification_Get_Set item=datalist.get(i);
+            holder.username.setText(item.username);
+
+            if(item.profile_pic!=null && !item.profile_pic.equals("")) {
+                Uri uri = Uri.parse(item.profile_pic);
+                holder.user_image.setImageURI(uri);
+            }
+
+            if(item.type.equalsIgnoreCase("comment_video")){
+                holder.message.setText(item.first_name+" have comment on your video");
+                holder.watch_btn.setVisibility(View.VISIBLE);
+            }
+            else if(item.type.equalsIgnoreCase("video_like")) {
+                holder.message.setText(item.first_name + " liked your video");
+                holder.watch_btn.setVisibility(View.VISIBLE);
+            }
+            else if(item.type.equalsIgnoreCase("following_you")) {
+                holder.message.setText(item.first_name + " following you");
+                holder.watch_btn.setVisibility(View.GONE);
+            }
+
+
+            holder.bind(i,datalist.get(i),listener);
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-        if(item.type.equalsIgnoreCase("comment_video")){
-            holder.message.setText(item.first_name+" have comment on your video");
-            holder.watch_btn.setVisibility(View.VISIBLE);
-        }
-        else if(item.type.equalsIgnoreCase("video_like")) {
-            holder.message.setText(item.first_name + " liked your video");
-            holder.watch_btn.setVisibility(View.VISIBLE);
-        }
-        else if(item.type.equalsIgnoreCase("following_you")) {
-            holder.message.setText(item.first_name + " following you");
-            holder.watch_btn.setVisibility(View.GONE);
-        }
-
-
-        holder.bind(i,datalist.get(i),listener);
-
 }
 
 }

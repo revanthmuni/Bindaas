@@ -62,67 +62,74 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_discover, container, false);
-        context = getContext();
+        try {
+
+            context = getContext();
 
 
-        datalist = new ArrayList<>();
+            datalist = new ArrayList<>();
 
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+            recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
 
-        adapter = new Discover_Adapter(context, datalist, new Discover_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(ArrayList<Home_Get_Set> datalist, int postion) {
+            adapter = new Discover_Adapter(context, datalist, new Discover_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(ArrayList<Home_Get_Set> datalist, int postion) {
 
-                OpenWatchVideo(postion, datalist);
+                    OpenWatchVideo(postion, datalist);
 
-            }
-        });
+                }
+            });
 
-        recyclerView.setAdapter(adapter);
-
-
-        search_edit = view.findViewById(R.id.search_edit);
-        search_edit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
-                String query = search_edit.getText().toString();
-                if (adapter != null)
-                    adapter.getFilter().filter(s);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+            recyclerView.setAdapter(adapter);
 
 
-        swiperefresh = view.findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.black);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            search_edit = view.findViewById(R.id.search_edit);
+            search_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                Call_Api_For_get_Allvideos();
-            }
-        });
+                }
 
-        view.findViewById(R.id.search_layout).setOnClickListener(this);
-        view.findViewById(R.id.search_edit).setOnClickListener(this);
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+                    String query = search_edit.getText().toString();
+                    if (adapter != null)
+                        adapter.getFilter().filter(s);
 
-        Call_Api_For_get_Allvideos();
+                }
 
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
+
+            swiperefresh = view.findViewById(R.id.swiperefresh);
+            swiperefresh.setColorSchemeResources(R.color.black);
+            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                    Call_Api_For_get_Allvideos();
+                }
+            });
+
+            view.findViewById(R.id.search_layout).setOnClickListener(this);
+            view.findViewById(R.id.search_edit).setOnClickListener(this);
+
+            Call_Api_For_get_Allvideos();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
         return view;
     }
 

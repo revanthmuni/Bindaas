@@ -59,14 +59,12 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
         Intent intent=getIntent();
         if(intent!=null){
             draft_file=intent.getStringExtra("draft_file");
+            video_url = intent.getStringExtra("video_path");
+            Log.d("Audio_Test", "onCreate: "+video_url);
+        }else {
+            video_url = Variables.outputfile2;
         }
-
-
-
         select_postion=0;
-        video_url= Variables.outputfile2;
-
-
 
         findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +80,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
             @Override
             public void onClick(View v) {
 
-                Save_Video(Variables.outputfile2,Variables.output_filter_file);
+                Save_Video(video_url,Variables.output_filter_file);
             }
         });
 
@@ -194,7 +192,8 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
         new GPUMp4Composer(srcMp4Path, destMp4Path)
                 //.size(540, 960)
                 //.videoBitrate((int) (0.25 * 16 * 540 * 960))
-                .filter(new GlFilterGroup(FilterType.createGlFilter(filterTypes.get(select_postion), getApplicationContext())))
+                .filter(new GlFilterGroup(FilterType
+                        .createGlFilter(filterTypes.get(select_postion), getApplicationContext())))
                 .listener(new GPUMp4Composer.Listener() {
                     @Override
                     public void onProgress(double progress) {
@@ -260,6 +259,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
 
         Intent intent =new Intent(Preview_Video_A.this,Post_Video_A.class);
         intent.putExtra("draft_file",draft_file);
+        intent.putExtra("video_path",video_url);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 

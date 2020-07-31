@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,15 +71,22 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView username, last_message, date_created;
+        TextView username, last_message, date_created = itemView.findViewById(R.id.datetxt);
         ImageView user_image;
 
         public CustomViewHolder(View view) {
             super(view);
-            user_image = itemView.findViewById(R.id.user_image);
-            username = itemView.findViewById(R.id.username);
-            last_message = itemView.findViewById(R.id.message);
-            date_created = itemView.findViewById(R.id.datetxt);
+
+            try {
+
+                user_image = itemView.findViewById(R.id.user_image);
+                username = itemView.findViewById(R.id.username);
+                last_message = itemView.findViewById(R.id.message);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final Inbox_Get_Set item, final Inbox_Adapter.OnItemClickListener listener, final Inbox_Adapter.OnLongItemClickListener longItemClickListener) {
@@ -99,35 +107,43 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
     @Override
     public void onBindViewHolder(final Inbox_Adapter.CustomViewHolder holder, final int i) {
 
-        final Inbox_Get_Set item = inbox_dataList_filter.get(i);
-        holder.username.setText(item.getName());
-        holder.last_message.setText(item.getMsg());
-        holder.date_created.setText(item.getDate() != null ? ChangeDate(item.getDate()) : "DD/MM/YYY");
 
-        if (item.getPic() != null)
-            Picasso.with(context).
-                    load(item.getPic())
-                    .resize(100, 100)
-                    .placeholder(R.drawable.profile_image_placeholder).into(holder.user_image);
-        else
-            Picasso.with(context).
-                    load(R.drawable.profile_image_placeholder)
-                    .resize(100, 100)
-                    .placeholder(R.drawable.profile_image_placeholder).into(holder.user_image);
+        try {
+
+            final Inbox_Get_Set item = inbox_dataList_filter.get(i);
+            holder.username.setText(item.getName());
+            holder.last_message.setText(item.getMsg());
+            holder.date_created.setText(item.getDate() != null ? ChangeDate(item.getDate()) : "DD/MM/YYY");
+
+            if (item.getPic() != null)
+                Picasso.with(context).
+                        load(item.getPic())
+                        .resize(100, 100)
+                        .placeholder(R.drawable.profile_image_placeholder).into(holder.user_image);
+            else
+                Picasso.with(context).
+                        load(R.drawable.profile_image_placeholder)
+                        .resize(100, 100)
+                        .placeholder(R.drawable.profile_image_placeholder).into(holder.user_image);
 
 
-        // check the status like if the message is seen by the receiver or not
-        String status = "" + item.getStatus();
-        if (status.equals("0")) {
-            holder.last_message.setTypeface(null, Typeface.BOLD);
-            holder.last_message.setTextColor(context.getResources().getColor(R.color.black));
-        } else {
-            holder.last_message.setTypeface(null, Typeface.NORMAL);
-            holder.last_message.setTextColor(context.getResources().getColor(R.color.dark_gray));
+            // check the status like if the message is seen by the receiver or not
+            String status = "" + item.getStatus();
+            if (status.equals("0")) {
+                holder.last_message.setTypeface(null, Typeface.BOLD);
+                holder.last_message.setTextColor(context.getResources().getColor(R.color.black));
+            } else {
+                holder.last_message.setTypeface(null, Typeface.NORMAL);
+                holder.last_message.setTextColor(context.getResources().getColor(R.color.dark_gray));
+            }
+
+
+            holder.bind(item, listener, longlistener);
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
-
-        holder.bind(item, listener, longlistener);
 
     }
 
