@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -97,7 +98,7 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
 
         try {
-            Glide.with(context)
+            /*Glide.with(context)
                     .asGif()
                     .load(item.gif)
                     .skipMemoryCache(true)
@@ -108,7 +109,13 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
                             .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
 
                     .into(holder.thumb_image);
-
+            */
+            if (item.thum != null && !item.thum.equals(""))
+                Picasso.with(context).load(item.thum)
+                        .resize(150, 150)
+                        .placeholder(R.drawable.image_placeholder)
+                        .centerCrop()
+                        .into(holder.thumb_image);
             holder.view_txt.setText(item.views);
             holder.view_txt.setText(Functions.GetSuffix(item.views));
 
@@ -116,9 +123,6 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
             Log.d("Exception", "getMessage: " + e
                     .getMessage());
         }
-
-
-
 
         holder.bind(i, item, listener);
 
