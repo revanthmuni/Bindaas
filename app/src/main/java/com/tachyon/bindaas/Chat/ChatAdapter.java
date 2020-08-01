@@ -5,6 +5,8 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Environment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,217 +139,223 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Chat_GetSet chat = mDataSet.get(position);
+        try {
 
-        if(chat.getType().equals("text")){
-            Chatviewholder chatviewholder=(Chatviewholder) holder;
-        // check if the message is from sender or receiver
-            if(chat.getSender_id().equals(myID)){
-                if(chat.getStatus().equals("1"))
-                    chatviewholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
-                else
-                    chatviewholder.message_seen.setText("Sent");
+            if(chat.getType().equals("text")){
+                Chatviewholder chatviewholder=(Chatviewholder) holder;
+                // check if the message is from sender or receiver
+                if(chat.getSender_id().equals(myID)){
+                    if(chat.getStatus().equals("1"))
+                        chatviewholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
+                    else
+                        chatviewholder.message_seen.setText("Sent");
 
-            }else {
-                chatviewholder.message_seen.setText("");
-            }
-        // make the group of message by date set the gap of 1 min
-        // means message send with in 1 min will show as a group
-        if (position != 0) {
-            Chat_GetSet chat2 = mDataSet.get(position - 1);
-            if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
-                chatviewholder.datetxt.setVisibility(View.GONE);
-            } else {
-                chatviewholder.datetxt.setVisibility(View.VISIBLE);
-                chatviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-            }
-            chatviewholder.message.setText(chat.getText());
-        }else {
-            chatviewholder.datetxt.setVisibility(View.VISIBLE);
-            chatviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-            chatviewholder.message.setText(chat.getText());
-        }
-
-        chatviewholder.bind(chat,long_listener);
-
-        }
-
-        else if(chat.getType().equals("image")){
-            final Chatimageviewholder chatimageholder=(Chatimageviewholder) holder;
-            // check if the message is from sender or receiver
-            if(chat.getSender_id().equals(myID)){
-                if(chat.getStatus().equals("1"))
-                    chatimageholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
-                else
-                    chatimageholder.message_seen.setText("Sent");
-
-            }else {
-                chatimageholder.message_seen.setText("");
-            }
-            if(chat.getPic_url().equals("none")){
-               if(Chat_Activity.uploading_image_id.equals(chat.getChat_id())){
-                chatimageholder.p_bar.setVisibility(View.VISIBLE);
-                   chatimageholder.message_seen.setText("");
                 }else {
-                   chatimageholder.p_bar.setVisibility(View.GONE);
-                   chatimageholder.not_send_message_icon.setVisibility(View.VISIBLE);
-                   chatimageholder.message_seen.setText("Not delivered. ");
-               }
-            }else {
-                chatimageholder.not_send_message_icon.setVisibility(View.GONE);
-                chatimageholder.p_bar.setVisibility(View.GONE);
+                    chatviewholder.message_seen.setText("");
+                }
+                // make the group of message by date set the gap of 1 min
+                // means message send with in 1 min will show as a group
+                if (position != 0) {
+                    Chat_GetSet chat2 = mDataSet.get(position - 1);
+                    if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                        chatviewholder.datetxt.setVisibility(View.GONE);
+                    } else {
+                        chatviewholder.datetxt.setVisibility(View.VISIBLE);
+                        chatviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    }
+                    chatviewholder.message.setText(chat.getText());
+                }else {
+                    chatviewholder.datetxt.setVisibility(View.VISIBLE);
+                    chatviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    chatviewholder.message.setText(chat.getText());
+                }
+
+                chatviewholder.bind(chat,long_listener);
+
             }
 
-            // make the group of message by date set the gap of 1 min
-            // means message send with in 1 min will show as a group
-            if (position != 0) {
-                Chat_GetSet chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
-                    chatimageholder.datetxt.setVisibility(View.GONE);
-                } else {
+            else if(chat.getType().equals("image")){
+                final Chatimageviewholder chatimageholder=(Chatimageviewholder) holder;
+                // check if the message is from sender or receiver
+                if(chat.getSender_id().equals(myID)){
+                    if(chat.getStatus().equals("1"))
+                        chatimageholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
+                    else
+                        chatimageholder.message_seen.setText("Sent");
+
+                }else {
+                    chatimageholder.message_seen.setText("");
+                }
+                if(chat.getPic_url().equals("none")){
+                    if(Chat_Activity.uploading_image_id.equals(chat.getChat_id())){
+                        chatimageholder.p_bar.setVisibility(View.VISIBLE);
+                        chatimageholder.message_seen.setText("");
+                    }else {
+                        chatimageholder.p_bar.setVisibility(View.GONE);
+                        chatimageholder.not_send_message_icon.setVisibility(View.VISIBLE);
+                        chatimageholder.message_seen.setText("Not delivered. ");
+                    }
+                }else {
+                    chatimageholder.not_send_message_icon.setVisibility(View.GONE);
+                    chatimageholder.p_bar.setVisibility(View.GONE);
+                }
+
+                // make the group of message by date set the gap of 1 min
+                // means message send with in 1 min will show as a group
+                if (position != 0) {
+                    Chat_GetSet chat2 = mDataSet.get(position - 1);
+                    if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                        chatimageholder.datetxt.setVisibility(View.GONE);
+                    } else {
+                        chatimageholder.datetxt.setVisibility(View.VISIBLE);
+                        chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    }
+                    Picasso.with(context).load(chat.getPic_url()).placeholder(R.drawable.image_placeholder).resize(400,400).centerCrop().into(chatimageholder.chatimage);
+                }else {
                     chatimageholder.datetxt.setVisibility(View.VISIBLE);
                     chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    Picasso.with(context).load(chat.getPic_url()).placeholder(R.drawable.image_placeholder).resize(400,400).centerCrop().into(chatimageholder.chatimage);
+
+
                 }
-                Picasso.with(context).load(chat.getPic_url()).placeholder(R.drawable.image_placeholder).resize(400,400).centerCrop().into(chatimageholder.chatimage);
-            }else {
-                chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-                Picasso.with(context).load(chat.getPic_url()).placeholder(R.drawable.image_placeholder).resize(400,400).centerCrop().into(chatimageholder.chatimage);
 
-
+                chatimageholder.bind(mDataSet.get(position),listener,long_listener);
             }
 
-            chatimageholder.bind(mDataSet.get(position),listener,long_listener);
-        }
 
 
+            else if(chat.getType().equals("audio")){
+                final Chataudioviewholder chataudioviewholder=(Chataudioviewholder) holder;
+                // check if the message is from sender or receiver
+                if(chat.getSender_id().equals(myID)){
+                    if(chat.getStatus().equals("1"))
+                        chataudioviewholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
+                    else
+                        chataudioviewholder.message_seen.setText("Sent");
 
-        else if(chat.getType().equals("audio")){
-            final Chataudioviewholder chataudioviewholder=(Chataudioviewholder) holder;
-            // check if the message is from sender or receiver
-            if(chat.getSender_id().equals(myID)){
-                if(chat.getStatus().equals("1"))
-                    chataudioviewholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
-                else
-                    chataudioviewholder.message_seen.setText("Sent");
-
-            }else {
-                chataudioviewholder.message_seen.setText("");
-            }
-            if(chat.getPic_url().equals("none")){
-                if(Chat_Activity.uploading_Audio_id.equals(chat.getChat_id())){
-                    chataudioviewholder.p_bar.setVisibility(View.VISIBLE);
-                    chataudioviewholder.message_seen.setText("");
                 }else {
-                    chataudioviewholder.p_bar.setVisibility(View.GONE);
-                    chataudioviewholder.not_send_message_icon.setVisibility(View.VISIBLE);
-                    chataudioviewholder.message_seen.setText("Not delivered. ");
+                    chataudioviewholder.message_seen.setText("");
                 }
-            }else {
-                chataudioviewholder.not_send_message_icon.setVisibility(View.GONE);
-                chataudioviewholder.p_bar.setVisibility(View.GONE);
-            }
+                if(chat.getPic_url().equals("none")){
+                    if(Chat_Activity.uploading_Audio_id.equals(chat.getChat_id())){
+                        chataudioviewholder.p_bar.setVisibility(View.VISIBLE);
+                        chataudioviewholder.message_seen.setText("");
+                    }else {
+                        chataudioviewholder.p_bar.setVisibility(View.GONE);
+                        chataudioviewholder.not_send_message_icon.setVisibility(View.VISIBLE);
+                        chataudioviewholder.message_seen.setText("Not delivered. ");
+                    }
+                }else {
+                    chataudioviewholder.not_send_message_icon.setVisibility(View.GONE);
+                    chataudioviewholder.p_bar.setVisibility(View.GONE);
+                }
 
-            // make the group of message by date set the gap of 1 min
-            // means message send with in 1 min will show as a group
-            if (position != 0) {
-                Chat_GetSet chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
-                    chataudioviewholder.datetxt.setVisibility(View.GONE);
-                } else {
+                // make the group of message by date set the gap of 1 min
+                // means message send with in 1 min will show as a group
+                if (position != 0) {
+                    Chat_GetSet chat2 = mDataSet.get(position - 1);
+                    if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                        chataudioviewholder.datetxt.setVisibility(View.GONE);
+                    } else {
+                        chataudioviewholder.datetxt.setVisibility(View.VISIBLE);
+                        chataudioviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    }
+                }else {
                     chataudioviewholder.datetxt.setVisibility(View.VISIBLE);
                     chataudioviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+
                 }
-            }else {
-                chataudioviewholder.datetxt.setVisibility(View.VISIBLE);
-                chataudioviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+
+                if(Chat_Activity.uploading_Audio_id.equals("none")){
+
+                }
+
+                chataudioviewholder.seekBar.setEnabled(false);
+
+                File fullpath = new File(Environment.getExternalStorageDirectory() +"/Binder/"+chat.chat_id+".mp3");
+                if(fullpath.exists()) {
+                    chataudioviewholder.total_time.setText(getfileduration(Uri.parse(fullpath.getAbsolutePath())));
+
+                }else {
+                    chataudioviewholder.total_time.setText(null);
+                }
+
+
+                chataudioviewholder.bind(mDataSet.get(position),listener,long_listener);
 
             }
 
-            if(Chat_Activity.uploading_Audio_id.equals("none")){
-
-            }
-
-            chataudioviewholder.seekBar.setEnabled(false);
-
-            File fullpath = new File(Environment.getExternalStorageDirectory() +"/Binder/"+chat.chat_id+".mp3");
-            if(fullpath.exists()) {
-                chataudioviewholder.total_time.setText(getfileduration(Uri.parse(fullpath.getAbsolutePath())));
-
-            }else {
-                chataudioviewholder.total_time.setText(null);
-            }
-
-
-            chataudioviewholder.bind(mDataSet.get(position),listener,long_listener);
-
-        }
 
 
 
 
+            else if(chat.getType().equals("gif")){
+                final Chatimageviewholder chatimageholder=(Chatimageviewholder) holder;
+                // check if the message is from sender or receiver
+                if(chat.getSender_id().equals(myID)){
+                    if(chat.getStatus().equals("1"))
+                        chatimageholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
+                    else
+                        chatimageholder.message_seen.setText("Sent");
 
-        else if(chat.getType().equals("gif")){
-            final Chatimageviewholder chatimageholder=(Chatimageviewholder) holder;
-            // check if the message is from sender or receiver
-            if(chat.getSender_id().equals(myID)){
-                if(chat.getStatus().equals("1"))
-                chatimageholder.message_seen.setText("Seen at "+ChangeDate_to_time(chat.getTime()));
-                else
-                    chatimageholder.message_seen.setText("Sent");
-
-            }else {
-                chatimageholder.message_seen.setText("");
-            }
-            // make the group of message by date set the gap of 1 min
-            // means message send with in 1 min will show as a group
-            if (position != 0) {
-                Chat_GetSet chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
-                    chatimageholder.datetxt.setVisibility(View.GONE);
-                } else {
+                }else {
+                    chatimageholder.message_seen.setText("");
+                }
+                // make the group of message by date set the gap of 1 min
+                // means message send with in 1 min will show as a group
+                if (position != 0) {
+                    Chat_GetSet chat2 = mDataSet.get(position - 1);
+                    if (chat2.getTimestamp().substring(14, 16).equals(chat.getTimestamp().substring(14, 16))) {
+                        chatimageholder.datetxt.setVisibility(View.GONE);
+                    } else {
+                        chatimageholder.datetxt.setVisibility(View.VISIBLE);
+                        chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    }
+                    Glide.with(context)
+                            .load(Variables.gif_firstpart_chat+chat.getPic_url()+Variables.gif_secondpart_chat)
+                            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                            .into(chatimageholder.chatimage);
+                }else {
                     chatimageholder.datetxt.setVisibility(View.VISIBLE);
                     chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-                }
-                Glide.with(context)
-                        .load(Variables.gif_firstpart_chat+chat.getPic_url()+Variables.gif_secondpart_chat)
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(chatimageholder.chatimage);
-            }else {
-                chatimageholder.datetxt.setVisibility(View.VISIBLE);
-                chatimageholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-                Glide.with(context)
-                        .load(Variables.gif_firstpart_chat+chat.getPic_url()+Variables.gif_secondpart_chat)
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(chatimageholder.chatimage);
+                    Glide.with(context)
+                            .load(Variables.gif_firstpart_chat+chat.getPic_url()+Variables.gif_secondpart_chat)
+                            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                            .into(chatimageholder.chatimage);
 
+                }
+
+                chatimageholder.bind(mDataSet.get(position),listener,long_listener);
             }
 
-            chatimageholder.bind(mDataSet.get(position),listener,long_listener);
-        }
 
+            else if(chat.getType().equals("delete")){
+                Alertviewholder alertviewholder=(Alertviewholder) holder;
+                alertviewholder.message.setTextColor(context.getResources().getColor(R.color.delete_message_text));
+                alertviewholder.message.setBackground(context.getResources().getDrawable(R.drawable.d_round_gray_background_2));
 
-        else if(chat.getType().equals("delete")){
-            Alertviewholder alertviewholder=(Alertviewholder) holder;
-            alertviewholder.message.setTextColor(context.getResources().getColor(R.color.delete_message_text));
-            alertviewholder.message.setBackground(context.getResources().getDrawable(R.drawable.d_round_gray_background_2));
+                alertviewholder.message.setText( "This message is deleted by "+chat.getSender_name());
 
-            alertviewholder.message.setText( "This message is deleted by "+chat.getSender_name());
+                if (position != 0) {
+                    Chat_GetSet chat2 = mDataSet.get(position - 1);
+                    if (chat2.getTimestamp().substring(11, 13).equals(chat.getTimestamp().substring(11, 13))) {
+                        alertviewholder.datetxt.setVisibility(View.GONE);
+                    } else {
+                        alertviewholder.datetxt.setVisibility(View.VISIBLE);
+                        alertviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+                    }
 
-            if (position != 0) {
-                Chat_GetSet chat2 = mDataSet.get(position - 1);
-                if (chat2.getTimestamp().substring(11, 13).equals(chat.getTimestamp().substring(11, 13))) {
-                    alertviewholder.datetxt.setVisibility(View.GONE);
-                } else {
+                }else {
                     alertviewholder.datetxt.setVisibility(View.VISIBLE);
                     alertviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
+
                 }
 
-            }else {
-                alertviewholder.datetxt.setVisibility(View.VISIBLE);
-                alertviewholder.datetxt.setText(ChangeDate(chat.getTimestamp()));
-
             }
-
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
 
@@ -399,10 +407,17 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chatviewholder(View itemView) {
             super(itemView);
-            view = itemView;
-            this.message = view.findViewById(R.id.msgtxt);
-            this.datetxt=view.findViewById(R.id.datetxt);
-            message_seen=view.findViewById(R.id.message_seen);
+            try {
+
+                view = itemView;
+                this.message = view.findViewById(R.id.msgtxt);
+                this.datetxt=view.findViewById(R.id.datetxt);
+                message_seen=view.findViewById(R.id.message_seen);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnLongClickListener long_listener) {
@@ -426,12 +441,19 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chatimageviewholder(View itemView) {
             super(itemView);
-            view = itemView;
-            this.chatimage = view.findViewById(R.id.chatimage);
-            this.datetxt=view.findViewById(R.id.datetxt);
-            message_seen=view.findViewById(R.id.message_seen);
-            not_send_message_icon=view.findViewById(R.id.not_send_messsage);
-            p_bar=view.findViewById(R.id.p_bar);
+            try {
+
+                view = itemView;
+                this.chatimage = view.findViewById(R.id.chatimage);
+                this.datetxt=view.findViewById(R.id.datetxt);
+                message_seen=view.findViewById(R.id.message_seen);
+                not_send_message_icon=view.findViewById(R.id.not_send_messsage);
+                p_bar=view.findViewById(R.id.p_bar);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnItemClickListener listener,final ChatAdapter.OnLongClickListener long_listener) {
@@ -468,16 +490,23 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chataudioviewholder(View itemView) {
             super(itemView);
-            view = itemView;
-            audio_bubble=view.findViewById(R.id.audio_bubble);
-            datetxt=view.findViewById(R.id.datetxt);
-            message_seen=view.findViewById(R.id.message_seen);
-            not_send_message_icon=view.findViewById(R.id.not_send_messsage);
-            p_bar=view.findViewById(R.id.p_bar);
-            this.play_btn=view.findViewById(R.id.play_btn);
-            this.seekBar=(SeekBar) view.findViewById(R.id.seek_bar);
-            this.total_time=(TextView)view.findViewById(R.id.total_time);
+            try {
 
+                view = itemView;
+                audio_bubble=view.findViewById(R.id.audio_bubble);
+                datetxt=view.findViewById(R.id.datetxt);
+                message_seen=view.findViewById(R.id.message_seen);
+                not_send_message_icon=view.findViewById(R.id.not_send_messsage);
+                p_bar=view.findViewById(R.id.p_bar);
+                this.play_btn=view.findViewById(R.id.play_btn);
+                this.seekBar=(SeekBar) view.findViewById(R.id.seek_bar);
+                this.total_time=(TextView)view.findViewById(R.id.total_time);
+
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnItemClickListener listener,final ChatAdapter.OnLongClickListener long_listener) {
@@ -511,9 +540,15 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Alertviewholder(View itemView) {
             super(itemView);
-            view = itemView;
-            this.message = view.findViewById(R.id.message);
-            this.datetxt = view.findViewById(R.id.datetxt);
+            try {
+                view = itemView;
+                this.message = view.findViewById(R.id.message);
+                this.datetxt = view.findViewById(R.id.datetxt);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
     }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // this is the class which will add the selected soung to the created video
-public class Merge_Video_Audio extends AsyncTask<String,String,String> {
+public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
 
     ProgressDialog progressDialog;
     Context context;
@@ -58,7 +58,7 @@ public class Merge_Video_Audio extends AsyncTask<String,String,String> {
              draft_file=strings[3];
          }
 
-        Log.d("resp",audio+"----"+video+"-----"+output);
+        Log.d("Audio_Test",audio+"----"+video+"-----"+output);
 
         Thread thread = new Thread(runnable);
         thread.start();
@@ -71,7 +71,6 @@ public class Merge_Video_Audio extends AsyncTask<String,String,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
     }
-
 
     public void Go_To_preview_Activity(){
         Intent intent =new Intent(context,Preview_Video_A.class);
@@ -143,6 +142,7 @@ public class Merge_Video_Audio extends AsyncTask<String,String,String> {
 
             try {
 
+                Log.d("Audio_Test", "run:started ");
                 Movie m = MovieCreator.build(video);
 
 
@@ -151,25 +151,34 @@ public class Merge_Video_Audio extends AsyncTask<String,String,String> {
                 for (Track t : m.getTracks()) {
                     if (!"soun".equals(t.getHandler())) {
                         nuTracks.add(t);
+                        Log.d("Audio_Test", "run:track added");
                     }
                 }
 
                  Track nuAudio = new AACTrackImpl(new FileDataSourceImpl(audio));
                  Track crop_track= CropAudio(video,nuAudio);
-                 nuTracks.add(crop_track);
+                Log.d("Audio_Test", "track croped "+crop_track);
+
+                nuTracks.add(crop_track);
                  m.setTracks(nuTracks);
                 Container mp4file = new DefaultMp4Builder().build(m);
                 FileChannel fc = new FileOutputStream(new File(output)).getChannel();
                 mp4file.writeContainer(fc);
                 fc.close();
+                Log.d("Audio_Test", "all set");
+
                 try {
+                    Log.d("Audio_Test", "run:dismiss progress ");
                     progressDialog.dismiss();
                 }catch (Exception e){
                     Log.d(Variables.tag,e.toString());
 
                 }finally {
+                    Log.d("Audio_Test", "run:goto preview ");
+
                     Go_To_preview_Activity();
                 }
+                Log.d("Audio_Test", "thread job done ");
 
             } catch (IOException e) {
                 e.printStackTrace();

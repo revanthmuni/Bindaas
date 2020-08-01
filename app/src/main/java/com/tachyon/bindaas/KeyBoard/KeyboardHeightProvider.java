@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,29 +51,37 @@ public class KeyboardHeightProvider extends PopupWindow {
      */
     public KeyboardHeightProvider(Activity activity) {
         super(activity);
-        this.activity = activity;
 
-        LayoutInflater inflator = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        this.popupView = inflator.inflate(R.layout.popupwindow, null, false);
-        setContentView(popupView);
+        try {
 
-        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+            this.activity = activity;
 
-        parentView = activity.findViewById(android.R.id.content);
+            LayoutInflater inflator = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            this.popupView = inflator.inflate(R.layout.popupwindow, null, false);
+            setContentView(popupView);
 
-        setWidth(0);
-        setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
 
-        popupView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            parentView = activity.findViewById(android.R.id.content);
 
-            @Override
-            public void onGlobalLayout() {
-                if (popupView != null) {
-                    handleOnGlobalLayout();
+            setWidth(0);
+            setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+
+            popupView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                @Override
+                public void onGlobalLayout() {
+                    if (popupView != null) {
+                        handleOnGlobalLayout();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     /**

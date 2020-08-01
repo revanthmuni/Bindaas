@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.widget.EditText;
 
@@ -33,7 +35,7 @@ import java.util.Locale;
 
 // this class will send a voice message to other user
 
-public class SendAudio {
+public class SendAudio extends Exception {
 
 
     DatabaseReference rootref;
@@ -50,6 +52,13 @@ public class SendAudio {
 
     EditText message_field;
 
+
+    @Nullable
+    @Override
+    public String getMessage() {
+        Log.d("Exception", "getMessage: "+super.getMessage());
+        return super.getMessage();
+    }
 
     public SendAudio(Context context, EditText message_field,
                      DatabaseReference rootref, DatabaseReference adduser_to_inbox

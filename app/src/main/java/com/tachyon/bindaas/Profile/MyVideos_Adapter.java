@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +64,17 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
         public CustomViewHolder(View view) {
             super(view);
 
-            thumb_image = view.findViewById(R.id.thumb_image);
-            view_txt = view.findViewById(R.id.view_txt);
 
+            try {
+
+                thumb_image = view.findViewById(R.id.thumb_image);
+                view_txt = view.findViewById(R.id.view_txt);
+
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final int position, final Home_Get_Set item, final MyVideos_Adapter.OnItemClickListener listener) {
@@ -100,13 +109,15 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
                     .into(holder.thumb_image);
 
-        } catch (Exception e) {
+            holder.view_txt.setText(item.views);
+            holder.view_txt.setText(Functions.GetSuffix(item.views));
 
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
         }
 
 
-        holder.view_txt.setText(item.views);
-        holder.view_txt.setText(Functions.GetSuffix(item.views));
 
 
         holder.bind(i, item, listener);

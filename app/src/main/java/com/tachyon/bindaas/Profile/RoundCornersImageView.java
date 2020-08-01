@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 
@@ -44,11 +45,19 @@ public class RoundCornersImageView extends ImageView {;
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float radius = 15;
-        Path path = new Path();
-        RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
-        path.addRoundRect(rect, radius, radius, Path.Direction.CW);
-        canvas.clipPath(path);
-        super.onDraw(canvas);
+
+        try {
+
+            float radius = 15;
+            Path path = new Path();
+            RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
+            path.addRoundRect(rect, radius, radius, Path.Direction.CW);
+            canvas.clipPath(path);
+            super.onDraw(canvas);
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 }

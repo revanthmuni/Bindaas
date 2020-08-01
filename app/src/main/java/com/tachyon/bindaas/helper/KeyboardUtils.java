@@ -2,14 +2,24 @@ package com.tachyon.bindaas.helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-public final class KeyboardUtils {
+import androidx.annotation.Nullable;
+
+public final class KeyboardUtils extends Exception {
 
     private KeyboardUtils() {
         // This utility class is not publicly instantiable
+    }
+
+    @Nullable
+    @Override
+    public String getMessage() {
+        Log.d("Exception", "getMessage: "+super.getMessage());
+        return super.getMessage();
     }
 
     public static void hideSoftInput(Activity activity) {

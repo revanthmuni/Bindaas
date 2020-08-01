@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,59 +61,67 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_notification, container, false);
-        context=getContext();
+
+        try {
+
+            context=getContext();
 
 
-        datalist=new ArrayList<>();
+            datalist=new ArrayList<>();
 
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+            recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
 
 
 
-        adapter=new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion, Notification_Get_Set item) {
+            adapter=new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, Notification_Get_Set item) {
 
-                switch (view.getId()) {
-                    case R.id.watch_btn:
-                    OpenWatchVideo(item);
-                    break;
-                    default:
-                        Open_Profile(item);
-                        break;
+                    switch (view.getId()) {
+                        case R.id.watch_btn:
+                            OpenWatchVideo(item);
+                            break;
+                        default:
+                            Open_Profile(item);
+                            break;
+                    }
                 }
             }
-        }
-    );
+            );
 
-        recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);
 
-        view.findViewById(R.id.inbox_btn).setOnClickListener(this);
+            view.findViewById(R.id.inbox_btn).setOnClickListener(this);
 
-        swiperefresh=view.findViewById(R.id.swiperefresh);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            swiperefresh=view.findViewById(R.id.swiperefresh);
+            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    Call_api();
+                }
+            });
+            view.findViewById(R.id.back_btn2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    getActivity().onBackPressed();
+
+                }
+            });
+
+
+            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
                 Call_api();
-            }
-        });
-        view.findViewById(R.id.back_btn2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                getActivity().onBackPressed();
-
-            }
-        });
-
-
-        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
-        Call_api();
-
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -121,21 +130,37 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
-        adView = view.findViewById(R.id.bannerad);
-        if(!Variables.is_remove_ads) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
-        }else {
-            adView.setVisibility(View.GONE);
+
+
+        try {
+            adView = view.findViewById(R.id.bannerad);
+            if(!Variables.is_remove_ads) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adView.loadAd(adRequest);
+            }else {
+                adView.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(view!=null && Variables.Reload_my_notification){
-            Variables.Reload_my_notification=false;
-            Call_api();
+
+        try {
+
+            if(view!=null && Variables.Reload_my_notification){
+                Variables.Reload_my_notification=false;
+                Call_api();
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -143,7 +168,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("fb_id",Variables.user_id);
+            jsonObject.put("user_id",Variables.user_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -172,7 +197,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
                     Notification_Get_Set item=new Notification_Get_Set();
 
-                    item.fb_id=data.optString("fb_id");
+                    item.user_id=data.optString("user_id");
 
                     item.username=fb_id_details.optString("username");
                     item.first_name=fb_id_details.optString("first_name");
@@ -245,31 +270,40 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     }
 
 
-    public void Open_Profile(Notification_Get_Set item){
-        if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(item.fb_id)){
+    public void Open_Profile(Notification_Get_Set item) {
 
-            TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
-            profile.select();
+        try {
 
-        }else {
+            if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
-            Profile_F profile_f = new Profile_F(new Fragment_Callback() {
-                @Override
-                public void Responce(Bundle bundle) {
+                TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
+                profile.select();
 
-                }
-            });
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-            Bundle args = new Bundle();
-            args.putString("user_id", item.fb_id);
-            args.putString("user_name", item.first_name + " " + item.last_name);
-            args.putString("user_pic", item.profile_pic);
-            profile_f.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+            } else {
 
+                Profile_F profile_f = new Profile_F(new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
+
+                    }
+                });
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                Bundle args = new Bundle();
+                args.putString("user_id", item.user_id);
+                args.putString("user_name", item.first_name + " " + item.last_name);
+                args.putString("user_pic", item.profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+
+            }
+
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
-
     }
 }

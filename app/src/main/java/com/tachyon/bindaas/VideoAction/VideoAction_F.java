@@ -19,6 +19,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,47 +66,63 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
         view= inflater.inflate(R.layout.fragment_video_action, container, false);
         context=getContext();
 
-        Bundle bundle=getArguments();
-        if(bundle!=null){
-            video_id=bundle.getString("video_id");
-            user_id=bundle.getString("user_id");
+
+
+            Bundle bundle=getArguments();
+            if(bundle!=null){
+                video_id=bundle.getString("video_id");
+                user_id=bundle.getString("user_id");
+            }
+            try {
+            progressBar=view.findViewById(R.id.progress_bar);
+
+            view.findViewById(R.id.save_video_layout).setOnClickListener(this);
+            view.findViewById(R.id.copy_layout).setOnClickListener(this);
+            view.findViewById(R.id.delete_layout).setOnClickListener(this);
+
+            if(user_id!=null && user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+                view.findViewById(R.id.delete_layout).setVisibility(View.VISIBLE);
+            else
+                view.findViewById(R.id.delete_layout).setVisibility(View.GONE);
+
+
+            if(Variables.is_secure_info){
+                view.findViewById(R.id.share_notice_txt).setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                view.findViewById(R.id.copy_layout).setVisibility(View.GONE);
+            }else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Get_Shared_app();
+
+                    }
+                }, 1000);
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
-        progressBar=view.findViewById(R.id.progress_bar);
-
-        view.findViewById(R.id.save_video_layout).setOnClickListener(this);
-        view.findViewById(R.id.copy_layout).setOnClickListener(this);
-        view.findViewById(R.id.delete_layout).setOnClickListener(this);
-
-        if(user_id!=null && user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
-            view.findViewById(R.id.delete_layout).setVisibility(View.VISIBLE);
-        else
-            view.findViewById(R.id.delete_layout).setVisibility(View.GONE);
-
-
-        if(Variables.is_secure_info){
-            view.findViewById(R.id.share_notice_txt).setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            view.findViewById(R.id.copy_layout).setVisibility(View.GONE);
-        }else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    Get_Shared_app();
-
-                }
-            }, 1000);
-        }
         return view;
     }
 
     VideoSharingApps_Adapter adapter;
     public void Get_Shared_app(){
-        recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
-        final GridLayoutManager layoutManager = new GridLayoutManager(context, 5);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(false);
+        try {
+
+            recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
+            final GridLayoutManager layoutManager = new GridLayoutManager(context, 5);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(false);
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -161,7 +179,6 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
 
     public void Open_App(ResolveInfo resolveInfo) {
-        try {
 
             ActivityInfo activity = resolveInfo.activityInfo;
             ComponentName name = new ComponentName(activity.applicationInfo.packageName,
@@ -178,9 +195,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
             intent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.save_video_message) + Variables.DOWNLOAD_VIDEO+video_id);
             intent.setComponent(name);
             startActivity(intent);
-        }catch (Exception e){
 
-        }
     }
 
     @Override

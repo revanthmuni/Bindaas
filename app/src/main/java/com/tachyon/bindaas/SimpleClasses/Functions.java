@@ -299,7 +299,7 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("video_id", video_id);
             parameters.put("action", action);
         } catch (JSONException e) {
@@ -322,7 +322,7 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("video_id", video_id);
             parameters.put("comment", comment);
 
@@ -343,7 +343,7 @@ public class Functions {
                         for (int i = 0; i < msgArray.length(); i++) {
                             JSONObject itemdata = msgArray.optJSONObject(i);
                             Comment_Get_Set item = new Comment_Get_Set();
-                            item.fb_id = itemdata.optString("fb_id");
+                            item.user_id = itemdata.optString("user_id");
 
                             JSONObject user_info = itemdata.optJSONObject("user_info");
                             item.first_name = user_info.optString("first_name");
@@ -398,7 +398,7 @@ public class Functions {
                         for (int i = 0; i < msgArray.length(); i++) {
                             JSONObject itemdata = msgArray.optJSONObject(i);
                             Comment_Get_Set item = new Comment_Get_Set();
-                            item.fb_id = itemdata.optString("fb_id");
+                            item.user_id = itemdata.optString("user_id");
 
                             JSONObject user_info = itemdata.optJSONObject("user_info");
                             item.first_name = user_info.optString("first_name");
@@ -436,13 +436,18 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("id", video_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(activity, Variables.updateVideoView, parameters, null);
+        ApiRequest.Call_Api(activity, Variables.updateVideoView, parameters, new Callback() {
+            @Override
+            public void Responce(String resp) {
+                Log.d("Test Call_Api", "Response :updateVideoView" + resp);
+            }
+        });
 
 
     }
@@ -460,7 +465,7 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", fb_id);
+            parameters.put("user_id", fb_id);
             parameters.put("followed_fb_id", followed_fb_id);
             parameters.put("status", status);
 
@@ -500,7 +505,7 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", fb_id);
+            parameters.put("user_id", fb_id);
 
         } catch (JSONException e) {
             e.printStackTrace();

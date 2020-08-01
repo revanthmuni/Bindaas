@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.Signup.SignUpActivity;
@@ -76,8 +77,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 public class Login_A extends AppCompatActivity {
-
-
+    private static final String TAG = "Login_A";
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
 
@@ -107,133 +107,197 @@ public class Login_A extends AppCompatActivity {
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
         }
+        try {
+            getWindow().setBackgroundDrawable(
+                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        this.getWindow()
-                .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-        setContentView(R.layout.activity_login);
+            this.getWindow()
+                    .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-
-        // if the user is already login trought facebook then we will logout the user automatically
-        LoginManager.getInstance().logOut();
-
-        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
-        initViews();
-
-        findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Loginwith_FB();
-            }
-        });
+            setContentView(R.layout.activity_login);
 
 
-        findViewById(R.id.google_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Sign_in_with_gmail();
-            }
-        });
+            mAuth = FirebaseAuth.getInstance();
+            firebaseUser = mAuth.getCurrentUser();
 
-        findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rlLoginOptions.setVisibility(View.GONE);
-                clLoginLayout.setVisibility(View.VISIBLE);
-            }
-        });
+            // if the user is already login trought facebook then we will logout the user automatically
+            LoginManager.getInstance().logOut();
 
-        findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rlLoginOptions.setVisibility(View.VISIBLE);
-                clLoginLayout.setVisibility(View.GONE);
-            }
-        });
+            sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+            initViews();
 
-        findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                KeyboardUtils.hideSoftInput(activity);
+            findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Loginwith_FB();
+                }
+            });
 
-                if (checkValidations()) {
-                    if (CommonUtils.isNetworkAvailable(activity)) {
-                        callLoginApi(email, password);
-                    } else {
-                        Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
+
+            findViewById(R.id.google_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Sign_in_with_gmail();
+                }
+            });
+
+            findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rlLoginOptions.setVisibility(View.GONE);
+                    clLoginLayout.setVisibility(View.VISIBLE);
+                }
+            });
+
+            findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rlLoginOptions.setVisibility(View.VISIBLE);
+                    clLoginLayout.setVisibility(View.GONE);
+                }
+            });
+
+            findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    KeyboardUtils.hideSoftInput(activity);
+
+                    if (checkValidations()) {
+                        if (CommonUtils.isNetworkAvailable(activity)) {
+                            //callLoginApi(email, password);
+                            callLoginApiWithFirebase(email, password);
+                        } else {
+                            Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+            });
+
+
+            findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+
+
+            login_title_txt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
+            loginTitleTxt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
+
+
+            SpannableString ss = new SpannableString("By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.");
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    Open_Privacy_policy();
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+
+
+            ss.setSpan(clickableSpan, 99, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            TextView textView = (TextView) findViewById(R.id.login_terms_condition_txt);
+            textView.setText(ss);
+            textView.setClickable(true);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+            printKeyHash();
+
+
+            String text = "New to Bindaas? Signup here";
+
+            SpannableString signupString = new SpannableString(text);
+
+            ClickableSpan clickableSpan1 = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+
+                    Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
+                    startActivity(intent);
+
+                }
+            };
+
+            signupString.setSpan(clickableSpan1,
+                    text.indexOf("Signup here"),
+                    text.indexOf("Signup here") + "Signup here".length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvSignUpText.setText(signupString);
+            tvSignUpText.setMovementMethod(LinkMovementMethod.getInstance());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void callLoginApiWithFirebase(String email, String password) {
+        try {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("firebase", "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("firebase", "signInWithEmail:failure", task.getException());
+                                Toast.makeText(activity, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+//                            updateUI(null);
+                            }
+
+                            // ...
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void updateUI(FirebaseUser user) {
+        try {
+            if (user != null) {
+                // Name, email address, and profile photo Url
+                String id = user.getUid();
+
+                String username = user.getDisplayName();
+                String sep[] = username.split(" ");
+                String fname = sep[0];
+                String lname = sep[1];
+                Log.d("firebase", "updateUI:" + username);
+                String pic_url;
+                if (user.getPhotoUrl() != null) {
+                    pic_url = user.getPhotoUrl().toString();
+                } else {
+                    pic_url = "null";
+                }
+                if (fname.equals("") || fname.equals("null"))
+                    fname = getResources().getString(R.string.app_name);
+                if (lname.equals("") || lname.equals("null"))
+                    lname = "User";
+
+                Call_Api_For_Signup(id, fname, lname, pic_url, "local");
             }
-        });
 
-
-        findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-
-        login_title_txt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
-        loginTitleTxt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
-
-
-        SpannableString ss = new SpannableString("By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.");
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                Open_Privacy_policy();
-            }
-
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-
-        ss.setSpan(clickableSpan, 99, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        TextView textView = (TextView) findViewById(R.id.login_terms_condition_txt);
-        textView.setText(ss);
-        textView.setClickable(true);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-
-
-        printKeyHash();
-
-
-        String text = "New to Bindaas? Signup here";
-
-        SpannableString signupString = new SpannableString(text);
-
-        ClickableSpan clickableSpan1 = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
-
-                Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
-                startActivity(intent);
-
-            }
-        };
-
-        signupString.setSpan(clickableSpan1,
-                text.indexOf("Signup here"),
-                text.indexOf("Signup here") + "Signup here".length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvSignUpText.setText(signupString);
-        tvSignUpText.setMovementMethod(LinkMovementMethod.getInstance());
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void callLoginApi(String email, String password) {
@@ -247,7 +311,7 @@ public class Login_A extends AppCompatActivity {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("fb_id", "");
+            parameters.put("user_id", "");
             parameters.put("first_name", "");
             parameters.put("last_name", "");
             parameters.put("profile_pic", "");
@@ -269,6 +333,7 @@ public class Login_A extends AppCompatActivity {
         ApiRequest.Call_Api(this, Variables.SIGN_UP, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Toast.makeText(activity, resp, Toast.LENGTH_SHORT).show();
                 Functions.cancel_loader();
                 Parse_signup_data(resp);
 
@@ -279,21 +344,28 @@ public class Login_A extends AppCompatActivity {
 
 
     private void initViews() {
-        rlLoginOptions = findViewById(R.id.rlLoginOptions);
-        clLoginLayout = findViewById(R.id.clLoginLayout);
-        tvSignUpText = findViewById(R.id.tvSignUpText);
-        top_view = findViewById(R.id.top_view);
+        try {
 
-        login_title_txt = findViewById(R.id.login_title_txt);
-        loginTitleTxt = findViewById(R.id.loginTitleTxt);
+            rlLoginOptions = findViewById(R.id.rlLoginOptions);
+            clLoginLayout = findViewById(R.id.clLoginLayout);
+            tvSignUpText = findViewById(R.id.tvSignUpText);
+            top_view = findViewById(R.id.top_view);
 
-        tilLoginEmail = findViewById(R.id.tilLoginEmail);
-        tilLoginPassword = findViewById(R.id.tilLoginPassword);
-        etLoginEmail = findViewById(R.id.etLoginEmail);
-        etLoginPassword = findViewById(R.id.etLoginPassword);
+            login_title_txt = findViewById(R.id.login_title_txt);
+            loginTitleTxt = findViewById(R.id.loginTitleTxt);
+
+            tilLoginEmail = findViewById(R.id.tilLoginEmail);
+            tilLoginPassword = findViewById(R.id.tilLoginPassword);
+            etLoginEmail = findViewById(R.id.etLoginEmail);
+            etLoginPassword = findViewById(R.id.etLoginPassword);
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private Boolean checkValidations() {
+
         email = etLoginEmail.getText().toString().trim();
         password = etLoginPassword.getText().toString().trim();
 
@@ -340,18 +412,29 @@ public class Login_A extends AppCompatActivity {
     @Override
     public void onEnterAnimationComplete() {
         super.onEnterAnimationComplete();
-        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-        anim.setDuration(200);
-        top_view.startAnimation(anim);
-        top_view.setVisibility(View.VISIBLE);
+        try {
+            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(200);
+            top_view.startAnimation(anim);
+            top_view.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
+
 
     }
 
     @Override
     public void onBackPressed() {
         top_view.setVisibility(View.GONE);
-        finish();
-        overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+        try {
+            finish();
+            overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -361,34 +444,39 @@ public class Login_A extends AppCompatActivity {
 
     //facebook implimentation
     public void Loginwith_FB() {
+        try {
+            LoginManager.getInstance()
+                    .logInWithReadPermissions(Login_A.this,
+                            Arrays.asList("public_profile", "email"));
 
-        LoginManager.getInstance()
-                .logInWithReadPermissions(Login_A.this,
-                        Arrays.asList("public_profile", "email"));
+            // initialze the facebook sdk and request to facebook for login
+            FacebookSdk.sdkInitialize(this.getApplicationContext());
+            mCallbackManager = CallbackManager.Factory.create();
+            LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+                    Log.d("resp_token", loginResult.getAccessToken() + "");
+                }
 
-        // initialze the facebook sdk and request to facebook for login
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-                Log.d("resp_token", loginResult.getAccessToken() + "");
-            }
+                @Override
+                public void onCancel() {
+                    // App code
+                    Toast.makeText(Login_A.this, "Login Cancel", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onCancel() {
-                // App code
-                Toast.makeText(Login_A.this, "Login Cancel", Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onError(FacebookException error) {
+                    Log.d("resp", "" + error.toString());
+                    Toast.makeText(Login_A.this, "Login Error" + error.toString(), Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("resp", "" + error.toString());
-                Toast.makeText(Login_A.this, "Login Error" + error.toString(), Toast.LENGTH_SHORT).show();
-            }
+            });
 
-        });
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
 
 
     }
@@ -396,55 +484,61 @@ public class Login_A extends AppCompatActivity {
     private void handleFacebookAccessToken(final AccessToken token) {
         // if user is login then this method will call and
         // facebook will return us a token which will user for get the info of user
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        Log.d("resp_token", token.getToken() + "");
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this,
-                        new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Functions.Show_loader(Login_A.this, false, false);
-                                    final String id = Profile.getCurrentProfile().getId();
-                                    GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
-                                        @Override
-                                        public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+        try {
 
-                                            Functions.cancel_loader();
-                                            Log.d("resp", user.toString());
-                                            //after get the info of user we will pass to function which will store the info in our server
+            AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+            Log.d("resp_token", token.getToken() + "");
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this,
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        Functions.Show_loader(Login_A.this, false, false);
+                                        final String id = Profile.getCurrentProfile().getId();
+                                        GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                                            @Override
+                                            public void onCompleted(JSONObject user, GraphResponse graphResponse) {
 
-                                            String fname = "" + user.optString("first_name");
-                                            String lname = "" + user.optString("last_name");
+                                                Functions.cancel_loader();
+                                                Log.d("resp", user.toString());
+                                                //after get the info of user we will pass to function which will store the info in our server
+
+                                                String fname = "" + user.optString("first_name");
+                                                String lname = "" + user.optString("last_name");
 
 
-                                            if (fname.equals("") || fname.equals("null"))
-                                                fname = getResources().getString(R.string.app_name);
+                                                if (fname.equals("") || fname.equals("null"))
+                                                    fname = getResources().getString(R.string.app_name);
 
-                                            if (lname.equals("") || lname.equals("null"))
-                                                lname = "";
+                                                if (lname.equals("") || lname.equals("null"))
+                                                    lname = "";
 
-                                            Call_Api_For_Signup("" + id, fname
-                                                    , lname,
-                                                    "https://graph.facebook.com/" + id + "/picture?width=500&width=500",
-                                                    "facebook");
+                                                Call_Api_For_Signup("" + id, fname
+                                                        , lname,
+                                                        "https://graph.facebook.com/" + id + "/picture?width=500&width=500",
+                                                        "facebook");
 
-                                        }
-                                    });
+                                            }
+                                        });
 
-                                    // here is the request to facebook sdk for which type of info we have required
-                                    Bundle parameters = new Bundle();
-                                    parameters.putString("fields", "last_name,first_name,email");
-                                    request.setParameters(parameters);
-                                    request.executeAsync();
-                                } else {
-                                    Functions.cancel_loader();
-                                    Toast.makeText(Login_A.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                        // here is the request to facebook sdk for which type of info we have required
+                                        Bundle parameters = new Bundle();
+                                        parameters.putString("fields", "last_name,first_name,email");
+                                        request.setParameters(parameters);
+                                        request.executeAsync();
+                                    } else {
+                                        Functions.cancel_loader();
+                                        Toast.makeText(Login_A.this, "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
                                 }
-
-                            }
-                        });
+                            });
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -452,11 +546,17 @@ public class Login_A extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Pass the activity result back to the Facebook SDK
-        if (requestCode == 123) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        } else if (mCallbackManager != null)
-            mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        try {
+
+            if (requestCode == 123) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
+            } else if (mCallbackManager != null)
+                mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
+            Log.d(TAG, "Exception :" + e.getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -465,36 +565,42 @@ public class Login_A extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
 
     public void Sign_in_with_gmail() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Login_A.this);
-        if (account != null) {
-            String id = account.getId();
-            String fname = "" + account.getGivenName();
-            String lname = "" + account.getFamilyName();
+        try {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Login_A.this);
+            if (account != null) {
+                String id = account.getId();
+                String fname = "" + account.getGivenName();
+                String lname = "" + account.getFamilyName();
 
-            String pic_url;
-            if (account.getPhotoUrl() != null) {
-                pic_url = account.getPhotoUrl().toString();
+                String pic_url;
+                if (account.getPhotoUrl() != null) {
+                    pic_url = account.getPhotoUrl().toString();
+                } else {
+                    pic_url = "null";
+                }
+
+
+                if (fname.equals("") || fname.equals("null"))
+                    fname = getResources().getString(R.string.app_name);
+
+                if (lname.equals("") || lname.equals("null"))
+                    lname = "User";
+                Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
+
+
             } else {
-                pic_url = "null";
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, 123);
             }
-
-
-            if (fname.equals("") || fname.equals("null"))
-                fname = getResources().getString(R.string.app_name);
-
-            if (lname.equals("") || lname.equals("null"))
-                lname = "User";
-            Call_Api_For_Signup(id, fname, lname, pic_url, "gmail");
-
-
-        } else {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            startActivityForResult(signInIntent, 123);
+        }catch (Exception e){
+            Log.d(TAG, "Exception :"+e.getMessage());
+            e.printStackTrace();
         }
+
 
     }
 
@@ -554,7 +660,7 @@ public class Login_A extends AppCompatActivity {
         JSONObject parameters = new JSONObject();
         try {
 
-            parameters.put("fb_id", id);
+            parameters.put("user_id", id);
             parameters.put("first_name", "" + f_name);
             parameters.put("last_name", "" + l_name);
             parameters.put("profile_pic", picture);
@@ -565,22 +671,22 @@ public class Login_A extends AppCompatActivity {
             parameters.put("deviceid", Variables.sharedPreferences.getString(Variables.device_id, ""));
             parameters.put("token", MainMenuActivity.token);
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("firebase", "Call_Api_For_Signin: request" + new Gson().toJson(parameters));
         Functions.Show_loader(this, false, false);
         ApiRequest.Call_Api(this, Variables.SignUp, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
                 Parse_signup_data(resp);
+                Log.d("firebase", "Responce: " + resp);
 
             }
         });
 
     }
-
 
     // if the signup successfull then this method will call and it store the user info in local
     public void Parse_signup_data(String loginData) {
@@ -591,7 +697,7 @@ public class Login_A extends AppCompatActivity {
             JSONObject userdata = jsonArray.getJSONObject(0);
             if (code.equals("200")) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(Variables.u_id, userdata.optString("fb_id"));
+                editor.putString(Variables.u_id, userdata.optString("user_id"));
                 editor.putString(Variables.f_name, userdata.optString("first_name"));
                 editor.putString(Variables.l_name, userdata.optString("last_name"));
                 editor.putString(Variables.u_name, userdata.optString("username"));
@@ -613,10 +719,9 @@ public class Login_A extends AppCompatActivity {
 
 
             } else {
-                Log.d("Test","se");
-                CommonUtils.showAlert(Login_A.this,userdata.optString("response"));
+                CommonUtils.showAlert(Login_A.this, userdata.optString("response"));
                 //Toast.makeText(this, ""+userdata.optString("response"), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "" + userdata.optString("msg"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + userdata.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

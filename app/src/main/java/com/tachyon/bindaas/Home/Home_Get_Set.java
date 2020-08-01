@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 public class Home_Get_Set implements Serializable {
-    public String fb_id,username,first_name,last_name,profile_pic,verified;
+    public String user_id,username,first_name,last_name,profile_pic,verified;
     public String video_id,video_description,video_url,gif,thum,created_date;
 
     public String sound_id,sound_name,sound_pic,sound_url_acc,sound_url_mp3;

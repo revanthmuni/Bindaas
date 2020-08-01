@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,31 +66,39 @@ public class Liked_Video_F extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_likedvideo, container, false);
 
-        context = getContext();
 
-        recyclerView = view.findViewById(R.id.recylerview);
-        final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        try {
 
+            context = getContext();
 
-        data_list = new ArrayList<>();
-        adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int postion, Home_Get_Set item, View view) {
-
-                OpenWatchVideo(postion);
-
-            }
-        });
-
-        recyclerView.setAdapter(adapter);
+            recyclerView = view.findViewById(R.id.recylerview);
+            final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
 
 
-        no_data_layout = view.findViewById(R.id.no_data_layout);
+            data_list = new ArrayList<>();
+            adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int postion, Home_Get_Set item, View view) {
 
-        Call_Api_For_get_Allvideos();
+                    OpenWatchVideo(postion);
 
+                }
+            });
+
+            recyclerView.setAdapter(adapter);
+
+
+            no_data_layout = view.findViewById(R.id.no_data_layout);
+
+            Call_Api_For_get_Allvideos();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -121,29 +130,37 @@ public class Liked_Video_F extends Fragment {
 
     //this will get the all liked videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-        is_api_run = true;
-        JSONObject parameters = new JSONObject();
+
         try {
 
-            if (is_my_profile) {
-                parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            } else {
-                parameters.put("fb_id", user_id);
+            is_api_run = true;
+            JSONObject parameters = new JSONObject();
+            try {
+
+                if (is_my_profile) {
+                    parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                } else {
+                    parameters.put("user_id", user_id);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-        } catch (JSONException e) {
+            ApiRequest.Call_Api(context, Variables.my_liked_video, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    is_api_run = false;
+                    Parse_data(resp);
+                }
+            });
+
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
             e.printStackTrace();
         }
-
-        ApiRequest.Call_Api(context, Variables.my_liked_video, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                is_api_run = false;
-                Parse_data(resp);
-            }
-        });
-
-
     }
 
 
@@ -171,7 +188,7 @@ public class Liked_Video_F extends Fragment {
                         JSONObject itemdata = user_videos.optJSONObject(i);
 
                         Home_Get_Set item = new Home_Get_Set();
-                        item.fb_id = itemdata.optString("fb_id");
+                        item.user_id = itemdata.optString("user_id");
 
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");

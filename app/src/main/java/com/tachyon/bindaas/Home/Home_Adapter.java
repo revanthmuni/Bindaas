@@ -2,6 +2,7 @@ package com.tachyon.bindaas.Home;
 
 import android.content.Context;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -69,7 +70,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
         try {
 
-           // holder.setVideoData(item);
+            // holder.setVideoData(item);
             holder.bind(i, item, listener);
 
             holder.username.setText(item.username);
@@ -83,7 +84,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             holder.sound_name.setSelected(true);
 
             holder.desc_txt.setText(item.video_description);
-            Log.d("VideoDEC", "onBindViewHolder: "+item.video_description);
+            Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
 
             Picasso.with(context).
                     load(item.profile_pic)
@@ -119,10 +120,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             }
 
 
-            Log.d("LikeData", "onBindViewHolder: "+item.like_count +"::"+item.username +"::"+new Gson().toJson(item));
-            if (dataList.get(i).like_count.equals("0")){
+            Log.d("LikeData", "onBindViewHolder: " + item.like_count + "::" + item.username + "::" + new Gson().toJson(item));
+            if (dataList.get(i).like_count.equals("0")) {
                 holder.like_txt.setText("0");
-            }else {
+            } else {
                 holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
             }
             //            holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
@@ -136,7 +137,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +148,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         ImageView user_pic, varified_btn;
         GifImageView sound_image;
 
-        LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout;
+        ConstraintLayout like_layout, comment_layout, shared_layout, sound_image_layout;
         ImageView like_image, comment_image, ivSearch;
         TextView like_txt, comment_txt;
 
@@ -157,28 +158,32 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             super(view);
 
 //            videoView = view.findViewById(R.id.playerview);
-            username = view.findViewById(R.id.username);
-            user_pic = view.findViewById(R.id.user_pic);
-            sound_name = view.findViewById(R.id.sound_name);
-            sound_image = view.findViewById(R.id.sound_image);
-            varified_btn = view.findViewById(R.id.varified_btn);
-            ivSearch = view.findViewById(R.id.ivSearch);
+            try {
+                username = view.findViewById(R.id.username);
+                user_pic = view.findViewById(R.id.user_pic);
+                sound_name = view.findViewById(R.id.sound_name);
+                sound_image = view.findViewById(R.id.sound_image);
+                varified_btn = view.findViewById(R.id.varified_btn);
+                ivSearch = view.findViewById(R.id.ivSearch);
 
-            like_layout = view.findViewById(R.id.like_layout);
-            like_image = view.findViewById(R.id.like_image);
-            like_txt = view.findViewById(R.id.like_txt);
+                like_layout = view.findViewById(R.id.like_layout);
+                like_image = view.findViewById(R.id.like_image);
+                like_txt = view.findViewById(R.id.like_txt);
 
-            desc_txt = view.findViewById(R.id.desc_txt);
+                desc_txt = view.findViewById(R.id.desc_txt);
 
-            comment_layout = view.findViewById(R.id.comment_layout);
-            comment_image = view.findViewById(R.id.comment_image);
-            comment_txt = view.findViewById(R.id.comment_txt);
+                comment_layout = view.findViewById(R.id.comment_layout);
+                comment_image = view.findViewById(R.id.comment_image);
+                comment_txt = view.findViewById(R.id.comment_txt);
 
-            sound_image_layout = view.findViewById(R.id.sound_image_layout);
-            shared_layout = view.findViewById(R.id.shared_layout);
+                sound_image_layout = view.findViewById(R.id.sound_image_layout);
+                shared_layout = view.findViewById(R.id.shared_layout);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        void setVideoData(Home_Get_Set item){
+        void setVideoData(Home_Get_Set item) {
             videoView.setVideoPath(item.video_url);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -188,11 +193,11 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     float videoRatio = mediaPlayer.getVideoWidth() / (float) mediaPlayer.getVideoHeight();
 
                     float screenRatio = videoView.getWidth() / (float) videoView.getHeight();
-                    float scale = videoRatio/screenRatio;
-                    if (scale>=1f){
+                    float scale = videoRatio / screenRatio;
+                    if (scale >= 1f) {
                         videoView.setScaleX(scale);
-                    }else{
-                        videoView.setScaleY(1f/scale);
+                    } else {
+                        videoView.setScaleY(1f / scale);
                     }
                 }
             });

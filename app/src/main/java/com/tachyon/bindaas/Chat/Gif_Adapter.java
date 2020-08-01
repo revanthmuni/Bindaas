@@ -50,7 +50,14 @@ public interface OnItemClickListener {
 
         public CustomViewHolder(View view) {
             super(view);
-            gif_image=view.findViewById(R.id.gif_image);
+            try {
+
+                gif_image=view.findViewById(R.id.gif_image);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final String item, final Gif_Adapter.OnItemClickListener listener) {

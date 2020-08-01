@@ -2,6 +2,7 @@ package com.tachyon.bindaas.SimpleClasses;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.facebook.drawee.backends.pipeline.Fresco;

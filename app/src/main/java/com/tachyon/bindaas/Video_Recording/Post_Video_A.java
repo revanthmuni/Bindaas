@@ -52,10 +52,12 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
         Intent intent=getIntent();
         if(intent!=null){
             draft_file=intent.getStringExtra("draft_file");
+            video_path = intent.getStringExtra("video_path");
+        }else {
+            video_path = Variables.output_filter_file;
         }
 
 
-        video_path = Variables.output_filter_file;
         video_thumbnail = findViewById(R.id.video_thumbnail);
 
 

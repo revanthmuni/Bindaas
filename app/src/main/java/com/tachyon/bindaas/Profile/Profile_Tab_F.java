@@ -114,26 +114,34 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         context = getContext();
-        swiperefresh = view.findViewById(R.id.swiperefresh);
-        swiperefresh.setProgressViewOffset(false, 0, 200);
 
-        swiperefresh.setColorSchemeResources(R.color.black);
+        try {
 
-        view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            swiperefresh = view.findViewById(R.id.swiperefresh);
+            swiperefresh.setProgressViewOffset(false, 0, 200);
+
+            swiperefresh.setColorSchemeResources(R.color.black);
+
+            view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 //                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
-                update_profile();
-                Call_Api_For_get_Allvideos();
-            }
-        });
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                update_profile();
-                Call_Api_For_get_Allvideos();
-            }
-        });
+                    update_profile();
+                    Call_Api_For_get_Allvideos();
+                }
+            });
+            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    update_profile();
+                    Call_Api_For_get_Allvideos();
+                }
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
         return init();
     }
 
@@ -176,19 +184,35 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     }
 
     private void openNotificationFragment() {
-        Notification_F notification_F = new Notification_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, notification_F).commit();
+
+        try {
+
+            Notification_F notification_F = new Notification_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, notification_F).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void Open_inbox_F() {
-        Inbox_F inbox_f = new Inbox_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, inbox_f).commit();
+
+        try {
+
+            Inbox_F inbox_f = new Inbox_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, inbox_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
@@ -196,14 +220,22 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if ((view != null && isVisibleToUser)) {
 
-            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
-                update_profile();
+        try {
 
-                Call_Api_For_get_Allvideos();
+            if ((view != null && isVisibleToUser)) {
 
+                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                    update_profile();
+
+                    Call_Api_For_get_Allvideos();
+
+                }
             }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -211,11 +243,19 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     @Override
     public void onResume() {
         super.onResume();
-        Show_draft_count();
 
-        if (view != null && Variables.Reload_my_videos) {
-            Variables.Reload_my_videos = false;
-            Call_Api_For_get_Allvideos();
+        try {
+
+            Show_draft_count();
+
+            if (view != null && Variables.Reload_my_videos) {
+                Variables.Reload_my_videos = false;
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -227,81 +267,88 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public View init() {
 
-        username = view.findViewById(R.id.username);
-        username2_txt = view.findViewById(R.id.username2_txt);
-        imageView = view.findViewById(R.id.user_image);
-        imageView.setOnClickListener(this);
-        refresh = view.findViewById(R.id.refresh);
+        try {
 
-        video_count_txt = view.findViewById(R.id.video_count_txt);
+            username = view.findViewById(R.id.username);
+            username2_txt = view.findViewById(R.id.username2_txt);
+            imageView = view.findViewById(R.id.user_image);
+            imageView.setOnClickListener(this);
+            refresh = view.findViewById(R.id.refresh);
 
-        follow_count_txt = view.findViewById(R.id.follow_count_txt);
-        fans_count_txt = view.findViewById(R.id.fan_count_txt);
-        heart_count_txt = view.findViewById(R.id.heart_count_txt);
-        draft_count_txt = view.findViewById(R.id.draft_count_txt);
+            video_count_txt = view.findViewById(R.id.video_count_txt);
 
-        Show_draft_count();
+            follow_count_txt = view.findViewById(R.id.follow_count_txt);
+            fans_count_txt = view.findViewById(R.id.fan_count_txt);
+            heart_count_txt = view.findViewById(R.id.heart_count_txt);
+            draft_count_txt = view.findViewById(R.id.draft_count_txt);
 
-        setting_btn = view.findViewById(R.id.setting_btn);
-        setting_btn.setOnClickListener(this);
+            Show_draft_count();
 
-
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        pager = view.findViewById(R.id.pager);
-        pager.setOffscreenPageLimit(2);
-
-        adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
-        pager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(pager);
-
-        tvUserChat = view.findViewById(R.id.tvUserChat);
-        tvUserNotifications = view.findViewById(R.id.tvUserNotifications);
+            setting_btn = view.findViewById(R.id.setting_btn);
+            setting_btn.setOnClickListener(this);
 
 
-        tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
-        top_layout = view.findViewById(R.id.top_layout);
+            tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+            pager = view.findViewById(R.id.pager);
+            pager.setOffscreenPageLimit(2);
+
+            adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
+            pager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(pager);
+
+            tvUserChat = view.findViewById(R.id.tvUserChat);
+            tvUserNotifications = view.findViewById(R.id.tvUserNotifications);
 
 
-        ViewTreeObserver observer = top_layout.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-            @Override
-            public void onGlobalLayout() {
-
-                final int height = top_layout.getMeasuredHeight();
-
-                top_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
-                        this);
-
-                ViewTreeObserver observer = tabs_main_layout.getViewTreeObserver();
-                observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                    @Override
-                    public void onGlobalLayout() {
-
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabs_main_layout.getLayoutParams();
-                        params.height = (int) (tabs_main_layout.getMeasuredHeight() + height);
-                        tabs_main_layout.setLayoutParams(params);
-                        tabs_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
-                                this);
-
-                    }
-                });
-
-            }
-        });
+            tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
+            top_layout = view.findViewById(R.id.top_layout);
 
 
-        create_popup_layout = view.findViewById(R.id.create_popup_layout);
+            ViewTreeObserver observer = top_layout.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                @Override
+                public void onGlobalLayout() {
+
+                    final int height = top_layout.getMeasuredHeight();
+
+                    top_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
+                            this);
+
+                    ViewTreeObserver observer = tabs_main_layout.getViewTreeObserver();
+                    observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                        @Override
+                        public void onGlobalLayout() {
+
+                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tabs_main_layout.getLayoutParams();
+                            params.height = (int) (tabs_main_layout.getMeasuredHeight() + height);
+                            tabs_main_layout.setLayoutParams(params);
+                            tabs_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(
+                                    this);
+
+                        }
+                    });
+
+                }
+            });
 
 
-        view.findViewById(R.id.following_layout).setOnClickListener(this);
-        view.findViewById(R.id.fans_layout).setOnClickListener(this);
-        tvUserNotifications.setOnClickListener(this);
-        tvUserChat.setOnClickListener(this);
+            create_popup_layout = view.findViewById(R.id.create_popup_layout);
 
-        setupTabIcons();
 
+            view.findViewById(R.id.following_layout).setOnClickListener(this);
+            view.findViewById(R.id.fans_layout).setOnClickListener(this);
+            tvUserNotifications.setOnClickListener(this);
+            tvUserChat.setOnClickListener(this);
+
+            setupTabIcons();
+
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -325,11 +372,12 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     }
 
     public void update_profile() {
-        username2_txt.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
-        username.setText(Variables.sharedPreferences.getString(Variables.f_name, "") + " " + Variables.sharedPreferences.getString(Variables.l_name, ""));
-        pic_url = Variables.sharedPreferences.getString(Variables.u_pic, "null");
 
         try {
+            username2_txt.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
+            username.setText(Variables.sharedPreferences.getString(Variables.f_name, "") + " " + Variables.sharedPreferences.getString(Variables.l_name, ""));
+            pic_url = Variables.sharedPreferences.getString(Variables.u_pic, "null");
+
             if (pic_url != null && !pic_url.equals(""))
                 Picasso.with(context).load(pic_url)
                         .resize(200, 200)
@@ -345,78 +393,85 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     private void setupTabIcons() {
 
-        View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
-        ImageView imageView1 = view1.findViewById(R.id.image);
-        imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
-        tvVideosCount = view1.findViewById(R.id.tvCount);
-        tabLayout.getTabAt(0).setCustomView(view1);
+        try {
 
-        View view2 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
-        ImageView imageView2 = view2.findViewById(R.id.image);
-        imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
-        tvLikesCount = view2.findViewById(R.id.tvCount);
-        tvLikesCount.setTextColor(getResources().getColor(R.color.black));
-        tabLayout.getTabAt(1).setCustomView(view2);
+            View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+            ImageView imageView1 = view1.findViewById(R.id.image);
+            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
+            tvVideosCount = view1.findViewById(R.id.tvCount);
+            tabLayout.getTabAt(0).setCustomView(view1);
+
+            View view2 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+            ImageView imageView2 = view2.findViewById(R.id.image);
+            imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
+            tvLikesCount = view2.findViewById(R.id.tvCount);
+            tvLikesCount.setTextColor(getResources().getColor(R.color.black));
+            tabLayout.getTabAt(1).setCustomView(view2);
 
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View v = tab.getCustomView();
-                ImageView image = v.findViewById(R.id.image);
-                TextView count = v.findViewById(R.id.tvCount);
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    View v = tab.getCustomView();
+                    ImageView image = v.findViewById(R.id.image);
+                    TextView count = v.findViewById(R.id.tvCount);
 
-                switch (tab.getPosition()) {
-                    case 0:
+                    switch (tab.getPosition()) {
+                        case 0:
 
-                        if (UserVideo_F.myvideo_count > 0) {
+                            if (UserVideo_F.myvideo_count > 0) {
+                                create_popup_layout.setVisibility(View.GONE);
+                            } else {
+                                create_popup_layout.setVisibility(View.VISIBLE);
+                                Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.up_and_down_animation);
+                                create_popup_layout.startAnimation(aniRotate);
+                            }
+
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
+                            break;
+
+                        case 1:
+                            create_popup_layout.clearAnimation();
                             create_popup_layout.setVisibility(View.GONE);
-                        } else {
-                            create_popup_layout.setVisibility(View.VISIBLE);
-                            Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.up_and_down_animation);
-                            create_popup_layout.startAnimation(aniRotate);
-                        }
-
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
-                        break;
-
-                    case 1:
-                        create_popup_layout.clearAnimation();
-                        create_popup_layout.setVisibility(View.GONE);
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_color));
-                        break;
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_color));
+                            break;
+                    }
+                    tab.setCustomView(v);
                 }
-                tab.setCustomView(v);
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View v = tab.getCustomView();
-                ImageView image = v.findViewById(R.id.image);
-                TextView count = v.findViewById(R.id.tvCount);
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    View v = tab.getCustomView();
+                    ImageView image = v.findViewById(R.id.image);
+                    TextView count = v.findViewById(R.id.tvCount);
 
-                switch (tab.getPosition()) {
-                    case 0:
+                    switch (tab.getPosition()) {
+                        case 0:
 //                        count.setText("(" + videosCount + ")");
-                        count.setTextColor(getResources().getColor(R.color.black));
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
-                        break;
-                    case 1:
+                            count.setTextColor(getResources().getColor(R.color.black));
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
+                            break;
+                        case 1:
 //                        count.setText("(" + likesCount + ")");
-                        count.setTextColor(getResources().getColor(R.color.black));
-                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
-                        break;
+                            count.setTextColor(getResources().getColor(R.color.black));
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
+                            break;
+                    }
+
+                    tab.setCustomView(v);
                 }
 
-                tab.setCustomView(v);
-            }
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+                }
 
-            }
-
-        });
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
 
     }
@@ -498,8 +553,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("my_fb_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            parameters.put("fb_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+            parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -601,128 +656,183 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
 
     public void Open_Edit_profile() {
-        Edit_Profile_F edit_profile_f = new Edit_Profile_F(new Fragment_Callback() {
-            @Override
-            public void Responce(Bundle bundle) {
 
-                update_profile();
-            }
-        });
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, edit_profile_f).commit();
+        try {
+
+            Edit_Profile_F edit_profile_f = new Edit_Profile_F(new Fragment_Callback() {
+                @Override
+                public void Responce(Bundle bundle) {
+
+                    update_profile();
+                }
+            });
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, edit_profile_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
     public void Open_setting() {
-        Setting_F setting_f = new Setting_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, setting_f).commit();
+
+        try {
+
+            Setting_F setting_f = new Setting_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, setting_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
     //this method will get the big size of profile image.
     public void OpenfullsizeImage(String url) {
-        See_Full_Image_F see_image_f = new See_Full_Image_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        Bundle args = new Bundle();
-        args.putSerializable("image_url", url);
-        see_image_f.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, see_image_f).commit();
+
+        try {
+
+            See_Full_Image_F see_image_f = new See_Full_Image_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            Bundle args = new Bundle();
+            args.putSerializable("image_url", url);
+            see_image_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, see_image_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
     public void Open_menu_tab(View anchor_view) {
-        Context wrapper = new ContextThemeWrapper(context, R.style.AlertDialogCustom);
-        PopupMenu popup = new PopupMenu(wrapper, anchor_view);
-        popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            popup.setGravity(Gravity.TOP | Gravity.RIGHT);
-        }
-        popup.show();
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
 
-                switch (item.getItemId()) {
+        try {
 
-                    case R.id.edit_Profile_id:
-                        Open_Edit_profile();
-                        break;
-
-                    case R.id.setting_id:
-                        Open_setting();
-                        break;
-
-                    case R.id.logout_id:
-                        Logout();
-                        break;
-                    case R.id.profile_refresh:
-                        Toast.makeText(getContext(), "Refresh ", Toast.LENGTH_SHORT).show();
-                        break;
-
-                }
-                return true;
+            Context wrapper = new ContextThemeWrapper(context, R.style.AlertDialogCustom);
+            PopupMenu popup = new PopupMenu(wrapper, anchor_view);
+            popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                popup.setGravity(Gravity.TOP | Gravity.RIGHT);
             }
-        });
+            popup.show();
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    switch (item.getItemId()) {
+
+                        case R.id.edit_Profile_id:
+                            Open_Edit_profile();
+                            break;
+
+                        case R.id.setting_id:
+                            Open_setting();
+                            break;
+
+                        case R.id.logout_id:
+                            Logout();
+                            break;
+                        case R.id.profile_refresh:
+                            Toast.makeText(getContext(), "Refresh ", Toast.LENGTH_SHORT).show();
+                            break;
+
+                    }
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
 
     public void Open_Following() {
 
-        Following_F following_f = new Following_F(new Fragment_Callback() {
-            @Override
-            public void Responce(Bundle bundle) {
+        try {
 
-                Call_Api_For_get_Allvideos();
+            Following_F following_f = new Following_F(new Fragment_Callback() {
+                @Override
+                public void Responce(Bundle bundle) {
 
-            }
-        });
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-        args.putString("from_where", "following");
-        following_f.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, following_f).commit();
+                    Call_Api_For_get_Allvideos();
+
+                }
+            });
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+            args.putString("from_where", "following");
+            following_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, following_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
     public void Open_Followers() {
-        Following_F following_f = new Following_F(new Fragment_Callback() {
-            @Override
-            public void Responce(Bundle bundle) {
-                Call_Api_For_get_Allvideos();
-            }
-        });
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        Bundle args = new Bundle();
-        args.putString("id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-        args.putString("from_where", "fan");
-        following_f.setArguments(args);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, following_f).commit();
+
+        try {
+
+            Following_F following_f = new Following_F(new Fragment_Callback() {
+                @Override
+                public void Responce(Bundle bundle) {
+                    Call_Api_For_get_Allvideos();
+                }
+            });
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            Bundle args = new Bundle();
+            args.putString("id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+            args.putString("from_where", "fan");
+            following_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, following_f).commit();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
 
     }
 
     // this will erase all the user info store in locally and logout the user
     public void Logout() {
-        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-        editor.putString(Variables.u_id, "");
-        editor.putString(Variables.u_name, "");
-        editor.putString(Variables.u_pic, "");
-        editor.putBoolean(Variables.islogin, false);
-        editor.commit();
-        getActivity().finish();
-        startActivity(new Intent(getActivity(), MainMenuActivity.class));
+
+        try {
+
+            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+            editor.putString(Variables.u_id, "");
+            editor.putString(Variables.u_name, "");
+            editor.putString(Variables.u_pic, "");
+            editor.putBoolean(Variables.islogin, false);
+            editor.commit();
+            getActivity().finish();
+            startActivity(new Intent(getActivity(), MainMenuActivity.class));
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -731,6 +841,4 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         super.onDetach();
         Functions.deleteCache(context);
     }
-
-
 }

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import com.tachyon.bindaas.Video_Recording.Preview_Video_A;
 
 import java.util.List;
 
+import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageBilateralBlurFilter;
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageBoxBlurFilter;
@@ -65,12 +69,11 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
 
     public Filter_Adapter.OnItemClickListener listener;
 
-
     public Filter_Adapter(Context context, List<FilterType> arrayList, Filter_Adapter.OnItemClickListener listener) {
         this.context = context;
         datalist = arrayList;
         this.listener = listener;
-         image = BitmapFactory.decodeResource(context.getResources(),
+        image = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.ic_bg_filter);
     }
 
@@ -94,8 +97,15 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
 
         public CustomViewHolder(View view) {
             super(view);
-            fiter_txt = view.findViewById(R.id.filter_txt);
-            ivPhoto = view.findViewById(R.id.iv_photo);
+            try {
+
+                fiter_txt = view.findViewById(R.id.filter_txt);
+                ivPhoto = view.findViewById(R.id.iv_photo);
+            } catch (Exception e) {
+                Log.d("Exception", "getMessage: " + e
+                        .getMessage());
+                e.printStackTrace();
+            }
         }
 
         public void bind(final int pos, final FilterType item, final Filter_Adapter.OnItemClickListener listener) {

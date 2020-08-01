@@ -112,15 +112,22 @@ public class CommonUtils {
         return null;
     }
     public static void showAlert(Context context, String message) {
-        new AlertDialog.Builder(context)
-                .setTitle("Alert")
-                .setMessage(message)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+        try {
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Alert")
+                    .setMessage(message)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+        } catch (Exception e) {
+            Log.d("Exception", "getMessage: " + e
+                    .getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static File getAudioFilePath(Context context, Uri uri) {
