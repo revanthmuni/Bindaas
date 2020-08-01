@@ -442,7 +442,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         }
 
         Functions.Show_loader(context, false, false);
-        ApiRequest.Call_Api(context, Variables.fav_sound, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();

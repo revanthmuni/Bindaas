@@ -147,7 +147,7 @@ public class Liked_Video_F extends Fragment {
                 e.printStackTrace();
             }
 
-            ApiRequest.Call_Api(context, Variables.my_liked_video, parameters, new Callback() {
+            ApiRequest.Call_Api(context, Variables.myLikedVideo, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
                     is_api_run = false;

@@ -473,7 +473,7 @@ public class Functions {
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(activity, Variables.follow_users, parameters, new Callback() {
+        ApiRequest.Call_Api(activity, Variables.followUsers, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
@@ -513,7 +513,7 @@ public class Functions {
 
         Log.d("resp", parameters.toString());
 
-        ApiRequest.Call_Api(activity, Variables.get_user_data, parameters, new Callback() {
+        ApiRequest.Call_Api(activity, Variables.getUserData, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();

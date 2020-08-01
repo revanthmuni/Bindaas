@@ -524,7 +524,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(context, Variables.edit_profile, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.editProfile, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
