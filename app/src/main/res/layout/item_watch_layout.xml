@@ -40,27 +40,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center_horizontal">
 
-                <RelativeLayout
-                    android:layout_width="50dp"
-                    android:layout_height="50dp">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:scaleType="centerCrop"
-                        android:id="@+id/user_pic"
-                        android:src="@drawable/profile_image_placeholder"/>
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentBottom="true"
-                        android:scaleType="fitCenter"
-                        android:visibility="gone"
-                        android:id="@+id/varified_btn"
-                        android:src="@drawable/ic_verified"/>
-                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -160,6 +140,14 @@
                 android:orientation="vertical"
                 android:layout_marginRight="80dp"
                 android:layout_marginBottom="30dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_pic"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile_image_placeholder" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,52 +176,19 @@
                     android:shadowRadius="3"
                     android:textColor="@color/white"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="10dp">
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@drawable/ic_music"
-                        android:tint="@color/white"
-                        android:scaleType="fitCenter"/>
-
-                    <TextView
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="Indian sound or Song Name"
-                        android:textSize="13dp"
-                        android:textStyle="bold"
-                        android:id="@+id/sound_name"
-                        android:ellipsize="marquee"
-                        android:scrollHorizontally="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:singleLine="true"
-                        android:shadowColor="@color/black"
-                        android:shadowDx="1"
-                        android:shadowDy="1"
-                        android:shadowRadius="3"
-                        android:layout_marginLeft="7dp"
-                        android:textColor="@color/white"/>
-
-                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/sound_image_layout"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:layout_alignParentBottom="true"
+                android:layout_above="@+id/llSoundNameLayout"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:id="@+id/sound_image_layout"
-                android:layout_marginBottom="30dp"
-                android:gravity="center">
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/sound_image"
@@ -241,6 +196,46 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/sound"
                     />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/llSoundNameLayout"
+                android:layout_width="105dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="35dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_music"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/sound_name"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="3"
+                    android:singleLine="true"
+                    android:text="Indian sound or Song Name"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
