@@ -269,10 +269,10 @@ public class Search_F extends RootFragment {
         }
     }
 
-    public void Open_Profile(String fb_id,String first_name,String last_name,String profile_pic){
+    public void Open_Profile(String user_id,String first_name,String last_name,String profile_pic){
 
         try {
-            if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(fb_id)){
+            if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(user_id)){
 
                 TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
                 profile.select();
@@ -288,7 +288,7 @@ public class Search_F extends RootFragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
                 Bundle args = new Bundle();
-                args.putString("user_id", fb_id);
+                args.putString("user_id", user_id);
                 args.putString("user_name", first_name + " " +last_name);
                 args.putString("user_pic", profile_pic);
                 profile_f.setArguments(args);

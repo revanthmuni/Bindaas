@@ -98,7 +98,7 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
 
         try {
-            /*Glide.with(context)
+            Glide.with(context)
                     .asGif()
                     .load(item.gif)
                     .skipMemoryCache(true)
@@ -109,13 +109,13 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
                             .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
 
                     .into(holder.thumb_image);
-            */
-            if (item.thum != null && !item.thum.equals(""))
+
+            /*if (item.thum != null && !item.thum.equals(""))
                 Picasso.with(context).load(item.thum)
                         .resize(150, 150)
                         .placeholder(R.drawable.image_placeholder)
                         .centerCrop()
-                        .into(holder.thumb_image);
+                        .into(holder.thumb_image);*/
             holder.view_txt.setText(item.views);
             holder.view_txt.setText(Functions.GetSuffix(item.views));
 

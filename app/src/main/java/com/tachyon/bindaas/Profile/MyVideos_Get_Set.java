@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 
 public class MyVideos_Get_Set implements Serializable {
-    public String fb_id,video_url,thum,gif,created;
+    public String user_id,video_url,thum,gif,created;
 }
