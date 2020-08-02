@@ -66,40 +66,33 @@ public class UserVideo_F extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_video, container, false);
 
-
-        try {
-            context = getContext();
+        context = getContext();
 
 
-            recyclerView = view.findViewById(R.id.recylerview);
-            final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setHasFixedSize(true);
+        recyclerView = view.findViewById(R.id.recylerview);
+        final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
 
 
-            data_list = new ArrayList<>();
-            adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int postion, Home_Get_Set item, View view) {
+        data_list = new ArrayList<>();
+        adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int postion, Home_Get_Set item, View view) {
 
-                    OpenWatchVideo(postion);
+                OpenWatchVideo(postion);
 
-                }
-            });
+            }
+        });
 
-            recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
-            no_data_layout = view.findViewById(R.id.no_data_layout);
-
-
-            Call_Api_For_get_Allvideos();
+        no_data_layout = view.findViewById(R.id.no_data_layout);
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+        Call_Api_For_get_Allvideos();
+
+
         return view;
 
     }
@@ -110,36 +103,24 @@ public class UserVideo_F extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        try {
-
-            this.isVisibleToUser = isVisibleToUser;
-            if (view != null && isVisibleToUser) {
-                Call_Api_For_get_Allvideos();
-            }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
+        this.isVisibleToUser = isVisibleToUser;
+        if (view != null && isVisibleToUser) {
+            Call_Api_For_get_Allvideos();
         }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        try {
-
-            if ((view != null && isVisibleToUser) && !is_api_run) {
-                Call_Api_For_get_Allvideos();
-            } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
-                Variables.Reload_my_videos_inner = false;
-                Call_Api_For_get_Allvideos();
-            }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
+        if ((view != null && isVisibleToUser) && !is_api_run) {
+            Call_Api_For_get_Allvideos();
+        } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
+            Variables.Reload_my_videos_inner = false;
+            Call_Api_For_get_Allvideos();
         }
+
     }
 
 
@@ -252,19 +233,12 @@ public class UserVideo_F extends Fragment {
 
 
     private void OpenWatchVideo(int postion) {
+        Intent intent = new Intent(getActivity(), WatchVideos_F.class);
+        intent.putExtra("arraylist", data_list);
+        intent.putExtra("position", postion);
+        startActivity(intent);
 
-        try {
 
-            Intent intent = new Intent(getActivity(), WatchVideos_F.class);
-            intent.putExtra("arraylist", data_list);
-            intent.putExtra("position", postion);
-            startActivity(intent);
-
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 

@@ -68,8 +68,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
 
-        try {
-
             // holder.setVideoData(item);
             holder.bind(i, item, listener);
 
@@ -135,10 +133,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             } else {
                 holder.varified_btn.setVisibility(View.GONE);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -148,7 +142,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         ImageView user_pic, varified_btn;
         GifImageView sound_image;
 
-        ConstraintLayout like_layout, comment_layout, shared_layout, sound_image_layout;
+        LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout;
         ImageView like_image, comment_image, ivSearch;
         TextView like_txt, comment_txt;
 
@@ -158,7 +152,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             super(view);
 
 //            videoView = view.findViewById(R.id.playerview);
-            try {
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
                 sound_name = view.findViewById(R.id.sound_name);
@@ -178,9 +171,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
                 sound_image_layout = view.findViewById(R.id.sound_image_layout);
                 shared_layout = view.findViewById(R.id.shared_layout);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
 
         void setVideoData(Home_Get_Set item) {

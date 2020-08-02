@@ -76,9 +76,7 @@ public class Following_F extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_following, container, false);
-        try {
-
-            context=getContext();
+           context=getContext();
 
             Bundle bundle=getArguments();
             if(bundle!=null){
@@ -144,11 +142,6 @@ public class Following_F extends Fragment {
                 title_txt.setText("Followers");
             }
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
         return view;
     }
 

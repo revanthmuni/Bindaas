@@ -63,9 +63,6 @@ public class Notification_Receive extends FirebaseMessagingService {
     @SuppressLint("WrongThread")
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        try {
-
-
             if (remoteMessage.getData().size() > 0) {
                 sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
                 title = remoteMessage.getData().get("title");
@@ -87,12 +84,6 @@ public class Notification_Receive extends FirebaseMessagingService {
 
             }
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -100,8 +91,6 @@ public class Notification_Receive extends FirebaseMessagingService {
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        try {
-
             sharedPreferences=getSharedPreferences(Variables.pref_name,MODE_PRIVATE);
 
             if(s==null){
@@ -119,11 +108,6 @@ public class Notification_Receive extends FirebaseMessagingService {
                 sharedPreferences.edit().putString(Variables.device_token, s).commit();
             }
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -171,10 +155,7 @@ public class Notification_Receive extends FirebaseMessagingService {
         protected void onPostExecute(Bitmap result) {
 
             super.onPostExecute(result);
-            try {
-
-
-                ShowNotification(ctx,title,message,result);
+               ShowNotification(ctx,title,message,result);
 
                 if(MainMenuActivity.mainMenuActivity!=null){
 
@@ -260,11 +241,6 @@ public class Notification_Receive extends FirebaseMessagingService {
 
 
                 }
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
 
 
         }
@@ -274,9 +250,7 @@ public class Notification_Receive extends FirebaseMessagingService {
 
     public void ShowNotification(Context context, String title, String message,Bitmap bitmap){
 
-        try {
-
-            // The id of the channel.
+           // The id of the channel.
             final String CHANNEL_ID = "default";
             final String CHANNEL_NAME = "Default";
 
@@ -314,17 +288,11 @@ public class Notification_Receive extends FirebaseMessagingService {
             Notification notification = builder.build();
             notification.defaults |= Notification.DEFAULT_VIBRATE;
             notificationManager.notify(100, notification);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     public void chatFragment(String receiverid, String name, String picture){
-
-        try {
 
             if(sharedPreferences.getBoolean(Variables.islogin,false)) {
 
@@ -349,11 +317,7 @@ public class Notification_Receive extends FirebaseMessagingService {
             }
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 

@@ -45,7 +45,6 @@ public class Play_Audio_F extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_play_audio, container, false);
-        try {
             context=getContext();
 
             close_btn=view.findViewById(R.id.close_btn);
@@ -84,10 +83,6 @@ public class Play_Audio_F extends Fragment {
                 }
             });
 
-        }catch (Exception e){
-            Log.d(TAG, "Exception :"+e.getMessage());
-            e.printStackTrace();
-        }
 
         return view;
     }

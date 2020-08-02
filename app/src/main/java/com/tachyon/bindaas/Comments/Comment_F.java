@@ -90,9 +90,7 @@ public class Comment_F extends RootFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_comment, container, false);
-        try {
-
-            context = getContext();
+        context = getContext();
 
 
             comment_screen = view.findViewById(R.id.comment_screen);
@@ -173,20 +171,13 @@ public class Comment_F extends RootFragment {
             Get_All_Comments();
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
         return view;
     }
 
     CharSequence[] options;
 
     private void ShowCommentOption(final Comment_Get_Set home_get_set, final int position) {
-        try {
-
-            final String userId = Variables.sharedPreferences.getString(Variables.u_id, "");
+        final String userId = Variables.sharedPreferences.getString(Variables.u_id, "");
 
             if (!home_get_set.user_id.equals(userId))
                 options = new CharSequence[]{"Flag Comment", "Cancel"};
@@ -228,11 +219,6 @@ public class Comment_F extends RootFragment {
 
             builder.show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void callDeleteCommentApi(String userId, final Comment_Get_Set item,
@@ -269,10 +255,7 @@ public class Comment_F extends RootFragment {
 
     // this funtion will get all the comments against post
     public void Get_All_Comments() {
-        try {
-
-
-            Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
+         Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
                 @Override
                 public void ArrayData(ArrayList arrayList) {
                     ArrayList<Comment_Get_Set> arrayList1 = arrayList;
@@ -295,19 +278,13 @@ public class Comment_F extends RootFragment {
 
             });
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     // this function will call an api to upload your comment
     public void Send_Comments(String video_id, final String comment) {
 
-        try {
-
-            Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
+          Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
                 @Override
                 public void ArrayData(ArrayList arrayList) {
                     send_progress.setVisibility(View.GONE);
@@ -340,11 +317,6 @@ public class Comment_F extends RootFragment {
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 

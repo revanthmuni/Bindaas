@@ -77,16 +77,10 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
         public CustomViewHolder(View view) {
             super(view);
 
-            try {
-
-                user_image = itemView.findViewById(R.id.user_image);
+               user_image = itemView.findViewById(R.id.user_image);
                 username = itemView.findViewById(R.id.username);
                 last_message = itemView.findViewById(R.id.message);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
+
         }
 
         public void bind(final Inbox_Get_Set item, final Inbox_Adapter.OnItemClickListener listener, final Inbox_Adapter.OnLongItemClickListener longItemClickListener) {
@@ -106,11 +100,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
     @Override
     public void onBindViewHolder(final Inbox_Adapter.CustomViewHolder holder, final int i) {
-
-
-        try {
-
-            final Inbox_Get_Set item = inbox_dataList_filter.get(i);
+    final Inbox_Get_Set item = inbox_dataList_filter.get(i);
             holder.username.setText(item.getName());
             holder.last_message.setText(item.getMsg());
             holder.date_created.setText(item.getDate() != null ? ChangeDate(item.getDate()) : "DD/MM/YYY");
@@ -139,11 +129,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
 
             holder.bind(item, listener, longlistener);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 
     }
 

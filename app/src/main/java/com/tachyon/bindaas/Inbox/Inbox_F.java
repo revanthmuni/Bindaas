@@ -66,9 +66,7 @@ public class Inbox_F extends RootFragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        try {
-
-            context=getContext();
+         context=getContext();
 
             root_ref= FirebaseDatabase.getInstance().getReference();
 
@@ -129,11 +127,7 @@ public class Inbox_F extends RootFragment {
             isview_created=true;
 
             getData();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 
         return view;
     }
@@ -156,10 +150,7 @@ public class Inbox_F extends RootFragment {
     ValueEventListener eventListener2;
     Query inbox_query;
     public void getData() {
-
-        try {
-
-            pbar.setVisibility(View.VISIBLE);
+   pbar.setVisibility(View.VISIBLE);
 
             inbox_query=root_ref.child("Inbox").child(Variables.user_id).orderByChild("date");
             eventListener2=new ValueEventListener() {
@@ -195,11 +186,6 @@ public class Inbox_F extends RootFragment {
             inbox_query.addValueEventListener(eventListener2);
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -218,7 +204,6 @@ public class Inbox_F extends RootFragment {
     //you want to chat with them and this parameter is that is we move from match list or inbox list
     public void chatFragment(String receiverid, String name, String picture){
 
-        try {
             Chat_Activity chat_activity = new Chat_Activity();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
@@ -231,11 +216,7 @@ public class Inbox_F extends RootFragment {
             chat_activity.setArguments(args);
             transaction.addToBackStack(null);
             transaction.replace(R.id.Inbox_F, chat_activity).commit();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 

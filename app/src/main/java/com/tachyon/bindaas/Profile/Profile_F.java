@@ -105,8 +105,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         context = getContext();
 
-        try {
-
             getActivity();
 
             bundle = getArguments();
@@ -115,11 +113,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
         return init();
     }
 
@@ -174,9 +168,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public View init() {
 
-        try {
-
-            username = view.findViewById(R.id.username);
+          username = view.findViewById(R.id.username);
             username2_txt = view.findViewById(R.id.username2_txt);
             imageView = view.findViewById(R.id.user_image);
             imageView.setOnClickListener(this);
@@ -245,11 +237,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
             Call_Api_For_get_Allvideos();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
         return view;
     }
 
@@ -267,9 +254,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     private void setupTabIcons() {
 
-        try {
-
-            View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+         View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
             ImageView imageView1 = view1.findViewById(R.id.image);
             imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
             tvVideosCount = view1.findViewById(R.id.tvCount);
@@ -328,11 +313,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             });
 
             Objects.requireNonNull(tabLayout.getTabAt(0)).select();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 
@@ -558,7 +538,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public void Open_Chat_F() {
 
-        try {
 
             Chat_Activity chat_activity = new Chat_Activity();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -576,16 +555,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             else
                 transaction.replace(R.id.Profile_F, chat_activity).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void Open_Following() {
-
-        try {
 
             Following_F following_f = new Following_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -603,16 +575,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             else
                 transaction.replace(R.id.Profile_F, following_f).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     public void Open_Followers() {
-
-        try {
 
             Following_F following_f = new Following_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -631,11 +597,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             else
                 transaction.replace(R.id.Profile_F, following_f).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 

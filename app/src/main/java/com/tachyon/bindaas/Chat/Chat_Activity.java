@@ -155,7 +155,6 @@ public class Chat_Activity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.activity_chat, container, false);
-        try {
             context = getContext();
 
             direct = new File(Environment.getExternalStorageDirectory() + "/Binder/");
@@ -462,11 +461,6 @@ public class Chat_Activity extends Fragment {
             getChat_data();
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e.getMessage());
-            e.printStackTrace();
-        }
-
         return view;
     }
 
@@ -479,8 +473,6 @@ public class Chat_Activity extends Fragment {
     ValueEventListener other_inbox_listener;
 
     public void getChat_data() {
-        try {
-
             mChats.clear();
             mchatRef_reteriving = FirebaseDatabase.getInstance().getReference();
             query_getchat = mchatRef_reteriving.child("chat").child(senderid + "-" + Receiverid);
@@ -620,19 +612,12 @@ public class Chat_Activity extends Fragment {
 
             my_block_status_query.addValueEventListener(my_inbox_listener);
             other_block_status_query.addValueEventListener(other_inbox_listener);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     // this will add the new message in chat node and update the ChatInbox by new message by present date
     public void SendMessage(final String message) {
-        try {
-
-            Date c = Calendar.getInstance().getTime();
+           Date c = Calendar.getInstance().getTime();
             final String formattedDate = Variables.df.format(c);
 
             final String current_user_ref = "chat" + "/" + senderid + "-" + Receiverid;
@@ -700,19 +685,12 @@ public class Chat_Activity extends Fragment {
                     });
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     // this method will upload the image in chhat
     public void UploadImage(ByteArrayOutputStream byteArrayOutputStream) {
-        try {
-
-            byte[] data = byteArrayOutputStream.toByteArray();
+           byte[] data = byteArrayOutputStream.toByteArray();
             Date c = Calendar.getInstance().getTime();
             final String formattedDate = Variables.df.format(c);
 
@@ -815,18 +793,11 @@ public class Chat_Activity extends Fragment {
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     // this method will upload the image in chhat
     public void SendGif(String url) {
-        try {
-
             Date c = Calendar.getInstance().getTime();
             final String formattedDate = Variables.df.format(c);
 
@@ -895,18 +866,13 @@ public class Chat_Activity extends Fragment {
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // this method will change the status to ensure that
     // user is seen all the message or not (in both chat node and Chatinbox node)
     public void ChangeStatus() {
-        try {
 
             final Date c = Calendar.getInstance().getTime();
             final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -999,16 +965,11 @@ public class Chat_Activity extends Fragment {
                 }
             });
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     public void download_audio(final ProgressBar p_bar, Chat_GetSet item) {
-        try {
 
             p_bar.setVisibility(View.VISIBLE);
             int downloadId = PRDownloader.download(item.getPic_url(), direct.getPath(), item.getChat_id() + ".mp3")
@@ -1051,17 +1012,11 @@ public class Chat_Activity extends Fragment {
                         }
                     });
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     //this method will get the big size of image in private chat
     public void OpenAudio(String path) {
-        try {
-
             Play_Audio_F play_audio_f = new Play_Audio_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             Bundle args = new Bundle();
@@ -1070,19 +1025,12 @@ public class Chat_Activity extends Fragment {
             transaction.addToBackStack(null);
             transaction.replace(R.id.Chat_F, play_audio_f).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // this is the delete message diloge which will show after long press in chat message
     private void delete_Message(final Chat_GetSet chat_getSet) {
-
-        try {
-
             final CharSequence[] options = {"Delete this message", "Cancel"};
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
@@ -1109,19 +1057,11 @@ public class Chat_Activity extends Fragment {
             });
 
             builder.show();
-
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     // we will update the privious message means we will tells the other user that we have seen your message
     public void update_message(Chat_GetSet item) {
-        try {
-
             final String current_user_ref = "chat" + "/" + senderid + "-" + Receiverid;
             final String chat_user_ref = "chat" + "/" + Receiverid + "-" + senderid;
 
@@ -1149,18 +1089,12 @@ public class Chat_Activity extends Fragment {
                 }
             });
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // this is the block dialog which will be show when user click on alert buttom of Top right in screen
     private void block_user_dialog() {
-        try {
-
             final CharSequence[] options;
             if (is_user_already_block)
                 options = new CharSequence[]{"Unblock this User", "Cancel"};
@@ -1195,44 +1129,25 @@ public class Chat_Activity extends Fragment {
 
             builder.show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     public void Block_user() {
-        try {
-
-            rootref.child("Inbox")
+        rootref.child("Inbox")
                     .child(Receiverid)
                     .child(Variables.user_id).child("block").setValue("1");
             Toast.makeText(context, "User Blocked", Toast.LENGTH_SHORT).show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void UnBlock_user() {
-        try {
-
-            rootref.child("Inbox")
+           rootref.child("Inbox")
                     .child(Receiverid)
                     .child(Variables.user_id).child("block").setValue("0");
             Toast.makeText(context, "User UnBlocked", Toast.LENGTH_SHORT).show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
-
 
     // we will delete only the today message so it is important to check the given message is the today message or not
     // if the given message is the today message then we will delete the message
@@ -1269,7 +1184,6 @@ public class Chat_Activity extends Fragment {
     // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
     private void selectImage() {
 
-        try {
 
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
@@ -1306,11 +1220,6 @@ public class Chat_Activity extends Fragment {
 
             builder.show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -1387,8 +1296,6 @@ public class Chat_Activity extends Fragment {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        try {
-
             if (requestCode == Variables.permission_camera_code) {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -1424,18 +1331,11 @@ public class Chat_Activity extends Fragment {
             }
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
-
-        try {
 
             Intent pictureIntent = new Intent(
                     MediaStore.ACTION_IMAGE_CAPTURE);
@@ -1454,11 +1354,7 @@ public class Chat_Activity extends Fragment {
                     startActivityForResult(pictureIntent, 1);
                 }
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     String imageFilePath;
@@ -1588,9 +1484,7 @@ public class Chat_Activity extends Fragment {
 
     // send the type indicator if the user is typing message
     public void SendTypingIndicator(boolean indicate) {
-        try {
-
-            // if the type incator is present then we remove it if not then we create the typing indicator
+          // if the type incator is present then we remove it if not then we create the typing indicator
             if (indicate) {
                 final HashMap message_user_map = new HashMap<>();
                 message_user_map.put("receiver_id", Receiverid);
@@ -1627,11 +1521,7 @@ public class Chat_Activity extends Fragment {
 
             }
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -1639,8 +1529,6 @@ public class Chat_Activity extends Fragment {
     LinearLayout mainlayout;
 
     public void ReceivetypeIndication() {
-        try {
-
             mainlayout = view.findViewById(R.id.typeindicator);
 
             receive_typing_indication = FirebaseDatabase.getInstance().getReference().child("typing_indicator");
@@ -1662,11 +1550,7 @@ public class Chat_Activity extends Fragment {
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -1674,19 +1558,13 @@ public class Chat_Activity extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-
-            uploading_image_id = "none";
+         uploading_image_id = "none";
             senderid_for_check_notification = "";
             SendTypingIndicator(false);
             query_getchat.removeEventListener(eventListener);
             my_block_status_query.removeEventListener(my_inbox_listener);
             other_block_status_query.removeEventListener(other_inbox_listener);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -1699,25 +1577,18 @@ public class Chat_Activity extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        try {
-
-            uploading_image_id = "none";
+         uploading_image_id = "none";
             senderid_for_check_notification = "";
             SendTypingIndicator(false);
             query_getchat.removeEventListener(eventListener);
             my_block_status_query.removeEventListener(my_inbox_listener);
             other_block_status_query.removeEventListener(other_inbox_listener);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     //this method will get the big size of image in private chat
     public void OpenfullsizeImage(Chat_GetSet item) {
-        try {
 
             See_Full_Image_F see_image_f = new See_Full_Image_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -1729,11 +1600,7 @@ public class Chat_Activity extends Fragment {
             transaction.addToBackStack(null);
             transaction.replace(R.id.Chat_F, see_image_f).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -1744,7 +1611,6 @@ public class Chat_Activity extends Fragment {
     GPHApi client = new GPHApiClient(Variables.gif_api_key1);
 
     public void GetGipy() {
-        try {
 
             url_list.clear();
             gips_list = view.findViewById(R.id.gif_recylerview);
@@ -1777,19 +1643,13 @@ public class Chat_Activity extends Fragment {
                     }
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // if we want to search the gif then this mehtod is immportaant
     public void searchGif(String search) {
-        try {
-
-            /// Gif Search
+        /// Gif Search
             client.search(search, MediaType.gif, null, null, null, null, new CompletionHandler<ListMediaResponse>() {
                 @Override
                 public void onComplete(ListMediaResponse result, Throwable e) {
@@ -1810,17 +1670,12 @@ public class Chat_Activity extends Fragment {
                     }
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // slide the view from below itself to the current position
     public void slideUp() {
-        try {
 
             message.setHint("Search Gifs");
             upload_gif_btn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_gif_image));
@@ -1834,19 +1689,13 @@ public class Chat_Activity extends Fragment {
             animate.setDuration(700);
             animate.setFillAfter(true);
             gif_layout.startAnimation(animate);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // slide the view from its current position to below itself
     public void slideDown() {
-        try {
-
-            message.setHint("Type your message here...");
+          message.setHint("Type your message here...");
             message.setText("");
             upload_gif_btn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_gif_image_gray));
             sendbtn.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_send));
@@ -1874,11 +1723,7 @@ public class Chat_Activity extends Fragment {
                 }
             });
             gif_layout.startAnimation(animate);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -1888,7 +1733,7 @@ public class Chat_Activity extends Fragment {
                                             String name, String message,
                                             String picture, String token,
                                             String receiverid, String senderid) {
-        try {
+
 
             JSONObject notimap = new JSONObject();
             try {
@@ -1905,11 +1750,7 @@ public class Chat_Activity extends Fragment {
 
             ApiRequest.Call_Api(context, Variables.sendPushNotification, notimap, null);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
