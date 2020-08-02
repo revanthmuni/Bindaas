@@ -48,15 +48,10 @@ public class ReportVideo extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_flag_video);
-        try {
+
             init();
             setListeners();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void init() {
@@ -139,8 +134,6 @@ public class ReportVideo extends AppCompatActivity {
     }
 
     private void callFlagVideoApi(FlagVideoRequest flagVideoRequest) {
-        try {
-
             String flagRequest = new Gson().toJson(flagVideoRequest);
             Log.d("FlagVideoRequest", flagRequest);
             JSONObject flagObject = null;
@@ -159,32 +152,19 @@ public class ReportVideo extends AppCompatActivity {
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     private void parseFlagVideo(String resp) {
-
-        try {
 
             DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
             if (response != null) {
                 Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
                 finish();
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     private void showAlertDialog(final DefaultResponse response) {
-        try {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
             builder.setTitle(null);
@@ -204,11 +184,7 @@ public class ReportVideo extends AppCompatActivity {
 
             builder.show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 }

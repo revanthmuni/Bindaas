@@ -66,10 +66,7 @@ public class Liked_Video_F extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_likedvideo, container, false);
 
-
-        try {
-
-            context = getContext();
+    context = getContext();
 
             recyclerView = view.findViewById(R.id.recylerview);
             final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
@@ -94,11 +91,6 @@ public class Liked_Video_F extends Fragment {
 
             Call_Api_For_get_Allvideos();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
         return view;
     }
@@ -130,10 +122,7 @@ public class Liked_Video_F extends Fragment {
 
     //this will get the all liked videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-
-        try {
-
-            is_api_run = true;
+    is_api_run = true;
             JSONObject parameters = new JSONObject();
             try {
 
@@ -156,11 +145,6 @@ public class Liked_Video_F extends Fragment {
             });
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 

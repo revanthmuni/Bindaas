@@ -34,9 +34,6 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-
-        try {
-
             mainMenuActivity=this;
 
             intent=getIntent();
@@ -71,21 +68,13 @@ public class MainMenuActivity extends AppCompatActivity {
             Functions.make_directry(Variables.app_folder);
             Functions.make_directry(Variables.draft_app_folder);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     @Override
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-
-        try {
-
-            if(intent!=null){
+    if(intent!=null){
                 String type=intent.getStringExtra("type");
                 if(type!=null && type.equalsIgnoreCase("message")){
                     new Handler().postDelayed(new Runnable() {
@@ -108,18 +97,13 @@ public class MainMenuActivity extends AppCompatActivity {
 
                 }
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 
     }
 
     private void initScreen() {
 
 
-        try {
             mainMenuFragment = new MainMenuFragment();
             final FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -131,11 +115,6 @@ public class MainMenuActivity extends AppCompatActivity {
                 public void onClick(View v) {
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 

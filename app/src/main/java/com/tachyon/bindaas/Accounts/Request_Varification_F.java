@@ -65,11 +65,11 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        try {
+
             // Inflate the layout for this fragment
             view = inflater.inflate(R.layout.activity_request_varification, container, false);
             context = getContext();
-
+            try {
             view.findViewById(R.id.Goback).setOnClickListener(this);
 
             username_edit = view.findViewById(R.id.username_edit);
@@ -177,8 +177,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
-        try {
-
             Intent pictureIntent = new Intent(
                     MediaStore.ACTION_IMAGE_CAPTURE);
             if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -196,10 +194,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                     startActivityForResult(pictureIntent, 1);
                 }
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     String imageFilePath;
@@ -223,9 +217,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
     public String getPath(Uri uri) {
         String result = null;
-        try {
-
-            String[] proj = {MediaStore.Images.Media.DATA};
+          String[] proj = {MediaStore.Images.Media.DATA};
             Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -238,10 +230,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 result = "Not found";
             }
 
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
         return result;
     }
 
@@ -252,9 +240,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        try {
-
-            if (resultCode == RESULT_OK) {
+           if (resultCode == RESULT_OK) {
 
                 if (requestCode == 1) {
                     Matrix matrix = new Matrix();
@@ -352,10 +338,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
             }
 
-        }catch (Exception e){
-            Log.d(TAG, "Exception :"+e.getMessage());
-            e.printStackTrace();
-        }
     }
 
 

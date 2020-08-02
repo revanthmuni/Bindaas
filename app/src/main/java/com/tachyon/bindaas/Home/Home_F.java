@@ -519,9 +519,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this will call when swipe for another video and
     // this function will set the player to the current video
     public void Set_Player(final int currentPage) {
-        try {
-
-
             final Home_Get_Set item = data_list.get(currentPage);
 
             Call_cache();
@@ -700,34 +697,20 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
 //        Call_Api_For_Singlevideos(currentPage);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     public void Call_cache() {
 
-        try {
-
             if (currentPage + 1 < data_list.size()) {
                 HttpProxyCacheServer proxy = Bindaas.getProxy(context);
                 proxy.getProxyUrl(data_list.get(currentPage + 1).video_url);
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     public void Show_heart_on_DoubleTap(Home_Get_Set item, final RelativeLayout mainlayout, MotionEvent e) {
-
-        try {
-
 
             int x = (int) e.getX() - 100;
             int y = (int) e.getY() - 100;
@@ -771,11 +754,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
             });
             iv.startAnimation(fadeoutani);
-        } catch (Exception ee) {
-            Log.d("Exception", "getMessage: " + ee
-                    .getMessage());
-            ee.printStackTrace();
-        }
 
     }
 
@@ -790,19 +768,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onDataSent(String yourData) {
 
-        try {
-
             int comment_count = Integer.parseInt(yourData);
             Home_Get_Set item = data_list.get(currentPage);
             item.video_comment_count = "" + comment_count;
             data_list.remove(currentPage);
             data_list.add(currentPage, item);
             adapter.notifyDataSetChanged();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -814,8 +785,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        try {
-
             is_visible_to_user = isVisibleToUser;
 
             if (privious_player != null && (isVisibleToUser && !is_user_stop_video)) {
@@ -823,11 +792,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             } else if (privious_player != null && !isVisibleToUser) {
                 privious_player.setPlayWhenReady(false);
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -845,8 +809,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set) {
 
-
-        try {
 
             String action = home_get_set.liked;
 
@@ -881,11 +843,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 
@@ -893,8 +850,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this will open the comment screen
     private void OpenComment(Home_Get_Set item) {
 
-
-        try {
             int comment_counnt = Integer.parseInt(item.video_comment_count);
 
             Fragment_Data_Send fragment_data_send = this;
@@ -909,19 +864,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             transaction.addToBackStack(null);
             transaction.replace(R.id.MainMenuFragment, comment_f).commit();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
-
 
     }
 
     public void openDiscoverFragment() {
-
-        try {
-
             Fragment_Data_Send fragment_data_send = this;
 
             Discover_F discover_F = new Discover_F();
@@ -933,18 +879,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         comment_f.setArguments(args);*/
             transaction.addToBackStack(null);
             transaction.replace(R.id.MainMenuFragment, discover_F).commit();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
-
-        try {
 
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
@@ -976,18 +916,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 transaction.replace(R.id.MainMenuFragment, profile_f).commit();
             }
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenHashtag(String tag) {
-
-        try {
 
             Taged_Videos_F taged_videos_f = new Taged_Videos_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -999,18 +933,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             transaction.replace(R.id.MainMenuFragment, taged_videos_f).commit();
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 
     private void Show_video_option(final Home_Get_Set home_get_set) {
-        try {
-
-
             String user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
             final String[] options;
             if (home_get_set.user_id.equals(user_id))
@@ -1035,16 +962,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                             break;
                         case "Flag Video":
 
-                            try {
 
                                 flagVideoActivity(home_get_set);
                                 dialog.dismiss();
 
-                            } catch (Exception e) {
-                                Log.d("Exception", "getMessage: " + e
-                                        .getMessage());
-                                e.printStackTrace();
-                            }
+
                             break;
                         case "Delete Video":
                             deleteVideo(home_get_set);
@@ -1060,19 +982,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
             builder.show();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     private void deleteVideo(final Home_Get_Set item) {
 
-        try {
-
-
-            onPause();
+           onPause();
             Functions.Show_loader(context, false, false);
             Functions.Call_Api_For_Delete_Video(getActivity(), item.video_id, new API_CallBack() {
                 @Override
@@ -1091,26 +1006,14 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void flagVideoActivity(Home_Get_Set home_get_set) {
-
-        try {
-
-            Intent intent = new Intent(context, ReportVideo.class);
+    Intent intent = new Intent(context, ReportVideo.class);
             intent.putExtra("FLAG_OPTIONS", "REPORT_VIDEO");
             intent.putExtra("VIDEO_ITEM", home_get_set);
             startActivity(intent);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 /*        final Dialog dialog = new Dialog(Objects.requireNonNull(getActivity()));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -1122,11 +1025,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     public void Save_Video(final Home_Get_Set item) {
 
-
-        try {
-
-
-            if (privious_player != null) {
+   if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
             }
 
@@ -1219,32 +1118,19 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
             });
 
-
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
     public void Delete_file_no_watermark(Home_Get_Set item) {
 
-        try {
             File file = new File(Variables.app_folder + item.video_id + ".mp4");
             if (file.exists()) {
                 file.delete();
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void Scan_file(Home_Get_Set item) {
 
-        try {
 
             MediaScannerConnection.scanFile(getActivity(),
                     new String[]{Variables.app_folder + item.video_id + ".mp4"},
@@ -1257,11 +1143,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                             Log.i("ExternalStorage", "-> uri=" + uri);
                         }
                     });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -1280,16 +1161,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onResume() {
         super.onResume();
 
-        try {
-
             if ((privious_player != null && (is_visible_to_user && !is_user_stop_video)) && !is_fragment_exits()) {
                 privious_player.setPlayWhenReady(true);
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 

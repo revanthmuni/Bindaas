@@ -56,7 +56,6 @@ public class Comments_Adapter extends RecyclerView.Adapter<Comments_Adapter.Cust
         final Comment_Get_Set item = dataList.get(i);
 
 
-        try {
             holder.username.setText(item.first_name + " " + item.last_name);
 
             Picasso.with(context).
@@ -68,10 +67,6 @@ public class Comments_Adapter extends RecyclerView.Adapter<Comments_Adapter.Cust
 
 
             holder.bind(i, item, listener);
-        } catch (Exception e) {
-            Log.d("Exception", "onBindViewHolder: " + e.getMessage());
-
-        }
 
 
     }
@@ -85,18 +80,10 @@ public class Comments_Adapter extends RecyclerView.Adapter<Comments_Adapter.Cust
 
         public CustomViewHolder(View view) {
             super(view);
-            try {
-
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
                 message = view.findViewById(R.id.message);
                 menu = view.findViewById(R.id.side_menu);
-
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
         }
 
         public void bind(final int postion, final Comment_Get_Set item, final Comments_Adapter.OnItemClickListener listener) {

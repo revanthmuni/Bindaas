@@ -64,17 +64,10 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
         public CustomViewHolder(View view) {
             super(view);
 
+            thumb_image = view.findViewById(R.id.thumb_image);
+            view_txt = view.findViewById(R.id.view_txt);
 
-            try {
 
-                thumb_image = view.findViewById(R.id.thumb_image);
-                view_txt = view.findViewById(R.id.view_txt);
-
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
         }
 
         public void bind(final int position, final Home_Get_Set item, final MyVideos_Adapter.OnItemClickListener listener) {
@@ -95,6 +88,8 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
         final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
 
+        holder.view_txt.setText(item.views);
+        holder.view_txt.setText(Functions.GetSuffix(item.views));
 
         try {
             Glide.with(context)
@@ -109,15 +104,11 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
                     .into(holder.thumb_image);
 
-            holder.view_txt.setText(item.views);
-            holder.view_txt.setText(Functions.GetSuffix(item.views));
 
         } catch (Exception e) {
             Log.d("Exception", "getMessage: " + e
                     .getMessage());
         }
-
-
 
 
         holder.bind(i, item, listener);

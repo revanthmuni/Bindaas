@@ -52,7 +52,6 @@ public class KeyboardHeightProvider extends PopupWindow {
     public KeyboardHeightProvider(Activity activity) {
         super(activity);
 
-        try {
 
             this.activity = activity;
 
@@ -77,11 +76,6 @@ public class KeyboardHeightProvider extends PopupWindow {
                     }
                 }
             });
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
     /**

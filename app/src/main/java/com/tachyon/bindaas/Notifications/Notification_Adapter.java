@@ -53,19 +53,10 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
         public CustomViewHolder(View view) {
             super(view);
-
-            try {
-
                 user_image=view.findViewById(R.id.user_image);
                 username=view.findViewById(R.id.username);
                 message=view.findViewById(R.id.message);
                 watch_btn=view.findViewById(R.id.watch_btn);
-
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
 
         }
 
@@ -93,11 +84,7 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
     @Override
     public void onBindViewHolder(final Notification_Adapter.CustomViewHolder holder, final int i) {
         holder.setIsRecyclable(false);
-
-
-        try {
-
-            final Notification_Get_Set item=datalist.get(i);
+    final Notification_Get_Set item=datalist.get(i);
             holder.username.setText(item.username);
 
             if(item.profile_pic!=null && !item.profile_pic.equals("")) {
@@ -121,11 +108,6 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
             holder.bind(i,datalist.get(i),listener);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 }
 
 }

@@ -61,20 +61,12 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         context = getContext();
-
-        try {
-
-            tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+    tabLayout = (TabLayout) view.findViewById(R.id.tabs);
             pager = view.findViewById(R.id.viewpager);
             pager.setOffscreenPageLimit(3);
             pager.setPagingEnabled(false);
             view.setOnClickListener(this);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
         return view;
     }
 
@@ -92,19 +84,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        try {
-
             // Note that we are passing childFragmentManager, not FragmentManager
             adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
             pager.setAdapter(adapter);
             tabLayout.setupWithViewPager(pager);
             setupTabIcons();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 
@@ -126,9 +110,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     // this function will set all the icon and text in
     // Bottom tabs when we open an activity
     private void setupTabIcons() {
-
-        try {
-
 
             View view1 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
             ImageView imageView1 = view1.findViewById(R.id.image);
@@ -341,12 +322,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
             }
 
-
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -413,14 +388,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         public void destroyItem(ViewGroup container, int position, Object object) {
 
 
-            try {
+
                 registeredFragments.remove(position);
 
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
 
             super.destroyItem(container, position, object);
 
@@ -563,7 +533,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
     public void chatFragment(String receiverid, String name, String picture) {
 
-        try {
 
             Chat_Activity chat_activity = new Chat_Activity();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -577,11 +546,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             chat_activity.setArguments(args);
             transaction.addToBackStack(null);
             transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 

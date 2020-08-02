@@ -97,15 +97,8 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
 
         public CustomViewHolder(View view) {
             super(view);
-            try {
-
                 fiter_txt = view.findViewById(R.id.filter_txt);
                 ivPhoto = view.findViewById(R.id.iv_photo);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
         }
 
         public void bind(final int pos, final FilterType item, final Filter_Adapter.OnItemClickListener listener) {

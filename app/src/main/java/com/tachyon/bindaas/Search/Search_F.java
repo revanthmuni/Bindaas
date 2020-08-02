@@ -63,9 +63,7 @@ public class Search_F extends RootFragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_search, container, false);
 
-        try {
-
-            context=getContext();
+          context=getContext();
 
             shimmerFrameLayout =view.findViewById(R.id.shimmer_view_container);
             shimmerFrameLayout.startShimmer();
@@ -75,11 +73,6 @@ public class Search_F extends RootFragment {
             recyclerView.setLayoutManager(linearLayoutManager);
 
             Call_Api();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
 
         return view;
@@ -257,22 +250,15 @@ public class Search_F extends RootFragment {
 
     private void OpenWatchVideo(String video_id) {
 
-        try {
 
             Intent intent=new Intent(getActivity(), WatchVideos_F.class);
             intent.putExtra("video_id", video_id);
             startActivity(intent);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     public void Open_Profile(String fb_id,String first_name,String last_name,String profile_pic){
-
-        try {
-            if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(fb_id)){
+    if(Variables.sharedPreferences.getString(Variables.u_id,"0").equals(fb_id)){
 
                 TabLayout.Tab profile= MainMenuFragment.tabLayout.getTabAt(4);
                 profile.select();
@@ -296,11 +282,6 @@ public class Search_F extends RootFragment {
                 transaction.replace(R.id.Search_Main_F, profile_f).commit();
 
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 

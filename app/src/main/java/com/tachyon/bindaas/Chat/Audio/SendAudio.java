@@ -35,7 +35,7 @@ import java.util.Locale;
 
 // this class will send a voice message to other user
 
-public class SendAudio extends Exception {
+public class SendAudio{
 
 
     DatabaseReference rootref;
@@ -51,14 +51,6 @@ public class SendAudio extends Exception {
     private DatabaseReference Adduser_to_inbox;
 
     EditText message_field;
-
-
-    @Nullable
-    @Override
-    public String getMessage() {
-        Log.d("Exception", "getMessage: "+super.getMessage());
-        return super.getMessage();
-    }
 
     public SendAudio(Context context, EditText message_field,
                      DatabaseReference rootref, DatabaseReference adduser_to_inbox

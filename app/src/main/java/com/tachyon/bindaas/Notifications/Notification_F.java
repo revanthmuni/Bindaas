@@ -61,10 +61,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_notification, container, false);
-
-        try {
-
-            context=getContext();
+   context=getContext();
 
 
             datalist=new ArrayList<>();
@@ -117,11 +114,6 @@ public class Notification_F extends RootFragment implements View.OnClickListener
             if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
                 Call_api();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
         return view;
     }
 
@@ -131,8 +123,6 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     public void onStart() {
         super.onStart();
 
-
-        try {
             adView = view.findViewById(R.id.bannerad);
             if(!Variables.is_remove_ads) {
                 AdRequest adRequest = new AdRequest.Builder().build();
@@ -140,28 +130,17 @@ public class Notification_F extends RootFragment implements View.OnClickListener
             }else {
                 adView.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-
-        try {
-
-            if(view!=null && Variables.Reload_my_notification){
+   if(view!=null && Variables.Reload_my_notification){
                 Variables.Reload_my_notification=false;
                 Call_api();
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     public void Call_api(){
@@ -272,7 +251,6 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
     public void Open_Profile(Notification_Get_Set item) {
 
-        try {
 
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
@@ -300,10 +278,5 @@ public class Notification_F extends RootFragment implements View.OnClickListener
             }
 
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
     }
 }

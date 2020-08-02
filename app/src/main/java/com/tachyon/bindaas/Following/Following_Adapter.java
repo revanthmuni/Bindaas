@@ -62,20 +62,14 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
         public CustomViewHolder(View view) {
             super(view);
-            try {
-
-                mainlayout = view.findViewById(R.id.mainlayout);
+               mainlayout = view.findViewById(R.id.mainlayout);
 
                 user_image = view.findViewById(R.id.user_image);
                 user_name = view.findViewById(R.id.user_name);
                 user_id = view.findViewById(R.id.user_id);
 
                 action_txt = view.findViewById(R.id.action_txt);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
+
         }
 
         public void bind(final int pos, final Following_Get_Set item, final Following_Adapter.OnItemClickListener listener) {
@@ -105,10 +99,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
     public void onBindViewHolder(final Following_Adapter.CustomViewHolder holder, final int i) {
         holder.setIsRecyclable(false);
 
-        try {
-
-
-            Following_Get_Set item = datalist.get(i);
+           Following_Get_Set item = datalist.get(i);
 
             holder.user_name.setText(item.first_name + " " + item.last_name);
 
@@ -155,11 +146,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
             holder.bind(i, datalist.get(i), listener);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
     }
 
 }
