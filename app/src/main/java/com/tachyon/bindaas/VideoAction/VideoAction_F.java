@@ -73,7 +73,6 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                 video_id=bundle.getString("video_id");
                 user_id=bundle.getString("user_id");
             }
-            try {
             progressBar=view.findViewById(R.id.progress_bar);
 
             view.findViewById(R.id.save_video_layout).setOnClickListener(this);
@@ -100,29 +99,18 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     }
                 }, 1000);
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
         return view;
     }
 
     VideoSharingApps_Adapter adapter;
     public void Get_Shared_app(){
-        try {
-
             recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final GridLayoutManager layoutManager = new GridLayoutManager(context, 5);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setHasFixedSize(false);
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 
         new Thread(new Runnable() {
             @Override

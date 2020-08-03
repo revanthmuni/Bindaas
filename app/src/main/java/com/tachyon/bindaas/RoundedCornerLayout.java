@@ -39,7 +39,7 @@ public class RoundedCornerLayout extends RelativeLayout {
         if (maskBitmap == null) {
             // This corner radius assumes the image width == height and you want it to be circular
             // Otherwise, customize the radius as needed
-            cornerRadius = 25f;
+            cornerRadius = 19f;
             Log.d("canvas", "draw: "+cornerRadius);
             maskBitmap = createMask(canvas.getWidth(), canvas.getHeight());
         }

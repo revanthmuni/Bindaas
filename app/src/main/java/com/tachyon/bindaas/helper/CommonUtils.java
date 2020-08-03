@@ -112,9 +112,7 @@ public class CommonUtils {
         return null;
     }
     public static void showAlert(Context context, String message) {
-        try {
-
-            new AlertDialog.Builder(context)
+          new AlertDialog.Builder(context)
                     .setTitle("Alert")
                     .setMessage(message)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -123,11 +121,7 @@ public class CommonUtils {
                             dialog.dismiss();
                         }
                     }).show();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+        
     }
 
     public static File getAudioFilePath(Context context, Uri uri) {

@@ -46,7 +46,6 @@ public class SongMetadataReader {
     }
 
     private void ReadMetadata() {
-        try {
 
             // Get a map from genre ids to names
             HashMap<String, String> genreIdMap = new HashMap<String, String>();
@@ -103,10 +102,7 @@ public class SongMetadataReader {
             mAlbum = getStringFromColumn(c, MediaStore.Audio.Media.ALBUM);
             mYear = getIntegerFromColumn(c, MediaStore.Audio.Media.YEAR);
             c.close();
-        }catch (Exception e){
-            Log.d(TAG, "Exception :"+e.getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     private Uri makeGenreUri(String genreId) {

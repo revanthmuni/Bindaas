@@ -114,7 +114,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
     // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
     private void selectImage() {
-        try {
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
 
@@ -147,10 +146,6 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
             });
 
             builder.show();
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
 
 
     }

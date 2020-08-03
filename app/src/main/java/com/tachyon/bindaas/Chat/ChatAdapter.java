@@ -139,7 +139,6 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Chat_GetSet chat = mDataSet.get(position);
-        try {
 
             if(chat.getType().equals("text")){
                 Chatviewholder chatviewholder=(Chatviewholder) holder;
@@ -352,11 +351,6 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
 
             }
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
 
     }
@@ -407,17 +401,12 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chatviewholder(View itemView) {
             super(itemView);
-            try {
 
                 view = itemView;
                 this.message = view.findViewById(R.id.msgtxt);
                 this.datetxt=view.findViewById(R.id.datetxt);
                 message_seen=view.findViewById(R.id.message_seen);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
+
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnLongClickListener long_listener) {
@@ -441,19 +430,13 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chatimageviewholder(View itemView) {
             super(itemView);
-            try {
-
-                view = itemView;
+              view = itemView;
                 this.chatimage = view.findViewById(R.id.chatimage);
                 this.datetxt=view.findViewById(R.id.datetxt);
                 message_seen=view.findViewById(R.id.message_seen);
                 not_send_message_icon=view.findViewById(R.id.not_send_messsage);
                 p_bar=view.findViewById(R.id.p_bar);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
+
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnItemClickListener listener,final ChatAdapter.OnLongClickListener long_listener) {
@@ -490,9 +473,7 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Chataudioviewholder(View itemView) {
             super(itemView);
-            try {
-
-                view = itemView;
+               view = itemView;
                 audio_bubble=view.findViewById(R.id.audio_bubble);
                 datetxt=view.findViewById(R.id.datetxt);
                 message_seen=view.findViewById(R.id.message_seen);
@@ -502,11 +483,6 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 this.seekBar=(SeekBar) view.findViewById(R.id.seek_bar);
                 this.total_time=(TextView)view.findViewById(R.id.total_time);
 
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
         }
 
         public void bind(final Chat_GetSet item, final ChatAdapter.OnItemClickListener listener,final ChatAdapter.OnLongClickListener long_listener) {
@@ -540,15 +516,10 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         public Alertviewholder(View itemView) {
             super(itemView);
-            try {
                 view = itemView;
                 this.message = view.findViewById(R.id.message);
                 this.datetxt = view.findViewById(R.id.datetxt);
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }
+
         }
 
     }

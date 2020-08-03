@@ -9,18 +9,12 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 
-public final class KeyboardUtils extends Exception {
+public final class KeyboardUtils{
 
     private KeyboardUtils() {
         // This utility class is not publicly instantiable
     }
 
-    @Nullable
-    @Override
-    public String getMessage() {
-        Log.d("Exception", "getMessage: "+super.getMessage());
-        return super.getMessage();
-    }
 
     public static void hideSoftInput(Activity activity) {
         View view = activity.getCurrentFocus();

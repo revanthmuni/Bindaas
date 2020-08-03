@@ -106,7 +106,6 @@ public class WaveformView extends View {
 
     public WaveformView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        try {
             setFocusable(false);
 
             Resources res = getResources();
@@ -186,10 +185,6 @@ public class WaveformView extends View {
             mSelectionEnd = 0;
             mDensity = 1.0f;
             mInitialized = false;
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
 
         // We don't want keys, the markers get these
 
@@ -479,9 +474,7 @@ public class WaveformView extends View {
      * Called once when a new sound file is added
      */
     private void computeDoublesForAllZoomLevels() {
-        try {
-
-            int numFrames = mSoundFile.getNumFrames();
+           int numFrames = mSoundFile.getNumFrames();
             int[] frameGains = mSoundFile.getFrameGains();
             double[] smoothedGains = new double[numFrames];
             if (numFrames == 1) {
@@ -608,10 +601,6 @@ public class WaveformView extends View {
             }
 
             mInitialized = true;
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -619,17 +608,12 @@ public class WaveformView extends View {
      * or the screen is resized
      */
     private void computeIntsForThisZoomLevel() {
-        try {
             int halfHeight = (getMeasuredHeight() / 2) - 1;
             mHeightsAtThisZoomLevel = new int[mLenByZoomLevel[mZoomLevel]];
             for (int i = 0; i < mLenByZoomLevel[mZoomLevel]; i++) {
                 mHeightsAtThisZoomLevel[i] =
                         (int) (mValuesByZoomLevel[mZoomLevel][i] * halfHeight);
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
 
     }
 }

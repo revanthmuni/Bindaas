@@ -34,21 +34,21 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
-        <activity android:name=".Signup.SignUpActivity"
+        <activity android:name=".ExceptionDisplay"></activity>
+        <activity
+            android:name=".Signup.SignUpActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TextLabel"/>
+            android:theme="@style/TextLabel" />
         <activity
             android:name=".AudioTrimming.AudioTrimmerActivity"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
 
         <activity
             android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
             android:process=":error_activity"
             android:theme="@style/AppTheme" />
+
         <activity android:name=".Accounts.Request_Varification_F" />
         <activity android:name=".SoundLists.VideoSound_A" />
         <activity
@@ -142,17 +142,16 @@
             android:name=".SoundLists.SoundList_Main_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_tic" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/redcolor" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -171,11 +170,32 @@
                 <action android:name="startservice" />
             </intent-filter>
         </service>
+
         <service android:name=".Firebase_Notification.Notification_Receive">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature
+        android:name="android.hardware.camera2.full"
+        android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

@@ -334,15 +334,7 @@ public class Comment_F extends RootFragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        try {
-
             ApiRequest.Call_Api(context, Variables.sendPushNotification, notimap, null);
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
 
     }
 

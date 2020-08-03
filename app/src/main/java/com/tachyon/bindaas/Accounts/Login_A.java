@@ -333,7 +333,6 @@ public class Login_A extends AppCompatActivity {
 
 
     private void initViews() {
-        try {
 
             rlLoginOptions = findViewById(R.id.rlLoginOptions);
             clLoginLayout = findViewById(R.id.clLoginLayout);
@@ -347,10 +346,7 @@ public class Login_A extends AppCompatActivity {
             tilLoginPassword = findViewById(R.id.tilLoginPassword);
             etLoginEmail = findViewById(R.id.etLoginEmail);
             etLoginPassword = findViewById(R.id.etLoginPassword);
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
+
     }
 
     private Boolean checkValidations() {

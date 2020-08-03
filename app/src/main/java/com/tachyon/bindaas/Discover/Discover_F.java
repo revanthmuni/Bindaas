@@ -62,9 +62,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_discover, container, false);
-        try {
-
-            context = getContext();
+          context = getContext();
 
 
             datalist = new ArrayList<>();
@@ -125,11 +123,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
             Call_Api_For_get_Allvideos();
 
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
         return view;
     }
 

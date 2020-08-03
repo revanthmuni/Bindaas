@@ -39,7 +39,7 @@ import java.util.Arrays;
 
 import androidx.annotation.Nullable;
 
-public class SoundFile extends Exception{
+public class SoundFile{
     private ProgressListener mProgressListener = null;
     private File mInputFile = null;
 
@@ -64,12 +64,6 @@ public class SoundFile extends Exception{
     private int[] mFrameLens;
     private int[] mFrameOffsets;
 
-    @Nullable
-    @Override
-    public String getMessage() {
-        Log.d(TAG, "getMessage: "+super.getMessage());
-        return super.getMessage();
-    }
 
     // Progress listener interface.
     public interface ProgressListener {

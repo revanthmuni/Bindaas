@@ -356,9 +356,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             e.printStackTrace();
         }
 
+        Log.d("TEST", "Call_Api_For_get_Allvideos: "+new Gson().toJson(parameters));
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Log.d("Videos_data", "Responce: "+resp);
                 swiperefresh.setRefreshing(false);
                 Parse_data(resp);
             }
@@ -446,6 +448,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Log.d("Videos_data", "Responce: "+resp);
                 swiperefresh.setRefreshing(false);
                 Singal_Video_Parse_data(postion, resp);
             }

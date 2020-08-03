@@ -91,24 +91,17 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
         holder.view_txt.setText(item.views);
         holder.view_txt.setText(Functions.GetSuffix(item.views));
 
-        try {
-            Glide.with(context)
-                    .asGif()
-                    .load(item.gif)
-                    .skipMemoryCache(true)
-                    .thumbnail(new RequestBuilder[]{Glide
-                            .with(context)
-                            .load(item.thum)})
-                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)
-                            .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
+        Glide.with(context)
+                .asGif()
+                .load(item.gif)
+                .skipMemoryCache(true)
+                .thumbnail(new RequestBuilder[]{Glide
+                        .with(context)
+                        .load(item.thum)})
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)
+                        .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
 
-                    .into(holder.thumb_image);
-
-
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-        }
+                .into(holder.thumb_image);
 
 
         holder.bind(i, item, listener);

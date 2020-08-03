@@ -65,13 +65,7 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
         public CustomViewHolder(View view) {
             super(view);
 
-            try {
-
-            } catch (Exception e) {
-                Log.d("Exception", "getMessage: " + e
-                        .getMessage());
-                e.printStackTrace();
-            }            thumb_image=view.findViewById(R.id.thumb_image);
+            thumb_image=view.findViewById(R.id.thumb_image);
             view_txt=view.findViewById(R.id.view_txt);
 
         }

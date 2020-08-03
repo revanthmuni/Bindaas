@@ -830,7 +830,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
 
-        try {
             new AlertDialog.Builder(this)
                     .setTitle("Alert")
                     .setMessage("Are you Sure? if you Go back you can't undo this action")
@@ -852,11 +851,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                         }
                     }).show();
-        } catch (Exception e) {
-            Log.d("Exception", "getMessage: " + e
-                    .getMessage());
-            e.printStackTrace();
-        }
+
 
     }
 

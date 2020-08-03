@@ -25,7 +25,7 @@ import java.nio.ShortBuffer;
 
 import androidx.annotation.Nullable;
 
-public class SamplePlayer extends Exception {
+public class SamplePlayer {
 
     private static final String TAG = "SamplePlayer";
 
@@ -35,12 +35,6 @@ public class SamplePlayer extends Exception {
 
     ;
 
-    @Nullable
-    @Override
-    public String getMessage() {
-        Log.d(TAG, "getMessage: "+super.getMessage());
-        return super.getMessage();
-    }
 
     private ShortBuffer mSamples;
     private int mSampleRate;
@@ -114,9 +108,7 @@ public class SamplePlayer extends Exception {
     }
 
     public void start() {
-        try {
-
-            if (isPlaying()) {
+        if (isPlaying()) {
                 return;
             }
             mKeepPlaying = true;
@@ -146,10 +138,6 @@ public class SamplePlayer extends Exception {
             };
             mPlayThread.start();
 
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void pause() {
@@ -160,8 +148,6 @@ public class SamplePlayer extends Exception {
     }
 
     public void stop() {
-        try {
-
             if (isPlaying() || isPaused()) {
                 mKeepPlaying = false;
                 mAudioTrack.pause();  // pause() stops the playback immediately.
@@ -175,27 +161,15 @@ public class SamplePlayer extends Exception {
                 }
                 mAudioTrack.flush();  // just in case...
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void release() {
-        try {
             stop();
             mAudioTrack.release();
-
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     public void seekTo(int msec) {
-        try {
-
-            boolean wasPlaying = isPlaying();
+        boolean wasPlaying = isPlaying();
             stop();
             mPlaybackStart = (int) (msec * (mSampleRate / 1000.0));
             if (mPlaybackStart > mNumSamples) {
@@ -205,10 +179,6 @@ public class SamplePlayer extends Exception {
             if (wasPlaying) {
                 start();
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     public int getCurrentPosition() {
