@@ -61,6 +61,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
             draft_file=intent.getStringExtra("draft_file");
             video_url = intent.getStringExtra("video_path");
             Log.d("Audio_Test", "onCreate: "+video_url);
+            
         }else {
             video_url = Variables.outputfile2;
         }

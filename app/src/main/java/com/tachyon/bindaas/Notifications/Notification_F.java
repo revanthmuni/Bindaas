@@ -171,19 +171,19 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                 ArrayList<Notification_Get_Set> temp_list=new ArrayList<>();
                 for (int i=0;i<msg.length();i++){
                     JSONObject data=msg.getJSONObject(i);
-                    JSONObject fb_id_details=data.optJSONObject("fb_id_details");
+                    JSONObject user_id_details=data.optJSONObject("user_id_details");
                     JSONObject value_data=data.optJSONObject("value_data");
 
                     Notification_Get_Set item=new Notification_Get_Set();
 
                     item.user_id=data.optString("user_id");
 
-                    item.username=fb_id_details.optString("username");
-                    item.first_name=fb_id_details.optString("first_name");
-                    item.last_name=fb_id_details.optString("last_name");
-                    item.profile_pic=fb_id_details.optString("profile_pic");
+                    item.username=user_id_details.optString("username");
+                    item.first_name=user_id_details.optString("first_name");
+                    item.last_name=user_id_details.optString("last_name");
+                    item.profile_pic=user_id_details.optString("profile_pic");
 
-                    item.effected_fb_id=fb_id_details.optString("effected_fb_id");
+                    item.effected_user_id =user_id_details.optString("effected_user_id");
 
                     item.type=data.optString("type");
 
@@ -196,7 +196,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
                     }
 
-                    item.created=fb_id_details.optString("created");
+                    item.created=user_id_details.optString("created");
 
                     temp_list.add(item);
 

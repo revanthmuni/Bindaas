@@ -2,7 +2,6 @@ package com.tachyon.bindaas.Home.ReportVideo;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.tachyon.bindaas.Comments.Comment_Get_Set;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -27,10 +24,8 @@ import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.helper.CommonUtils;
 import com.tachyon.bindaas.model.DefaultResponse;
-import com.tachyon.bindaas.model.FlagCommentRequest;
 import com.tachyon.bindaas.model.FlagVideoRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,7 +92,7 @@ public class ReportVideo extends AppCompatActivity {
                     callFlagCommentApi(commentId, radioButton.getText().toString());
                 } else {
                     FlagVideoRequest flagVideoRequest = new FlagVideoRequest();
-                    flagVideoRequest.setFb_id(videoItem.user_id);
+                    flagVideoRequest.setUser_id(videoItem.user_id);
                     flagVideoRequest.setVideo_id(videoItem.video_id);
                     flagVideoRequest.setReason(radioButton.getText().toString());
                     callFlagVideoApi(flagVideoRequest);

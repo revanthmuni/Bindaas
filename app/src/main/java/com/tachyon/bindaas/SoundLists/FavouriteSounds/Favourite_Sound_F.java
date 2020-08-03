@@ -188,7 +188,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(context, Variables.my_FavSound, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.myFavSound, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 swiperefresh.setRefreshing(false);
@@ -439,7 +439,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
         }
 
         Functions.Show_loader(context, false, false);
-        ApiRequest.Call_Api(context, Variables.fav_sound, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();

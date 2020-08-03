@@ -139,7 +139,7 @@
             android:src="@drawable/ic_image_icon"
             android:background="@color/transparent"/>
 
-        <ImageButton
+       <!-- <ImageButton
             android:layout_width="35dp"
             android:layout_height="match_parent"
             android:id="@+id/mic_btn"
@@ -151,7 +151,7 @@
             android:paddingBottom="3dp"
             android:layout_toRightOf="@+id/uploadimagebtn"
             android:paddingRight="5dp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"/>-->
 
 
         <RelativeLayout
@@ -177,7 +177,7 @@
             android:layout_toLeftOf="@+id/upload_gif_btn"
             android:backgroundTint="@android:color/transparent"
             android:hint="Send Message Here..."/>
-            <ImageButton
+            <!--<ImageButton
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:id="@+id/upload_gif_btn"
@@ -187,7 +187,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/ic_gif_image_gray"
-                android:background="@color/transparent"/>
+                android:background="@color/transparent"/>-->
        </RelativeLayout>
 
         <ImageView

@@ -6,7 +6,7 @@ public class FlagVideoRequest {
 
     private String video_id;
 
-    private String fb_id;
+    private String user_id;
 
     private String reason;
 
@@ -18,12 +18,12 @@ public class FlagVideoRequest {
         return this.video_id;
     }
 
-    public void setFb_id(String fb_id) {
-        this.fb_id = fb_id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
-    public String getFb_id() {
-        return this.fb_id;
+    public String getUser_id() {
+        return this.user_id;
     }
 
     public String getReason() {

@@ -455,8 +455,8 @@ public class Functions {
 
     public static void Call_Api_For_Follow_or_unFollow
             (final Activity activity,
-             String fb_id,
-             String followed_fb_id,
+             String user_id,
+             String followed_user_id,
              String status,
              final API_CallBack api_callBack) {
 
@@ -465,15 +465,15 @@ public class Functions {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("user_id", fb_id);
-            parameters.put("followed_fb_id", followed_fb_id);
+            parameters.put("user_id", user_id);
+            parameters.put("followed_user_id", followed_user_id);
             parameters.put("status", status);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ApiRequest.Call_Api(activity, Variables.follow_users, parameters, new Callback() {
+        ApiRequest.Call_Api(activity, Variables.followUsers, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
@@ -513,7 +513,7 @@ public class Functions {
 
         Log.d("resp", parameters.toString());
 
-        ApiRequest.Call_Api(activity, Variables.get_user_data, parameters, new Callback() {
+        ApiRequest.Call_Api(activity, Variables.getUserData, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();

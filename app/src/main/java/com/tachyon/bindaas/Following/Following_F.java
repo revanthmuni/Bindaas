@@ -158,7 +158,7 @@ public class Following_F extends Fragment {
         }
 
 
-        ApiRequest.Call_Api(context, Variables.get_followings, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.getFollowings, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Parse_following_data(resp);
@@ -236,7 +236,7 @@ public class Following_F extends Fragment {
         }
 
 
-        ApiRequest.Call_Api(context, Variables.get_followers, parameters, new Callback() {
+        ApiRequest.Call_Api(context, Variables.getFollowers, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Parse_fans_data(resp);
