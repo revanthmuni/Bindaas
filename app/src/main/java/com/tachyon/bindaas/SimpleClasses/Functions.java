@@ -449,10 +449,7 @@ public class Functions {
             }
         });
 
-
     }
-
-
     public static void Call_Api_For_Follow_or_unFollow
             (final Activity activity,
              String user_id,
@@ -468,7 +465,6 @@ public class Functions {
             parameters.put("user_id", user_id);
             parameters.put("followed_user_id", followed_user_id);
             parameters.put("status", status);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
