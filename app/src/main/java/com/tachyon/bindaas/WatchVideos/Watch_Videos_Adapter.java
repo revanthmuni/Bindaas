@@ -60,8 +60,13 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
         final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
         Log.d("TAG", "onBindViewHolder: ");
-        holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
-                context.getResources().getDrawable(R.drawable.ic_like));
+        if (item.liked.equals("1")) {
+            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
+        } else {
+            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
+        }
+        /*holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
+                context.getResources().getDrawable(R.drawable.ic_like));*/
         // holder.setVideoData(item);
         holder.bind(i, item, listener);
 
@@ -125,11 +130,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
         holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
 
 
-        if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
+       /* if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
             holder.varified_btn.setVisibility(View.VISIBLE);
         } else {
             holder.varified_btn.setVisibility(View.GONE);
-        }
+        }*/
         holder.side_menu.setVisibility(View.VISIBLE);
 
     }
@@ -154,7 +159,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             user_pic = view.findViewById(R.id.user_pic);
             sound_name = view.findViewById(R.id.sound_name);
             sound_image = view.findViewById(R.id.sound_image);
-            varified_btn = view.findViewById(R.id.varified_btn);
+            // varified_btn = view.findViewById(R.id.varified_btn);
 
             like_layout = view.findViewById(R.id.like_layout);
             like_image = view.findViewById(R.id.like_image);
@@ -186,6 +191,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                 @Override
                 public void onClick(View v) {
 
+                    Log.d("USR_TST", "onClick: " + item.user_id);
                     listener.onItemClick(postion, item, v);
                 }
             });

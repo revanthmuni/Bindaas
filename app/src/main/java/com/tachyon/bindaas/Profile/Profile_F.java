@@ -113,6 +113,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
             }
+        Log.d("USR_TST", "onCreateView: "+user_id);
 
         return init();
     }
@@ -393,6 +394,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         try {
             parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
             parameters.put("user_id", user_id);
+            Log.d("USR_TST", "Call_Api_For_get_Allvideos: "+user_id);
 
         } catch (JSONException e) {
             e.printStackTrace();

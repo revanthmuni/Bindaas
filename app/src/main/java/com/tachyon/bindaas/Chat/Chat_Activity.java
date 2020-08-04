@@ -350,7 +350,7 @@ public class Chat_Activity extends Fragment {
             });
 
 
-            upload_gif_btn = view.findViewById(R.id.upload_gif_btn);
+            /*upload_gif_btn = view.findViewById(R.id.upload_gif_btn);
             upload_gif_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -361,7 +361,7 @@ public class Chat_Activity extends Fragment {
                         GetGipy();
                     }
                 }
-            });
+            });*/
 
 
             view.findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
@@ -412,7 +412,7 @@ public class Chat_Activity extends Fragment {
             // this the mic touch listener
             // when our touch action is Down is will start recording and when our Touch action is Up
             // it will stop the recording
-            mic_btn = (ImageButton) view.findViewById(R.id.mic_btn);
+           /* mic_btn = (ImageButton) view.findViewById(R.id.mic_btn);
             final long[] touchtime = {System.currentTimeMillis()};
             mic_btn.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -439,7 +439,7 @@ public class Chat_Activity extends Fragment {
                     return false;
                 }
 
-            });
+            });*/
 
 
             // this method receiver the type indicator of second user to tell that his friend is typing or not

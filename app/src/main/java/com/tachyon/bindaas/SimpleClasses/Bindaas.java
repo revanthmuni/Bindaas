@@ -5,16 +5,19 @@ import android.content.Context;
 import android.util.Log;
 
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.danikula.videocache.ProxyCacheException;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.FirebaseApp;
-import com.tachyon.bindaas.CrashHandler;
+
+import java.io.IOException;
+import java.net.Socket;
 
 public class Bindaas extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(getApplicationContext()));
+        //Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(getApplicationContext()));
 
         Fresco.initialize(this);
         FirebaseApp.initializeApp(this);

@@ -213,7 +213,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         item.id = itemdata.optString("id");
 
                         JSONObject audio_path = itemdata.optJSONObject("audio_path");
-                        item.acc_path = audio_path.optString("acc");
+                        item.acc_path = audio_path.optString("aac");
 
 
                         item.sound_name = itemdata.optString("sound_name");

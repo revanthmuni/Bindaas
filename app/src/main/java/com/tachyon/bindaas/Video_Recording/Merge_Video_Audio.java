@@ -70,10 +70,17 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        Log.d("Audio_Test", "onPostExecute: "+s);
+        if (progressDialog!=null){
+            progressDialog.dismiss();
+            Go_To_preview_Activity();
+        }
+
     }
 
     public void Go_To_preview_Activity(){
         Intent intent =new Intent(context,Preview_Video_A.class);
+        Log.d("Audio_Test", "Go_To_preview_Activity: "+Variables.outputfile2);
         intent.putExtra("path", Variables.outputfile2);
         intent.putExtra("draft_file",draft_file);
         context.startActivity(intent);
@@ -167,18 +174,7 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
                 fc.close();
                 Log.d("Audio_Test", "all set");
 
-                try {
-                    Log.d("Audio_Test", "run:dismiss progress ");
-                    progressDialog.dismiss();
-                }catch (Exception e){
-                    Log.d(Variables.tag,e.toString());
 
-                }finally {
-                    Log.d("Audio_Test", "run:goto preview ");
-
-                    Go_To_preview_Activity();
-                }
-                Log.d("Audio_Test", "thread job done ");
 
             } catch (IOException e) {
                 e.printStackTrace();
