@@ -60,11 +60,14 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_list_main);
+        try {
+            initViews();
+            initialiseClickListeners();
+            initialiseTabLayout();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        initViews();
-        initialiseClickListeners();
-        initialiseTabLayout();
-
+        }
     }
 
     private void initialiseTabLayout() {
@@ -93,6 +96,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
+        try{
         switch (v.getId()) {
             case R.id.Goback:
                 onBackPressed();
@@ -105,29 +109,43 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                     requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1000);
                 }
         }
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     private void getAudioFileFromLocal() {
+        try{
         Intent intent_upload = new Intent();
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent_upload, 2000);
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+try{
         if (requestCode == 1000) {
             if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getAudioFileFromLocal();
             }
         }
+}catch (Exception e){
+    Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+}
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        try{
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 2000) {
                 Uri uri = data.getData();
@@ -178,6 +196,10 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 }
             }
+        }
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
         }
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.coremedia.iso.IsoFile;
 import com.coremedia.iso.boxes.Container;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.Movie;
@@ -49,6 +50,7 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
         try {
             progressDialog.show();
         }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
         }
          audio=strings[0];
@@ -71,19 +73,29 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.d("Audio_Test", "onPostExecute: "+s);
+        try{
         if (progressDialog!=null){
             progressDialog.dismiss();
             Go_To_preview_Activity();
+        }
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
         }
 
     }
 
     public void Go_To_preview_Activity(){
+        try{
         Intent intent =new Intent(context,Preview_Video_A.class);
         Log.d("Audio_Test", "Go_To_preview_Activity: "+Variables.outputfile2);
         intent.putExtra("path", Variables.outputfile2);
         intent.putExtra("draft_file",draft_file);
         context.startActivity(intent);
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 
@@ -176,14 +188,9 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(Variables.tag,e.toString());
-
             }
-
         }
 
     };
-
-
-
 
 }

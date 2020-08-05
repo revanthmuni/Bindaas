@@ -43,25 +43,28 @@ public class ReportVideo extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_flag_video);
-
+        try {
             init();
             setListeners();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     public void init() {
 
-            flagOptions = getIntent().getStringExtra("FLAG_OPTIONS");
-            if (flagOptions != null && flagOptions.equals("REPORT_COMMENT")) {
-                commentId = getIntent().getStringExtra("COMMENT_ID");
-            } else
-                videoItem = (Home_Get_Set) getIntent().getSerializableExtra("VIDEO_ITEM");
+        flagOptions = getIntent().getStringExtra("FLAG_OPTIONS");
+        if (flagOptions != null && flagOptions.equals("REPORT_COMMENT")) {
+            commentId = getIntent().getStringExtra("COMMENT_ID");
+        } else
+            videoItem = (Home_Get_Set) getIntent().getSerializableExtra("VIDEO_ITEM");
 
-            radioGroup = findViewById(R.id.rg_reports);
-            submit = findViewById(R.id.bt_submit);
-            reason = findViewById(R.id.et_reason);
-            reason.setVisibility(View.GONE);
-            back = findViewById(R.id.back_btn);
+        radioGroup = findViewById(R.id.rg_reports);
+        submit = findViewById(R.id.bt_submit);
+        reason = findViewById(R.id.et_reason);
+        reason.setVisibility(View.GONE);
+        back = findViewById(R.id.back_btn);
 
     }
 
@@ -104,31 +107,36 @@ public class ReportVideo extends AppCompatActivity {
     }
 
     private void callFlagCommentApi(String commentId, String reason) {
-
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("comment_id", commentId);
-            parameters.put("reason", reason);
-            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Functions.Show_loader(this, false, false);
-        ApiRequest.Call_Api(this, Variables.FLAG_COMMENT, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
-                if (response != null) {
-                    Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("comment_id", commentId);
+                parameters.put("reason", reason);
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+            Functions.Show_loader(this, false, false);
+            ApiRequest.Call_Api(this, Variables.FLAG_COMMENT, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
+                    if (response != null) {
+                        Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                }
+            });
 //        flagCommentRequest.setComment_id(comment.);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void callFlagVideoApi(FlagVideoRequest flagVideoRequest) {
+        try {
             String flagRequest = new Gson().toJson(flagVideoRequest);
             Log.d("FlagVideoRequest", flagRequest);
             JSONObject flagObject = null;
@@ -147,19 +155,27 @@ public class ReportVideo extends AppCompatActivity {
 
                 }
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     private void parseFlagVideo(String resp) {
-
+        try {
             DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
             if (response != null) {
                 Toast.makeText(getBaseContext(), response.getMsg(), Toast.LENGTH_SHORT).show();
                 finish();
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void showAlertDialog(final DefaultResponse response) {
+        try {
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
             builder.setTitle(null);
@@ -178,7 +194,10 @@ public class ReportVideo extends AppCompatActivity {
             });
 
             builder.show();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 

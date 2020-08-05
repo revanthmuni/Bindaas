@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
@@ -34,12 +32,9 @@ import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Data_Send;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
-import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 import com.tachyon.bindaas.helper.CommonUtils;
 import com.tachyon.bindaas.model.DefaultResponse;
-import com.tachyon.bindaas.model.FlagCommentRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,7 +85,8 @@ public class Comment_F extends RootFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_comment, container, false);
-        context = getContext();
+        try {
+            context = getContext();
 
 
             comment_screen = view.findViewById(R.id.comment_screen);
@@ -169,7 +165,10 @@ public class Comment_F extends RootFragment {
 
 
             Get_All_Comments();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
         return view;
     }
@@ -177,7 +176,8 @@ public class Comment_F extends RootFragment {
     CharSequence[] options;
 
     private void ShowCommentOption(final Comment_Get_Set home_get_set, final int position) {
-        final String userId = Variables.sharedPreferences.getString(Variables.u_id, "");
+        try {
+            final String userId = Variables.sharedPreferences.getString(Variables.u_id, "");
 
             if (!home_get_set.user_id.equals(userId))
                 options = new CharSequence[]{"Flag Comment", "Cancel"};
@@ -218,124 +218,148 @@ public class Comment_F extends RootFragment {
             });
 
             builder.show();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
     private void callDeleteCommentApi(String userId, final Comment_Get_Set item,
                                       final int position) {
-        JSONObject params = new JSONObject();
         try {
-            params.put("comment_id", item.comment_id);
-            params.put("user_id", userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Functions.Show_loader(context, false, false);
-        ApiRequest.Call_Api(getActivity(), Variables.DELETE_COMMENT, params, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                Functions.cancel_loader();
-                DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
-                if (response != null) {
-                    Toast.makeText(context, response.getMsg(), Toast.LENGTH_SHORT).show();
-                    data_list.remove(position);
-                    adapter.notifyItemRemoved(position);
-                }
+            JSONObject params = new JSONObject();
+            try {
+                params.put("comment_id", item.comment_id);
+                params.put("user_id", userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
+            Functions.Show_loader(context, false, false);
+            ApiRequest.Call_Api(getActivity(), Variables.DELETE_COMMENT, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
+                    if (response != null) {
+                        Toast.makeText(context, response.getMsg(), Toast.LENGTH_SHORT).show();
+                        data_list.remove(position);
+                        adapter.notifyItemRemoved(position);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     @Override
     public void onDetach() {
-        Functions.hideSoftKeyboard(getActivity());
+        try {
+            Functions.hideSoftKeyboard(getActivity());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         super.onDetach();
     }
 
     // this funtion will get all the comments against post
     public void Get_All_Comments() {
-         Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
-                @Override
-                public void ArrayData(ArrayList arrayList) {
-                    ArrayList<Comment_Get_Set> arrayList1 = arrayList;
-                    for (Comment_Get_Set item : arrayList1) {
-                        data_list.add(item);
-                    }
-                    comment_count_txt.setText(data_list.size() + " comments");
-                    adapter.notifyDataSetChanged();
+        try{
+        Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
+            @Override
+            public void ArrayData(ArrayList arrayList) {
+                ArrayList<Comment_Get_Set> arrayList1 = arrayList;
+                for (Comment_Get_Set item : arrayList1) {
+                    data_list.add(item);
                 }
+                comment_count_txt.setText(data_list.size() + " comments");
+                adapter.notifyDataSetChanged();
+            }
 
-                @Override
-                public void OnSuccess(String responce) {
+            @Override
+            public void OnSuccess(String responce) {
 
-                }
+            }
 
-                @Override
-                public void OnFail(String responce) {
+            @Override
+            public void OnFail(String responce) {
 
-                }
+            }
 
-            });
+        });
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
 
     }
 
     // this function will call an api to upload your comment
     public void Send_Comments(String video_id, final String comment) {
+try{
+        Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
+            @Override
+            public void ArrayData(ArrayList arrayList) {
+                send_progress.setVisibility(View.GONE);
+                send_btn.setVisibility(View.VISIBLE);
 
-          Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
-                @Override
-                public void ArrayData(ArrayList arrayList) {
-                    send_progress.setVisibility(View.GONE);
-                    send_btn.setVisibility(View.VISIBLE);
+                ArrayList<Comment_Get_Set> arrayList1 = arrayList;
+                for (Comment_Get_Set item : arrayList1) {
+                    data_list.add(0, item);
+                    comment_count++;
 
-                    ArrayList<Comment_Get_Set> arrayList1 = arrayList;
-                    for (Comment_Get_Set item : arrayList1) {
-                        data_list.add(0, item);
-                        comment_count++;
+                    SendPushNotification(getActivity(), user_id, comment);
 
-                        SendPushNotification(getActivity(), user_id, comment);
+                    comment_count_txt.setText(comment_count + " comments");
 
-                        comment_count_txt.setText(comment_count + " comments");
-
-                        if (fragment_data_send != null)
-                            fragment_data_send.onDataSent("" + comment_count);
-
-                    }
-                    adapter.notifyDataSetChanged();
+                    if (fragment_data_send != null)
+                        fragment_data_send.onDataSent("" + comment_count);
 
                 }
+                adapter.notifyDataSetChanged();
 
-                @Override
-                public void OnSuccess(String responce) {
+            }
 
-                }
+            @Override
+            public void OnSuccess(String responce) {
 
-                @Override
-                public void OnFail(String responce) {
+            }
 
-                }
-            });
+            @Override
+            public void OnFail(String responce) {
+
+            }
+        });
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+}
 
     }
 
 
     public void SendPushNotification(Activity activity, String user_id, String comment) {
-
-        JSONObject notimap = new JSONObject();
         try {
-            notimap.put("title", Variables.sharedPreferences.getString(Variables.u_name, "") + " Comment on your video");
-            notimap.put("message", comment);
-            notimap.put("icon", Variables.sharedPreferences.getString(Variables.u_pic, ""));
-            notimap.put("senderid", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            notimap.put("receiverid", user_id);
-            notimap.put("action_type", "comment");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            JSONObject notimap = new JSONObject();
+            try {
+                notimap.put("title", Variables.sharedPreferences.getString(Variables.u_name, "") + " Comment on your video");
+                notimap.put("message", comment);
+                notimap.put("icon", Variables.sharedPreferences.getString(Variables.u_pic, ""));
+                notimap.put("senderid", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                notimap.put("receiverid", user_id);
+                notimap.put("action_type", "comment");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             ApiRequest.Call_Api(context, Variables.sendPushNotification, notimap, null);
 
-    }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
+    }
 }

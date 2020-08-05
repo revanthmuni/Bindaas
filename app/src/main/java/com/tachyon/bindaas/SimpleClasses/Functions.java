@@ -88,13 +88,13 @@ public class Functions {
                         }
                     }).show();
         }catch (Exception e){
-                Functions.Show_Error_Log(context,context.getClass().getSimpleName(),e.getMessage());
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
             Log.e("Exception:", "" + e.getMessage());
 //            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
-    public static void Show_Error_Log(Context context,String class_name,String msg){
+    public static void showLogMessage(Context context, String class_name, String msg){
 
         Log.d("Crash Exections:", class_name+": "+msg);
 

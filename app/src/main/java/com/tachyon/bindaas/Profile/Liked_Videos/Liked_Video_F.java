@@ -22,6 +22,7 @@ import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
@@ -65,8 +66,8 @@ public class Liked_Video_F extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_likedvideo, container, false);
-
-        context = getContext();
+        try {
+            context = getContext();
 
             recyclerView = view.findViewById(R.id.recylerview);
             final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
@@ -91,7 +92,10 @@ public class Liked_Video_F extends Fragment {
 
             Call_Api_For_get_Allvideos();
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         return view;
     }
 
@@ -101,20 +105,30 @@ public class Liked_Video_F extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        this.isVisibleToUser = isVisibleToUser;
-        if (view != null && isVisibleToUser) {
-            Call_Api_For_get_Allvideos();
+        try {
+            this.isVisibleToUser = isVisibleToUser;
+            if (view != null && isVisibleToUser) {
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if ((view != null && isVisibleToUser) && !is_api_run) {
-            Call_Api_For_get_Allvideos();
-        } else if ((view != null && Variables.Reload_my_likes_inner) && !is_api_run) {
-            Variables.Reload_my_likes_inner = false;
-            Call_Api_For_get_Allvideos();
+        try {
+            if ((view != null && isVisibleToUser) && !is_api_run) {
+                Call_Api_For_get_Allvideos();
+            } else if ((view != null && Variables.Reload_my_likes_inner) && !is_api_run) {
+                Variables.Reload_my_likes_inner = false;
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -122,7 +136,8 @@ public class Liked_Video_F extends Fragment {
 
     //this will get the all liked videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-    is_api_run = true;
+        try {
+            is_api_run = true;
             JSONObject parameters = new JSONObject();
             try {
 
@@ -139,12 +154,15 @@ public class Liked_Video_F extends Fragment {
             ApiRequest.Call_Api(context, Variables.myLikedVideo, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    Log.d("Test Call_Api", "Responce: "+resp);
+                    Log.d("Test Call_Api", "Responce: " + resp);
                     is_api_run = false;
                     Parse_data(resp);
                 }
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 
@@ -228,10 +246,15 @@ public class Liked_Video_F extends Fragment {
 
 
     private void OpenWatchVideo(int postion) {
-        Intent intent = new Intent(getActivity(), WatchVideos_F.class);
-        intent.putExtra("arraylist", data_list);
-        intent.putExtra("position", postion);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(getActivity(), WatchVideos_F.class);
+            intent.putExtra("arraylist", data_list);
+            intent.putExtra("position", postion);
+            startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 

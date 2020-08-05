@@ -2,7 +2,6 @@ package com.tachyon.bindaas.Home;
 
 import android.content.Context;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -16,10 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -59,7 +54,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dataList!=null?dataList.size():0;
     }
 
 
@@ -135,7 +130,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 holder.varified_btn.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -154,7 +149,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
         public CustomViewHolder(View view) {
             super(view);
-
+try{
 
 //            videoView = view.findViewById(R.id.playerview);
                 username = view.findViewById(R.id.username);
@@ -177,10 +172,14 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 sound_image_layout = view.findViewById(R.id.sound_image_layout);
                 shared_layout = view.findViewById(R.id.shared_layout);
 
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         }
 
         void setVideoData(Home_Get_Set item) {
+            try{
             videoView.setVideoPath(item.video_url);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -204,6 +203,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     mediaPlayer.start();
                 }
             });
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+            }
         }
 
         public void bind(final int postion, final Home_Get_Set item,
@@ -273,7 +276,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 });
 
             } catch (Exception e) {
-                Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
             }
         }

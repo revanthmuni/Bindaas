@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.util.Log;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.Video_Recoder_A;
 import com.downloader.Error;
@@ -60,82 +61,90 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_sound);
+        try {
+            Intent intent = getIntent();
+            if (intent.hasExtra("data")) {
+                item = (Home_Get_Set) intent.getSerializableExtra("data");
+            }
 
-        Intent intent = getIntent();
-        if (intent.hasExtra("data")) {
-            item = (Home_Get_Set) intent.getSerializableExtra("data");
+
+            sound_name = findViewById(R.id.sound_name);
+            description_txt = findViewById(R.id.description_txt);
+            sound_image = findViewById(R.id.sound_image);
+
+            if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
+                sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
+            } else {
+                sound_name.setText(item.sound_name);
+            }
+            description_txt.setText(item.video_description);
+
+
+            findViewById(R.id.back_btn).setOnClickListener(this);
+
+            findViewById(R.id.save_btn).setOnClickListener(this);
+            findViewById(R.id.create_btn).setOnClickListener(this);
+
+            findViewById(R.id.play_btn).setOnClickListener(this);
+            findViewById(R.id.pause_btn).setOnClickListener(this);
+
+
+            Uri uri = Uri.parse(item.thum);
+            sound_image.setImageURI(uri);
+
+            Log.d(Variables.tag, item.thum);
+            Log.d(Variables.tag, item.sound_url_acc);
+
+            Save_Audio();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-
-        sound_name = findViewById(R.id.sound_name);
-        description_txt = findViewById(R.id.description_txt);
-        sound_image = findViewById(R.id.sound_image);
-
-        if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
-            sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
-        } else {
-            sound_name.setText(item.sound_name);
-        }
-        description_txt.setText(item.video_description);
-
-
-        findViewById(R.id.back_btn).setOnClickListener(this);
-
-        findViewById(R.id.save_btn).setOnClickListener(this);
-        findViewById(R.id.create_btn).setOnClickListener(this);
-
-        findViewById(R.id.play_btn).setOnClickListener(this);
-        findViewById(R.id.pause_btn).setOnClickListener(this);
-
-
-        Uri uri = Uri.parse(item.thum);
-        sound_image.setImageURI(uri);
-
-        Log.d(Variables.tag, item.thum);
-        Log.d(Variables.tag, item.sound_url_acc);
-
-        Save_Audio();
-
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        try {
+            switch (v.getId()) {
 
-            case R.id.back_btn:
-                finish();
-                break;
-            case R.id.save_btn:
+                case R.id.back_btn:
+                    finish();
+                    break;
+                case R.id.save_btn:
 
-                String dest = "Bindaas" + item.video_id + ".mp3";
+                    String dest = "Bindaas" + item.video_id + ".mp3";
 
-                try {
-                    copyFile(new File(Variables.app_folder + Variables.SelectedAudio_AAC),
-                            new File(Variables.app_folder + "/Saved/" + dest));
-                    Toast.makeText(this, "Audio Saved", Toast.LENGTH_SHORT).show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    try {
+                        copyFile(new File(Variables.app_folder + Variables.SelectedAudio_AAC),
+                                new File(Variables.app_folder + "/Saved/" + dest));
+                        Toast.makeText(this, "Audio Saved", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case R.id.create_btn:
-                if (player != null) {
-                    if (player.getPlayWhenReady())
-                        player.setPlayWhenReady(false);
-                }
-                Open_video_recording();
-                break;
+                case R.id.create_btn:
+                    if (player != null) {
+                        if (player.getPlayWhenReady())
+                            player.setPlayWhenReady(false);
+                    }
+                    Open_video_recording();
+                    break;
 
-            case R.id.play_btn:
-                if (audio_file != null && audio_file.exists())
-                    playaudio();
+                case R.id.play_btn:
+                    if (audio_file != null && audio_file.exists())
+                        playaudio();
 
-                break;
+                    break;
 
-            case R.id.pause_btn:
-                StopPlaying();
-                break;
+                case R.id.pause_btn:
+                    StopPlaying();
+                    break;
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -143,55 +152,80 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     SimpleExoPlayer player;
 
     public void playaudio() {
+        try {
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                    Util.getUserAgent(this, "TikTok"));
 
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "TikTok"));
-
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.fromFile(audio_file));
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.fromFile(audio_file));
 
 
-        player.prepare(videoSource);
-        player.setPlayWhenReady(true);
+            player.prepare(videoSource);
+            player.setPlayWhenReady(true);
 
-        Show_playing_state();
+            Show_playing_state();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void StopPlaying() {
+        try{
         if (player != null) {
             player.setPlayWhenReady(false);
         }
         Show_pause_state();
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
+        try{
         if (player != null) {
             player.setPlayWhenReady(false);
         }
         Show_pause_state();
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 
     public void Show_playing_state() {
+        try{
         findViewById(R.id.play_btn).setVisibility(View.GONE);
         findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     public void Show_pause_state() {
+        try{
         findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
         findViewById(R.id.pause_btn).setVisibility(View.GONE);
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     DownloadRequest prDownloader;
 
     public void Save_Audio() {
+        try{
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
@@ -238,17 +272,24 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
 
     public void Open_video_recording() {
+        try{
         Intent intent = new Intent(VideoSound_A.this, Video_Recoder_A.class);
         intent.putExtra("sound_name", sound_name.getText().toString());
         intent.putExtra("sound_id", item.sound_id);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
     public static void copyFile(File sourceFile, File destFile) throws IOException {

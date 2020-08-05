@@ -79,83 +79,89 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.activity_sound_list, container, false);
         context = getContext();
+        try {
+            running_sound_id = "none";
 
-        running_sound_id = "none";
 
+            PRDownloader.initialize(context);
+            pbar = view.findViewById(R.id.pbar);
 
-        PRDownloader.initialize(context);
-        pbar = view.findViewById(R.id.pbar);
+            datalist = new ArrayList<>();
 
-        datalist = new ArrayList<>();
+            listview = view.findViewById(R.id.listview);
+            listview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            listview.setNestedScrollingEnabled(false);
+            listview.setHasFixedSize(true);
+            listview.getLayoutManager().setMeasurementCacheEnabled(false);
 
-        listview = view.findViewById(R.id.listview);
-        listview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        listview.setNestedScrollingEnabled(false);
-        listview.setHasFixedSize(true);
-        listview.getLayoutManager().setMeasurementCacheEnabled(false);
+            swiperefresh = view.findViewById(R.id.swiperefresh);
+            swiperefresh.setColorSchemeResources(R.color.black);
+            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    previous_url = "none";
+                    StopPlaying();
+                    Call_Api_For_get_allsound();
+                }
+            });
 
-        swiperefresh = view.findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.black);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                previous_url = "none";
-                StopPlaying();
-                Call_Api_For_get_allsound();
-            }
-        });
+            Call_Api_For_get_allsound();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        Call_Api_For_get_allsound();
-
+        }
         return view;
     }
 
     public void Set_adapter() {
+        try {
+            adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
-        adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    Log.d("resp", item.acc_path);
 
-                Log.d("resp", item.acc_path);
+                    if (view.getId() == R.id.done) {
+                        StopPlaying();
+                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                    } else if (view.getId() == R.id.fav_btn) {
+                        Call_Api_For_Fav_sound(postion, item);
+                    } else if (view.getId() == R.id.play_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
+                    } else if (view.getId() == R.id.pause_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    }
 
-                if (view.getId() == R.id.done) {
-                    StopPlaying();
-                    Down_load_mp3(item.id, item.sound_name, item.acc_path);
-                } else if (view.getId() == R.id.fav_btn) {
-                    Call_Api_For_Fav_sound(postion, item);
-                } else if (view.getId() == R.id.play_arrow) {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                    Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
-                } else if (view.getId() == R.id.pause_arrow) {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                    Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
                 }
+            });
 
-            }
-        });
+            listview.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        listview.setAdapter(adapter);
-
+        }
 
     }
 
@@ -258,7 +264,12 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     @Override
     public boolean onBackPressed() {
-        getActivity().onBackPressed();
+        try {
+            getActivity().onBackPressed();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
         return super.onBackPressed();
     }
 
@@ -269,44 +280,53 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     String previous_url = "none";
 
     public void playaudio(View view, final Sounds_GetSet item) {
-        previous_view = view;
+        try {
+            previous_view = view;
 
-        if (previous_url.equals(item.acc_path)) {
+            if (previous_url.equals(item.acc_path)) {
 
-            previous_url = "none";
-            running_sound_id = "none";
-        } else {
+                previous_url = "none";
+                running_sound_id = "none";
+            } else {
 
-            previous_url = item.acc_path;
-            running_sound_id = item.id;
+                previous_url = item.acc_path;
+                running_sound_id = item.id;
 
-            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-            player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+                DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+                player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                    Util.getUserAgent(context, "TikTok"));
+                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                        Util.getUserAgent(context, "TikTok"));
 
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(item.acc_path));
+                MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(Uri.parse(item.acc_path));
 
 
-            player.prepare(videoSource);
-            player.addListener(this);
+                player.prepare(videoSource);
+                player.addListener(this);
 
-            player.setPlayWhenReady(true);
+                player.setPlayWhenReady(true);
+
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
 
     public void StopPlaying() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-            player.removeListener(this);
-            player.release();
+        try {
+            if (player != null) {
+                player.setPlayWhenReady(false);
+                player.removeListener(this);
+                player.release();
+            }
+            show_Stop_state();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-        show_Stop_state();
     }
 
 
@@ -320,109 +340,127 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     @Override
     public void onStop() {
         super.onStop();
-        active = false;
+        try {
+            active = false;
 
-        running_sound_id = "null";
+            running_sound_id = "null";
 
-        if (player != null) {
-            player.setPlayWhenReady(false);
-            player.removeListener(this);
-            player.release();
+            if (player != null) {
+                player.setPlayWhenReady(false);
+                player.removeListener(this);
+                player.release();
+            }
+
+            show_Stop_state();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        show_Stop_state();
-
     }
 
 
     public void Show_Run_State() {
+        try {
+            if (previous_view != null) {
+                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
 
-        if (previous_view != null) {
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
+                // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-           // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
         }
-
     }
 
 
     public void Show_loading_state() {
-        previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
-        previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-        previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+        try {
+            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+            previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
+            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void show_Stop_state() {
+        try {
+            if (previous_view != null) {
+                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
+                //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
+            }
 
-        if (previous_view != null) {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
-            //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
+            running_sound_id = "none";
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        running_sound_id = "none";
-
     }
 
 
     public void Down_load_mp3(final String id, final String sound_name, String url) {
+        try {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Please Wait...");
+            progressDialog.show();
 
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.show();
+            prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
+                    .build()
+                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                        @Override
+                        public void onStartOrResume() {
 
-        prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
-                .build()
-                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                    @Override
-                    public void onStartOrResume() {
+                        }
+                    })
+                    .setOnPauseListener(new OnPauseListener() {
+                        @Override
+                        public void onPause() {
 
-                    }
-                })
-                .setOnPauseListener(new OnPauseListener() {
-                    @Override
-                    public void onPause() {
+                        }
+                    })
+                    .setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel() {
 
-                    }
-                })
-                .setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel() {
+                        }
+                    })
+                    .setOnProgressListener(new OnProgressListener() {
+                        @Override
+                        public void onProgress(Progress progress) {
 
-                    }
-                })
-                .setOnProgressListener(new OnProgressListener() {
-                    @Override
-                    public void onProgress(Progress progress) {
+                        }
+                    });
 
-                    }
-                });
+            prDownloader.start(new OnDownloadListener() {
+                @Override
+                public void onDownloadComplete() {
+                    progressDialog.dismiss();
+                    Intent output = new Intent();
+                    output.putExtra("isSelected", "yes");
+                    output.putExtra("sound_name", sound_name);
+                    output.putExtra("sound_id", id);
+                    getActivity().setResult(RESULT_OK, output);
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                }
 
-        prDownloader.start(new OnDownloadListener() {
-            @Override
-            public void onDownloadComplete() {
-                progressDialog.dismiss();
-                Intent output = new Intent();
-                output.putExtra("isSelected", "yes");
-                output.putExtra("sound_name", sound_name);
-                output.putExtra("sound_id", id);
-                getActivity().setResult(RESULT_OK, output);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
-            }
+                @Override
+                public void onError(Error error) {
+                    progressDialog.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-            @Override
-            public void onError(Error error) {
-                progressDialog.dismiss();
-            }
-        });
-
+        }
     }
 
 
@@ -487,15 +525,18 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        try {
+            if (playbackState == Player.STATE_BUFFERING) {
+                Show_loading_state();
+            } else if (playbackState == Player.STATE_READY) {
+                Show_Run_State();
+            } else if (playbackState == Player.STATE_ENDED) {
+                show_Stop_state();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        if (playbackState == Player.STATE_BUFFERING) {
-            Show_loading_state();
-        } else if (playbackState == Player.STATE_READY) {
-            Show_Run_State();
-        } else if (playbackState == Player.STATE_ENDED) {
-            show_Stop_state();
         }
-
     }
 
     @Override

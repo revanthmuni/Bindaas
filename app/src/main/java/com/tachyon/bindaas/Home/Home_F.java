@@ -2,7 +2,6 @@ package com.tachyon.bindaas.Home;
 
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
-import com.tachyon.bindaas.LinearLayoutManagerWithSmoothScroller;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Bindaas;
@@ -30,13 +28,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -46,11 +41,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -356,11 +349,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             e.printStackTrace();
         }
 
-        Log.d("TEST", "Call_Api_For_get_Allvideos: "+new Gson().toJson(parameters));
+        Log.d("TEST", "Call_Api_For_get_Allvideos: " + new Gson().toJson(parameters));
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
-                Log.d("Videos_data", "Responce: "+resp);
+                Log.d("Videos_data", "Responce: " + resp);
                 swiperefresh.setRefreshing(false);
                 Parse_data(resp);
             }
@@ -448,7 +441,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
-                Log.d("Videos_data", "Responce: "+resp);
+                Log.d("Videos_data", "Responce: " + resp);
                 swiperefresh.setRefreshing(false);
                 Singal_Video_Parse_data(postion, resp);
             }
@@ -522,180 +515,180 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this will call when swipe for another video and
     // this function will set the player to the current video
     public void Set_Player(final int currentPage) {
-            final Home_Get_Set item = data_list.get(currentPage);
+        final Home_Get_Set item = data_list.get(currentPage);
 
-            Call_cache();
+        Call_cache();
 
-            HttpProxyCacheServer proxy = Bindaas.getProxy(context);
-            String proxyUrl = proxy.getProxyUrl(item.video_url);
+        HttpProxyCacheServer proxy = Bindaas.getProxy(context);
+        String proxyUrl = proxy.getProxyUrl(item.video_url);
 
-            DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024).createDefaultLoadControl();
+        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024).createDefaultLoadControl();
 
-            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-            final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
+        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+        final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
 
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                    Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
 
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(proxyUrl));
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(proxyUrl));
 
-            Log.d(Variables.tag, item.video_url);
-            Log.d(Variables.tag, proxyUrl);
+        Log.d(Variables.tag, item.video_url);
+        Log.d(Variables.tag, proxyUrl);
 
 
-            player.prepare(videoSource);
+        player.prepare(videoSource);
 
-            player.setRepeatMode(Player.REPEAT_MODE_ALL);
-            player.addListener(this);
+        player.setRepeatMode(Player.REPEAT_MODE_ALL);
+        player.addListener(this);
 
 
 //        View layout = layoutManager.findViewByPosition(currentPage);
-            View layout = recyclerView.getRootView();
-            final PlayerView playerView = layout.findViewById(R.id.playerview);
-            playerView.setPlayer(player);
+        View layout = recyclerView.getRootView();
+        final PlayerView playerView = layout.findViewById(R.id.playerview);
+        playerView.setPlayer(player);
 
 
-            player.setPlayWhenReady(is_visible_to_user);
-            privious_player = player;
+        player.setPlayWhenReady(is_visible_to_user);
+        privious_player = player;
 
 
-            final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
+        final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
 
-            playerView.setOnTouchListener(new View.OnTouchListener() {
-                private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+        playerView.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-                    private static final int SWIPE_THRESHOLD = 1;
-                    private static final int SWIPE_VELOCITY_THRESHOLD = 1;
+                private static final int SWIPE_THRESHOLD = 1;
+                private static final int SWIPE_VELOCITY_THRESHOLD = 1;
 
-                    @Override
-                    public boolean onDown(MotionEvent e) {
-                        return true;
-                    }
+                @Override
+                public boolean onDown(MotionEvent e) {
+                    return true;
+                }
 
-                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                        boolean result = false;
-                        try {
-                            float diffY = e2.getY() - e1.getY();
-                            float diffX = e2.getX() - e1.getX();
-                            if (Math.abs(diffX) > Math.abs(diffY)) {
-                                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                                    if (diffX > 0) {
-                                        onSwipeRight();
-                                    } else {
-                                        onSwipeLeft();
-                                    }
-                                    result = true;
-                                }
-                            } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                                if (diffY > 0) {
-                                    onSwipeBottom();
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                    boolean result = false;
+                    try {
+                        float diffY = e2.getY() - e1.getY();
+                        float diffX = e2.getX() - e1.getX();
+                        if (Math.abs(diffX) > Math.abs(diffY)) {
+                            if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffX > 0) {
+                                    onSwipeRight();
                                 } else {
-                                    onSwipeTop();
+                                    onSwipeLeft();
                                 }
                                 result = true;
                             }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+                        } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffY > 0) {
+                                onSwipeBottom();
+                            } else {
+                                onSwipeTop();
+                            }
+                            result = true;
                         }
-                        return result;
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
+                    return result;
+                }
 
-                    public void onSwipeRight() {
-                        OpenProfile(item, true);
-                    }
+                public void onSwipeRight() {
+                    OpenProfile(item, true);
+                }
 
-                    public void onSwipeLeft() {
-                        OpenProfile(item, true);
-                    }
+                public void onSwipeLeft() {
+                    OpenProfile(item, true);
+                }
 
-                    public void onSwipeTop() {
-                    }
+                public void onSwipeTop() {
+                }
 
-                    public void onSwipeBottom() {
-                    }
+                public void onSwipeBottom() {
+                }
 
-
-                    @Override
-                    public boolean onSingleTapUp(MotionEvent e) {
-                        super.onSingleTapUp(e);
-                        if (!player.getPlayWhenReady()) {
-                            is_user_stop_video = false;
-                            privious_player.setPlayWhenReady(true);
-                        } else {
-                            is_user_stop_video = true;
-                            privious_player.setPlayWhenReady(false);
-                        }
-
-
-                        return true;
-                    }
-
-                    @Override
-                    public void onLongPress(MotionEvent e) {
-                        super.onLongPress(e);
-                        Show_video_option(item);
-
-                    }
-
-                    @Override
-                    public boolean onDoubleTap(MotionEvent e) {
-
-                        if (!player.getPlayWhenReady()) {
-                            is_user_stop_video = false;
-                            privious_player.setPlayWhenReady(true);
-                        }
-
-                        if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
-                            Show_heart_on_DoubleTap(item, mainlayout, e);
-                            Like_Video(currentPage, item);
-                        } else {
-                            Toast.makeText(context, "Please Login into app", Toast.LENGTH_SHORT).show();
-                        }
-                        return super.onDoubleTap(e);
-
-                    }
-                });
 
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    gestureDetector.onTouchEvent(event);
+                public boolean onSingleTapUp(MotionEvent e) {
+                    super.onSingleTapUp(e);
+                    if (!player.getPlayWhenReady()) {
+                        is_user_stop_video = false;
+                        privious_player.setPlayWhenReady(true);
+                    } else {
+                        is_user_stop_video = true;
+                        privious_player.setPlayWhenReady(false);
+                    }
+
+
                     return true;
                 }
-            });
-            playerView.setOutlineProvider(new ViewOutlineProvider() {
+
                 @Override
-                public void getOutline(View view, Outline outline) {
-                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), 15);
+                public void onLongPress(MotionEvent e) {
+                    super.onLongPress(e);
+                    Show_video_option(item);
+
+                }
+
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+
+                    if (!player.getPlayWhenReady()) {
+                        is_user_stop_video = false;
+                        privious_player.setPlayWhenReady(true);
+                    }
+
+                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                        Show_heart_on_DoubleTap(item, mainlayout, e);
+                        Like_Video(currentPage, item);
+                    } else {
+                        Toast.makeText(context, "Please Login into app", Toast.LENGTH_SHORT).show();
+                    }
+                    return super.onDoubleTap(e);
+
                 }
             });
 
-            playerView.setClipToOutline(true);
-            TextView desc_txt = layout.findViewById(R.id.desc_txt);
-            HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
-                @Override
-                public void onHashTagClicked(String hashTag) {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
+                return true;
+            }
+        });
+        playerView.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), 15);
+            }
+        });
 
-                    onPause();
-                    OpenHashtag(hashTag);
+        playerView.setClipToOutline(true);
+        TextView desc_txt = layout.findViewById(R.id.desc_txt);
+        HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+            @Override
+            public void onHashTagClicked(String hashTag) {
 
-                }
-            }).handle(desc_txt);
+                onPause();
+                OpenHashtag(hashTag);
+
+            }
+        }).handle(desc_txt);
 
 
        /* LinearLayout soundimage = (LinearLayout) layout.findViewById(R.id.sound_image_layout);
         Animation sound_animation = AnimationUtils.loadAnimation(context, R.anim.d_clockwise_rotation);
         soundimage.startAnimation(sound_animation);
 */
-            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
-                Functions.Call_Api_For_update_view(getActivity(), item.video_id);
+        if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
+            Functions.Call_Api_For_update_view(getActivity(), item.video_id);
 
 
-            swipe_count++;
-            if (swipe_count > 6) {
-                Show_add();
-                swipe_count = 0;
-            }
+        swipe_count++;
+        if (swipe_count > 6) {
+            Show_add();
+            swipe_count = 0;
+        }
 
 
 //        Call_Api_For_Singlevideos(currentPage);
@@ -706,57 +699,57 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     public void Call_cache() {
 
-            if (currentPage + 1 < data_list.size()) {
-                HttpProxyCacheServer proxy = Bindaas.getProxy(context);
-                proxy.getProxyUrl(data_list.get(currentPage + 1).video_url);
-            }
+        if (currentPage + 1 < data_list.size()) {
+            HttpProxyCacheServer proxy = Bindaas.getProxy(context);
+            proxy.getProxyUrl(data_list.get(currentPage + 1).video_url);
+        }
     }
 
 
     public void Show_heart_on_DoubleTap(Home_Get_Set item, final RelativeLayout mainlayout, MotionEvent e) {
 
-            int x = (int) e.getX() - 100;
-            int y = (int) e.getY() - 100;
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            final ImageView iv = new ImageView(getApplicationContext());
-            lp.setMargins(x, y, 0, 0);
-            iv.setLayoutParams(lp);
-            if (item.liked.equals("1"))
-                iv.setImageDrawable(getResources().getDrawable(
-                        R.drawable.ic_like));
-            else
-                iv.setImageDrawable(getResources().getDrawable(
-                        R.drawable.ic_like_fill));
+        int x = (int) e.getX() - 100;
+        int y = (int) e.getY() - 100;
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        final ImageView iv = new ImageView(getApplicationContext());
+        lp.setMargins(x, y, 0, 0);
+        iv.setLayoutParams(lp);
+        if (item.liked.equals("1"))
+            iv.setImageDrawable(getResources().getDrawable(
+                    R.drawable.ic_like));
+        else
+            iv.setImageDrawable(getResources().getDrawable(
+                    R.drawable.ic_like_fill));
 
-            mainlayout.addView(iv);
-            Animation fadeoutani = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+        mainlayout.addView(iv);
+        Animation fadeoutani = AnimationUtils.loadAnimation(context, R.anim.fade_out);
 
-            fadeoutani.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
+        fadeoutani.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
 
-                }
+            }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    mainlayout.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mainlayout.removeView(iv);
-                        }
-                    }, 500);
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mainlayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainlayout.removeView(iv);
+                    }
+                }, 500);
 
 //                mainlayout.removeView(iv);
-                }
+            }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
+            @Override
+            public void onAnimationRepeat(Animation animation) {
 
-                }
-            });
-            iv.startAnimation(fadeoutani);
+            }
+        });
+        iv.startAnimation(fadeoutani);
 
     }
 
@@ -771,12 +764,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onDataSent(String yourData) {
 
-            int comment_count = Integer.parseInt(yourData);
-            Home_Get_Set item = data_list.get(currentPage);
-            item.video_comment_count = "" + comment_count;
-            data_list.remove(currentPage);
-            data_list.add(currentPage, item);
-            adapter.notifyDataSetChanged();
+        int comment_count = Integer.parseInt(yourData);
+        Home_Get_Set item = data_list.get(currentPage);
+        item.video_comment_count = "" + comment_count;
+        data_list.remove(currentPage);
+        data_list.add(currentPage, item);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -788,13 +781,13 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-            is_visible_to_user = isVisibleToUser;
+        is_visible_to_user = isVisibleToUser;
 
-            if (privious_player != null && (isVisibleToUser && !is_user_stop_video)) {
-                privious_player.setPlayWhenReady(true);
-            } else if (privious_player != null && !isVisibleToUser) {
-                privious_player.setPlayWhenReady(false);
-            }
+        if (privious_player != null && (isVisibleToUser && !is_user_stop_video)) {
+            privious_player.setPlayWhenReady(true);
+        } else if (privious_player != null && !isVisibleToUser) {
+            privious_player.setPlayWhenReady(false);
+        }
     }
 
 
@@ -812,42 +805,42 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set) {
 
-            String action;
+        String action;
 
-            if (home_get_set.liked.equals("1")) {
-                action = "0";
-                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
-            } else if (home_get_set.liked.equals("0")){
-                action = "1";
-                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
-            }else{
-                action = "0";
-                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
-                Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
+        if (home_get_set.liked.equals("1")) {
+            action = "0";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
+        } else if (home_get_set.liked.equals("0")) {
+            action = "1";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+        } else {
+            action = "0";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
+            Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
+        }
+
+        data_list.remove(position);
+        home_get_set.liked = action;
+        data_list.add(position, home_get_set);
+        adapter.notifyDataSetChanged();
+
+        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, new API_CallBack() {
+
+            @Override
+            public void ArrayData(ArrayList arrayList) {
+
             }
 
-            data_list.remove(position);
-            home_get_set.liked = action;
-            data_list.add(position, home_get_set);
-            adapter.notifyDataSetChanged();
+            @Override
+            public void OnSuccess(String responce) {
 
-            Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, new API_CallBack() {
+            }
 
-                @Override
-                public void ArrayData(ArrayList arrayList) {
+            @Override
+            public void OnFail(String responce) {
 
-                }
-
-                @Override
-                public void OnSuccess(String responce) {
-
-                }
-
-                @Override
-                public void OnFail(String responce) {
-
-                }
-            });
+            }
+        });
 
     }
 
@@ -855,35 +848,35 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this will open the comment screen
     private void OpenComment(Home_Get_Set item) {
 
-            int comment_counnt = Integer.parseInt(item.video_comment_count);
+        int comment_counnt = Integer.parseInt(item.video_comment_count);
 
-            Fragment_Data_Send fragment_data_send = this;
+        Fragment_Data_Send fragment_data_send = this;
 
-            Comment_F comment_f = new Comment_F(comment_counnt, fragment_data_send);
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-            Bundle args = new Bundle();
-            args.putString("video_id", item.video_id);
-            args.putString("user_id", item.user_id);
-            comment_f.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, comment_f).commit();
+        Comment_F comment_f = new Comment_F(comment_counnt, fragment_data_send);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+        Bundle args = new Bundle();
+        args.putString("video_id", item.video_id);
+        args.putString("user_id", item.user_id);
+        comment_f.setArguments(args);
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.MainMenuFragment, comment_f).commit();
 
 
     }
 
     public void openDiscoverFragment() {
-            Fragment_Data_Send fragment_data_send = this;
+        Fragment_Data_Send fragment_data_send = this;
 
-            Discover_F discover_F = new Discover_F();
-            FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+        Discover_F discover_F = new Discover_F();
+        FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         /*Bundle args = new Bundle();
         args.putString("video_id", item.video_id);
         args.putString("user_id", item.user_id);
         comment_f.setArguments(args);*/
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, discover_F).commit();
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.MainMenuFragment, discover_F).commit();
 
     }
 
@@ -891,13 +884,14 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
 
+        try {
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
                 try {
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
-                }catch (Exception e){
-                    Functions.Show_Error_Log(context,this.getClass().getSimpleName(),e.getMessage());
-                    Log.d("Exception:", "OpenProfile: "+e.getMessage());
+                } catch (Exception e) {
+                    Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+                    Log.d("Exception:", "OpenProfile: " + e.getMessage());
                 }
 
 
@@ -926,13 +920,16 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 transaction.replace(R.id.MainMenuFragment, profile_f).commit();
             }
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenHashtag(String tag) {
-
+        try {
             Taged_Videos_F taged_videos_f = new Taged_Videos_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
@@ -943,11 +940,15 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             transaction.replace(R.id.MainMenuFragment, taged_videos_f).commit();
 
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
     private void Show_video_option(final Home_Get_Set home_get_set) {
+        try {
             String user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
             final String[] options;
             if (home_get_set.user_id.equals(user_id))
@@ -973,8 +974,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                         case "Flag Video":
 
 
-                                flagVideoActivity(home_get_set);
-                                dialog.dismiss();
+                            flagVideoActivity(home_get_set);
+                            dialog.dismiss();
 
 
                             break;
@@ -991,13 +992,16 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             });
 
             builder.show();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 
     private void deleteVideo(final Home_Get_Set item) {
-
-           onPause();
+        try {
+            onPause();
             Functions.Show_loader(context, false, false);
             Functions.Call_Api_For_Delete_Video(getActivity(), item.video_id, new API_CallBack() {
                 @Override
@@ -1016,10 +1020,15 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 }
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void flagVideoActivity(Home_Get_Set home_get_set) {
-    Intent intent = new Intent(context, ReportVideo.class);
+        try {
+            Intent intent = new Intent(context, ReportVideo.class);
             intent.putExtra("FLAG_OPTIONS", "REPORT_VIDEO");
             intent.putExtra("VIDEO_ITEM", home_get_set);
             startActivity(intent);
@@ -1030,12 +1039,16 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         dialog.setContentView(R.layout.dialog_flag_video);
 
         dialog.show();*/
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void Save_Video(final Home_Get_Set item) {
-
-   if (privious_player != null) {
+        try {
+            if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
             }
 
@@ -1127,20 +1140,27 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 }
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
     public void Delete_file_no_watermark(Home_Get_Set item) {
-
+        try {
             File file = new File(Variables.app_folder + item.video_id + ".mp4");
             if (file.exists()) {
                 file.delete();
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void Scan_file(Home_Get_Set item) {
-
+        try {
 
             MediaScannerConnection.scanFile(getActivity(),
                     new String[]{Variables.app_folder + item.video_id + ".mp4"},
@@ -1153,6 +1173,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                             Log.i("ExternalStorage", "-> uri=" + uri);
                         }
                     });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
@@ -1170,18 +1194,27 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onResume() {
         super.onResume();
-
+        try {
             if ((privious_player != null && (is_visible_to_user && !is_user_stop_video)) && !is_fragment_exits()) {
                 privious_player.setPlayWhenReady(true);
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        if (privious_player != null) {
-            privious_player.setPlayWhenReady(false);
+        try {
+            if (privious_player != null) {
+                privious_player.setPlayWhenReady(false);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -1189,8 +1222,13 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onStop() {
         super.onStop();
-        if (privious_player != null) {
-            privious_player.setPlayWhenReady(false);
+        try {
+            if (privious_player != null) {
+                privious_player.setPlayWhenReady(false);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -1198,8 +1236,13 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (privious_player != null) {
-            privious_player.release();
+        try {
+            if (privious_player != null) {
+                privious_player.release();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 

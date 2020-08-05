@@ -114,6 +114,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         context = getContext();
+        try{
         swiperefresh = view.findViewById(R.id.swiperefresh);
         swiperefresh.setProgressViewOffset(false, 0, 200);
 
@@ -134,12 +135,17 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 Call_Api_For_get_Allvideos();
             }
         });
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
         return init();
     }
 
 
     @Override
     public void onClick(View v) {
+        try{
         switch (v.getId()) {
             case R.id.user_image:
                 OpenfullsizeImage(pic_url);
@@ -171,29 +177,42 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 break;
 
         }
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     private void openNotificationFragment() {
+        try{
         Notification_F notification_F = new Notification_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, notification_F).commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
     private void Open_inbox_F() {
+        try{
         Inbox_F inbox_f = new Inbox_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, inbox_f).commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        try{
         if ((view != null && isVisibleToUser)) {
 
             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
@@ -203,20 +222,26 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
             }
         }
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+try{
         Show_draft_count();
 
         if (view != null && Variables.Reload_my_videos) {
             Variables.Reload_my_videos = false;
             Call_Api_For_get_Allvideos();
         }
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
     @Override
@@ -226,7 +251,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     }
 
     public View init() {
-
+try{
         username = view.findViewById(R.id.username);
         username2_txt = view.findViewById(R.id.username2_txt);
         imageView = view.findViewById(R.id.user_image);
@@ -302,7 +327,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
         setupTabIcons();
 
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         return view;
     }
 
@@ -345,7 +373,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
 
     private void setupTabIcons() {
-
+try{
         View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
         ImageView imageView1 = view1.findViewById(R.id.image);
         imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
@@ -418,8 +446,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             }
 
         });
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
-
+}
     }
 
 
@@ -602,7 +632,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
 
     public void Open_Edit_profile() {
-
+try{
         Edit_Profile_F edit_profile_f = new Edit_Profile_F(new Fragment_Callback() {
             @Override
             public void Responce(Bundle bundle) {
@@ -614,24 +644,30 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, edit_profile_f).commit();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 
     public void Open_setting() {
-
+try{
         Setting_F setting_f = new Setting_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, setting_f).commit();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 
     //this method will get the big size of profile image.
     public void OpenfullsizeImage(String url) {
-
+try{
         See_Full_Image_F see_image_f = new See_Full_Image_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
@@ -640,11 +676,15 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         see_image_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, see_image_f).commit();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 
     public void Open_menu_tab(View anchor_view) {
+        try{
         Context wrapper = new ContextThemeWrapper(context, R.style.AlertDialogCustom);
         PopupMenu popup = new PopupMenu(wrapper, anchor_view);
         popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
@@ -677,12 +717,15 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 return true;
             }
         });
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
     }
 
 
     public void Open_Following() {
-
+try{
         Following_F following_f = new Following_F(new Fragment_Callback() {
             @Override
             public void Responce(Bundle bundle) {
@@ -699,10 +742,14 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         following_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, following_f).commit();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+}
     }
 
     public void Open_Followers() {
-
+try{
         Following_F following_f = new Following_F(new Fragment_Callback() {
             @Override
             public void Responce(Bundle bundle) {
@@ -717,11 +764,15 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         following_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, following_f).commit();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
     // this will erase all the user info store in locally and logout the user
     public void Logout() {
+        try{
         SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
         editor.putString(Variables.u_id, "");
         editor.putString(Variables.u_name, "");
@@ -730,12 +781,21 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         editor.commit();
         getActivity().finish();
         startActivity(new Intent(getActivity(), MainMenuActivity.class));
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 
     @Override
     public void onDetach() {
         super.onDetach();
+        try{
         Functions.deleteCache(context);
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 }

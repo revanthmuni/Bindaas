@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
+import com.tachyon.bindaas.SimpleClasses.Functions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +62,18 @@ public class SegmentedProgressBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        try {
+            canvas.drawRoundRect(new RectF(0, 0, percentCompleted, getHeight()), cornerRadius, cornerRadius, progressPaint);
 
-        canvas.drawRoundRect(new RectF(0, 0, percentCompleted, getHeight()), cornerRadius, cornerRadius, progressPaint);
-
-        if (dividerCount > 0 && isDividerEnabled) {
-            for (int i = 0; i < dividerCount; i++) {
-                float leftPosition = dividerPositions.get(i);
-                canvas.drawRect(leftPosition, 0, leftPosition + dividerWidth, getHeight(), dividerPaint);
+            if (dividerCount > 0 && isDividerEnabled) {
+                for (int i = 0; i < dividerCount; i++) {
+                    float leftPosition = dividerPositions.get(i);
+                    canvas.drawRect(leftPosition, 0, leftPosition + dividerWidth, getHeight(), dividerPaint);
+                }
             }
+        } catch (Exception e) {
+            Log.d("Crash Exception", "onDraw: " + e.getMessage());
+
         }
     }
 
@@ -94,9 +100,8 @@ public class SegmentedProgressBar extends View {
     }
 
 
-
-    public void SetListener(ProgressBarListener listeter){
-        this.listener=listeter;
+    public void SetListener(ProgressBarListener listeter) {
+        this.listener = listeter;
     }
 
     /**
@@ -121,7 +126,7 @@ public class SegmentedProgressBar extends View {
     }
 
 
-    public float GetPercentComplete(){
+    public float GetPercentComplete() {
         return percentCompleted;
     }
 

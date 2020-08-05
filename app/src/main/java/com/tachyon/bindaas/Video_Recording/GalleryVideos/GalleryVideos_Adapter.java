@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
 
     @Override
     public int getItemCount() {
-       return dataList.size();
+       return dataList!=null?dataList.size():0;
     }
 
 
@@ -64,20 +65,27 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
 
         public CustomViewHolder(View view) {
             super(view);
-
+try{
             thumb_image=view.findViewById(R.id.thumb_image);
             view_txt=view.findViewById(R.id.view_txt);
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         }
 
         public void bind(final int position,final GalleryVideo_Get_Set item, final GalleryVideos_Adapter.OnItemClickListener listener) {
+            try{
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(position,item,v);
                 }
             });
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+            }
         }
 
     }
@@ -87,6 +95,7 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
 
     @Override
     public void onBindViewHolder(final GalleryVideos_Adapter.CustomViewHolder holder, final int i) {
+          try{
         final GalleryVideo_Get_Set item= dataList.get(i);
 
         holder.view_txt.setText(item.video_time);
@@ -96,7 +105,10 @@ public class GalleryVideos_Adapter extends RecyclerView.Adapter<GalleryVideos_Ad
                 .into(holder.thumb_image);
 
         holder.bind(i,item,listener);
+          }catch (Exception e){
+              Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+          }
    }
 
 }

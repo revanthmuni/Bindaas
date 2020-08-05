@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.SoundLists.SoundList_Main_A;
 import com.tachyon.bindaas.Video_Recording.Merge_Video_Audio;
@@ -55,115 +57,135 @@ import java.util.List;
 
 import static com.tachyon.bindaas.Video_Recording.Video_Recoder_A.Sounds_list_Request_code;
 
-public class GallerySelectedVideo_A extends AppCompatActivity implements View.OnClickListener,Player.EventListener{
+public class GallerySelectedVideo_A extends AppCompatActivity implements View.OnClickListener, Player.EventListener {
 
     String path;
     TextView add_sound_txt;
     String draft_file;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Hide_navigation();
         setContentView(R.layout.activity_gallery_selected_video);
+        try {
+            Intent intent = getIntent();
+            if (intent != null) {
+                path = intent.getStringExtra("video_path");
+                draft_file = intent.getStringExtra("draft_file");
+            }
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            path=intent.getStringExtra("video_path");
-            draft_file=intent.getStringExtra("draft_file");
+            Variables.Selected_sound_id = "null";
+
+            findViewById(R.id.Goback).setOnClickListener(this);
+
+            add_sound_txt = findViewById(R.id.add_sound_txt);
+            add_sound_txt.setOnClickListener(this);
+
+            findViewById(R.id.next_btn).setOnClickListener(this);
+
+            Set_Player();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        Variables.Selected_sound_id="null";
-
-        findViewById(R.id.Goback).setOnClickListener(this);
-
-        add_sound_txt=findViewById(R.id.add_sound_txt);
-        add_sound_txt.setOnClickListener(this);
-
-        findViewById(R.id.next_btn).setOnClickListener(this);
-
-        Set_Player();
-
     }
 
     // this will call when swipe for another video and
     // this function will set the player to the current video
-     SimpleExoPlayer video_player;
-    public void Set_Player(){
+    SimpleExoPlayer video_player;
 
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-        video_player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "TikTok"));
+    public void Set_Player() {
+        try {
 
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(path));
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+            video_player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                    Util.getUserAgent(this, "TikTok"));
 
-        video_player.prepare(videoSource);
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(path));
 
-        video_player.setRepeatMode(Player.REPEAT_MODE_OFF);
-        video_player.addListener(this);
+            video_player.prepare(videoSource);
 
-
-
-        final PlayerView playerView=findViewById(R.id.playerview);
-        playerView.setPlayer(video_player);
-
-        playerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+            video_player.setRepeatMode(Player.REPEAT_MODE_OFF);
+            video_player.addListener(this);
 
 
-        video_player.setPlayWhenReady(true);
+            final PlayerView playerView = findViewById(R.id.playerview);
+            playerView.setPlayer(video_player);
 
+            playerView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+
+
+            video_player.setPlayWhenReady(true);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        try {
+            switch (v.getId()) {
 
-            case R.id.Goback:
-                finish();
-                overridePendingTransition(R.anim.in_from_top,R.anim.out_from_bottom);
-                break;
 
-            case R.id.add_sound_txt:
-                Intent intent =new Intent(this, SoundList_Main_A.class);
-                startActivityForResult(intent,Sounds_list_Request_code);
-                overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-                break;
+                case R.id.Goback:
+                    finish();
+                    overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                    break;
 
-            case R.id.next_btn:
+                case R.id.add_sound_txt:
+                    Intent intent = new Intent(this, SoundList_Main_A.class);
+                    startActivityForResult(intent, Sounds_list_Request_code);
+                    overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+                    break;
 
-                if(video_player!=null) {
-                    video_player.setPlayWhenReady(false);
-                }
-                if(audio!=null) {
-                    audio.pause();
-                }
-                append();
-                break;
+                case R.id.next_btn:
+
+                    if (video_player != null) {
+                        video_player.setPlayWhenReady(false);
+                    }
+                    if (audio != null) {
+                        audio.pause();
+                    }
+                    append();
+                    break;
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
+
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==Sounds_list_Request_code){
-            if(data!=null){
+        try {
+            if (requestCode == Sounds_list_Request_code) {
+                if (data != null) {
 
-                if(data.getStringExtra("isSelected").equals("yes")){
-                    add_sound_txt.setText(data.getStringExtra("sound_name"));
-                    Variables.Selected_sound_id=data.getStringExtra("sound_id");
-                    PreparedAudio();
+                    if (data.getStringExtra("isSelected").equals("yes")) {
+                        add_sound_txt.setText(data.getStringExtra("sound_name"));
+                        Variables.Selected_sound_id = data.getStringExtra("sound_id");
+                        PreparedAudio();
+                    }
+
                 }
 
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -171,34 +193,38 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
     // this will play the sound with the video when we select the audio
     MediaPlayer audio;
-    public  void PreparedAudio(){
-        video_player.setVolume(0);
 
-        File file=new File(Variables.app_folder+ Variables.SelectedAudio_AAC);
-        if(file.exists()) {
-            audio = new MediaPlayer();
-            try {
-                audio.setDataSource(Variables.app_folder+ Variables.SelectedAudio_AAC);
-                audio.prepare();
-                audio.setLooping(true);
+    public void PreparedAudio() {
+        try {
+            video_player.setVolume(0);
+
+            File file = new File(Variables.app_folder + Variables.SelectedAudio_AAC);
+            if (file.exists()) {
+                audio = new MediaPlayer();
+                try {
+                    audio.setDataSource(Variables.app_folder + Variables.SelectedAudio_AAC);
+                    audio.prepare();
+                    audio.setLooping(true);
 
 
-                video_player.seekTo(0);
-                video_player.setPlayWhenReady(true);
-                audio.start();
+                    video_player.seekTo(0);
+                    video_player.setPlayWhenReady(true);
+                    audio.start();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
 
-
-
     // this will apped all the videos parts in one  fullvideo
     private boolean append() {
-        final ProgressDialog progressDialog=new ProgressDialog(GallerySelectedVideo_A.this);
+        final ProgressDialog progressDialog = new ProgressDialog(GallerySelectedVideo_A.this);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -213,27 +239,27 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                 });
 
 
-                ArrayList<String> video_list=new ArrayList<>();
+                ArrayList<String> video_list = new ArrayList<>();
 
-                    File file=new File(path);
+                File file = new File(path);
 
-                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                    retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
-                    String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
-                    boolean isVideo = "yes".equals(hasVideo);
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
+                String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+                boolean isVideo = "yes".equals(hasVideo);
 
-                    if(isVideo && file.length()>3000){
-                        video_list.add(path);
-                    }
+                if (isVideo && file.length() > 3000) {
+                    video_list.add(path);
+                }
 
 
                 try {
 
                     Movie[] inMovies = new Movie[video_list.size()];
 
-                    for (int i=0;i<video_list.size();i++){
+                    for (int i = 0; i < video_list.size(); i++) {
 
-                        inMovies[i]= MovieCreator.build(video_list.get(i));
+                        inMovies[i] = MovieCreator.build(video_list.get(i));
                     }
 
 
@@ -259,11 +285,11 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
                     Container out = new DefaultMp4Builder().build(result);
 
-                    String outputFilePath=null;
-                    if(audio!=null){
-                        outputFilePath=Variables.outputfile;
-                    }else {
-                        outputFilePath=Variables.outputfile2;
+                    String outputFilePath = null;
+                    if (audio != null) {
+                        outputFilePath = Variables.outputfile;
+                    } else {
+                        outputFilePath = Variables.outputfile2;
                     }
 
                     FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
@@ -274,7 +300,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                         public void run() {
                             progressDialog.dismiss();
 
-                            if(audio!=null)
+                            if (audio != null)
                                 Merge_withAudio();
                             else {
                                 Go_To_preview_Activity();
@@ -284,80 +310,94 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                     });
 
 
-
                 } catch (Exception e) {
+                    Functions.showLogMessage(GallerySelectedVideo_A.this, GallerySelectedVideo_A.this.getClass().getSimpleName(), e.getMessage());
 
                 }
             }
         }).start();
 
 
-
         return true;
     }
 
 
-
     // this will add the select audio with the video
-    public void Merge_withAudio(){
+    public void Merge_withAudio() {
+        try {
+            String audio_file;
+            audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
 
-        String audio_file;
-        audio_file = Variables.app_folder+Variables.SelectedAudio_AAC;
 
+            Merge_Video_Audio merge_video_audio = new Merge_Video_Audio(GallerySelectedVideo_A.this);
+            merge_video_audio.doInBackground(audio_file, Variables.outputfile, Variables.outputfile2, draft_file);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        Merge_Video_Audio merge_video_audio=new Merge_Video_Audio(GallerySelectedVideo_A.this);
-        merge_video_audio.doInBackground(audio_file,Variables.outputfile,Variables.outputfile2,draft_file);
-
+        }
     }
 
 
+    public void Go_To_preview_Activity() {
+        try {
+            Intent intent = new Intent(this, Preview_Video_A.class);
+            intent.putExtra("draft_file", draft_file);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            finish();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-    public void Go_To_preview_Activity(){
-        Intent intent =new Intent(this, Preview_Video_A.class);
-        intent.putExtra("draft_file",draft_file);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-        finish();
+        }
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(video_player!=null){
-            video_player.setPlayWhenReady(true);
+        try {
+            if (video_player != null) {
+                video_player.setPlayWhenReady(true);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
-
 
 
     @Override
     public void onStop() {
         super.onStop();
-        try{
-        if(video_player!=null){
-            video_player.setPlayWhenReady(false);
-        }
-        if(audio!=null){
-            audio.pause();
-        }
-        }catch (Exception e){
+        try {
+            if (video_player != null) {
+                video_player.setPlayWhenReady(false);
+            }
+            if (audio != null) {
+                audio.pause();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(video_player!=null){
-            video_player.release();
-        }
+        try {
+            if (video_player != null) {
+                video_player.release();
+            }
 
-        if(audio!=null){
-            audio.pause();
-            audio.release();
+            if (audio != null) {
+                audio.pause();
+                audio.release();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -383,18 +423,21 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        try {
+            if (playbackState == Player.STATE_ENDED) {
 
-        if(playbackState== Player.STATE_ENDED){
+                video_player.seekTo(0);
+                video_player.setPlayWhenReady(true);
 
-            video_player.seekTo(0);
-            video_player.setPlayWhenReady(true);
-
-            if(audio!=null){
-                audio.seekTo(0);
-                audio.start();
+                if (audio != null) {
+                    audio.seekTo(0);
+                    audio.start();
+                }
             }
-        }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     @Override
@@ -428,49 +471,47 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     public void onSeekProcessed() {
 
-        Log.d("resp","smmdsmd");
+        Log.d("resp", "smmdsmd");
     }
 
 
-
     // this will hide the bottom mobile navigation controll
-    public void Hide_navigation(){
+    public void Hide_navigation() {
+        try {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
-        final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            // This work only for android 4.4+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
-        // This work only for android 4.4+
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
+                getWindow().getDecorView().setSystemUiVisibility(flags);
 
-            getWindow().getDecorView().setSystemUiVisibility(flags);
+                // Code below is to handle presses of Volume up or Volume down.
+                // Without this, after pressing volume buttons, the navigation bar will
+                // show up and won't hide
+                final View decorView = getWindow().getDecorView();
+                decorView
+                        .setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 
-            // Code below is to handle presses of Volume up or Volume down.
-            // Without this, after pressing volume buttons, the navigation bar will
-            // show up and won't hide
-            final View decorView = getWindow().getDecorView();
-            decorView
-                    .setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener()
-                    {
-
-                        @Override
-                        public void onSystemUiVisibilityChange(int visibility)
-                        {
-                            if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0)
-                            {
-                                decorView.setSystemUiVisibility(flags);
+                            @Override
+                            public void onSystemUiVisibilityChange(int visibility) {
+                                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                                    decorView.setSystemUiVisibility(flags);
+                                }
                             }
-                        }
-                    });
-        }
+                        });
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
@@ -478,19 +519,21 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus)
-        {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
-
-
 
 
 }

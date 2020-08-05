@@ -36,6 +36,7 @@ import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.OnBackPressListener
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Profile.Profile_Tab_F;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.Video_Recoder_A;
 
@@ -60,13 +61,17 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
+        try{
         context = getContext();
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         pager = view.findViewById(R.id.viewpager);
         pager.setOffscreenPageLimit(3);
         pager.setPagingEnabled(false);
         view.setOnClickListener(this);
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
         return view;
     }
 
@@ -83,13 +88,16 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+try{
         // Note that we are passing childFragmentManager, not FragmentManager
         adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
         pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(pager);
         setupTabIcons();
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 
@@ -110,7 +118,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     // this function will set all the icon and text in
     // Bottom tabs when we open an activity
     private void setupTabIcons() {
-
+try{
         View view1 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
         ImageView imageView1 = view1.findViewById(R.id.image);
 //        TextView title1 = view1.findViewById(R.id.text);
@@ -321,7 +329,10 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             }
 
         }
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 

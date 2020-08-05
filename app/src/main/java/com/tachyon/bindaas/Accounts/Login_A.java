@@ -74,7 +74,6 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.UUID;
 
 public class Login_A extends AppCompatActivity {
     private static final String TAG = "Login_A";
@@ -236,7 +235,7 @@ public class Login_A extends AppCompatActivity {
             tvSignUpText.setText(signupString);
             tvSignUpText.setMovementMethod(LinkMovementMethod.getInstance());
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
         }
 
     }
@@ -264,7 +263,7 @@ public class Login_A extends AppCompatActivity {
                         }
                     });
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
         }
 
     }
@@ -295,7 +294,7 @@ public class Login_A extends AppCompatActivity {
                 Call_Api_For_Signup(id, fname, lname, pic_url, "local");
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -359,7 +358,7 @@ public class Login_A extends AppCompatActivity {
             etLoginEmail = findViewById(R.id.etLoginEmail);
             etLoginPassword = findViewById(R.id.etLoginPassword);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -371,7 +370,7 @@ public class Login_A extends AppCompatActivity {
             email = etLoginEmail.getText().toString().trim();
             password = etLoginPassword.getText().toString().trim();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
         if (CommonUtils.validEmail(email) == Validation.IS_VALID &&
@@ -413,7 +412,7 @@ public class Login_A extends AppCompatActivity {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Variables.privacy_policy));
             startActivity(browserIntent);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -428,7 +427,7 @@ public class Login_A extends AppCompatActivity {
             top_view.startAnimation(anim);
             top_view.setVisibility(View.VISIBLE);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -441,7 +440,7 @@ public class Login_A extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -482,7 +481,7 @@ public class Login_A extends AppCompatActivity {
 
             });
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -542,7 +541,7 @@ public class Login_A extends AppCompatActivity {
                                 }
                             });
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -560,7 +559,7 @@ public class Login_A extends AppCompatActivity {
             } else if (mCallbackManager != null)
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -603,7 +602,7 @@ public class Login_A extends AppCompatActivity {
                 startActivityForResult(signInIntent, 123);
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 

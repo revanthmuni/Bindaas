@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.tachyon.bindaas.R;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
     @Override
     public int getItemCount() {
-       return datalist.size();
+       return datalist!=null?datalist.size():0;
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -53,15 +54,19 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
         public CustomViewHolder(View view) {
             super(view);
+            try{
                 user_image=view.findViewById(R.id.user_image);
                 username=view.findViewById(R.id.username);
                 message=view.findViewById(R.id.message);
                 watch_btn=view.findViewById(R.id.watch_btn);
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+            }
         }
 
         public void bind(final int pos , final Notification_Get_Set item, final Notification_Adapter.OnItemClickListener listener) {
-
+try{
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,7 +80,10 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
                     listener.onItemClick(v,pos,item);
                 }
             });
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         }
 
 
@@ -83,6 +91,7 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
     @Override
     public void onBindViewHolder(final Notification_Adapter.CustomViewHolder holder, final int i) {
+        try{
         holder.setIsRecyclable(false);
     final Notification_Get_Set item=datalist.get(i);
             holder.username.setText(item.username);
@@ -107,7 +116,10 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
 
             holder.bind(i,datalist.get(i),listener);
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
 }
 
 }

@@ -52,49 +52,50 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dataList != null ? dataList.size() : 0;
     }
 
     @Override
     public void onBindViewHolder(final Watch_Videos_Adapter.CustomViewHolder holder, final int i) {
-        final Home_Get_Set item = dataList.get(i);
-        holder.setIsRecyclable(false);
-        Log.d("TAG", "onBindViewHolder: "+item.liked);
+        try {
+            final Home_Get_Set item = dataList.get(i);
+            holder.setIsRecyclable(false);
+            Log.d("TAG", "onBindViewHolder: " + item.liked);
 
         /*holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
                 context.getResources().getDrawable(R.drawable.ic_like));*/
-        // holder.setVideoData(item);
-        holder.bind(i, item, listener);
+            // holder.setVideoData(item);
+            holder.bind(i, item, listener);
 
-        holder.username.setText(item.username);
-
-
-        holder.like_txt.setText("0");
-        if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
-            holder.sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
-        } else {
-            holder.sound_name.setText(item.sound_name);
-        }
-        holder.sound_name.setSelected(true);
+            holder.username.setText(item.username);
 
 
-        holder.desc_txt.setText(item.video_description);
-        Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
+            holder.like_txt.setText("0");
+            if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
+                holder.sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
+            } else {
+                holder.sound_name.setText(item.sound_name);
+            }
+            holder.sound_name.setSelected(true);
 
-        Picasso.with(context).
-                load(item.profile_pic)
-                .centerCrop()
-                .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                .resize(100, 100).into(holder.user_pic);
+
+            holder.desc_txt.setText(item.video_description);
+            Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
+
+            Picasso.with(context).
+                    load(item.profile_pic)
+                    .centerCrop()
+                    .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                    .resize(100, 100).into(holder.user_pic);
 
 
-        if ((item.sound_name == null || item.sound_name.equals(""))
-                || item.sound_name.equals("null")) {
+            if ((item.sound_name == null || item.sound_name.equals(""))
+                    || item.sound_name.equals("null")) {
 
-            item.sound_pic = item.profile_pic;
+                item.sound_pic = item.profile_pic;
 
-        } else if (item.sound_pic.equals(""))
-            item.sound_pic = "Null";
+            } else if (item.sound_pic.equals(""))
+                item.sound_pic = "Null";
 
 
             /*Picasso.with(context).
@@ -103,7 +104,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                     .resize(100, 100).into(holder.sound_image);
 */
 
-        // To load Gif image files
+            // To load Gif image files
             /*Glide.with(context).load(context.getResources().getDrawable(R.drawable.sound))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .into(holder.sound_image);*/
@@ -116,19 +117,19 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             }*/
 
 
-        Log.d("TAG", "onBindViewHolder: " + item.like_count + "::" + item.username + "::" + new Gson().toJson(item));
-        if (item.like_count.equals("0")) {
-            holder.like_txt.setText("0");
-        } else {
-            holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
-        }
-        if (item.liked.equals("1")) {
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
-        } else {
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
-        }
-        // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
-        holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
+            Log.d("TAG", "onBindViewHolder: " + item.like_count + "::" + item.username + "::" + new Gson().toJson(item));
+            if (item.like_count.equals("0")) {
+                holder.like_txt.setText("0");
+            } else {
+                holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
+            }
+            if (item.liked.equals("1")) {
+                holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
+            } else {
+                holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
+            }
+            // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
+            holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
 
 
        /* if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
@@ -136,8 +137,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
         } else {
             holder.varified_btn.setVisibility(View.GONE);
         }*/
-        holder.side_menu.setVisibility(View.VISIBLE);
+            holder.side_menu.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
@@ -154,89 +158,97 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
         public CustomViewHolder(View view) {
             super(view);
-            playerview = view.findViewById(R.id.playerview);
+            try {
+                playerview = view.findViewById(R.id.playerview);
 
-            username = view.findViewById(R.id.username);
-            user_pic = view.findViewById(R.id.user_pic);
-            sound_name = view.findViewById(R.id.sound_name);
-            sound_image = view.findViewById(R.id.sound_image);
-            // varified_btn = view.findViewById(R.id.varified_btn);
+                username = view.findViewById(R.id.username);
+                user_pic = view.findViewById(R.id.user_pic);
+                sound_name = view.findViewById(R.id.sound_name);
+                sound_image = view.findViewById(R.id.sound_image);
+                // varified_btn = view.findViewById(R.id.varified_btn);
 
-            like_layout = view.findViewById(R.id.like_layout);
-            like_image = view.findViewById(R.id.like_image);
-            like_txt = view.findViewById(R.id.like_txt);
-            side_menu = view.findViewById(R.id.side_menu);
+                like_layout = view.findViewById(R.id.like_layout);
+                like_image = view.findViewById(R.id.like_image);
+                like_txt = view.findViewById(R.id.like_txt);
+                side_menu = view.findViewById(R.id.side_menu);
 
 
-            comment_layout = view.findViewById(R.id.comment_layout);
-            comment_image = view.findViewById(R.id.comment_image);
-            comment_txt = view.findViewById(R.id.comment_txt);
+                comment_layout = view.findViewById(R.id.comment_layout);
+                comment_image = view.findViewById(R.id.comment_image);
+                comment_txt = view.findViewById(R.id.comment_txt);
 
-            desc_txt = view.findViewById(R.id.desc_txt);
+                desc_txt = view.findViewById(R.id.desc_txt);
 
-            sound_image_layout = view.findViewById(R.id.sound_image_layout);
-            shared_layout = view.findViewById(R.id.shared_layout);
+                sound_image_layout = view.findViewById(R.id.sound_image_layout);
+                shared_layout = view.findViewById(R.id.shared_layout);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+            }
         }
 
         public void bind(final int postion, final Home_Get_Set item, final Watch_Videos_Adapter.OnItemClickListener listener) {
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(postion, item, v);
-                }
-            });
-
-
-            user_pic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Log.d("USR_TST", "onClick: " + item.user_id);
-                    listener.onItemClick(postion, item, v);
-                }
-            });
-
-            username.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    listener.onItemClick(postion, item, v);
-                }
-            });
-
-            like_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+            try {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
 
-            comment_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                user_pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                        Log.d("USR_TST", "onClick: " + item.user_id);
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-            shared_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                username.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-            sound_image_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                like_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+
+
+                comment_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+
+                shared_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+
+                sound_image_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+            }
 
         }
 

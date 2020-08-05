@@ -45,7 +45,6 @@ import com.tachyon.bindaas.AudioTrimming.utils.FileUtilsForAudio;
 import com.tachyon.bindaas.AudioTrimming.utils.Utility;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
-import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -209,7 +208,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
 //       pickUpFile();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -241,7 +240,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, 2000);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -375,7 +374,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -483,7 +482,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             };
             mLoadSoundFileThread.start();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -516,7 +515,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -595,7 +594,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             };
             mRecordAudioThread.start();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -639,7 +638,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             updateDisplay();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -820,7 +819,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             txtEndPosition.setLayoutParams(params);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -834,7 +833,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             mStartPos = audioWaveform.secondsToPixels(0.0);
             mEndPos = audioWaveform.secondsToPixels(15.0);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -851,7 +850,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             if (mOffsetGoal < 0)
                 mOffsetGoal = 0;
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -931,7 +930,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             mTouchInitialEndPos = mEndPos;
             handlePause();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -951,7 +950,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             updateDisplay();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -965,7 +964,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 setOffsetGoalEnd();
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -994,7 +993,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             updateDisplay();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1025,7 +1024,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             updateDisplay();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1039,7 +1038,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             updateDisplay();
 
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1062,7 +1061,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 }
             }, 100);
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1086,7 +1085,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 updateDisplay();
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1098,7 +1097,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             mTouchInitialOffset = mOffset;
             mFlingVelocity = 0;
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 //        long mWaveformTouchStartMsec = Utility.getCurrentTime();
@@ -1109,7 +1108,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             mOffset = trap((int) (mTouchInitialOffset + (mTouchStart - x)));
             updateDisplay();
         } catch (Exception e) {
-            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -1187,7 +1186,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         mFlingVelocity = (int) (-vx);
         updateDisplay();
         }catch (Exception e){
-            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
         }
     }
@@ -1270,7 +1269,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         };
         mSaveSoundFileThread.start();
         }catch (Exception e){
-            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
         }
     }
@@ -1316,7 +1315,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             finish();
         }
         }catch (Exception e){
-            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
         }
     }
@@ -1450,7 +1449,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         };
         mLoadSoundFileThread.start();
         }catch (Exception e){
-            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
         }
     }

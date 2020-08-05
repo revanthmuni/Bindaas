@@ -30,6 +30,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.AnimatedGifEncoder;
 
@@ -224,31 +225,34 @@ public class Upload_Service extends Service {
 
     // this will show the sticky notification during uploading video
     private void showNotification() {
+        try {
+            Intent notificationIntent = new Intent(this, MainMenuActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                    notificationIntent, 0);
 
-        Intent notificationIntent = new Intent(this, MainMenuActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+            final String CHANNEL_ID = "default";
+            final String CHANNEL_NAME = "Default";
 
-        final String CHANNEL_ID = "default";
-        final String CHANNEL_NAME = "Default";
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(this.NOTIFICATION_SERVICE);
 
-        NotificationManager notificationManager = (NotificationManager) this.getSystemService(this.NOTIFICATION_SERVICE);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel defaultChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(defaultChannel);
+            }
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel defaultChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(defaultChannel);
+            androidx.core.app.NotificationCompat.Builder builder = (androidx.core.app.NotificationCompat.Builder) new androidx.core.app.NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(android.R.drawable.stat_sys_upload)
+                    .setContentTitle("Uploading Video")
+                    .setContentText("Please wait! Video is uploading....")
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                            android.R.drawable.stat_sys_upload))
+                    .setContentIntent(pendingIntent);
+
+            Notification notification = builder.build();
+            startForeground(101, notification);
+        } catch (Exception e) {
+            Log.d("Crash Exception", "showNotification: " + e.getMessage());
         }
-
-        androidx.core.app.NotificationCompat.Builder builder = (androidx.core.app.NotificationCompat.Builder) new androidx.core.app.NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.stat_sys_upload)
-                .setContentTitle("Uploading Video")
-                .setContentText("Please wait! Video is uploading....")
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-                        android.R.drawable.stat_sys_upload))
-                .setContentIntent(pendingIntent);
-
-        Notification notification = builder.build();
-        startForeground(101, notification);
     }
 
 

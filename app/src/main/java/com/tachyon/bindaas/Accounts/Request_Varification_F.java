@@ -87,7 +87,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
             }
 
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
         return view;
@@ -113,7 +113,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                     break;
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -155,7 +155,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
             builder.show();
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -178,7 +178,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 return true;
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -208,7 +208,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 }
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -249,7 +249,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 result = "Not found";
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -361,7 +361,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -384,7 +384,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 Toast.makeText(context, "Please select the image", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
         return true;
