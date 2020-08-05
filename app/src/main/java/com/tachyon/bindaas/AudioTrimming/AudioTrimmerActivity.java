@@ -44,6 +44,7 @@ import com.tachyon.bindaas.AudioTrimming.customAudioViews.WaveformView;
 import com.tachyon.bindaas.AudioTrimming.utils.FileUtilsForAudio;
 import com.tachyon.bindaas.AudioTrimming.utils.Utility;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.io.File;
@@ -133,79 +134,84 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_trim);
+        try {
 
-        if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-        mHandler = new Handler();
+            if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+            mHandler = new Handler();
 
-        txtAudioCancel = (TextView) findViewById(R.id.txtAudioCancel);
-        txtAudioUpload = (TextView) findViewById(R.id.txtAudioUpload);
-        txtStartPosition = (TextView) findViewById(R.id.txtStartPosition);
-        txtEndPosition = (TextView) findViewById(R.id.txtEndPosition);
-        llAudioCapture = (LinearLayout) findViewById(R.id.llAudioCapture);
-        txtAudioRecord = (TextView) findViewById(R.id.txtAudioRecord);
-        txtAudioRecordTime = (TextView) findViewById(R.id.txtAudioRecordTime);
-        rlAudioEdit = (RelativeLayout) findViewById(R.id.rlAudioEdit);
-        markerStart = (MarkerView) findViewById(R.id.markerStart);
-        markerEnd = (MarkerView) findViewById(R.id.markerEnd);
-        audioWaveform = (WaveformView) findViewById(R.id.audioWaveform);
-        txtAudioRecordTimeUpdate = (TextView) findViewById(R.id.txtAudioRecordTimeUpdate);
-        txtAudioReset = (TextView) findViewById(R.id.txtAudioReset);
-        txtAudioDone = (TextView) findViewById(R.id.txtAudioDone);
-        txtAudioPlay = (TextView) findViewById(R.id.txtAudioPlay);
-        txtAudioRecordUpdate = (TextView) findViewById(R.id.txtAudioRecordUpdate);
-        txtAudioCrop = (TextView) findViewById(R.id.txtAudioCrop);
+            txtAudioCancel = (TextView) findViewById(R.id.txtAudioCancel);
+            txtAudioUpload = (TextView) findViewById(R.id.txtAudioUpload);
+            txtStartPosition = (TextView) findViewById(R.id.txtStartPosition);
+            txtEndPosition = (TextView) findViewById(R.id.txtEndPosition);
+            llAudioCapture = (LinearLayout) findViewById(R.id.llAudioCapture);
+            txtAudioRecord = (TextView) findViewById(R.id.txtAudioRecord);
+            txtAudioRecordTime = (TextView) findViewById(R.id.txtAudioRecordTime);
+            rlAudioEdit = (RelativeLayout) findViewById(R.id.rlAudioEdit);
+            markerStart = (MarkerView) findViewById(R.id.markerStart);
+            markerEnd = (MarkerView) findViewById(R.id.markerEnd);
+            audioWaveform = (WaveformView) findViewById(R.id.audioWaveform);
+            txtAudioRecordTimeUpdate = (TextView) findViewById(R.id.txtAudioRecordTimeUpdate);
+            txtAudioReset = (TextView) findViewById(R.id.txtAudioReset);
+            txtAudioDone = (TextView) findViewById(R.id.txtAudioDone);
+            txtAudioPlay = (TextView) findViewById(R.id.txtAudioPlay);
+            txtAudioRecordUpdate = (TextView) findViewById(R.id.txtAudioRecordUpdate);
+            txtAudioCrop = (TextView) findViewById(R.id.txtAudioCrop);
 
-        mRecordedSoundFile = null;
-        mKeyDown = false;
-        audioWaveform.setListener(this);
+            mRecordedSoundFile = null;
+            mKeyDown = false;
+            audioWaveform.setListener(this);
 
-        markerStart.setListener(this);
-        markerStart.setAlpha(1f);
-        markerStart.setFocusable(true);
-        markerStart.setFocusableInTouchMode(true);
-        mStartVisible = true;
+            markerStart.setListener(this);
+            markerStart.setAlpha(1f);
+            markerStart.setFocusable(true);
+            markerStart.setFocusableInTouchMode(true);
+            mStartVisible = true;
 
-        markerEnd.setListener(this);
-        markerEnd.setAlpha(1f);
-        markerEnd.setFocusable(true);
-        markerEnd.setFocusableInTouchMode(true);
-        mEndVisible = true;
+            markerEnd.setListener(this);
+            markerEnd.setAlpha(1f);
+            markerEnd.setFocusable(true);
+            markerEnd.setFocusableInTouchMode(true);
+            mEndVisible = true;
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        mDensity = metrics.density;
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            mDensity = metrics.density;
 
-        /**
-         * Change this for marker handle as per your view
-         */
-        mMarkerLeftInset = (int) (17.5 * mDensity);
-        mMarkerRightInset = (int) (19.5 * mDensity);
-        mMarkerTopOffset = (int) (6 * mDensity);
-        mMarkerBottomOffset = (int) (6 * mDensity);
+            /**
+             * Change this for marker handle as per your view
+             */
+            mMarkerLeftInset = (int) (17.5 * mDensity);
+            mMarkerRightInset = (int) (19.5 * mDensity);
+            mMarkerTopOffset = (int) (6 * mDensity);
+            mMarkerBottomOffset = (int) (6 * mDensity);
 
-        /**
-         * Change this for duration text as per your view
-         */
+            /**
+             * Change this for duration text as per your view
+             */
 
-        mTextLeftInset = (int) (20 * mDensity);
-        mTextTopOffset = (int) (-1 * mDensity);
-        mTextRightInset = (int) (19 * mDensity);
-        mTextBottomOffset = (int) (-40 * mDensity);
+            mTextLeftInset = (int) (20 * mDensity);
+            mTextTopOffset = (int) (-1 * mDensity);
+            mTextRightInset = (int) (19 * mDensity);
+            mTextBottomOffset = (int) (-40 * mDensity);
 
-        txtAudioCancel.setOnClickListener(this);
-        txtAudioUpload.setOnClickListener(this);
-        txtAudioRecord.setOnClickListener(this);
-        txtAudioDone.setOnClickListener(this);
-        txtAudioPlay.setOnClickListener(this);
-        txtAudioRecordUpdate.setOnClickListener(this);
-        txtAudioCrop.setOnClickListener(this);
-        txtAudioReset.setOnClickListener(this);
+            txtAudioCancel.setOnClickListener(this);
+            txtAudioUpload.setOnClickListener(this);
+            txtAudioRecord.setOnClickListener(this);
+            txtAudioDone.setOnClickListener(this);
+            txtAudioPlay.setOnClickListener(this);
+            txtAudioRecordUpdate.setOnClickListener(this);
+            txtAudioCrop.setOnClickListener(this);
+            txtAudioReset.setOnClickListener(this);
 
-        mHandler.postDelayed(mTimerRunnable, 100);
+            mHandler.postDelayed(mTimerRunnable, 100);
 
 //       pickUpFile();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
@@ -229,16 +235,22 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     };
 
     private void pickUpFile() {
-        Intent intent = new Intent();
-        intent.setType("audio/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 2000);
+        try {
+            Intent intent = new Intent();
+            intent.setType("audio/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, 2000);
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     @Override
     public void onClick(View view) {
-        if (view == txtAudioRecord) {
-            Log.d(TAG, "onClick: start Recording");
+        try {
+            if (view == txtAudioRecord) {
+                Log.d(TAG, "onClick: start Recording");
             /*if (isAudioRecording) {
                 isAudioRecording = false;
                 mRecordingKeepGoing = false;
@@ -255,111 +267,115 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             intent_upload.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent_upload, 2000);*/
 
-            pickUpFile();
+                pickUpFile();
 
 
-        } else if (view == txtAudioCancel) {
-            Log.d(TAG, "onClick: cancel Recording");
+            } else if (view == txtAudioCancel) {
+                Log.d(TAG, "onClick: cancel Recording");
 
-            finish();
-        } else if (view == txtAudioRecordUpdate) {
-            Log.d(TAG, "onClick: txtAudioRecordUpdate Recording");
-            rlAudioEdit.setVisibility(View.GONE);
-            txtAudioUpload.setVisibility(View.GONE);
-            llAudioCapture.setVisibility(View.VISIBLE);
-            isAudioRecording = true;
-            txtAudioRecord.setBackgroundResource(R.drawable.ic_stop_btn1);
-            txtAudioRecordTime.setVisibility(View.VISIBLE);
-            startRecording();
-            mRecordingLastUpdateTime = Utility.getCurrentTime();
-            mRecordingKeepGoing = true;
+                finish();
+            } else if (view == txtAudioRecordUpdate) {
+                Log.d(TAG, "onClick: txtAudioRecordUpdate Recording");
+                rlAudioEdit.setVisibility(View.GONE);
+                txtAudioUpload.setVisibility(View.GONE);
+                llAudioCapture.setVisibility(View.VISIBLE);
+                isAudioRecording = true;
+                txtAudioRecord.setBackgroundResource(R.drawable.ic_stop_btn1);
+                txtAudioRecordTime.setVisibility(View.VISIBLE);
+                startRecording();
+                mRecordingLastUpdateTime = Utility.getCurrentTime();
+                mRecordingKeepGoing = true;
 //            txtAudioCrop.setBackgroundResource(R.drawable.ic_crop_btn);
-            txtAudioDone.setVisibility(View.GONE);
-            txtAudioCrop.setVisibility(View.VISIBLE);
-            txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
-            markerStart.setVisibility(View.INVISIBLE);
-            markerEnd.setVisibility(View.INVISIBLE);
-            txtStartPosition.setVisibility(View.VISIBLE);
-            txtEndPosition.setVisibility(View.VISIBLE);
-
-
-        } else if (view == txtAudioPlay) {
-
-            Log.d(TAG, "onClick: txtAudioPlay");
-            if (!mIsPlaying) {
-                txtAudioPlay.setBackgroundResource(R.drawable.ic_pause_btn);
-            } else {
-                txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
-            }
-            onPlay(mStartPos);
-        } else if (view == txtAudioDone) {
-            Log.d(TAG, "onClick: txtAudioDone");
-            double startTime = audioWaveform.pixelsToSeconds(mStartPos);
-            double endTime = audioWaveform.pixelsToSeconds(mEndPos);
-            double difference = endTime - startTime;
-
-            if (difference <= 0) {
-                Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be greater than 0 seconds", Toast.LENGTH_SHORT).show();
-            } else if (difference > 60) {
-                Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be less than 1 minute", Toast.LENGTH_SHORT).show();
-            } else {
-                if (mIsPlaying) {
-                    handlePause();
-                }
-                saveRingtone(0);
-
                 txtAudioDone.setVisibility(View.GONE);
-                txtAudioReset.setVisibility(View.VISIBLE);
-//                txtAudioCrop.setBackgroundResource(R.drawable.ic_crop_btn_fill);
                 txtAudioCrop.setVisibility(View.VISIBLE);
-
+                txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
                 markerStart.setVisibility(View.INVISIBLE);
                 markerEnd.setVisibility(View.INVISIBLE);
-                txtStartPosition.setVisibility(View.INVISIBLE);
-                txtEndPosition.setVisibility(View.INVISIBLE);
-            }
+                txtStartPosition.setVisibility(View.VISIBLE);
+                txtEndPosition.setVisibility(View.VISIBLE);
 
 
-        } else if (view == txtAudioReset) {
+            } else if (view == txtAudioPlay) {
 
-            Log.d(TAG, "onClick: txtAudioReset");
-            audioWaveform.setIsDrawBorder(true);
-            mPlayer = new SamplePlayer(mRecordedSoundFile);
-            finishOpeningSoundFile(mRecordedSoundFile, 1);
-
-        } else if (view == txtAudioCrop) {
-            Log.d(TAG, "onClick: txtAudioCrop");
-//            txtAudioCrop.setBackgroundResource(R.drawable.ic_crop_btn);
-            txtAudioCrop.setVisibility(View.GONE);
-            txtAudioDone.setVisibility(View.VISIBLE);
-            txtAudioReset.setVisibility(View.VISIBLE);
-
-            audioWaveform.setIsDrawBorder(true);
-            audioWaveform.setBackgroundColor(getResources().getColor(R.color.colorWaveformBg));
-            markerStart.setVisibility(View.VISIBLE);
-            markerEnd.setVisibility(View.VISIBLE);
-            txtStartPosition.setVisibility(View.VISIBLE);
-            txtEndPosition.setVisibility(View.VISIBLE);
-
-
-        } else if (view == txtAudioUpload) {
-
-            Log.d(TAG, "onClick: txtAudioUpload");
-            if (txtAudioDone.getVisibility() == View.VISIBLE) {
-                if (mIsPlaying) {
-                    handlePause();
+                Log.d(TAG, "onClick: txtAudioPlay");
+                if (!mIsPlaying) {
+                    txtAudioPlay.setBackgroundResource(R.drawable.ic_pause_btn);
+                } else {
+                    txtAudioPlay.setBackgroundResource(R.drawable.ic_play_btn);
                 }
-                saveRingtone(1);
-            } else {
-                Log.d(TAG, "onClick: else conditions");
-                Bundle conData = new Bundle();
-                conData.putString("INTENT_AUDIO_FILE", mFile.getAbsolutePath());
-                Intent intent = new Intent();
-                intent.putExtra("file", mFile);
-                intent.putExtras(conData);
-                setResult(RESULT_OK, intent);
-                finish();
+                onPlay(mStartPos);
+            } else if (view == txtAudioDone) {
+                Log.d(TAG, "onClick: txtAudioDone");
+                double startTime = audioWaveform.pixelsToSeconds(mStartPos);
+                double endTime = audioWaveform.pixelsToSeconds(mEndPos);
+                double difference = endTime - startTime;
+
+                if (difference <= 0) {
+                    Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be greater than 0 seconds", Toast.LENGTH_SHORT).show();
+                } else if (difference > 60) {
+                    Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be less than 1 minute", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (mIsPlaying) {
+                        handlePause();
+                    }
+                    saveRingtone(0);
+
+                    txtAudioDone.setVisibility(View.GONE);
+                    txtAudioReset.setVisibility(View.VISIBLE);
+//                txtAudioCrop.setBackgroundResource(R.drawable.ic_crop_btn_fill);
+                    txtAudioCrop.setVisibility(View.VISIBLE);
+
+                    markerStart.setVisibility(View.INVISIBLE);
+                    markerEnd.setVisibility(View.INVISIBLE);
+                    txtStartPosition.setVisibility(View.INVISIBLE);
+                    txtEndPosition.setVisibility(View.INVISIBLE);
+                }
+
+
+            } else if (view == txtAudioReset) {
+
+                Log.d(TAG, "onClick: txtAudioReset");
+                audioWaveform.setIsDrawBorder(true);
+                mPlayer = new SamplePlayer(mRecordedSoundFile);
+                finishOpeningSoundFile(mRecordedSoundFile, 1);
+
+            } else if (view == txtAudioCrop) {
+                Log.d(TAG, "onClick: txtAudioCrop");
+//            txtAudioCrop.setBackgroundResource(R.drawable.ic_crop_btn);
+                txtAudioCrop.setVisibility(View.GONE);
+                txtAudioDone.setVisibility(View.VISIBLE);
+                txtAudioReset.setVisibility(View.VISIBLE);
+
+                audioWaveform.setIsDrawBorder(true);
+                audioWaveform.setBackgroundColor(getResources().getColor(R.color.colorWaveformBg));
+                markerStart.setVisibility(View.VISIBLE);
+                markerEnd.setVisibility(View.VISIBLE);
+                txtStartPosition.setVisibility(View.VISIBLE);
+                txtEndPosition.setVisibility(View.VISIBLE);
+
+
+            } else if (view == txtAudioUpload) {
+
+                Log.d(TAG, "onClick: txtAudioUpload");
+                if (txtAudioDone.getVisibility() == View.VISIBLE) {
+                    if (mIsPlaying) {
+                        handlePause();
+                    }
+                    saveRingtone(1);
+                } else {
+                    Log.d(TAG, "onClick: else conditions");
+                    Bundle conData = new Bundle();
+                    conData.putString("INTENT_AUDIO_FILE", mFile.getAbsolutePath());
+                    Intent intent = new Intent();
+                    intent.putExtra("file", mFile);
+                    intent.putExtras(conData);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
             }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -390,56 +406,169 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void audioGraph(String mFilename) {
+        try {
+            mFile = new File(mFilename);
+            mLoadingLastUpdateTime = Utility.getCurrentTime();
+            mLoadingKeepGoing = true;
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setTitle("Loading ...");
+            mProgressDialog.show();
 
-        mFile = new File(mFilename);
-        mLoadingLastUpdateTime = Utility.getCurrentTime();
-        mLoadingKeepGoing = true;
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mProgressDialog.setTitle("Loading ...");
-        mProgressDialog.show();
+            final SoundFile.ProgressListener listener =
+                    new SoundFile.ProgressListener() {
+                        public boolean reportProgress(double fractionComplete) {
 
-        final SoundFile.ProgressListener listener =
-                new SoundFile.ProgressListener() {
-                    public boolean reportProgress(double fractionComplete) {
-
-                        long now = Utility.getCurrentTime();
-                        if (now - mLoadingLastUpdateTime > 100) {
-                            mProgressDialog.setProgress(
-                                    (int) (mProgressDialog.getMax() * fractionComplete));
-                            mLoadingLastUpdateTime = now;
+                            long now = Utility.getCurrentTime();
+                            if (now - mLoadingLastUpdateTime > 100) {
+                                mProgressDialog.setProgress(
+                                        (int) (mProgressDialog.getMax() * fractionComplete));
+                                mLoadingLastUpdateTime = now;
+                            }
+                            return mLoadingKeepGoing;
                         }
-                        return mLoadingKeepGoing;
-                    }
-                };
+                    };
 
-        // Load the sound file in a background thread
-        Thread mLoadSoundFileThread = new Thread() {
-            public void run() {
-                try {
-                    mRecordedSoundFile = SoundFile.create(mFile.getAbsolutePath(), listener);
-                    if (mRecordedSoundFile == null) {
+            // Load the sound file in a background thread
+            Thread mLoadSoundFileThread = new Thread() {
+                public void run() {
+                    try {
+                        mRecordedSoundFile = SoundFile.create(mFile.getAbsolutePath(), listener);
+                        if (mRecordedSoundFile == null) {
+                            mProgressDialog.dismiss();
+                            String name = mFile.getName().toLowerCase();
+                            String[] components = name.split("\\.");
+                            String err;
+                            if (components.length < 2) {
+                                err = "No Extension";
+                            } else {
+                                err = "Bad Extension";
+                            }
+                            final String finalErr = err;
+                            Log.e(" >> ", "" + finalErr);
+                            return;
+                        }
+                        mPlayer = new SamplePlayer(mRecordedSoundFile);
+                    } catch (final Exception e) {
                         mProgressDialog.dismiss();
-                        String name = mFile.getName().toLowerCase();
-                        String[] components = name.split("\\.");
-                        String err;
-                        if (components.length < 2) {
-                            err = "No Extension";
-                        } else {
-                            err = "Bad Extension";
-                        }
-                        final String finalErr = err;
-                        Log.e(" >> ", "" + finalErr);
+                        e.printStackTrace();
                         return;
                     }
-                    mPlayer = new SamplePlayer(mRecordedSoundFile);
-                } catch (final Exception e) {
                     mProgressDialog.dismiss();
-                    e.printStackTrace();
-                    return;
+                    if (mLoadingKeepGoing) {
+                        Runnable runnable = new Runnable() {
+                            public void run() {
+
+                                audioWaveform.setIsDrawBorder(true);
+                                finishOpeningSoundFile(mRecordedSoundFile, 0);
+                                txtAudioRecord.setBackgroundResource(R.drawable.ic_stop_btn1);
+                                txtAudioRecordTime.setVisibility(View.INVISIBLE);
+                                txtStartPosition.setVisibility(View.VISIBLE);
+                                txtEndPosition.setVisibility(View.VISIBLE);
+                                markerEnd.setVisibility(View.VISIBLE);
+                                markerStart.setVisibility(View.VISIBLE);
+                                llAudioCapture.setVisibility(View.GONE);
+                                rlAudioEdit.setVisibility(View.VISIBLE);
+                                txtAudioUpload.setVisibility(View.VISIBLE);
+
+                                txtAudioReset.setVisibility(View.VISIBLE);
+                                txtAudioCrop.setVisibility(View.GONE);
+                                txtAudioDone.setVisibility(View.VISIBLE);
+
+                            }
+                        };
+                        mHandler.post(runnable);
+                    }
                 }
-                mProgressDialog.dismiss();
-                if (mLoadingKeepGoing) {
+            };
+            mLoadSoundFileThread.start();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == 2000) {
+//                Toast.makeText(this, "" + data.getData(), Toast.LENGTH_SHORT).show();
+                    Uri uri = data.getData();
+                    if (uri != null) {
+                        File fil = new File(uri.toString());
+                        String path = fil.getAbsolutePath();
+
+                        String real_path = new FileUtilsForAudio(this).getPath(uri);
+                        Log.d("Audio_Path", "Intent results::::" + path);
+                        Log.d("Audio_Path", "provider path::::" + real_path);
+
+                   /* if (real_path != null) {
+                        audioGraph(real_path);
+                    } else {
+                        Toast.makeText(this, "Can't accessing this file try another way to choose this file", Toast.LENGTH_SHORT).show();
+                    }*/
+                        if (real_path != null) {
+                            audioGraph(real_path);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+
+    }
+
+    /**
+     * Start recording
+     */
+    private void startRecording() {
+        try {
+            final SoundFile.ProgressListener listener =
+                    new SoundFile.ProgressListener() {
+                        public boolean reportProgress(double elapsedTime) {
+                            long now = Utility.getCurrentTime();
+                            if (now - mRecordingLastUpdateTime > 5) {
+                                mRecordingTime = elapsedTime;
+                                // Only UI thread can update Views such as TextViews.
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        int min = (int) (mRecordingTime / 60);
+                                        float sec = (float) (mRecordingTime - 60 * min);
+                                        txtAudioRecordTime.setText(String.format(Locale.US, "%02d:%05.2f", min, sec));
+                                    }
+                                });
+                                mRecordingLastUpdateTime = now;
+                            }
+                            return mRecordingKeepGoing;
+                        }
+                    };
+
+            // Record the audio stream in a background thread
+            Thread mRecordAudioThread = new Thread() {
+                public void run() {
+                    try {
+                        mRecordedSoundFile = SoundFile.record(listener);
+                        if (mRecordedSoundFile == null) {
+                            finish();
+                            Runnable runnable = new Runnable() {
+                                public void run() {
+                                    Log.e("error >> ", "sound file null");
+                                }
+                            };
+                            mHandler.post(runnable);
+                            return;
+                        }
+                        mPlayer = new SamplePlayer(mRecordedSoundFile);
+                    } catch (final Exception e) {
+                        finish();
+                        e.printStackTrace();
+                        return;
+                    }
+
                     Runnable runnable = new Runnable() {
                         public void run() {
 
@@ -463,112 +592,12 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                     };
                     mHandler.post(runnable);
                 }
-            }
-        };
-        mLoadSoundFileThread.start();
-    }
+            };
+            mRecordAudioThread.start();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 2000) {
-//                Toast.makeText(this, "" + data.getData(), Toast.LENGTH_SHORT).show();
-                Uri uri = data.getData();
-                if (uri != null) {
-                    File fil = new File(uri.toString());
-                    String path = fil.getAbsolutePath();
-
-                    String real_path = new FileUtilsForAudio(this).getPath(uri);
-                    Log.d("Audio_Path", "Intent results::::" + path);
-                    Log.d("Audio_Path", "provider path::::" + real_path);
-
-                   /* if (real_path != null) {
-                        audioGraph(real_path);
-                    } else {
-                        Toast.makeText(this, "Can't accessing this file try another way to choose this file", Toast.LENGTH_SHORT).show();
-                    }*/
-                    if (real_path != null) {
-                        audioGraph(real_path);
-                    }
-                }
-            }
         }
-
-    }
-
-    /**
-     * Start recording
-     */
-    private void startRecording() {
-        final SoundFile.ProgressListener listener =
-                new SoundFile.ProgressListener() {
-                    public boolean reportProgress(double elapsedTime) {
-                        long now = Utility.getCurrentTime();
-                        if (now - mRecordingLastUpdateTime > 5) {
-                            mRecordingTime = elapsedTime;
-                            // Only UI thread can update Views such as TextViews.
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-                                    int min = (int) (mRecordingTime / 60);
-                                    float sec = (float) (mRecordingTime - 60 * min);
-                                    txtAudioRecordTime.setText(String.format(Locale.US, "%02d:%05.2f", min, sec));
-                                }
-                            });
-                            mRecordingLastUpdateTime = now;
-                        }
-                        return mRecordingKeepGoing;
-                    }
-                };
-
-        // Record the audio stream in a background thread
-        Thread mRecordAudioThread = new Thread() {
-            public void run() {
-                try {
-                    mRecordedSoundFile = SoundFile.record(listener);
-                    if (mRecordedSoundFile == null) {
-                        finish();
-                        Runnable runnable = new Runnable() {
-                            public void run() {
-                                Log.e("error >> ", "sound file null");
-                            }
-                        };
-                        mHandler.post(runnable);
-                        return;
-                    }
-                    mPlayer = new SamplePlayer(mRecordedSoundFile);
-                } catch (final Exception e) {
-                    finish();
-                    e.printStackTrace();
-                    return;
-                }
-
-                Runnable runnable = new Runnable() {
-                    public void run() {
-
-                        audioWaveform.setIsDrawBorder(true);
-                        finishOpeningSoundFile(mRecordedSoundFile, 0);
-                        txtAudioRecord.setBackgroundResource(R.drawable.ic_stop_btn1);
-                        txtAudioRecordTime.setVisibility(View.INVISIBLE);
-                        txtStartPosition.setVisibility(View.VISIBLE);
-                        txtEndPosition.setVisibility(View.VISIBLE);
-                        markerEnd.setVisibility(View.VISIBLE);
-                        markerStart.setVisibility(View.VISIBLE);
-                        llAudioCapture.setVisibility(View.GONE);
-                        rlAudioEdit.setVisibility(View.VISIBLE);
-                        txtAudioUpload.setVisibility(View.VISIBLE);
-
-                        txtAudioReset.setVisibility(View.VISIBLE);
-                        txtAudioCrop.setVisibility(View.GONE);
-                        txtAudioDone.setVisibility(View.VISIBLE);
-
-                    }
-                };
-                mHandler.post(runnable);
-            }
-        };
-        mRecordAudioThread.start();
-
     }
 
     /**
@@ -578,38 +607,41 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
      * @param isReset    isReset
      */
     private void finishOpeningSoundFile(SoundFile mSoundFile, int isReset) {
+        try {
+            audioWaveform.setVisibility(View.VISIBLE);
+            audioWaveform.setSoundFile(mSoundFile);
+            audioWaveform.recomputeHeights(mDensity);
 
-        audioWaveform.setVisibility(View.VISIBLE);
-        audioWaveform.setSoundFile(mSoundFile);
-        audioWaveform.recomputeHeights(mDensity);
+            mMaxPos = audioWaveform.maxPos();
+            mLastDisplayedStartPos = -1;
+            mLastDisplayedEndPos = -1;
 
-        mMaxPos = audioWaveform.maxPos();
-        mLastDisplayedStartPos = -1;
-        mLastDisplayedEndPos = -1;
+            mTouchDragging = false;
 
-        mTouchDragging = false;
+            mOffset = 0;
+            mOffsetGoal = 0;
+            mFlingVelocity = 0;
+            resetPositions();
+            if (mEndPos > mMaxPos)
+                mEndPos = mMaxPos;
 
-        mOffset = 0;
-        mOffsetGoal = 0;
-        mFlingVelocity = 0;
-        resetPositions();
-        if (mEndPos > mMaxPos)
-            mEndPos = mMaxPos;
+            if (isReset == 1) {
+                mStartPos = audioWaveform.secondsToPixels(0);
+                mEndPos = audioWaveform.secondsToPixels(audioWaveform.pixelsToSeconds(mMaxPos));
+            }
 
-        if (isReset == 1) {
-            mStartPos = audioWaveform.secondsToPixels(0);
-            mEndPos = audioWaveform.secondsToPixels(audioWaveform.pixelsToSeconds(mMaxPos));
+            if (audioWaveform != null && audioWaveform.isInitialized()) {
+                double seconds = audioWaveform.pixelsToSeconds(mMaxPos);
+                int min = (int) (seconds / 60);
+                float sec = (float) (seconds - 60 * min);
+                txtAudioRecordTimeUpdate.setText(String.format(Locale.US, "%02d:%05.2f", min, sec));
+            }
+
+            updateDisplay();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        if (audioWaveform != null && audioWaveform.isInitialized()) {
-            double seconds = audioWaveform.pixelsToSeconds(mMaxPos);
-            int min = (int) (seconds / 60);
-            float sec = (float) (seconds - 60 * min);
-            txtAudioRecordTimeUpdate.setText(String.format(Locale.US, "%02d:%05.2f", min, sec));
-        }
-
-        updateDisplay();
-
     }
 
     /**
@@ -618,174 +650,179 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
     private synchronized void updateDisplay() {
 
-        if (mIsPlaying) {
-            int now = mPlayer.getCurrentPosition();
-            int frames = audioWaveform.millisecsToPixels(now);
-            audioWaveform.setPlayback(frames);
-            Log.e("mWidth >> ", "" + mWidth);
-            setOffsetGoalNoUpdate(frames - mWidth / 2);
-            if (now >= mPlayEndMillSec) {
-                handlePause();
+        try {
+            if (mIsPlaying) {
+                int now = mPlayer.getCurrentPosition();
+                int frames = audioWaveform.millisecsToPixels(now);
+                audioWaveform.setPlayback(frames);
+                Log.e("mWidth >> ", "" + mWidth);
+                setOffsetGoalNoUpdate(frames - mWidth / 2);
+                if (now >= mPlayEndMillSec) {
+                    handlePause();
+                }
             }
-        }
 
-        if (!mTouchDragging) {
-            int offsetDelta;
+            if (!mTouchDragging) {
+                int offsetDelta;
 
-            if (mFlingVelocity != 0) {
-                offsetDelta = mFlingVelocity / 30;
-                if (mFlingVelocity > 80) {
-                    mFlingVelocity -= 80;
-                } else if (mFlingVelocity < -80) {
-                    mFlingVelocity += 80;
+                if (mFlingVelocity != 0) {
+                    offsetDelta = mFlingVelocity / 30;
+                    if (mFlingVelocity > 80) {
+                        mFlingVelocity -= 80;
+                    } else if (mFlingVelocity < -80) {
+                        mFlingVelocity += 80;
+                    } else {
+                        mFlingVelocity = 0;
+                    }
+
+                    mOffset += offsetDelta;
+
+                    if (mOffset + mWidth / 2 > mMaxPos) {
+                        mOffset = mMaxPos - mWidth / 2;
+                        mFlingVelocity = 0;
+                    }
+                    if (mOffset < 0) {
+                        mOffset = 0;
+                        mFlingVelocity = 0;
+                    }
+                    mOffsetGoal = mOffset;
                 } else {
-                    mFlingVelocity = 0;
-                }
+                    offsetDelta = mOffsetGoal - mOffset;
 
-                mOffset += offsetDelta;
+                    if (offsetDelta > 10)
+                        offsetDelta = offsetDelta / 10;
+                    else if (offsetDelta > 0)
+                        offsetDelta = 1;
+                    else if (offsetDelta < -10)
+                        offsetDelta = offsetDelta / 10;
+                    else if (offsetDelta < 0)
+                        offsetDelta = -1;
+                    else
+                        offsetDelta = 0;
 
-                if (mOffset + mWidth / 2 > mMaxPos) {
-                    mOffset = mMaxPos - mWidth / 2;
-                    mFlingVelocity = 0;
+                    mOffset += offsetDelta;
                 }
-                if (mOffset < 0) {
-                    mOffset = 0;
-                    mFlingVelocity = 0;
+            }
+
+            audioWaveform.setParameters(mStartPos, mEndPos, mOffset);
+            audioWaveform.invalidate();
+
+            markerStart.setContentDescription(
+                    " Start Marker" +
+                            formatTime(mStartPos));
+            markerEnd.setContentDescription(
+                    " End Marker" +
+                            formatTime(mEndPos));
+
+            int startX = mStartPos - mOffset - mMarkerLeftInset;
+            if (startX + markerStart.getWidth() >= 0) {
+                if (!mStartVisible) {
+                    // Delay this to avoid flicker
+                    mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            mStartVisible = true;
+                            markerStart.setAlpha(1f);
+                            txtStartPosition.setAlpha(1f);
+                        }
+                    }, 0);
                 }
-                mOffsetGoal = mOffset;
             } else {
-                offsetDelta = mOffsetGoal - mOffset;
-
-                if (offsetDelta > 10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta > 0)
-                    offsetDelta = 1;
-                else if (offsetDelta < -10)
-                    offsetDelta = offsetDelta / 10;
-                else if (offsetDelta < 0)
-                    offsetDelta = -1;
-                else
-                    offsetDelta = 0;
-
-                mOffset += offsetDelta;
+                if (mStartVisible) {
+                    markerStart.setAlpha(0f);
+                    txtStartPosition.setAlpha(0f);
+                    mStartVisible = false;
+                }
+                startX = 0;
             }
-        }
 
-        audioWaveform.setParameters(mStartPos, mEndPos, mOffset);
-        audioWaveform.invalidate();
 
-        markerStart.setContentDescription(
-                " Start Marker" +
-                        formatTime(mStartPos));
-        markerEnd.setContentDescription(
-                " End Marker" +
-                        formatTime(mEndPos));
-
-        int startX = mStartPos - mOffset - mMarkerLeftInset;
-        if (startX + markerStart.getWidth() >= 0) {
-            if (!mStartVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mStartVisible = true;
-                        markerStart.setAlpha(1f);
-                        txtStartPosition.setAlpha(1f);
-                    }
-                }, 0);
+            int startTextX = mStartPos - mOffset - mTextLeftInset;
+            if (startTextX + markerStart.getWidth() < 0) {
+                startTextX = 0;
             }
-        } else {
-            if (mStartVisible) {
-                markerStart.setAlpha(0f);
-                txtStartPosition.setAlpha(0f);
-                mStartVisible = false;
+
+
+            int endX = mEndPos - mOffset - markerEnd.getWidth() + mMarkerRightInset;
+            if (endX + markerEnd.getWidth() >= 0) {
+                if (!mEndVisible) {
+                    // Delay this to avoid flicker
+                    mHandler.postDelayed(new Runnable() {
+                        public void run() {
+                            mEndVisible = true;
+                            markerEnd.setAlpha(1f);
+                        }
+                    }, 0);
+                }
+            } else {
+                if (mEndVisible) {
+                    markerEnd.setAlpha(0f);
+                    mEndVisible = false;
+                }
+                endX = 0;
             }
-            startX = 0;
-        }
 
-
-        int startTextX = mStartPos - mOffset - mTextLeftInset;
-        if (startTextX + markerStart.getWidth() < 0) {
-            startTextX = 0;
-        }
-
-
-        int endX = mEndPos - mOffset - markerEnd.getWidth() + mMarkerRightInset;
-        if (endX + markerEnd.getWidth() >= 0) {
-            if (!mEndVisible) {
-                // Delay this to avoid flicker
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        mEndVisible = true;
-                        markerEnd.setAlpha(1f);
-                    }
-                }, 0);
+            int endTextX = mEndPos - mOffset - txtEndPosition.getWidth() + mTextRightInset;
+            if (endTextX + markerEnd.getWidth() < 0) {
+                endTextX = 0;
             }
-        } else {
-            if (mEndVisible) {
-                markerEnd.setAlpha(0f);
-                mEndVisible = false;
-            }
-            endX = 0;
-        }
 
-        int endTextX = mEndPos - mOffset - txtEndPosition.getWidth() + mTextRightInset;
-        if (endTextX + markerEnd.getWidth() < 0) {
-            endTextX = 0;
-        }
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
 //        params.setMargins(
 //                startX,
 //                mMarkerTopOffset,
 //                -markerStart.getWidth(),
 //                -markerStart.getHeight());
-        params.setMargins(
-                startX,
-                audioWaveform.getMeasuredHeight() / 2 + mMarkerTopOffset,
-                -markerStart.getWidth(),
-                -markerStart.getHeight());
-        markerStart.setLayoutParams(params);
+            params.setMargins(
+                    startX,
+                    audioWaveform.getMeasuredHeight() / 2 + mMarkerTopOffset,
+                    -markerStart.getWidth(),
+                    -markerStart.getHeight());
+            markerStart.setLayoutParams(params);
 
 
-        params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                startTextX,
-                mTextTopOffset,
-                -txtStartPosition.getWidth(),
-                -txtStartPosition.getHeight());
-        txtStartPosition.setLayoutParams(params);
+            params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(
+                    startTextX,
+                    mTextTopOffset,
+                    -txtStartPosition.getWidth(),
+                    -txtStartPosition.getHeight());
+            txtStartPosition.setLayoutParams(params);
 
 
-        params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                endX,
-                audioWaveform.getMeasuredHeight() / 2 + mMarkerBottomOffset,
-                -markerEnd.getWidth(),
-                -markerEnd.getHeight());
+            params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(
+                    endX,
+                    audioWaveform.getMeasuredHeight() / 2 + mMarkerBottomOffset,
+                    -markerEnd.getWidth(),
+                    -markerEnd.getHeight());
 //        params.setMargins(
 //                endX,
 //                audioWaveform.getMeasuredHeight() - markerEnd.getHeight() - mMarkerBottomOffset,
 //                -markerEnd.getWidth(),
 //                -markerEnd.getHeight());
-        markerEnd.setLayoutParams(params);
+            markerEnd.setLayoutParams(params);
 
 
-        params = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(
-                endTextX,
-                audioWaveform.getMeasuredHeight() - txtEndPosition.getHeight() - mTextBottomOffset,
-                -txtEndPosition.getWidth(),
-                -txtEndPosition.getHeight());
+            params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(
+                    endTextX,
+                    audioWaveform.getMeasuredHeight() - txtEndPosition.getHeight() - mTextBottomOffset,
+                    -txtEndPosition.getWidth(),
+                    -txtEndPosition.getHeight());
 
-        txtEndPosition.setLayoutParams(params);
+            txtEndPosition.setLayoutParams(params);
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     /**
@@ -793,23 +830,30 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
      */
 
     private void resetPositions() {
+        try {
+            mStartPos = audioWaveform.secondsToPixels(0.0);
+            mEndPos = audioWaveform.secondsToPixels(15.0);
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
 
-        mStartPos = audioWaveform.secondsToPixels(0.0);
-        mEndPos = audioWaveform.secondsToPixels(15.0);
-
+        }
     }
 
     private void setOffsetGoalNoUpdate(int offset) {
+        try {
+            if (mTouchDragging) {
+                return;
+            }
 
-        if (mTouchDragging) {
-            return;
+            mOffsetGoal = offset;
+            if (mOffsetGoal + mWidth / 2 > mMaxPos)
+                mOffsetGoal = mMaxPos - mWidth / 2;
+            if (mOffsetGoal < 0)
+                mOffsetGoal = 0;
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        mOffsetGoal = offset;
-        if (mOffsetGoal + mWidth / 2 > mMaxPos)
-            mOffsetGoal = mMaxPos - mWidth / 2;
-        if (mOffsetGoal < 0)
-            mOffsetGoal = 0;
 
     }
 
@@ -880,111 +924,147 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void markerTouchStart(MarkerView marker, float x) {
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialStartPos = mStartPos;
-        mTouchInitialEndPos = mEndPos;
-        handlePause();
+        try {
+            mTouchDragging = true;
+            mTouchStart = x;
+            mTouchInitialStartPos = mStartPos;
+            mTouchInitialEndPos = mEndPos;
+            handlePause();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void markerTouchMove(MarkerView marker, float x) {
-        float delta = x - mTouchStart;
+        try {
+            float delta = x - mTouchStart;
 
-        if (marker == markerStart) {
-            mStartPos = trap((int) (mTouchInitialStartPos + delta));
-            mEndPos = trap((int) (mTouchInitialEndPos + delta));
-        } else {
-            mEndPos = trap((int) (mTouchInitialEndPos + delta));
-            if (mEndPos < mStartPos)
-                mEndPos = mStartPos;
+            if (marker == markerStart) {
+                mStartPos = trap((int) (mTouchInitialStartPos + delta));
+                mEndPos = trap((int) (mTouchInitialEndPos + delta));
+            } else {
+                mEndPos = trap((int) (mTouchInitialEndPos + delta));
+                if (mEndPos < mStartPos)
+                    mEndPos = mStartPos;
+            }
+
+            updateDisplay();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        updateDisplay();
     }
 
     public void markerTouchEnd(MarkerView marker) {
-        mTouchDragging = false;
-        if (marker == markerStart) {
-            setOffsetGoalStart();
-        } else {
-            setOffsetGoalEnd();
+        try {
+            mTouchDragging = false;
+            if (marker == markerStart) {
+                setOffsetGoalStart();
+            } else {
+                setOffsetGoalEnd();
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
     public void markerLeft(MarkerView marker, int velocity) {
-        mKeyDown = true;
+        try {
+            mKeyDown = true;
 
-        if (marker == markerStart) {
-            int saveStart = mStartPos;
-            mStartPos = trap(mStartPos - velocity);
-            mEndPos = trap(mEndPos - (saveStart - mStartPos));
-            setOffsetGoalStart();
-        }
-
-        if (marker == markerEnd) {
-            if (mEndPos == mStartPos) {
+            if (marker == markerStart) {
+                int saveStart = mStartPos;
                 mStartPos = trap(mStartPos - velocity);
-                mEndPos = mStartPos;
-            } else {
-                mEndPos = trap(mEndPos - velocity);
+                mEndPos = trap(mEndPos - (saveStart - mStartPos));
+                setOffsetGoalStart();
             }
 
-            setOffsetGoalEnd();
-        }
+            if (marker == markerEnd) {
+                if (mEndPos == mStartPos) {
+                    mStartPos = trap(mStartPos - velocity);
+                    mEndPos = mStartPos;
+                } else {
+                    mEndPos = trap(mEndPos - velocity);
+                }
 
-        updateDisplay();
+                setOffsetGoalEnd();
+            }
+
+            updateDisplay();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void markerRight(MarkerView marker, int velocity) {
-        mKeyDown = true;
+        try {
+            mKeyDown = true;
 
-        if (marker == markerStart) {
-            int saveStart = mStartPos;
-            mStartPos += velocity;
-            if (mStartPos > mMaxPos)
-                mStartPos = mMaxPos;
-            mEndPos += (mStartPos - saveStart);
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
+            if (marker == markerStart) {
+                int saveStart = mStartPos;
+                mStartPos += velocity;
+                if (mStartPos > mMaxPos)
+                    mStartPos = mMaxPos;
+                mEndPos += (mStartPos - saveStart);
+                if (mEndPos > mMaxPos)
+                    mEndPos = mMaxPos;
 
-            setOffsetGoalStart();
+                setOffsetGoalStart();
+            }
+
+            if (marker == markerEnd) {
+                mEndPos += velocity;
+                if (mEndPos > mMaxPos)
+                    mEndPos = mMaxPos;
+
+                setOffsetGoalEnd();
+            }
+
+            updateDisplay();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        if (marker == markerEnd) {
-            mEndPos += velocity;
-            if (mEndPos > mMaxPos)
-                mEndPos = mMaxPos;
-
-            setOffsetGoalEnd();
-        }
-
-        updateDisplay();
     }
 
     public void markerEnter(MarkerView marker) {
     }
 
     public void markerKeyUp() {
-        mKeyDown = false;
-        updateDisplay();
+        try {
+            mKeyDown = false;
+            updateDisplay();
+
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void markerFocus(MarkerView marker) {
-        mKeyDown = false;
-        if (marker == markerStart) {
-            setOffsetGoalStartNoUpdate();
-        } else {
-            setOffsetGoalEndNoUpdate();
-        }
-
-        // Delay updaing the display because if this focus was in
-        // response to a touch event, we want to receive the touch
-        // event too before updating the display.
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                updateDisplay();
+        try {
+            mKeyDown = false;
+            if (marker == markerStart) {
+                setOffsetGoalStartNoUpdate();
+            } else {
+                setOffsetGoalEndNoUpdate();
             }
-        }, 100);
+
+            // Delay updaing the display because if this focus was in
+            // response to a touch event, we want to receive the touch
+            // event too before updating the display.
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    updateDisplay();
+                }
+            }, 100);
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     //
@@ -996,27 +1076,42 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
      * animate and trigger another redraw.
      */
     public void waveformDraw() {
-        mWidth = audioWaveform.getMeasuredWidth();
-        if (mOffsetGoal != mOffset && !mKeyDown)
-            updateDisplay();
-        else if (mIsPlaying) {
-            updateDisplay();
-        } else if (mFlingVelocity != 0) {
-            updateDisplay();
+        try {
+            mWidth = audioWaveform.getMeasuredWidth();
+            if (mOffsetGoal != mOffset && !mKeyDown)
+                updateDisplay();
+            else if (mIsPlaying) {
+                updateDisplay();
+            } else if (mFlingVelocity != 0) {
+                updateDisplay();
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
     public void waveformTouchStart(float x) {
-        mTouchDragging = true;
-        mTouchStart = x;
-        mTouchInitialOffset = mOffset;
-        mFlingVelocity = 0;
+        try {
+            mTouchDragging = true;
+            mTouchStart = x;
+            mTouchInitialOffset = mOffset;
+            mFlingVelocity = 0;
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 //        long mWaveformTouchStartMsec = Utility.getCurrentTime();
     }
 
     public void waveformTouchMove(float x) {
-        mOffset = trap((int) (mTouchInitialOffset + (mTouchStart - x)));
-        updateDisplay();
+        try {
+            mOffset = trap((int) (mTouchInitialOffset + (mTouchStart - x)));
+            updateDisplay();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void waveformTouchEnd() {
@@ -1086,10 +1181,15 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void waveformFling(float vx) {
+        try{
         mTouchDragging = false;
         mOffsetGoal = mOffset;
         mFlingVelocity = (int) (-vx);
         updateDisplay();
+        }catch (Exception e){
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     public void waveformZoomIn() {
@@ -1119,6 +1219,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
      */
 
     private void saveRingtone(final int finish) {
+        try{
         double startTime = audioWaveform.pixelsToSeconds(mStartPos);
         double endTime = audioWaveform.pixelsToSeconds(mEndPos);
         final int startFrame = audioWaveform.secondsToFrames(startTime);
@@ -1168,6 +1269,10 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             }
         };
         mSaveSoundFileThread.start();
+        }catch (Exception e){
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     /**
@@ -1181,6 +1286,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     private void afterSavingRingtone(CharSequence title,
                                      String outPath,
                                      int duration, int finish) {
+        try{
         File outFile = new File(outPath);
         long fileSize = outFile.length();
 
@@ -1208,6 +1314,10 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             intent.putExtras(conData);
             setResult(RESULT_OK, intent);
             finish();
+        }
+        }catch (Exception e){
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+
         }
     }
 
@@ -1275,6 +1385,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
      */
 
     private void loadFromFile(String mFilename) {
+        try{
         mFile = new File(mFilename);
 //        SongMetadataReader metadataReader = new SongMetadataReader(this, mFilename);
         mLoadingLastUpdateTime = Utility.getCurrentTime();
@@ -1338,5 +1449,9 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             }
         };
         mLoadSoundFileThread.start();
+        }catch (Exception e){
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 }
