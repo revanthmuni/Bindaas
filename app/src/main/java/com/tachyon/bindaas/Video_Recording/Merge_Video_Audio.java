@@ -97,13 +97,10 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
                     isoFile.getMovieBox().getMovieHeaderBox().getDuration() /
                     isoFile.getMovieBox().getMovieHeaderBox().getTimescale();
 
-
             Track audioTrack = (Track) fullAudio;
-
 
             double startTime1 = 0;
             double endTime1 = lengthInSeconds;
-
 
             long currentSample = 0;
             double currentTime = 0;

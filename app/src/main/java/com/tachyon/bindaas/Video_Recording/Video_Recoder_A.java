@@ -378,6 +378,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                         outputFilePath = Variables.outputfile2;
                     }
 
+                    Log.d("Audio_Test", "run: output file path "+outputFilePath);
                     FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
                     out.writeContainer(fos.getChannel());
                     fos.close();
@@ -774,13 +775,11 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         cameraView.start();
     }
-
 
     @Override
     protected void onDestroy() {
@@ -796,6 +795,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             cameraView.stop();
 
         } catch (Exception e) {
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
 
         }
     }
@@ -827,6 +827,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                         }
                     }).show();
         } catch (Exception e) {
+            Functions.Show_Error_Log(this,this.getClass().getSimpleName(),e.getMessage());
             Log.e("Exception:", "" + e.getMessage());
             //Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }

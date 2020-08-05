@@ -64,56 +64,64 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        try {
 
             // Inflate the layout for this fragment
             view = inflater.inflate(R.layout.activity_request_varification, container, false);
             context = getContext();
             try {
-            view.findViewById(R.id.Goback).setOnClickListener(this);
+                view.findViewById(R.id.Goback).setOnClickListener(this);
 
-            username_edit = view.findViewById(R.id.username_edit);
-            fullname_edit = view.findViewById(R.id.fullname_edit);
-            username_edit.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
-            fullname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name, "") + " " + Variables.sharedPreferences.getString(Variables.l_name, ""));
+                username_edit = view.findViewById(R.id.username_edit);
+                fullname_edit = view.findViewById(R.id.fullname_edit);
+                username_edit.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
+                fullname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name, "") + " " + Variables.sharedPreferences.getString(Variables.l_name, ""));
 
-            file_name_txt = view.findViewById(R.id.file_name_txt);
+                file_name_txt = view.findViewById(R.id.file_name_txt);
 
-            view.findViewById(R.id.choose_file_btn).setOnClickListener(this);
-            view.findViewById(R.id.send_btn).setOnClickListener(this);
+                view.findViewById(R.id.choose_file_btn).setOnClickListener(this);
+                view.findViewById(R.id.send_btn).setOnClickListener(this);
+            } catch (Exception e) {
+                Log.d(TAG, "Exception :" + e.getMessage());
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
-            Log.d(TAG, "Exception :" + e.getMessage());
-            e.printStackTrace();
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-
         return view;
     }
 
     @Override
     public void onClick(View v) {
+        try {
+            switch (v.getId()) {
 
-        switch (v.getId()) {
+                case R.id.Goback:
+                    getActivity().onBackPressed();
+                    break;
 
-            case R.id.Goback:
-                getActivity().onBackPressed();
-                break;
+                case R.id.choose_file_btn:
+                    selectImage();
+                    break;
 
-            case R.id.choose_file_btn:
-                selectImage();
-                break;
+                case R.id.send_btn:
+                    if (Check_Validation()) {
+                        Call_api();
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
 
-            case R.id.send_btn:
-                if (Check_Validation()) {
-                    Call_api();
-                }
-                break;
         }
 
     }
 
     // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
     private void selectImage() {
+        try {
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
 
@@ -146,24 +154,32 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
             });
 
             builder.show();
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
 
     }
 
 
     public boolean check_permissions() {
+        try {
+            String[] PERMISSIONS = {
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+            };
 
-        String[] PERMISSIONS = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA
-        };
+            if (!hasPermissions(context, PERMISSIONS)) {
+                requestPermissions(PERMISSIONS, 2);
+            } else {
 
-        if (!hasPermissions(context, PERMISSIONS)) {
-            requestPermissions(PERMISSIONS, 2);
-        } else {
+                return true;
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
 
-            return true;
         }
 
         return false;
@@ -172,6 +188,8 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
+
+        try {
             Intent pictureIntent = new Intent(
                     MediaStore.ACTION_IMAGE_CAPTURE);
             if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -189,6 +207,10 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                     startActivityForResult(pictureIntent, 1);
                 }
             }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     String imageFilePath;
@@ -211,8 +233,10 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
     }
 
     public String getPath(Uri uri) {
+
         String result = null;
-          String[] proj = {MediaStore.Images.Media.DATA};
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
             Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
@@ -224,6 +248,10 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
             if (result == null) {
                 result = "Not found";
             }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
         return result;
     }
@@ -233,9 +261,9 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-           if (resultCode == RESULT_OK) {
+        try {
+            if (resultCode == RESULT_OK) {
 
                 if (requestCode == 1) {
                     Matrix matrix = new Matrix();
@@ -332,26 +360,33 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 }
 
             }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
 
     // this will check the validations like none of the field can be the empty
     public boolean Check_Validation() {
+        try {
+            String uname = username_edit.getText().toString();
+            String fullname = fullname_edit.getText().toString();
 
-        String uname = username_edit.getText().toString();
-        String fullname = fullname_edit.getText().toString();
+            if (TextUtils.isEmpty(uname) || uname.length() < 2) {
+                Toast.makeText(context, "Please enter correct username", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (TextUtils.isEmpty(fullname)) {
+                Toast.makeText(context, "Please enter full name", Toast.LENGTH_SHORT).show();
+                return false;
+            } else if (base_64 == null) {
+                Toast.makeText(context, "Please select the image", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Functions.Show_Error_Log(context, context.getClass().getSimpleName(), e.getMessage());
 
-        if (TextUtils.isEmpty(uname) || uname.length() < 2) {
-            Toast.makeText(context, "Please enter correct username", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (TextUtils.isEmpty(fullname)) {
-            Toast.makeText(context, "Please enter full name", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (base_64 == null) {
-            Toast.makeText(context, "Please select the image", Toast.LENGTH_SHORT).show();
         }
-
         return true;
     }
 

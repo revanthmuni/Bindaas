@@ -705,7 +705,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
             Functions.Call_Api_For_update_view(WatchVideos_F.this, item.video_id);
 
-
         Call_Api_For_Singlevideos(currentPage);
     }
 

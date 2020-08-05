@@ -59,12 +59,8 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
     public void onBindViewHolder(final Watch_Videos_Adapter.CustomViewHolder holder, final int i) {
         final Home_Get_Set item = dataList.get(i);
         holder.setIsRecyclable(false);
-        Log.d("TAG", "onBindViewHolder: ");
-        if (item.liked.equals("1")) {
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
-        } else {
-            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
-        }
+        Log.d("TAG", "onBindViewHolder: "+item.liked);
+
         /*holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
                 context.getResources().getDrawable(R.drawable.ic_like));*/
         // holder.setVideoData(item);
@@ -125,6 +121,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.like_txt.setText("0");
         } else {
             holder.like_txt.setText(Functions.GetSuffix(dataList.get(i).like_count));
+        }
+        if (item.liked.equals("1")) {
+            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
+        } else {
+            holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
         }
         // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
         holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));

@@ -896,6 +896,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
                 }catch (Exception e){
+                    Functions.Show_Error_Log(context,this.getClass().getSimpleName(),e.getMessage());
                     Log.d("Exception:", "OpenProfile: "+e.getMessage());
                 }
 

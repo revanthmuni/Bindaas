@@ -23,6 +23,7 @@ import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 import com.google.android.gms.ads.AdRequest;
@@ -258,6 +259,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
                 }catch (Exception e){
+                    Functions.Show_Error_Log(context,this.getClass().getSimpleName(),e.getMessage());
                     Log.d("Exception:", "OpenProfile: "+e.getMessage());
                 }
                 /*TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
