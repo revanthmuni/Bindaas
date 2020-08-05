@@ -74,7 +74,6 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.UUID;
 
 public class Login_A extends AppCompatActivity {
     private static final String TAG = "Login_A";
@@ -99,147 +98,150 @@ public class Login_A extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        activity = this;
+        try {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            activity = this;
 
-        if (Build.VERSION.SDK_INT == 26) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-        }
-
-        getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        this.getWindow()
-                .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-        setContentView(R.layout.activity_login);
-
-
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-
-        // if the user is already login trought facebook then we will logout the user automatically
-        LoginManager.getInstance().logOut();
-
-        sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
-        initViews();
-
-        findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Loginwith_FB();
+            if (Build.VERSION.SDK_INT == 26) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
             }
-        });
+
+            getWindow().setBackgroundDrawable(
+                    new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            this.getWindow()
+                    .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        findViewById(R.id.google_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Sign_in_with_gmail();
-            }
-        });
+            setContentView(R.layout.activity_login);
 
-        findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rlLoginOptions.setVisibility(View.GONE);
-                clLoginLayout.setVisibility(View.VISIBLE);
-            }
-        });
 
-        findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rlLoginOptions.setVisibility(View.VISIBLE);
-                clLoginLayout.setVisibility(View.GONE);
-            }
-        });
+            mAuth = FirebaseAuth.getInstance();
+            firebaseUser = mAuth.getCurrentUser();
 
-        findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                KeyboardUtils.hideSoftInput(activity);
+            // if the user is already login trought facebook then we will logout the user automatically
+            LoginManager.getInstance().logOut();
 
-                if (checkValidations()) {
-                    if (CommonUtils.isNetworkAvailable(activity)) {
-                        //callLoginApi(email, password);
-                        callLoginApiWithFirebase(email, password);
-                    } else {
-                        Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
+            sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+            initViews();
+
+            findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Loginwith_FB();
+                }
+            });
+
+
+            findViewById(R.id.google_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Sign_in_with_gmail();
+                }
+            });
+
+            findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rlLoginOptions.setVisibility(View.GONE);
+                    clLoginLayout.setVisibility(View.VISIBLE);
+                }
+            });
+
+            findViewById(R.id.ivBack).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rlLoginOptions.setVisibility(View.VISIBLE);
+                    clLoginLayout.setVisibility(View.GONE);
+                }
+            });
+
+            findViewById(R.id.btSignIn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    KeyboardUtils.hideSoftInput(activity);
+
+                    if (checkValidations()) {
+                        if (CommonUtils.isNetworkAvailable(activity)) {
+                            //callLoginApi(email, password);
+                            callLoginApiWithFirebase(email, password);
+                        } else {
+                            Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
-        });
+            });
 
 
-        findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+            findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
 
 
-        login_title_txt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
-        loginTitleTxt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
+            login_title_txt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
+            loginTitleTxt.setText("You need a " + getString(R.string.app_name) + "\naccount to Continue");
 
 
-        SpannableString ss = new SpannableString("By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.");
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View textView) {
-                Open_Privacy_policy();
-            }
+            SpannableString ss = new SpannableString("By signing up, you confirm that you agree to our \n Terms of Use and have read and understood \n our Privacy Policy.");
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    Open_Privacy_policy();
+                }
 
-            @Override
-            public void updateDrawState(TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
-
-
-        ss.setSpan(clickableSpan, 99, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        TextView textView = (TextView) findViewById(R.id.login_terms_condition_txt);
-        textView.setText(ss);
-        textView.setClickable(true);
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
 
 
-        printKeyHash();
+            ss.setSpan(clickableSpan, 99, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            TextView textView = (TextView) findViewById(R.id.login_terms_condition_txt);
+            textView.setText(ss);
+            textView.setClickable(true);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
 
 
-        String text = "New to Bindaas? Signup here";
+            printKeyHash();
 
-        SpannableString signupString = new SpannableString(text);
 
-        ClickableSpan clickableSpan1 = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View widget) {
+            String text = "New to Bindaas? Signup here";
 
-                Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
-                startActivity(intent);
+            SpannableString signupString = new SpannableString(text);
 
-            }
-        };
+            ClickableSpan clickableSpan1 = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
 
-        signupString.setSpan(clickableSpan1,
-                text.indexOf("Signup here"),
-                text.indexOf("Signup here") + "Signup here".length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvSignUpText.setText(signupString);
-        tvSignUpText.setMovementMethod(LinkMovementMethod.getInstance());
+                    Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
+                    startActivity(intent);
 
+                }
+            };
+
+            signupString.setSpan(clickableSpan1,
+                    text.indexOf("Signup here"),
+                    text.indexOf("Signup here") + "Signup here".length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvSignUpText.setText(signupString);
+            tvSignUpText.setMovementMethod(LinkMovementMethod.getInstance());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+        }
 
     }
 
     private void callLoginApiWithFirebase(String email, String password) {
-
+        try {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -260,10 +262,14 @@ public class Login_A extends AppCompatActivity {
                             // ...
                         }
                     });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+        }
 
     }
 
     private void updateUI(FirebaseUser user) {
+        try {
 
             if (user != null) {
                 // Name, email address, and profile photo Url
@@ -287,6 +293,10 @@ public class Login_A extends AppCompatActivity {
 
                 Call_Api_For_Signup(id, fname, lname, pic_url, "local");
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void callLoginApi(String email, String password) {
@@ -333,6 +343,7 @@ public class Login_A extends AppCompatActivity {
 
 
     private void initViews() {
+        try {
 
             rlLoginOptions = findViewById(R.id.rlLoginOptions);
             clLoginLayout = findViewById(R.id.clLoginLayout);
@@ -346,14 +357,22 @@ public class Login_A extends AppCompatActivity {
             tilLoginPassword = findViewById(R.id.tilLoginPassword);
             etLoginEmail = findViewById(R.id.etLoginEmail);
             etLoginPassword = findViewById(R.id.etLoginPassword);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+
 
     }
 
     private Boolean checkValidations() {
+        try {
+            email = etLoginEmail.getText().toString().trim();
+            password = etLoginPassword.getText().toString().trim();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        email = etLoginEmail.getText().toString().trim();
-        password = etLoginPassword.getText().toString().trim();
-
+        }
         if (CommonUtils.validEmail(email) == Validation.IS_VALID &&
                 CommonUtils.validPassword(password) == Validation.IS_VALID) {
             CommonUtils.disableError(tilLoginEmail);
@@ -389,26 +408,41 @@ public class Login_A extends AppCompatActivity {
 
 
     public void Open_Privacy_policy() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Variables.privacy_policy));
-        startActivity(browserIntent);
+        try {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Variables.privacy_policy));
+            startActivity(browserIntent);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     @Override
     public void onEnterAnimationComplete() {
         super.onEnterAnimationComplete();
+        try {
             AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
             anim.setDuration(200);
             top_view.startAnimation(anim);
             top_view.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
     @Override
     public void onBackPressed() {
-        top_view.setVisibility(View.GONE);
+        try {
+            top_view.setVisibility(View.GONE);
             finish();
             overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
@@ -418,7 +452,7 @@ public class Login_A extends AppCompatActivity {
 
     //facebook implimentation
     public void Loginwith_FB() {
-
+        try {
             LoginManager.getInstance()
                     .logInWithReadPermissions(Login_A.this,
                             Arrays.asList("public_profile", "email"));
@@ -446,12 +480,17 @@ public class Login_A extends AppCompatActivity {
                 }
 
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
     private void handleFacebookAccessToken(final AccessToken token) {
-        // if user is login then this method will call and
-        // facebook will return us a token which will user for get the info of user
+        try {
+            // if user is login then this method will call and
+            // facebook will return us a token which will user for get the info of user
             AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
             Log.d("resp_token", token.getToken() + "");
             mAuth.signInWithCredential(credential)
@@ -501,6 +540,10 @@ public class Login_A extends AppCompatActivity {
 
                                 }
                             });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
@@ -509,12 +552,16 @@ public class Login_A extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         // Pass the activity result back to the Facebook SDK
 
+        try {
             if (requestCode == 123) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 handleSignInResult(task);
             } else if (mCallbackManager != null)
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 
@@ -523,7 +570,7 @@ public class Login_A extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
 
     public void Sign_in_with_gmail() {
-
+        try {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
@@ -554,7 +601,10 @@ public class Login_A extends AppCompatActivity {
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, 123);
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 

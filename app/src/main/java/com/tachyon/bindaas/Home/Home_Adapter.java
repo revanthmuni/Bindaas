@@ -2,7 +2,6 @@ package com.tachyon.bindaas.Home;
 
 import android.content.Context;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -16,10 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -59,14 +54,15 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dataList!=null?dataList.size():0;
     }
 
 
     @Override
     public void onBindViewHolder(final Home_Adapter.CustomViewHolder holder, final int i) {
-        final Home_Get_Set item = dataList.get(i);
-        holder.setIsRecyclable(false);
+        try {
+            final Home_Get_Set item = dataList.get(i);
+            holder.setIsRecyclable(false);
 
             // holder.setVideoData(item);
             holder.bind(i, item, listener);
@@ -133,11 +129,14 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             } else {
                 holder.varified_btn.setVisibility(View.GONE);
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-
         TextView username, desc_txt, sound_name;
         ImageView user_pic, varified_btn;
         GifImageView sound_image;
@@ -150,6 +149,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
         public CustomViewHolder(View view) {
             super(view);
+try{
 
 //            videoView = view.findViewById(R.id.playerview);
                 username = view.findViewById(R.id.username);
@@ -172,9 +172,14 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 sound_image_layout = view.findViewById(R.id.sound_image_layout);
                 shared_layout = view.findViewById(R.id.shared_layout);
 
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+}
         }
 
         void setVideoData(Home_Get_Set item) {
+            try{
             videoView.setVideoPath(item.video_url);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -198,71 +203,84 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     mediaPlayer.start();
                 }
             });
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+            }
         }
 
-        public void bind(final int postion, final Home_Get_Set item, final Home_Adapter.OnItemClickListener listener) {
+        public void bind(final int postion, final Home_Get_Set item,
+                         final Home_Adapter.OnItemClickListener listener) {
+            try {
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(postion, item, v);
-                }
-            });
 
-            user_pic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                user_pic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            username.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                username.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            like_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                like_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            comment_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                comment_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            shared_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                shared_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-            sound_image_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
 
-            ivSearch.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(postion, item, v);
-                }
-            });
+                sound_image_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+
+                ivSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+            }
         }
+
 
     }
 

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
@@ -45,7 +46,7 @@ public class Search_Main_F extends RootFragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_search_main, container, false);
         context = getContext();
-
+try{
         search_edit = view.findViewById(R.id.search_edit);
         search_edit.setFocusable(true);
 
@@ -90,7 +91,10 @@ public class Search_Main_F extends RootFragment {
 
         search_edit.setFocusable(true);
         UIUtil.showKeyboard(context, search_edit);
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         return view;
     }
 
@@ -100,7 +104,7 @@ public class Search_Main_F extends RootFragment {
     ViewPagerAdapter adapter;
 
     public void Set_tabs() {
-
+try{
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
         menu_pager.setOffscreenPageLimit(3);
@@ -112,7 +116,10 @@ public class Search_Main_F extends RootFragment {
 
         menu_pager.setAdapter(adapter);
         tabLayout.setupWithViewPager(menu_pager);
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
 

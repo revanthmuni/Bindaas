@@ -8,13 +8,18 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
+
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 
 // this is the spacial type of imageview with round cornners
 
 @SuppressLint("AppCompatCustomView")
-public class RoundCornersImageView extends ImageView {;
+public class RoundCornersImageView extends ImageView {
+    ;
+
     public RoundCornersImageView(Context context) {
         super(context);
     }
@@ -44,11 +49,16 @@ public class RoundCornersImageView extends ImageView {;
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float radius = 15;
-        Path path = new Path();
-        RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
-        path.addRoundRect(rect, radius, radius, Path.Direction.CW);
-        canvas.clipPath(path);
-        super.onDraw(canvas);
+        try {
+            float radius = 15;
+            Path path = new Path();
+            RectF rect = new RectF(0, 0, this.getWidth(), this.getHeight());
+            path.addRoundRect(rect, radius, radius, Path.Direction.CW);
+            canvas.clipPath(path);
+            super.onDraw(canvas);
+        } catch (Exception e) {
+            Log.d("Crash Exception:", "onDraw: "+e.getMessage());
+
+        }
     }
 }

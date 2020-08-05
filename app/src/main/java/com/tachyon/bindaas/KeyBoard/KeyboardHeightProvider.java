@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 /**
  * The keyboard height provider, this class uses a PopupWindow
@@ -54,6 +55,7 @@ public class KeyboardHeightProvider extends PopupWindow {
 
 
             this.activity = activity;
+            try{
 
             LayoutInflater inflator = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             this.popupView = inflator.inflate(R.layout.popupwindow, null, false);
@@ -76,6 +78,10 @@ public class KeyboardHeightProvider extends PopupWindow {
                     }
                 }
             });
+            }catch (Exception e){
+                Functions.showLogMessage(activity,activity.getClass().getSimpleName(),e.getMessage());
+
+            }
     }
 
     /**
@@ -127,6 +133,7 @@ public class KeyboardHeightProvider extends PopupWindow {
      */
     private void handleOnGlobalLayout() {
 
+        try{
         Point screenSize = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(screenSize);
 
@@ -149,6 +156,10 @@ public class KeyboardHeightProvider extends PopupWindow {
         else {
             this.keyboardLandscapeHeight = keyboardHeight;
             notifyKeyboardHeightChanged(keyboardLandscapeHeight, orientation);
+        }
+        }catch (Exception e){
+            Functions.showLogMessage(activity,activity.getClass().getSimpleName(),e.getMessage());
+
         }
     }
 

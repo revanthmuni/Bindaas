@@ -57,54 +57,57 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_video);
+        try {
+            Intent intent = getIntent();
+            if (intent != null) {
+                draft_file = intent.getStringExtra("draft_file");
+                video_url = intent.getStringExtra("path");
+                Log.d("Audio_Test", "onCreate: " + video_url);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            draft_file = intent.getStringExtra("draft_file");
-            video_url = intent.getStringExtra("path");
-            Log.d("Audio_Test", "onCreate: " + video_url);
+            }
+            video_url = Variables.outputfile2;
+
+            select_postion = 0;
+
+            findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+
+                }
+            });
+
+
+            findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Save_Video(video_url, Variables.output_filter_file);
+                }
+            });
+
+
+            Set_Player(video_url);
+
+
+            recylerview = findViewById(R.id.recylerview);
+
+            adapter = new Filter_Adapter(this, filterTypes, new Filter_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, FilterType item) {
+                    select_postion = postion;
+                    gpuPlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(postion), getApplicationContext()));
+                    // adapter.notifyDataSetChanged();
+
+                }
+            });
+            recylerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            recylerview.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
-        video_url = Variables.outputfile2;
-
-        select_postion = 0;
-
-        findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-
-            }
-        });
-
-
-        findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Save_Video(video_url, Variables.output_filter_file);
-            }
-        });
-
-
-        Set_Player(video_url);
-
-
-        recylerview = findViewById(R.id.recylerview);
-
-        adapter = new Filter_Adapter(this, filterTypes, new Filter_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion, FilterType item) {
-                select_postion = postion;
-                gpuPlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(postion), getApplicationContext()));
-                // adapter.notifyDataSetChanged();
-
-            }
-        });
-        recylerview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recylerview.setAdapter(adapter);
-
 
     }
 
@@ -113,33 +116,36 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     SimpleExoPlayer player;
 
     public void Set_Player(String path) {
+        try {
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                    Util.getUserAgent(this, "TikTok"));
 
-        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "TikTok"));
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(path));
 
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(path));
+            player.prepare(videoSource);
 
-        player.prepare(videoSource);
+            player.setRepeatMode(Player.REPEAT_MODE_ALL);
+            player.addListener(this);
 
-        player.setRepeatMode(Player.REPEAT_MODE_ALL);
-        player.addListener(this);
-
-        player.setPlayWhenReady(true);
+            player.setPlayWhenReady(true);
 
 
-        gpuPlayerView = new GPUPlayerView(this);
-        gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_NONE);
+            gpuPlayerView = new GPUPlayerView(this);
+            gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_NONE);
 
-        gpuPlayerView.setSimpleExoPlayer(player);
-        gpuPlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            gpuPlayerView.setSimpleExoPlayer(player);
+            gpuPlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        ((MovieWrapperView) findViewById(R.id.layout_movie_wrapper)).addView(gpuPlayerView);
+            ((MovieWrapperView) findViewById(R.id.layout_movie_wrapper)).addView(gpuPlayerView);
 
-        gpuPlayerView.onResume();
+            gpuPlayerView.onResume();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
@@ -147,119 +153,141 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     @Override
     protected void onStop() {
         super.onStop();
-        if (player != null) {
-            player.setPlayWhenReady(false);
-        }
+        try {
+            if (player != null) {
+                player.setPlayWhenReady(false);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        try {
+            if (player != null) {
+                player.setPlayWhenReady(true);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        if (player != null) {
-            player.setPlayWhenReady(true);
         }
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        try {
+            if (player != null) {
+                player.setPlayWhenReady(true);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        if (player != null) {
-            player.setPlayWhenReady(true);
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (player != null) {
-            player.removeListener(Preview_Video_A.this);
-            player.release();
-            player = null;
+        try {
+            if (player != null) {
+                player.removeListener(Preview_Video_A.this);
+                player.release();
+                player = null;
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
 
     // this function will add the filter to video and save that same video for post the video in post video screen
     public void Save_Video(String srcMp4Path, final String destMp4Path) {
+        try {
+            Functions.Show_determinent_loader(this, false, false);
 
-        Functions.Show_determinent_loader(this, false, false);
+            new GPUMp4Composer(srcMp4Path, destMp4Path)
+                    //.size(540, 960)
+                    //.videoBitrate((int) (0.25 * 16 * 540 * 960))
+                    .filter(new GlFilterGroup(FilterType
+                            .createGlFilter(filterTypes.get(select_postion), getApplicationContext())))
+                    .listener(new GPUMp4Composer.Listener() {
+                        @Override
+                        public void onProgress(double progress) {
 
-        new GPUMp4Composer(srcMp4Path, destMp4Path)
-                //.size(540, 960)
-                //.videoBitrate((int) (0.25 * 16 * 540 * 960))
-                .filter(new GlFilterGroup(FilterType
-                        .createGlFilter(filterTypes.get(select_postion), getApplicationContext())))
-                .listener(new GPUMp4Composer.Listener() {
-                    @Override
-                    public void onProgress(double progress) {
-
-                        Log.d("resp", "" + (int) (progress * 100));
-                        Functions.Show_loading_progress((int) (progress * 100));
-
-
-                    }
-
-                    @Override
-                    public void onCompleted() {
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                Functions.cancel_determinent_loader();
-
-                                GotopostScreen();
+                            Log.d("resp", "" + (int) (progress * 100));
+                            Functions.Show_loading_progress((int) (progress * 100));
 
 
-                            }
-                        });
+                        }
 
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onCanceled() {
-                        Log.d("resp", "onCanceled");
-                    }
-
-                    @Override
-                    public void onFailed(Exception exception) {
-
-                        Log.d("resp", exception.toString());
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
                                     Functions.cancel_determinent_loader();
 
-                                    Toast.makeText(Preview_Video_A.this, "Try Again", Toast.LENGTH_SHORT).show();
-                                } catch (Exception e) {
+                                    GotopostScreen();
+
 
                                 }
-                            }
-                        });
+                            });
 
-                    }
-                })
-                .start();
+
+                        }
+
+                        @Override
+                        public void onCanceled() {
+                            Log.d("resp", "onCanceled");
+                        }
+
+                        @Override
+                        public void onFailed(Exception exception) {
+
+                            Log.d("resp", exception.toString());
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+
+                                        Functions.cancel_determinent_loader();
+
+                                        Toast.makeText(Preview_Video_A.this, "Try Again", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                            });
+
+                        }
+                    })
+                    .start();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void GotopostScreen() {
-
-        Intent intent = new Intent(Preview_Video_A.this, Post_Video_A.class);
-        intent.putExtra("draft_file", draft_file);
+        try {
+            Intent intent = new Intent(Preview_Video_A.this, Post_Video_A.class);
+            intent.putExtra("draft_file", draft_file);
 //        intent.putExtra("video_path", video_url);
-        startActivity(intent);
-        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+            startActivity(intent);
+            overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
@@ -318,10 +346,13 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
 
     @Override
     public void onBackPressed() {
+        try {
+            finish();
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        finish();
-        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-
+        }
     }
 
 

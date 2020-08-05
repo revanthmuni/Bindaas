@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 
 import com.tachyon.bindaas.R;
 import com.squareup.picasso.Picasso;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;
 
@@ -49,7 +49,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
     @Override
     public int getItemCount() {
-        return datalist.size();
+        return datalist!=null?datalist.size():0;
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +62,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
         public CustomViewHolder(View view) {
             super(view);
+            try{
                mainlayout = view.findViewById(R.id.mainlayout);
 
                 user_image = view.findViewById(R.id.user_image);
@@ -69,12 +70,15 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 user_id = view.findViewById(R.id.user_id);
 
                 action_txt = view.findViewById(R.id.action_txt);
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+            }
         }
 
         public void bind(final int pos, final Following_Get_Set item, final Following_Adapter.OnItemClickListener listener) {
 
-
+try{
             mainlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +93,10 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 }
             });
 
+}catch (Exception e){
+    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+}
         }
 
 
@@ -97,6 +104,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
     @Override
     public void onBindViewHolder(final Following_Adapter.CustomViewHolder holder, final int i) {
+        try{
         holder.setIsRecyclable(false);
 
            Following_Get_Set item = datalist.get(i);
@@ -145,7 +153,10 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
             }
 
             holder.bind(i, datalist.get(i), listener);
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
 
     }
 

@@ -64,51 +64,74 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_list_main);
+        try {
+            initViews();
+            initialiseClickListeners();
+            initialiseTabLayout();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-        initViews();
-        initialiseClickListeners();
-        initialiseTabLayout();
-
+        }
     }
 
     private void initialiseTabLayout() {
-        pager.setOffscreenPageLimit(2);
-        pager.setPagingEnabled(false);
+        try {
+            pager.setOffscreenPageLimit(2);
+            pager.setPagingEnabled(false);
 
-        // Note that we are passing childFragmentManager, not FragmentManager
-        adapter = new ViewPagerAdapter(getResources(), getSupportFragmentManager());
-        pager.setAdapter(adapter);
-        tablayout.setupWithViewPager(pager);
+            // Note that we are passing childFragmentManager, not FragmentManager
+            adapter = new ViewPagerAdapter(getResources(), getSupportFragmentManager());
+            pager.setAdapter(adapter);
+            tablayout.setupWithViewPager(pager);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void initialiseClickListeners() {
-        goBack.setOnClickListener(this);
-        fabAddAudioFromLocal.setOnClickListener(this);
+        try {
+            goBack.setOnClickListener(this);
+            fabAddAudioFromLocal.setOnClickListener(this);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void initViews() {
-        tablayout = (TabLayout) findViewById(R.id.groups_tab);
-        fabAddAudioFromLocal = findViewById(R.id.fabAddAudioFromLocal);
-        pager = findViewById(R.id.viewpager);
-        goBack = findViewById(R.id.Goback);
+        try {
+            tablayout = (TabLayout) findViewById(R.id.groups_tab);
+            fabAddAudioFromLocal = findViewById(R.id.fabAddAudioFromLocal);
+            pager = findViewById(R.id.viewpager);
+            goBack = findViewById(R.id.Goback);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.Goback:
-                onBackPressed();
-                break;
+        try {
+            switch (v.getId()) {
+                case R.id.Goback:
+                    onBackPressed();
+                    break;
 
-            case R.id.fabAddAudioFromLocal:
-                if (checkReadExternalStoragePermission()) {
-                    overridePendingTransition(0, 0);
-                    getAudioFileFromLocal();
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ADD_AUDIO);
-                }
+                case R.id.fabAddAudioFromLocal:
+                    if (checkReadExternalStoragePermission()) {
+                        overridePendingTransition(0, 0);
+                        getAudioFileFromLocal();
+                    } else {
+                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ADD_AUDIO);
+                    }
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -117,18 +140,26 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
         intent_upload.setType("audio/*");
         intent_upload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent_upload, 2000);*/
-        startActivityForResult(new Intent(this, AudioTrimmerActivity.class), ADD_AUDIO);
+        try {
+            startActivityForResult(new Intent(this, AudioTrimmerActivity.class), ADD_AUDIO);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == ADD_AUDIO) {
-            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getAudioFileFromLocal();
+        try {
+            if (requestCode == ADD_AUDIO) {
+                if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getAudioFileFromLocal();
+                }
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -149,6 +180,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                 }
             }
         }*/
+        try{
         if (requestCode == ADD_AUDIO) {
             if (resultCode == RESULT_OK) {
                 String path = data.getExtras().getString("INTENT_AUDIO_FILE");
@@ -165,7 +197,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                     JSONObject params = new JSONObject();
                     final File oldFile = new File(uri.toString());
                     final File file = CommonUtils.getAudioFilePath(this, uri);
-                   // Log.d("Audio_Test", "cropped file Path is : "+fi.getAbsolutePath());
+                    // Log.d("Audio_Test", "cropped file Path is : "+fi.getAbsolutePath());
                     String audioString;
                     try {
                         audioString = CommonUtils.encodeFileToBase64Binary(Uri.fromFile(file));
@@ -175,16 +207,16 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                         params.put("user_id", user_id);
                         params.put("file_name", oldFile.getName());
                         params.put("data", audioString);
-                        Log.d("Audio_Test", "onActivityResult data: "+audioString);
+                        Log.d("Audio_Test", "onActivityResult data: " + audioString);
                     } catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
 
-                    Log.d("Audio_Test", "onActivityResult: "+new Gson().toJson(params));
+                    Log.d("Audio_Test", "onActivityResult: " + new Gson().toJson(params));
                     ApiRequest.Call_Api(this, Variables.POST_AUDIO, params, new Callback() {
                         @Override
                         public void Responce(String resp) {
-                            Log.d("Audio_Test", "Responce: "+resp);
+                            Log.d("Audio_Test", "Responce: " + resp);
                             Functions.cancel_loader();
                             try {
                                 JSONObject jsonObject = new JSONObject(resp);
@@ -212,6 +244,10 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 }
             }
+        }
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+
         }
     }
 

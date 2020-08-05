@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
@@ -69,9 +69,13 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
         public CustomViewHolder(View view) {
             super(view);
 
-            horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
-            title = view.findViewById(R.id.title);
+            try {
+                horizontal_reycerview = view.findViewById(R.id.horizontal_recylerview);
+                title = view.findViewById(R.id.title);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+            }
         }
 
 
@@ -80,13 +84,18 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
     @Override
     public void onBindViewHolder(final Discover_Adapter.CustomViewHolder holder, final int i) {
-        Discover_Get_Set item = datalist_filter.get(i);
+        try {
+            Discover_Get_Set item = datalist_filter.get(i);
 
-        holder.title.setText(item.title);
+            holder.title.setText(item.title);
 
-        Horizontal_Adapter adapter = new Horizontal_Adapter(context, item.arrayList);
-        holder.horizontal_reycerview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-        holder.horizontal_reycerview.setAdapter(adapter);
+            Horizontal_Adapter adapter = new Horizontal_Adapter(context, item.arrayList);
+            holder.horizontal_reycerview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            holder.horizontal_reycerview.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
@@ -159,17 +168,26 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
             public CustomViewHolder(View view) {
                 super(view);
-                video_thumbnail = view.findViewById(R.id.video_thumbnail);
+                try {
+                    video_thumbnail = view.findViewById(R.id.video_thumbnail);
+                } catch (Exception e) {
+                    Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+                }
             }
 
             public void bind(final int pos, final ArrayList<Home_Get_Set> datalist) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onItemClick(datalist, pos);
-                    }
-                });
+                try {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onItemClick(datalist, pos);
+                        }
+                    });
+                } catch (Exception e) {
+                    Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+                }
             }
 
 
@@ -177,6 +195,7 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
         @Override
         public void onBindViewHolder(final Horizontal_Adapter.CustomViewHolder holder, final int i) {
+            try{
             holder.setIsRecyclable(false);
 
             Home_Get_Set item = datalist.get(i);
@@ -198,7 +217,10 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
             } catch (Exception e) {
 
             }
+            }catch (Exception e){
+                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+            }
         }
 
     }

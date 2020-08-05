@@ -22,6 +22,7 @@ import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
@@ -66,33 +67,37 @@ public class UserVideo_F extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_video, container, false);
 
-        context = getContext();
+        try {
+            context = getContext();
 
 
-        recyclerView = view.findViewById(R.id.recylerview);
-        final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+            recyclerView = view.findViewById(R.id.recylerview);
+            final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
 
 
-        data_list = new ArrayList<>();
-        adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int postion, Home_Get_Set item, View view) {
+            data_list = new ArrayList<>();
+            adapter = new MyVideos_Adapter(context, data_list, new MyVideos_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int postion, Home_Get_Set item, View view) {
 
-                OpenWatchVideo(postion);
+                    OpenWatchVideo(postion);
 
-            }
-        });
+                }
+            });
 
-        recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(adapter);
 
-        no_data_layout = view.findViewById(R.id.no_data_layout);
-
-
-        Call_Api_For_get_Allvideos();
+            no_data_layout = view.findViewById(R.id.no_data_layout);
 
 
+            Call_Api_For_get_Allvideos();
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
         return view;
 
     }
@@ -102,25 +107,31 @@ public class UserVideo_F extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        try {
+            this.isVisibleToUser = isVisibleToUser;
+            if (view != null && isVisibleToUser) {
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        this.isVisibleToUser = isVisibleToUser;
-        if (view != null && isVisibleToUser) {
-            Call_Api_For_get_Allvideos();
         }
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            if ((view != null && isVisibleToUser) && !is_api_run) {
+                Call_Api_For_get_Allvideos();
+            } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
+                Variables.Reload_my_videos_inner = false;
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        if ((view != null && isVisibleToUser) && !is_api_run) {
-            Call_Api_For_get_Allvideos();
-        } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
-            Variables.Reload_my_videos_inner = false;
-            Call_Api_For_get_Allvideos();
         }
-
     }
 
 
@@ -128,28 +139,32 @@ public class UserVideo_F extends Fragment {
 
     //this will get the all videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-        is_api_run = true;
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            if (is_my_profile) {
-                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            } else {
-                parameters.put("user_id", user_id);
+            is_api_run = true;
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                if (is_my_profile) {
+                    parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                } else {
+                    parameters.put("user_id", user_id);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    is_api_run = false;
+                    Parse_data(resp);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                is_api_run = false;
-                Parse_data(resp);
-            }
-        });
-
 
     }
 
@@ -233,11 +248,15 @@ public class UserVideo_F extends Fragment {
 
 
     private void OpenWatchVideo(int postion) {
-        Intent intent = new Intent(getActivity(), WatchVideos_F.class);
-        intent.putExtra("arraylist", data_list);
-        intent.putExtra("position", postion);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(getActivity(), WatchVideos_F.class);
+            intent.putExtra("arraylist", data_list);
+            intent.putExtra("position", postion);
+            startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 

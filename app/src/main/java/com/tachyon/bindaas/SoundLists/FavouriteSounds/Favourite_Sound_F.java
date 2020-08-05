@@ -92,111 +92,125 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
         view = inflater.inflate(R.layout.activity_sound_list, container, false);
 
         context = getContext();
-
-        running_sound_id = "none";
-
-
-        PRDownloader.initialize(context);
-
-        pbar = view.findViewById(R.id.pbar);
-
-        recyclerView = view.findViewById(R.id.listview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setNestedScrollingEnabled(false);
-
-        swiperefresh = view.findViewById(R.id.swiperefresh);
-        swiperefresh.setColorSchemeResources(R.color.black);
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        try {
+            running_sound_id = "none";
 
 
-                Call_Api_For_get_allsound();
-            }
-        });
+            PRDownloader.initialize(context);
 
-        Call_Api_For_get_allsound();
+            pbar = view.findViewById(R.id.pbar);
 
+            recyclerView = view.findViewById(R.id.listview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            recyclerView.setNestedScrollingEnabled(false);
+
+            swiperefresh = view.findViewById(R.id.swiperefresh);
+            swiperefresh.setColorSchemeResources(R.color.black);
+            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+
+                    Call_Api_For_get_allsound();
+                }
+            });
+
+            Call_Api_For_get_allsound();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
         return view;
     }
 
 
     public void Set_adapter() {
+        try {
+            adapter = new Favourite_Sound_Adapter(context, datalist, new Favourite_Sound_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
-        adapter = new Favourite_Sound_Adapter(context, datalist, new Favourite_Sound_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    if (view.getId() == R.id.done) {
+                        StopPlaying();
+                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                    } else if (view.getId() == R.id.fav_btn) {
+                        Call_Api_For_Fav_sound(postion, item.id);
+                    } else if (view.getId() == R.id.play_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
+                    } else if (view.getId() == R.id.pause_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    }
 
-                if (view.getId() == R.id.done) {
-                    StopPlaying();
-                    Down_load_mp3(item.id, item.sound_name, item.acc_path);
-                } else if (view.getId() == R.id.fav_btn) {
-                    Call_Api_For_Fav_sound(postion, item.id);
-                } else if (view.getId() == R.id.play_arrow) {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                    Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
-                } else if (view.getId() == R.id.pause_arrow) {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                    Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
                 }
+            });
 
-            }
-        });
+            recyclerView.setAdapter(adapter);
 
-        recyclerView.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (view != null && isVisibleToUser) {
-            Call_Api_For_get_allsound();
+        try {
+            if (view != null && isVisibleToUser) {
+                Call_Api_For_get_allsound();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
 
     private void Call_Api_For_get_allsound() {
-
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ApiRequest.Call_Api(context, Variables.myFavSound, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                swiperefresh.setRefreshing(false);
-                pbar.setVisibility(View.GONE);
-                Parse_data(resp);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
 
+            ApiRequest.Call_Api(context, Variables.myFavSound, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    swiperefresh.setRefreshing(false);
+                    pbar.setVisibility(View.GONE);
+                    Parse_data(resp);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
 
     }
 
@@ -268,48 +282,56 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     String previous_url = "none";
 
     public void playaudio(View view, final Sounds_GetSet item) {
-        previous_view = view;
+        try {
+            previous_view = view;
 
-        if (previous_url.equals(item.acc_path)) {
+            if (previous_url.equals(item.acc_path)) {
 
-            previous_url = "none";
-            running_sound_id = "none";
-        } else {
+                previous_url = "none";
+                running_sound_id = "none";
+            } else {
 
-            previous_url = item.acc_path;
-            running_sound_id = item.id;
+                previous_url = item.acc_path;
+                running_sound_id = item.id;
 
-            DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-            player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
+                DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+                player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
 
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                    Util.getUserAgent(context, "TikTok"));
+                DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                        Util.getUserAgent(context, "TikTok"));
 
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(item.acc_path));
-
-
-            player.prepare(videoSource);
-            player.addListener(this);
+                MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(Uri.parse(item.acc_path));
 
 
-            player.setPlayWhenReady(true);
+                player.prepare(videoSource);
+                player.addListener(this);
 
+
+                player.setPlayWhenReady(true);
+
+
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
 
     public void StopPlaying() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-            player.removeListener(this);
-            player.release();
+        try {
+            if (player != null) {
+                player.setPlayWhenReady(false);
+                player.removeListener(this);
+                player.release();
+            }
+
+            show_Stop_state();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        show_Stop_state();
-
     }
 
 
@@ -322,134 +344,155 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     @Override
     public void onStop() {
         super.onStop();
-        active = false;
+        try {
+            active = false;
 
-        running_sound_id = "null";
+            running_sound_id = "null";
 
-        if (player != null) {
-            player.setPlayWhenReady(false);
-            player.removeListener(this);
-            player.release();
+            if (player != null) {
+                player.setPlayWhenReady(false);
+                player.removeListener(this);
+                player.release();
+            }
+
+            show_Stop_state();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        show_Stop_state();
-
     }
 
 
     public void Show_Run_State() {
+        try {
+            if (previous_view != null) {
+                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
 
-        if (previous_view != null) {
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
 
     public void Show_loading_state() {
-        previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
-        previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-        previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+        try {
+            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+            previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
+            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void show_Stop_state() {
+        try {
+            if (previous_view != null) {
+                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
+                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+                previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
+            }
 
-        if (previous_view != null) {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
+            running_sound_id = "none";
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
-
-        running_sound_id = "none";
-
     }
 
 
     public void Down_load_mp3(final String id, final String sound_name, String url) {
+        try {
+            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Please Wait...");
+            progressDialog.show();
 
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.show();
+            prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
+                    .build()
+                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                        @Override
+                        public void onStartOrResume() {
 
-        prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)
-                .build()
-                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
-                    @Override
-                    public void onStartOrResume() {
+                        }
+                    })
+                    .setOnPauseListener(new OnPauseListener() {
+                        @Override
+                        public void onPause() {
 
-                    }
-                })
-                .setOnPauseListener(new OnPauseListener() {
-                    @Override
-                    public void onPause() {
+                        }
+                    })
+                    .setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel() {
 
-                    }
-                })
-                .setOnCancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel() {
+                        }
+                    })
+                    .setOnProgressListener(new OnProgressListener() {
+                        @Override
+                        public void onProgress(Progress progress) {
 
-                    }
-                })
-                .setOnProgressListener(new OnProgressListener() {
-                    @Override
-                    public void onProgress(Progress progress) {
+                        }
+                    });
 
-                    }
-                });
+            prDownloader.start(new OnDownloadListener() {
+                @Override
+                public void onDownloadComplete() {
 
-        prDownloader.start(new OnDownloadListener() {
-            @Override
-            public void onDownloadComplete() {
+                    progressDialog.dismiss();
+                    Intent output = new Intent();
+                    output.putExtra("isSelected", "yes");
+                    output.putExtra("sound_name", sound_name);
+                    output.putExtra("sound_id", id);
+                    getActivity().setResult(RESULT_OK, output);
+                    getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                }
 
-                progressDialog.dismiss();
-                Intent output = new Intent();
-                output.putExtra("isSelected", "yes");
-                output.putExtra("sound_name", sound_name);
-                output.putExtra("sound_id", id);
-                getActivity().setResult(RESULT_OK, output);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
-            }
+                @Override
+                public void onError(Error error) {
+                    progressDialog.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-            @Override
-            public void onError(Error error) {
-                progressDialog.dismiss();
-            }
-        });
-
+        }
     }
 
 
     private void Call_Api_For_Fav_sound(final int pos, String video_id) {
-
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-            parameters.put("sound_id", video_id);
-            parameters.put("fav", "0");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Functions.Show_loader(context, false, false);
-        ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                Functions.cancel_loader();
-                datalist.remove(pos);
-                adapter.notifyItemRemoved(pos);
-                adapter.notifyDataSetChanged();
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                parameters.put("sound_id", video_id);
+                parameters.put("fav", "0");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        });
 
+            Functions.Show_loader(context, false, false);
+            ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    datalist.remove(pos);
+                    adapter.notifyItemRemoved(pos);
+                    adapter.notifyDataSetChanged();
+                }
+            });
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
@@ -470,15 +513,18 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        try {
+            if (playbackState == Player.STATE_BUFFERING) {
+                Show_loading_state();
+            } else if (playbackState == Player.STATE_READY) {
+                Show_Run_State();
+            } else if (playbackState == Player.STATE_ENDED) {
+                show_Stop_state();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        if (playbackState == Player.STATE_BUFFERING) {
-            Show_loading_state();
-        } else if (playbackState == Player.STATE_READY) {
-            Show_Run_State();
-        } else if (playbackState == Player.STATE_ENDED) {
-            show_Stop_state();
         }
-
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import nl.changer.audiowife.AudioWife;
 
@@ -45,6 +45,7 @@ public class Play_Audio_F extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_play_audio, container, false);
+        try{
             context=getContext();
 
             close_btn=view.findViewById(R.id.close_btn);
@@ -83,7 +84,10 @@ public class Play_Audio_F extends Fragment {
                 }
             });
 
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
+        }
         return view;
     }
 
@@ -92,8 +96,13 @@ public class Play_Audio_F extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        try{
         audioWife.pause();
         audioWife.release();
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 }

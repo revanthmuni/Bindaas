@@ -51,7 +51,7 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return dataList != null ? dataList.size() : 0;
     }
 
 
@@ -63,21 +63,28 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
         public CustomViewHolder(View view) {
             super(view);
+            try {
+                thumb_image = view.findViewById(R.id.thumb_image);
+                view_txt = view.findViewById(R.id.view_txt);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-            thumb_image = view.findViewById(R.id.thumb_image);
-            view_txt = view.findViewById(R.id.view_txt);
-
+            }
 
         }
 
         public void bind(final int position, final Home_Get_Set item, final MyVideos_Adapter.OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(position, item, v);
-                }
-            });
+            try {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(position, item, v);
+                    }
+                });
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+            }
         }
 
     }
@@ -85,27 +92,31 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
     @Override
     public void onBindViewHolder(final MyVideos_Adapter.CustomViewHolder holder, final int i) {
-        final Home_Get_Set item = dataList.get(i);
-        holder.setIsRecyclable(false);
+        try {
+            final Home_Get_Set item = dataList.get(i);
+            holder.setIsRecyclable(false);
 
-        holder.view_txt.setText(item.views);
-        holder.view_txt.setText(Functions.GetSuffix(item.views));
+            holder.view_txt.setText(item.views);
+            holder.view_txt.setText(Functions.GetSuffix(item.views));
 
-        Glide.with(context)
-                .asGif()
-                .load(item.gif)
-                .skipMemoryCache(true)
-                .thumbnail(new RequestBuilder[]{Glide
-                        .with(context)
-                        .load(item.thum)})
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)
-                        .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
+            Glide.with(context)
+                    .asGif()
+                    .load(item.gif)
+                    .skipMemoryCache(true)
+                    .thumbnail(new RequestBuilder[]{Glide
+                            .with(context)
+                            .load(item.thum)})
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)
+                            .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
 
-                .into(holder.thumb_image);
+                    .into(holder.thumb_image);
 
 
-        holder.bind(i, item, listener);
+            holder.bind(i, item, listener);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 }

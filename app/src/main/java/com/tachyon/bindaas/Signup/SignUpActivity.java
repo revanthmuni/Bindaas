@@ -65,10 +65,15 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        activity = this;
-        mAuth = FirebaseAuth.getInstance();
-        initialiseToolbar();
-        initViews();
+        try {
+            activity = this;
+            mAuth = FirebaseAuth.getInstance();
+            initialiseToolbar();
+            initViews();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void initViews() {
@@ -100,8 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
                         );*/
 
                         userSignIn(CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis(), email, password, firstName, LastName, "", "local");
-                    }
-                    else {
+                    } else {
                         Toast.makeText(activity, "No network connection", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -113,70 +117,79 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void userSignIn(final String s, String email, String password,
                             final String firstName, final String lastName, final String s1, String local) {
-        PackageInfo packageInfo = null;
         try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String appversion = packageInfo.versionName;
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+            PackageInfo packageInfo = null;
+            try {
+                packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            String appversion = packageInfo.versionName;
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (task.isSuccessful()) {
+                            if (task.isSuccessful()) {
 
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user, firstName, lastName);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("firebase", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(activity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user, firstName, lastName);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("firebase", "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(activity, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
-                        }
+                            }
 
-                        // ...
-                    }
-                });
+                            // ...
+                        }
+                    });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private void updateUI(FirebaseUser user, String firstName, String lastName) {
-        final String id;
-        final String fname;
-        final String lname;
-        final Uri pic_url;
-        final String email;
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            id = user.getUid();
+        try {
+            final String id;
+            final String fname;
+            final String lname;
+            final Uri pic_url;
+            final String email;
+            if (user != null) {
+                // Name, email address, and profile photo Url
+                id = user.getUid();
 
-            fname = firstName;
-            lname = lastName;
-            email = user.getEmail();
-            pic_url = user.getPhotoUrl();
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(firstName + " " + lastName)
-                    .setPhotoUri(pic_url)
-                    .build();
+                fname = firstName;
+                lname = lastName;
+                email = user.getEmail();
+                pic_url = user.getPhotoUrl();
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(firstName + " " + lastName)
+                        .setPhotoUri(pic_url)
+                        .build();
 
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                if (pic_url == null) {
-                                    Call_Api_For_Signup(id, email, password, fname, lname, "null", "local");
-                                } else {
-                                    Call_Api_For_Signup(id, email, password, fname, lname, pic_url.toString(), "local");
+                user.updateProfile(profileUpdates)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    if (pic_url == null) {
+                                        Call_Api_For_Signup(id, email, password, fname, lname, "null", "local");
+                                    } else {
+                                        Call_Api_For_Signup(id, email, password, fname, lname, pic_url.toString(), "local");
+                                    }
+                                    Log.d("firebase", "User profile updated.");
                                 }
-                                Log.d("firebase", "User profile updated.");
                             }
-                        }
-                    });
-        }
+                        });
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     private void Call_Api_For_Signup(String id,
@@ -271,9 +284,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void navigateToMainActivity() {
-        Intent intent = new Intent(this, MainMenuActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, MainMenuActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     private Boolean checkValidations() {
@@ -343,14 +361,19 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private void initialiseToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.signUpToolbar);
-        //setting the title
-        toolbar.setTitle("Sign Up");
-        //placing toolbar in place of actionbar
-        setSupportActionBar(toolbar);
+        try {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.signUpToolbar);
+            //setting the title
+            toolbar.setTitle("Sign Up");
+            //placing toolbar in place of actionbar
+            setSupportActionBar(toolbar);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     @Override

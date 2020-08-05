@@ -104,7 +104,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         context = getContext();
-
+        try {
             getActivity();
 
             bundle = getArguments();
@@ -113,63 +113,77 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
             }
-        Log.d("USR_TST", "onCreateView: "+user_id);
+            Log.d("USR_TST", "onCreateView: " + user_id);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         return init();
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        Objects.requireNonNull(getActivity()).getMenuInflater().inflate(R.menu.menu,menu);
+        try {
+            Objects.requireNonNull(getActivity()).getMenuInflater().inflate(R.menu.menu, menu);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.profile_refresh){
+        if (item.getItemId() == R.id.profile_refresh) {
             // Refresh the Layout
             Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.user_image:
-                OpenfullsizeImage(pic_url);
-                break;
+        try {
+            switch (v.getId()) {
+                case R.id.user_image:
+                    OpenfullsizeImage(pic_url);
+                    break;
 
-            case R.id.follow_unfollow_btn:
+                case R.id.follow_unfollow_btn:
 
-                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
-                    Follow_unFollow_User();
-                else
-                    Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
+                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
+                        Follow_unFollow_User();
+                    else
+                        Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
 
-                break;
+                    break;
 
-            case R.id.setting_btn:
-                Open_Setting();
-                break;
+                case R.id.setting_btn:
+                    Open_Setting();
+                    break;
 
-            case R.id.following_layout:
-                Open_Following();
-                break;
+                case R.id.following_layout:
+                    Open_Following();
+                    break;
 
-            case R.id.fans_layout:
-                Open_Followers();
-                break;
+                case R.id.fans_layout:
+                    Open_Followers();
+                    break;
 
-            case R.id.back_btn:
-                getActivity().onBackPressed();
-                break;
+                case R.id.back_btn:
+                    getActivity().onBackPressed();
+                    break;
+
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }
 
     public View init() {
-
-          username = view.findViewById(R.id.username);
+        try {
+            username = view.findViewById(R.id.username);
             username2_txt = view.findViewById(R.id.username2_txt);
             imageView = view.findViewById(R.id.user_image);
             imageView.setOnClickListener(this);
@@ -237,25 +251,31 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             isdataload = true;
 
             Call_Api_For_get_Allvideos();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            if (is_run_first_time) {
 
-        if (is_run_first_time) {
+                Call_Api_For_get_Allvideos();
 
-            Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
     private void setupTabIcons() {
-
-         View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
+        try {
+            View view1 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
             ImageView imageView1 = view1.findViewById(R.id.image);
             imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_color));
             tvVideosCount = view1.findViewById(R.id.tvCount);
@@ -314,7 +334,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             });
 
             Objects.requireNonNull(tabLayout.getTabAt(0)).select();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -385,29 +408,32 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     boolean is_run_first_time = false;
 
     private void Call_Api_For_get_Allvideos() {
-
-        if (bundle == null) {
-            user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
-        }
-
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-            parameters.put("user_id", user_id);
-            Log.d("USR_TST", "Call_Api_For_get_Allvideos: "+user_id);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                is_run_first_time = true;
-                Parse_data(resp);
+            if (bundle == null) {
+                user_id = Variables.sharedPreferences.getString(Variables.u_id, "0");
             }
-        });
 
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                parameters.put("user_id", user_id);
+                Log.d("USR_TST", "Call_Api_For_get_Allvideos: " + user_id);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    is_run_first_time = true;
+                    Parse_data(resp);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void Parse_data(String responce) {
@@ -478,69 +504,76 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public String follow_status = "0";
 
     public void Follow_unFollow_User() {
+        try {
+            final String send_status;
+            if (follow_status.equals("0")) {
+                send_status = "1";
+            } else {
+                send_status = "0";
+            }
 
-        final String send_status;
-        if (follow_status.equals("0")) {
-            send_status = "1";
-        } else {
-            send_status = "0";
-        }
+            Functions.Call_Api_For_Follow_or_unFollow(getActivity(),
+                    Variables.sharedPreferences.getString(Variables.u_id, ""),
+                    user_id,
+                    send_status,
+                    new API_CallBack() {
+                        @Override
+                        public void ArrayData(ArrayList arrayList) {
 
-        Functions.Call_Api_For_Follow_or_unFollow(getActivity(),
-                Variables.sharedPreferences.getString(Variables.u_id, ""),
-                user_id,
-                send_status,
-                new API_CallBack() {
-                    @Override
-                    public void ArrayData(ArrayList arrayList) {
-
-                    }
-
-                    @Override
-                    public void OnSuccess(String responce) {
-
-                        if (send_status.equals("1")) {
-                            follow_unfollow_btn.setText("UnFollow");
-                            follow_status = "1";
-
-                        } else if (send_status.equals("0")) {
-                            follow_unfollow_btn.setText("Follow");
-                            follow_status = "0";
                         }
 
-                        Call_Api_For_get_Allvideos();
-                    }
+                        @Override
+                        public void OnSuccess(String responce) {
 
-                    @Override
-                    public void OnFail(String responce) {
+                            if (send_status.equals("1")) {
+                                follow_unfollow_btn.setText("UnFollow");
+                                follow_status = "1";
 
-                    }
+                            } else if (send_status.equals("0")) {
+                                follow_unfollow_btn.setText("Follow");
+                                follow_status = "0";
+                            }
 
-                });
+                            Call_Api_For_get_Allvideos();
+                        }
 
+                        @Override
+                        public void OnFail(String responce) {
+
+                        }
+
+                    });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     //this method will get the big size of profile image.
     public void OpenfullsizeImage(String url) {
-        See_Full_Image_F see_image_f = new See_Full_Image_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        Bundle args = new Bundle();
-        args.putSerializable("image_url", url);
-        see_image_f.setArguments(args);
-        transaction.addToBackStack(null);
+        try {
+            See_Full_Image_F see_image_f = new See_Full_Image_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            Bundle args = new Bundle();
+            args.putSerializable("image_url", url);
+            see_image_f.setArguments(args);
+            transaction.addToBackStack(null);
 
-        View view = getActivity().findViewById(R.id.MainMenuFragment);
-        if (view != null)
-            transaction.replace(R.id.MainMenuFragment, see_image_f).commit();
-        else
-            transaction.replace(R.id.Profile_F, see_image_f).commit();
+            View view = getActivity().findViewById(R.id.MainMenuFragment);
+            if (view != null)
+                transaction.replace(R.id.MainMenuFragment, see_image_f).commit();
+            else
+                transaction.replace(R.id.Profile_F, see_image_f).commit();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     public void Open_Chat_F() {
 
-
+        try {
             Chat_Activity chat_activity = new Chat_Activity();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
@@ -556,11 +589,14 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
             else
                 transaction.replace(R.id.Profile_F, chat_activity).commit();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     public void Open_Following() {
-
+        try {
             Following_F following_f = new Following_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
@@ -577,11 +613,14 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             else
                 transaction.replace(R.id.Profile_F, following_f).commit();
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     public void Open_Followers() {
-
+        try {
             Following_F following_f = new Following_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
@@ -598,7 +637,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 transaction.replace(R.id.MainMenuFragment, following_f).commit();
             else
                 transaction.replace(R.id.Profile_F, following_f).commit();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 
@@ -607,12 +649,14 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
 
+        try {
+            if (fragment_callback != null)
+                fragment_callback.Responce(new Bundle());
 
-        if (fragment_callback != null)
-            fragment_callback.Responce(new Bundle());
-
-        Functions.deleteCache(context);
-
+            Functions.deleteCache(context);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
 

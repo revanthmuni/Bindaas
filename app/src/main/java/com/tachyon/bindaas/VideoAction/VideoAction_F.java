@@ -16,6 +16,7 @@ import android.os.Handler;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
     Fragment_Callback fragment_callback;
 
-    String video_id,user_id;
+    String video_id, user_id;
 
     ProgressBar progressBar;
 
@@ -54,8 +55,8 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
     @SuppressLint("ValidFragment")
     public VideoAction_F(String id, Fragment_Callback fragment_callback) {
-        video_id=id;
-        this.fragment_callback=fragment_callback;
+        video_id = id;
+        this.fragment_callback = fragment_callback;
     }
 
 
@@ -63,33 +64,33 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_video_action, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_video_action, container, false);
+        context = getContext();
 
+        try {
 
-
-            Bundle bundle=getArguments();
-            if(bundle!=null){
-                video_id=bundle.getString("video_id");
-                user_id=bundle.getString("user_id");
+            Bundle bundle = getArguments();
+            if (bundle != null) {
+                video_id = bundle.getString("video_id");
+                user_id = bundle.getString("user_id");
             }
-            progressBar=view.findViewById(R.id.progress_bar);
+            progressBar = view.findViewById(R.id.progress_bar);
 
             view.findViewById(R.id.save_video_layout).setOnClickListener(this);
             view.findViewById(R.id.copy_layout).setOnClickListener(this);
             view.findViewById(R.id.delete_layout).setOnClickListener(this);
 
-            if(user_id!=null && user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+            if (user_id != null && user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, "")))
                 view.findViewById(R.id.delete_layout).setVisibility(View.VISIBLE);
             else
                 view.findViewById(R.id.delete_layout).setVisibility(View.GONE);
 
 
-            if(Variables.is_secure_info){
+            if (Variables.is_secure_info) {
                 view.findViewById(R.id.share_notice_txt).setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 view.findViewById(R.id.copy_layout).setVisibility(View.GONE);
-            }else {
+            } else {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -99,75 +100,81 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     }
                 }, 1000);
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         return view;
     }
 
     VideoSharingApps_Adapter adapter;
-    public void Get_Shared_app(){
+
+    public void Get_Shared_app() {
+        try {
             recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final GridLayoutManager layoutManager = new GridLayoutManager(context, 5);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setHasFixedSize(false);
 
 
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+                    try {
 
-                try {
+                        PackageManager pm = getActivity().getPackageManager();
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, "https://google.com");
 
-                PackageManager pm=getActivity().getPackageManager();
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, "https://google.com");
+                        List<ResolveInfo> launchables = pm.queryIntentActivities(intent, 0);
 
-                List<ResolveInfo> launchables=pm.queryIntentActivities(intent, 0);
+                        for (int i = 0; i < launchables.size(); i++) {
 
-                for (int i=0; i<launchables.size(); i++){
+                            if (launchables.get(i).activityInfo.name.contains("SendTextToClipboardActivity")) {
+                                launchables.remove(i);
+                                break;
+                            }
 
-                    if(launchables.get(i).activityInfo.name.contains("SendTextToClipboardActivity")){
-                        launchables.remove(i);
-                        break;
+                        }
+
+                        Collections.sort(launchables,
+                                new ResolveInfo.DisplayNameComparator(pm));
+
+                        adapter = new VideoSharingApps_Adapter(context, launchables, new VideoSharingApps_Adapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int positon, ResolveInfo item, View view) {
+                                Toast.makeText(context, "" + item.activityInfo.name, Toast.LENGTH_SHORT).show();
+                                Open_App(item);
+                            }
+                        });
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.setAdapter(adapter);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+
+
+                    } catch (Exception e) {
+
                     }
-
                 }
+            }).start();
 
-                Collections.sort(launchables,
-                        new ResolveInfo.DisplayNameComparator(pm));
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-                 adapter=new VideoSharingApps_Adapter(context, launchables, new VideoSharingApps_Adapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int positon, ResolveInfo item, View view) {
-                        Toast.makeText(context, ""+item.activityInfo.name, Toast.LENGTH_SHORT).show();
-                        Open_App(item);
-                    }
-                });
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(adapter);
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
-
-
-            }
-            catch (Exception e){
-
-            }
-            }
-        }).start();
-
-
+        }
 
     }
 
 
     public void Open_App(ResolveInfo resolveInfo) {
-
+        try {
             ActivityInfo activity = resolveInfo.activityInfo;
             ComponentName name = new ComponentName(activity.applicationInfo.packageName,
                     activity.name);
@@ -180,45 +187,52 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
             Intent intent = new Intent(android.content.Intent.ACTION_SEND);
             intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.save_video_message) + Variables.DOWNLOAD_VIDEO+video_id);
+            intent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.save_video_message) + Variables.DOWNLOAD_VIDEO + video_id);
             intent.setComponent(name);
             startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.save_video_layout:
+        try {
+            switch (view.getId()) {
+                case R.id.save_video_layout:
 
-                if(Functions.Checkstoragepermision(getActivity())) {
+                    if (Functions.Checkstoragepermision(getActivity())) {
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("action", "save");
-                    dismiss();
-                    fragment_callback.Responce(bundle);
-                }
+                        Bundle bundle = new Bundle();
+                        bundle.putString("action", "save");
+                        dismiss();
+                        fragment_callback.Responce(bundle);
+                    }
 
-                break;
+                    break;
 
-            case R.id.copy_layout:
-                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("Copied Text", context.getResources().getString(R.string.save_video_message) + " " + Variables.DOWNLOAD_VIDEO+video_id);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(context, "Link Copied clipboard", Toast.LENGTH_SHORT).show();
-                break;
+                case R.id.copy_layout:
+                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Copied Text", context.getResources().getString(R.string.save_video_message) + " " + Variables.DOWNLOAD_VIDEO + video_id);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(context, "Link Copied clipboard", Toast.LENGTH_SHORT).show();
+                    break;
 
-            case R.id.delete_layout:
-                if(Variables.is_secure_info){
-                    Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("action", "delete");
-                    dismiss();
-                    fragment_callback.Responce(bundle);
-                }
-                break;
+                case R.id.delete_layout:
+                    if (Variables.is_secure_info) {
+                        Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("action", "delete");
+                        dismiss();
+                        fragment_callback.Responce(bundle);
+                    }
+                    break;
+
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }

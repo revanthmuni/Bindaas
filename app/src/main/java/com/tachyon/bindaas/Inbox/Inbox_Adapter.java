@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.squareup.picasso.Picasso;
 
@@ -67,7 +68,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
     @Override
     public int getItemCount() {
-        return inbox_dataList_filter.size();
+        return inbox_dataList_filter != null ? inbox_dataList_filter.size() : 0;
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -76,22 +77,28 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
         public CustomViewHolder(View view) {
             super(view);
-
-               user_image = itemView.findViewById(R.id.user_image);
+            try {
+                user_image = itemView.findViewById(R.id.user_image);
                 username = itemView.findViewById(R.id.username);
                 last_message = itemView.findViewById(R.id.message);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+            }
         }
 
         public void bind(final Inbox_Get_Set item, final Inbox_Adapter.OnItemClickListener listener, final Inbox_Adapter.OnLongItemClickListener longItemClickListener) {
+            try {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(item);
+                    }
+                });
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
-
+            }
 
         }
 
@@ -100,7 +107,8 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
     @Override
     public void onBindViewHolder(final Inbox_Adapter.CustomViewHolder holder, final int i) {
-    final Inbox_Get_Set item = inbox_dataList_filter.get(i);
+        try {
+            final Inbox_Get_Set item = inbox_dataList_filter.get(i);
             holder.username.setText(item.getName());
             holder.last_message.setText(item.getMsg());
             holder.date_created.setText(item.getDate() != null ? ChangeDate(item.getDate()) : "DD/MM/YYY");
@@ -130,7 +138,10 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
             holder.bind(item, listener, longlistener);
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 

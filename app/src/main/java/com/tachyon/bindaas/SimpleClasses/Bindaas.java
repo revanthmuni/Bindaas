@@ -18,10 +18,13 @@ public class Bindaas extends Application {
     public void onCreate() {
         super.onCreate();
         //Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(getApplicationContext()));
-
+try{
         Fresco.initialize(this);
         FirebaseApp.initializeApp(this);
+}catch (Exception e){
+    Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
+}
     }
 
     private HttpProxyCacheServer proxy;

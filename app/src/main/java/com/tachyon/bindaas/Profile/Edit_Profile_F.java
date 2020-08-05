@@ -100,106 +100,117 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         context = getContext();
+        try {
+
+            view.findViewById(R.id.Goback).setOnClickListener(this);
+            view.findViewById(R.id.save_btn).setOnClickListener(this);
+            view.findViewById(R.id.upload_pic_btn).setOnClickListener(this);
 
 
-        view.findViewById(R.id.Goback).setOnClickListener(this);
-        view.findViewById(R.id.save_btn).setOnClickListener(this);
-        view.findViewById(R.id.upload_pic_btn).setOnClickListener(this);
+            username_edit = view.findViewById(R.id.username_edit);
+            profile_image = view.findViewById(R.id.profile_image);
+            firstname_edit = view.findViewById(R.id.firstname_edit);
+            lastname_edit = view.findViewById(R.id.lastname_edit);
+            user_bio_edit = view.findViewById(R.id.user_bio_edit);
 
 
-        username_edit = view.findViewById(R.id.username_edit);
-        profile_image = view.findViewById(R.id.profile_image);
-        firstname_edit = view.findViewById(R.id.firstname_edit);
-        lastname_edit = view.findViewById(R.id.lastname_edit);
-        user_bio_edit = view.findViewById(R.id.user_bio_edit);
+            username_edit.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
+            firstname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name, ""));
+            lastname_edit.setText(Variables.sharedPreferences.getString(Variables.l_name, ""));
+
+            String user_pic = Variables.sharedPreferences.getString(Variables.u_pic, "");
+            if (!user_pic.isEmpty())
+                Picasso.with(context)
+                        .load(user_pic)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .resize(200, 200)
+                        .centerCrop()
+                        .into(profile_image);
 
 
-        username_edit.setText(Variables.sharedPreferences.getString(Variables.u_name, ""));
-        firstname_edit.setText(Variables.sharedPreferences.getString(Variables.f_name, ""));
-        lastname_edit.setText(Variables.sharedPreferences.getString(Variables.l_name, ""));
-
-        String user_pic = Variables.sharedPreferences.getString(Variables.u_pic, "");
-        if (!user_pic.isEmpty())
-            Picasso.with(context)
-                    .load(user_pic)
-                    .placeholder(R.drawable.profile_image_placeholder)
-                    .resize(200, 200)
-                    .centerCrop()
-                    .into(profile_image);
+            male_btn = view.findViewById(R.id.male_btn);
+            female_btn = view.findViewById(R.id.female_btn);
+            others_btn = view.findViewById(R.id.others_btn);
+            genderGroup = view.findViewById(R.id.genderGroup);
 
 
-        male_btn = view.findViewById(R.id.male_btn);
-        female_btn = view.findViewById(R.id.female_btn);
-        others_btn = view.findViewById(R.id.others_btn);
-        genderGroup = view.findViewById(R.id.genderGroup);
+            Call_Api_For_User_Details();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-
-        Call_Api_For_User_Details();
-
+        }
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        try {
+            switch (v.getId()) {
 
-            case R.id.Goback:
+                case R.id.Goback:
 
-                getActivity().onBackPressed();
-                break;
+                    getActivity().onBackPressed();
+                    break;
 
-            case R.id.save_btn:
-                if (Check_Validation()) {
+                case R.id.save_btn:
+                    if (Check_Validation()) {
 
-                    Call_Api_For_Edit_profile();
-                }
-                break;
+                        Call_Api_For_Edit_profile();
+                    }
+                    break;
 
-            case R.id.upload_pic_btn:
-                selectImage();
-                break;
+                case R.id.upload_pic_btn:
+                    selectImage();
+                    break;
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
 
     // this method will show the dialog of selete the either take a picture form camera or pick the image from gallary
     private void selectImage() {
+        try {
+            final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            builder.setTitle("Add Photo!");
 
-        builder.setTitle("Add Photo!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
 
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
 
-            @Override
+                public void onClick(DialogInterface dialog, int item) {
 
-            public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Take Photo")) {
+                        if (check_permissions())
+                            openCameraIntent();
 
-                if (options[item].equals("Take Photo")) {
-                    if (check_permissions())
-                        openCameraIntent();
+                    } else if (options[item].equals("Choose from Gallery")) {
 
-                } else if (options[item].equals("Choose from Gallery")) {
+                        if (check_permissions()) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(intent, 2);
+                        }
+                    } else if (options[item].equals("Cancel")) {
 
-                    if (check_permissions()) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 2);
+                        dialog.dismiss();
+
                     }
-                } else if (options[item].equals("Cancel")) {
-
-                    dialog.dismiss();
 
                 }
 
-            }
+            });
 
-        });
+            builder.show();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        builder.show();
-
+        }
     }
 
 
@@ -224,22 +235,27 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {
-        Intent pictureIntent = new Intent(
-                MediaStore.ACTION_IMAGE_CAPTURE);
-        if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            //Create a file to store the image
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
+        try {
+            Intent pictureIntent = new Intent(
+                    MediaStore.ACTION_IMAGE_CAPTURE);
+            if (pictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                //Create a file to store the image
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
 
+                }
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(context.getApplicationContext(), getActivity().getPackageName() + ".fileprovider", photoFile);
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(pictureIntent, 1);
+                }
             }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(context.getApplicationContext(), getActivity().getPackageName() + ".fileprovider", photoFile);
-                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(pictureIntent, 1);
-            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
         }
     }
 
@@ -284,64 +300,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == RESULT_OK) {
 
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == 1) {
-                Matrix matrix = new Matrix();
-                try {
-                    ExifInterface exif = new ExifInterface(imageFilePath);
-                    int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                    switch (orientation) {
-                        case ExifInterface.ORIENTATION_ROTATE_90:
-                            matrix.postRotate(90);
-                            break;
-                        case ExifInterface.ORIENTATION_ROTATE_180:
-                            matrix.postRotate(180);
-                            break;
-                        case ExifInterface.ORIENTATION_ROTATE_270:
-                            matrix.postRotate(270);
-                            break;
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Uri selectedImage = (Uri.fromFile(new File(imageFilePath)));
-
-                InputStream imageStream = null;
-                try {
-                    imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
-
-                Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.7), (int) (rotatedBitmap.getHeight() * 0.7), true);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-
-                image_byte_array = baos.toByteArray();
-
-                Save_Image();
-
-            } else if (requestCode == 2) {
-                Uri selectedImage = data.getData();
-                InputStream imageStream = null;
-                try {
-                    imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
-
-                String path = getPath(selectedImage);
-                Matrix matrix = new Matrix();
-                ExifInterface exif = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                if (requestCode == 1) {
+                    Matrix matrix = new Matrix();
                     try {
-                        exif = new ExifInterface(path);
+                        ExifInterface exif = new ExifInterface(imageFilePath);
                         int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
                         switch (orientation) {
                             case ExifInterface.ORIENTATION_ROTATE_90:
@@ -354,27 +319,81 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                                 matrix.postRotate(270);
                                 break;
                         }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    Uri selectedImage = (Uri.fromFile(new File(imageFilePath)));
+
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
+
+                    Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.7), (int) (rotatedBitmap.getHeight() * 0.7), true);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+                    image_byte_array = baos.toByteArray();
+
+                    Save_Image();
+
+                } else if (requestCode == 2) {
+                    Uri selectedImage = data.getData();
+                    InputStream imageStream = null;
+                    try {
+                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+
+                    String path = getPath(selectedImage);
+                    Matrix matrix = new Matrix();
+                    ExifInterface exif = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        try {
+                            exif = new ExifInterface(path);
+                            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                            switch (orientation) {
+                                case ExifInterface.ORIENTATION_ROTATE_90:
+                                    matrix.postRotate(90);
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_180:
+                                    matrix.postRotate(180);
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_270:
+                                    matrix.postRotate(270);
+                                    break;
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
+
+
+                    Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.5), (int) (rotatedBitmap.getHeight() * 0.5), true);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+
+                    image_byte_array = baos.toByteArray();
+
+                    Save_Image();
+
                 }
 
-                Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
-
-
-                Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.5), (int) (rotatedBitmap.getHeight() * 0.5), true);
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-
-                image_byte_array = baos.toByteArray();
-
-                Save_Image();
-
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
 
@@ -405,32 +424,35 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     byte[] image_byte_array;
 
     public void Save_Image() {
+        try {
+            Functions.Show_loader(context, false, false);
 
-        Functions.Show_loader(context, false, false);
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            String key = reference.push().getKey();
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            final StorageReference filelocation = storageReference.child("User_image")
+                    .child(key + ".jpg");
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        String key = reference.push().getKey();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        final StorageReference filelocation = storageReference.child("User_image")
-                .child(key + ".jpg");
-
-        filelocation.putBytes(image_byte_array).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                if (task.isSuccessful()) {
-                    filelocation.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Log.d("Profile_Image", "onSuccess: "+uri.toString());
-                            Call_Api_For_image(uri.toString());
-                        }
-                    });
-                } else {
-                    Functions.cancel_loader();
+            filelocation.putBytes(image_byte_array).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        filelocation.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.d("Profile_Image", "onSuccess: " + uri.toString());
+                                Call_Api_For_image(uri.toString());
+                            }
+                        });
+                    } else {
+                        Functions.cancel_loader();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 
@@ -482,22 +504,22 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     // this will update the latest info of user in database
     public void Call_Api_For_Edit_profile() {
-
-        Functions.Show_loader(context, false, false);
-
-        String uname = username_edit.getText().toString().toLowerCase().replaceAll("\\s", "");
-        JSONObject parameters = new JSONObject();
         try {
-            parameters.put("username", uname.replaceAll("@", ""));
-            if ( Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")){
-                Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
-                parameters.put("user_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
-            }else {
-                Toast.makeText(context, "false", Toast.LENGTH_SHORT).show();
-                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-            }
-            parameters.put("first_name", firstname_edit.getText().toString());
-            parameters.put("last_name", lastname_edit.getText().toString());
+            Functions.Show_loader(context, false, false);
+
+            String uname = username_edit.getText().toString().toLowerCase().replaceAll("\\s", "");
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("username", uname.replaceAll("@", ""));
+                if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")) {
+                    Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
+                    parameters.put("user_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
+                } else {
+                    Toast.makeText(context, "false", Toast.LENGTH_SHORT).show();
+                    parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                }
+                parameters.put("first_name", firstname_edit.getText().toString());
+                parameters.put("last_name", lastname_edit.getText().toString());
 
 //            if (male_btn.isChecked()) {
 //                parameters.put("gender", "Male");
@@ -506,89 +528,97 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 //                parameters.put("gender", "Female");
 //            }
 
-            switch (genderGroup.getCheckedRadioButtonId()) {
-                case R.id.male_btn:
-                    parameters.put("gender", "Male");
-                    break;
-                case R.id.female_btn:
-                    parameters.put("gender", "Female");
-                    break;
-                case R.id.others_btn:
-                    parameters.put("gender", "Others");
-                    break;
+                switch (genderGroup.getCheckedRadioButtonId()) {
+                    case R.id.male_btn:
+                        parameters.put("gender", "Male");
+                        break;
+                    case R.id.female_btn:
+                        parameters.put("gender", "Female");
+                        break;
+                    case R.id.others_btn:
+                        parameters.put("gender", "Others");
+                        break;
+                }
+
+                parameters.put("bio", user_bio_edit.getText().toString());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            parameters.put("bio", user_bio_edit.getText().toString());
+            ApiRequest.Call_Api(context, Variables.editProfile, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    try {
+                        JSONObject response = new JSONObject(resp);
+                        String code = response.optString("code");
+                        JSONArray msg = response.optJSONArray("msg");
+                        if (code.equals("200")) {
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
 
-        ApiRequest.Call_Api(context, Variables.editProfile, parameters, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                Functions.cancel_loader();
-                try {
-                    JSONObject response = new JSONObject(resp);
-                    String code = response.optString("code");
-                    JSONArray msg = response.optJSONArray("msg");
-                    if (code.equals("200")) {
+                            String u_name = username_edit.getText().toString();
+                            if (!u_name.contains("@"))
+                                u_name = "@" + u_name;
 
-                        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                            editor.putString(Variables.u_name, u_name);
+                            editor.putString(Variables.f_name, firstname_edit.getText().toString());
+                            editor.putString(Variables.l_name, lastname_edit.getText().toString());
+                            editor.commit();
 
-                        String u_name = username_edit.getText().toString();
-                        if (!u_name.contains("@"))
-                            u_name = "@" + u_name;
+                            Variables.user_name = u_name;
 
-                        editor.putString(Variables.u_name, u_name);
-                        editor.putString(Variables.f_name, firstname_edit.getText().toString());
-                        editor.putString(Variables.l_name, lastname_edit.getText().toString());
-                        editor.commit();
+                            getActivity().onBackPressed();
+                        } else {
 
-                        Variables.user_name = u_name;
+                            if (msg != null) {
+                                JSONObject jsonObject = msg.optJSONObject(0);
+                                Toast.makeText(context, jsonObject.optString("response"), Toast.LENGTH_SHORT).show();
+                            }
 
-                        getActivity().onBackPressed();
-                    } else {
 
-                        if (msg != null) {
-                            JSONObject jsonObject = msg.optJSONObject(0);
-                            Toast.makeText(context, jsonObject.optString("response"), Toast.LENGTH_SHORT).show();
                         }
 
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
 
     // this will get the user data and parse the data and show the data into views
     public void Call_Api_For_User_Details() {
-        Functions.Show_loader(getActivity(), false, false);
-        Functions.Call_Api_For_Get_User_data(getActivity(),
-                Variables.sharedPreferences.getString(Variables.u_id, ""),
-                new API_CallBack() {
-                    @Override
-                    public void ArrayData(ArrayList arrayList) {
+        try {
+            Functions.Show_loader(getActivity(), false, false);
+            Functions.Call_Api_For_Get_User_data(getActivity(),
+                    Variables.sharedPreferences.getString(Variables.u_id, ""),
+                    new API_CallBack() {
+                        @Override
+                        public void ArrayData(ArrayList arrayList) {
 
-                    }
+                        }
 
-                    @Override
-                    public void OnSuccess(String responce) {
-                        Functions.cancel_loader();
-                        Parse_user_data(responce);
-                    }
+                        @Override
+                        public void OnSuccess(String responce) {
+                            Functions.cancel_loader();
+                            Parse_user_data(responce);
+                        }
 
-                    @Override
-                    public void OnFail(String responce) {
+                        @Override
+                        public void OnFail(String responce) {
 
-                    }
-                });
+                        }
+                    });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     public void Parse_user_data(String responce) {
@@ -640,8 +670,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     @Override
     public void onDetach() {
         super.onDetach();
+        try {
+            if (fragment_callback != null)
+                fragment_callback.Responce(new Bundle());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        if (fragment_callback != null)
-            fragment_callback.Responce(new Bundle());
+        }
     }
+
 }

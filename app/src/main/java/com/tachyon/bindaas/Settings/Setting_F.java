@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,6 +17,7 @@ import com.tachyon.bindaas.Accounts.Request_Varification_F;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.SimpleClasses.Webview_F;
 
@@ -36,22 +38,26 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_setting, container, false);
-        context=getContext();
+        view = inflater.inflate(R.layout.fragment_setting, container, false);
+        context = getContext();
+        try {
+            view.findViewById(R.id.Goback).setOnClickListener(this);
+            //view.findViewById(R.id.request_verification_txt).setOnClickListener(this);
+            view.findViewById(R.id.privacy_policy_txt).setOnClickListener(this);
+            view.findViewById(R.id.logout_txt).setOnClickListener(this);
 
-        view.findViewById(R.id.Goback).setOnClickListener(this);
-        //view.findViewById(R.id.request_verification_txt).setOnClickListener(this);
-        view.findViewById(R.id.privacy_policy_txt).setOnClickListener(this);
-        view.findViewById(R.id.logout_txt).setOnClickListener(this);
 
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-
+        }
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        try{
+        switch (v.getId()) {
 
             case R.id.Goback:
                 getActivity().onBackPressed();
@@ -69,10 +75,14 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
                 Logout();
                 break;
         }
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 
-    public void Open_request_verification(){
+    public void Open_request_verification() {
         Request_Varification_F request_varification_f = new Request_Varification_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
@@ -80,28 +90,38 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
         transaction.replace(R.id.Setting_F, request_varification_f).commit();
     }
 
-    public void Open_Privacy_url(){
+    public void Open_Privacy_url() {
+        try{
         Webview_F webview_f = new Webview_F();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-        Bundle bundle=new Bundle();
-        bundle.putString("url",Variables.privacy_policy);
-        bundle.putString("title","Privacy Policy");
+        Bundle bundle = new Bundle();
+        bundle.putString("url", Variables.privacy_policy);
+        bundle.putString("title", "Privacy Policy");
         webview_f.setArguments(bundle);
         transaction.addToBackStack(null);
         transaction.replace(R.id.Setting_F, webview_f).commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
     // this will erase all the user info store in locally and logout the user
-    public void Logout(){
-        SharedPreferences.Editor editor= Variables.sharedPreferences.edit();
-        editor.putString(Variables.u_id,"").clear();
-        editor.putString(Variables.u_name,"").clear();
-        editor.putString(Variables.u_pic,"").clear();
-        editor.putBoolean(Variables.islogin,false).clear();
+    public void Logout() {
+        try{
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+        editor.putString(Variables.u_id, "").clear();
+        editor.putString(Variables.u_name, "").clear();
+        editor.putString(Variables.u_pic, "").clear();
+        editor.putBoolean(Variables.islogin, false).clear();
         editor.commit();
         getActivity().finish();
         startActivity(new Intent(getActivity(), MainMenuActivity.class));
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
     }
 
 

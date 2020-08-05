@@ -4,6 +4,7 @@ package com.tachyon.bindaas.Notifications;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 import com.google.android.gms.ads.AdRequest;
@@ -55,16 +57,16 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_notification, container, false);
-   context=getContext();
+        view = inflater.inflate(R.layout.fragment_notification, container, false);
+        try {
+            context = getContext();
 
 
-            datalist=new ArrayList<>();
+            datalist = new ArrayList<>();
 
 
             recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
@@ -73,8 +75,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
             recyclerView.setHasFixedSize(true);
 
 
-
-            adapter=new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
+            adapter = new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Notification_Get_Set item) {
 
@@ -94,7 +95,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
             view.findViewById(R.id.inbox_btn).setOnClickListener(this);
 
-            swiperefresh=view.findViewById(R.id.swiperefresh);
+            swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -111,83 +112,97 @@ public class Notification_F extends RootFragment implements View.OnClickListener
             });
 
 
-            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false))
+            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                 Call_api();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
         return view;
     }
 
 
     AdView adView;
+
     @Override
     public void onStart() {
         super.onStart();
-
+        try {
             adView = view.findViewById(R.id.bannerad);
-            if(!Variables.is_remove_ads) {
+            if (!Variables.is_remove_ads) {
                 AdRequest adRequest = new AdRequest.Builder().build();
                 adView.loadAd(adRequest);
-            }else {
+            } else {
                 adView.setVisibility(View.GONE);
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-   if(view!=null && Variables.Reload_my_notification){
-                Variables.Reload_my_notification=false;
+        try {
+            if (view != null && Variables.Reload_my_notification) {
+                Variables.Reload_my_notification = false;
                 Call_api();
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-    }
-
-    public void Call_api(){
-
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("user_id",Variables.user_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
-        ApiRequest.Call_Api(context, Variables.getNotifications, jsonObject, new Callback() {
-            @Override
-            public void Responce(String resp) {
-                swiperefresh.setRefreshing(false);
-                parse_data(resp);
-            }
-        });
-
     }
 
-    public void parse_data(String resp){
+    public void Call_api() {
         try {
-            JSONObject jsonObject=new JSONObject(resp);
-            String code=jsonObject.optString("code");
-            if(code.equals("200")){
-                JSONArray msg=jsonObject.getJSONArray("msg");
-                ArrayList<Notification_Get_Set> temp_list=new ArrayList<>();
-                for (int i=0;i<msg.length();i++){
-                    JSONObject data=msg.getJSONObject(i);
-                    JSONObject user_id_details=data.optJSONObject("user_id_details");
-                    JSONObject value_data=data.optJSONObject("value_data");
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("user_id", Variables.user_id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                    Notification_Get_Set item=new Notification_Get_Set();
+            ApiRequest.Call_Api(context, Variables.getNotifications, jsonObject, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    swiperefresh.setRefreshing(false);
+                    parse_data(resp);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-                    item.user_id=data.optString("user_id");
+        }
+    }
 
-                    item.username=user_id_details.optString("username");
-                    item.first_name=user_id_details.optString("first_name");
-                    item.last_name=user_id_details.optString("last_name");
-                    item.profile_pic=user_id_details.optString("profile_pic");
+    public void parse_data(String resp) {
+        try {
+            JSONObject jsonObject = new JSONObject(resp);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray msg = jsonObject.getJSONArray("msg");
+                ArrayList<Notification_Get_Set> temp_list = new ArrayList<>();
+                for (int i = 0; i < msg.length(); i++) {
+                    JSONObject data = msg.getJSONObject(i);
+                    JSONObject user_id_details = data.optJSONObject("user_id_details");
+                    JSONObject value_data = data.optJSONObject("value_data");
 
-                    item.effected_user_id =user_id_details.optString("effected_user_id");
+                    Notification_Get_Set item = new Notification_Get_Set();
 
-                    item.type=data.optString("type");
+                    item.user_id = data.optString("user_id");
 
-                    if(item.type.equalsIgnoreCase("comment_video") || item.type.equalsIgnoreCase("video_like")) {
+                    item.username = user_id_details.optString("username");
+                    item.first_name = user_id_details.optString("first_name");
+                    item.last_name = user_id_details.optString("last_name");
+                    item.profile_pic = user_id_details.optString("profile_pic");
+
+                    item.effected_user_id = user_id_details.optString("effected_user_id");
+
+                    item.type = data.optString("type");
+
+                    if (item.type.equalsIgnoreCase("comment_video") || item.type.equalsIgnoreCase("video_like")) {
 
                         item.id = value_data.optString("id");
                         item.video = value_data.optString("video");
@@ -196,7 +211,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
                     }
 
-                    item.created=user_id_details.optString("created");
+                    item.created = user_id_details.optString("created");
 
                     temp_list.add(item);
 
@@ -206,15 +221,13 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                 datalist.clear();
                 datalist.addAll(temp_list);
 
-                if(datalist.size()<=0) {
+                if (datalist.size() <= 0) {
                     view.findViewById(R.id.no_data_layout).setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     view.findViewById(R.id.no_data_layout).setVisibility(View.GONE);
                 }
 
                 adapter.notifyDataSetChanged();
-
 
 
             }
@@ -226,7 +239,7 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.inbox_btn:
                 Open_inbox_F();
                 break;
@@ -234,31 +247,41 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     }
 
     private void Open_inbox_F() {
-        Inbox_F inbox_f = new Inbox_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.MainMenuFragment, inbox_f).commit();
+        try {
+            Inbox_F inbox_f = new Inbox_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, inbox_f).commit();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
     }
 
     private void OpenWatchVideo(Notification_Get_Set item) {
-        Intent intent=new Intent(getActivity(), WatchVideos_F.class);
-        intent.putExtra("video_id", item.id);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(getActivity(), WatchVideos_F.class);
+            intent.putExtra("video_id", item.id);
+            startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
 
     public void Open_Profile(Notification_Get_Set item) {
-
+        try {
 
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
                 try {
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
-                }catch (Exception e){
-                    Log.d("Exception:", "OpenProfile: "+e.getMessage());
+                } catch (Exception e) {
+                    Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+                    Log.d("Exception:", "OpenProfile: " + e.getMessage());
                 }
                 /*TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
                 if (profile!=null) {
@@ -284,7 +307,10 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                 transaction.replace(R.id.MainMenuFragment, profile_f).commit();
 
             }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
 
     }
 }
