@@ -34,7 +34,7 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
-        <activity android:name=".ExceptionDisplay"></activity>
+
         <activity
             android:name=".Signup.SignUpActivity"
             android:screenOrientation="portrait"

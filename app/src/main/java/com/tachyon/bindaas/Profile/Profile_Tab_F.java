@@ -123,14 +123,14 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             @Override
             public void onClick(View view) {
 //                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
-                update_profile();
+                //update_profile();
                 Call_Api_For_get_Allvideos();
             }
         });
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                update_profile();
+                //update_profile();
                 Call_Api_For_get_Allvideos();
             }
         });

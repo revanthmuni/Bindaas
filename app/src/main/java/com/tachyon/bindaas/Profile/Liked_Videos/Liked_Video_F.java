@@ -66,7 +66,7 @@ public class Liked_Video_F extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_user_likedvideo, container, false);
 
-    context = getContext();
+        context = getContext();
 
             recyclerView = view.findViewById(R.id.recylerview);
             final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
@@ -139,6 +139,7 @@ public class Liked_Video_F extends Fragment {
             ApiRequest.Call_Api(context, Variables.myLikedVideo, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    Log.d("Test Call_Api", "Responce: "+resp);
                     is_api_run = false;
                     Parse_data(resp);
                 }
@@ -192,7 +193,7 @@ public class Liked_Video_F extends Fragment {
                         if (sound_data != null) {
                             JSONObject audio_path = sound_data.optJSONObject("audio_path");
                             item.sound_url_mp3 = audio_path.optString("mp3");
-                            item.sound_url_acc = audio_path.optString("acc");
+                            item.sound_url_acc = audio_path.optString("aac");
                         }
 
 

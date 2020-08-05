@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -33,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class Post_Video_A extends AppCompatActivity implements ServiceCallback,View.OnClickListener {
+public class Post_Video_A extends AppCompatActivity implements ServiceCallback, View.OnClickListener {
 
 
     ImageView video_thumbnail;
@@ -49,19 +50,16 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_video);
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            draft_file=intent.getStringExtra("draft_file");
-            video_path = intent.getStringExtra("video_path");
-        }else {
-            video_path = Variables.output_filter_file;
+        Intent intent = getIntent();
+        if (intent != null) {
+            draft_file = intent.getStringExtra("draft_file");
+           // video_path = intent.getStringExtra("video_path");
         }
-
+        video_path = Variables.output_filter_file;
 
         video_thumbnail = findViewById(R.id.video_thumbnail);
 
-
-        description_edit=findViewById(R.id.description_edit);
+        description_edit = findViewById(R.id.description_edit);
 
         // this will get the thumbnail of video and show them in imageview
         Bitmap bmThumbnail;
@@ -74,42 +72,38 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
         }
 
 
-
-
-        progressDialog=new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait");
         progressDialog.setCancelable(false);
 
 
+        findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
-      findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick (View v){
-            onBackPressed();
-        }
-    });
+        findViewById(R.id.post_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                progressDialog.show();
+                Start_Service();
+
+            }
+        });
 
 
-     findViewById(R.id.post_btn).setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick (View v){
+        findViewById(R.id.save_draft_btn).setOnClickListener(this);
 
-            progressDialog.show();
-            Start_Service();
-
-        }
-    });
-
-
-     findViewById(R.id.save_draft_btn).setOnClickListener(this);
-
-}
+    }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.save_draft_btn:
                 Save_file_in_draft();
                 break;
@@ -117,25 +111,24 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
     }
 
 
-// this will start the service for uploading the video into database
-    public void Start_Service(){
+    // this will start the service for uploading the video into database
+    public void Start_Service() {
 
-        serviceCallback=this;
+        serviceCallback = this;
 
         Upload_Service mService = new Upload_Service(serviceCallback);
-        if (!Functions.isMyServiceRunning(this,mService.getClass())) {
+        if (!Functions.isMyServiceRunning(this, mService.getClass())) {
             Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
             mServiceIntent.setAction("startservice");
-            mServiceIntent.putExtra("uri",""+ Uri.fromFile(new File(video_path)));
-            mServiceIntent.putExtra("desc",""+description_edit.getText().toString());
+            mServiceIntent.putExtra("uri", "" + Uri.fromFile(new File(video_path)));
+            mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
             startService(mServiceIntent);
 
 
             Intent intent = new Intent(this, Upload_Service.class);
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        }
-        else {
+        } else {
             Toast.makeText(this, "Please wait video already in uploading progress", Toast.LENGTH_LONG).show();
         }
 
@@ -159,20 +152,18 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
     }
 
 
-
-
     // when the video is uploading successfully it will restart the appliaction
     @Override
     public void ShowResponce(final String responce) {
 
-        if(mConnection!=null)
-        unbindService(mConnection);
+        if (mConnection != null)
+            unbindService(mConnection);
 
 
-        if(responce.equalsIgnoreCase("Your Video is uploaded Successfully")) {
+        if (responce.equalsIgnoreCase("Your Video is uploaded Successfully")) {
 
-            Variables.Reload_my_videos=true;
-            Variables.Reload_my_videos_inner=true;
+            Variables.Reload_my_videos = true;
+            Variables.Reload_my_videos_inner = true;
             Delete_draft_file();
 
             new Handler().postDelayed(new Runnable() {
@@ -184,12 +175,10 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
                     startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
 
                 }
-            },1000);
+            }, 1000);
 
 
-
-        }
-        else {
+        } else {
             Toast.makeText(Post_Video_A.this, responce, Toast.LENGTH_LONG).show();
             progressDialog.dismiss();
         }
@@ -204,11 +193,10 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
 
-           Upload_Service.LocalBinder binder = (Upload_Service.LocalBinder) service;
+            Upload_Service.LocalBinder binder = (Upload_Service.LocalBinder) service;
             mService = binder.getService();
 
             mService.setCallbacks(Post_Video_A.this);
-
 
 
         }
@@ -227,13 +215,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
 
 
     // this function will stop the the ruuning service
-    public void Stop_Service(){
+    public void Stop_Service() {
 
-        serviceCallback=this;
+        serviceCallback = this;
 
         Upload_Service mService = new Upload_Service(serviceCallback);
 
-        if (Functions.isMyServiceRunning(this,mService.getClass())) {
+        if (Functions.isMyServiceRunning(this, mService.getClass())) {
             Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
             mServiceIntent.setAction("stopservice");
             startService(mServiceIntent);
@@ -244,13 +232,11 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
     }
 
 
-
-    public void Save_file_in_draft(){
-       File source = new File(video_path);
-       File destination = new File(Variables.draft_app_folder+Functions.getRandomString()+".mp4");
-        try
-        {
-            if(source.exists()){
+    public void Save_file_in_draft() {
+        File source = new File(video_path);
+        File destination = new File(Variables.draft_app_folder + Functions.getRandomString() + ".mp4");
+        try {
+            if (source.exists()) {
 
                 InputStream in = new FileInputStream(source);
                 OutputStream out = new FileOutputStream(destination);
@@ -268,27 +254,24 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback,V
                 Toast.makeText(Post_Video_A.this, "File saved in Draft", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
 
-            }else{
+            } else {
                 Toast.makeText(Post_Video_A.this, "File failed to saved in Draft", Toast.LENGTH_SHORT).show();
 
             }
 
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-
-    public void Delete_draft_file(){
+    public void Delete_draft_file() {
         try {
-            if(draft_file!=null) {
+            if (draft_file != null) {
                 File file = new File(draft_file);
                 file.delete();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 

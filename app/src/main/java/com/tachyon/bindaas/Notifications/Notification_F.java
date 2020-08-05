@@ -254,8 +254,16 @@ public class Notification_F extends RootFragment implements View.OnClickListener
 
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
-                TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
-                profile.select();
+                try {
+                    TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
+                    profile.select();
+                }catch (Exception e){
+                    Log.d("Exception:", "OpenProfile: "+e.getMessage());
+                }
+                /*TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
+                if (profile!=null) {
+                    profile.select();
+                }*/
 
             } else {
 

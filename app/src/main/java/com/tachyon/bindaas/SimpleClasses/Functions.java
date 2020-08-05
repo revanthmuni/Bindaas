@@ -77,15 +77,21 @@ public class Functions {
     }
 
     public static void Show_Alert(Context context, String title, String Message) {
-        new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(Message)
-                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).show();
+        try {
+            new AlertDialog.Builder(context)
+                    .setTitle(title)
+                    .setMessage(Message)
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+        }catch (Exception e){
+            Log.e("Exception:", "" + e.getMessage());
+//            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

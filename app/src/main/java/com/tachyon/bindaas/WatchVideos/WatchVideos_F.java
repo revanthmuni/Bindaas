@@ -266,7 +266,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     if (sound_data != null) {
                         JSONObject audio_path = sound_data.optJSONObject("audio_path");
                         item.sound_url_mp3 = audio_path.optString("mp3");
-                        item.sound_url_acc = audio_path.optString("acc");
+                        item.sound_url_acc = audio_path.optString("aac");
                     }
 
 
@@ -355,7 +355,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     if (sound_data != null) {
                         JSONObject audio_path = sound_data.optJSONObject("audio_path");
                         item.sound_url_mp3 = audio_path.optString("mp3");
-                        item.sound_url_acc = audio_path.optString("acc");
+                        item.sound_url_acc = audio_path.optString("aac");
                     }
 
 
@@ -411,6 +411,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                     case R.id.user_pic:
                         onPause();
+                        Log.d("USR_TST", "onItemClick: " + item.user_id);
 
                         OpenProfile(item, false);
                         break;
@@ -705,7 +706,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             Functions.Call_Api_For_update_view(WatchVideos_F.this, item.video_id);
 
 
-        //Call_Api_For_Singlevideos(currentPage);
+        Call_Api_For_Singlevideos(currentPage);
     }
 
 
@@ -771,17 +772,19 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set) {
 
+        String action;
 
-        String action = home_get_set.liked;
-
-        if (action.equals("1")) {
+        if (home_get_set.liked.equals("1")) {
             action = "0";
             home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
-        } else {
+        } else if (home_get_set.liked.equals("0")){
             action = "1";
             home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+        }else{
+            action = "0";
+            home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
+            Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
         }
-
 
         data_list.remove(position);
         home_get_set.liked = action;
@@ -865,12 +868,13 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
 
         if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
-
-            TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
-            /*if (profile!= null){
+            onBackPressed();
+            Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
+            TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
+            if (profile != null) {
                 profile.select();
-            }*/
-            profile.select();
+            }
+//            profile.select();
 
         } else {
 
@@ -878,7 +882,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 @Override
                 public void Responce(Bundle bundle) {
 
-                    // Call_Api_For_Singlevideos(currentPage);
+                    Call_Api_For_Singlevideos(currentPage);
 
                 }
             });
@@ -890,6 +894,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
 
             Bundle args = new Bundle();
+            Log.d("USR_TST", "OpenProfile: " + item.user_id);
             args.putString("user_id", item.user_id);
             args.putString("user_name", item.first_name + " " + item.last_name);
             args.putString("user_pic", item.profile_pic);
@@ -957,62 +962,62 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     private void Show_video_option(final Home_Get_Set home_get_set) {
 
-            options = new CharSequence[]{"Save Video", "Cancel"};
+        options = new CharSequence[]{"Save Video", "Cancel"};
 
-            if (home_get_set.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, "")))
-                options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
+        if (home_get_set.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, "")))
+            options = new CharSequence[]{"Save Video", "Delete Video", "Cancel"};
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustom);
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustom);
 
-            builder.setTitle(null);
+        builder.setTitle(null);
 
-            builder.setItems(options, new DialogInterface.OnClickListener() {
+        builder.setItems(options, new DialogInterface.OnClickListener() {
 
-                @Override
+            @Override
 
-                public void onClick(DialogInterface dialog, int item) {
+            public void onClick(DialogInterface dialog, int item) {
 
-                    if (options[item].equals("Save Video")) {
-                        if (Functions.Checkstoragepermision(WatchVideos_F.this))
+                if (options[item].equals("Save Video")) {
+                    if (Functions.Checkstoragepermision(WatchVideos_F.this))
 
-                            Save_Video(home_get_set);
+                        Save_Video(home_get_set);
 
-                    } else if (options[item].equals("Delete Video")) {
-                        if (Variables.is_secure_info) {
-                            Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Functions.Show_loader(WatchVideos_F.this, false, false);
-                            Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, home_get_set.video_id, new API_CallBack() {
-                                @Override
-                                public void ArrayData(ArrayList arrayList) {
+                } else if (options[item].equals("Delete Video")) {
+                    if (Variables.is_secure_info) {
+                        Toast.makeText(context, getString(R.string.delete_function_not_available_in_demo), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Functions.Show_loader(WatchVideos_F.this, false, false);
+                        Functions.Call_Api_For_Delete_Video(WatchVideos_F.this, home_get_set.video_id, new API_CallBack() {
+                            @Override
+                            public void ArrayData(ArrayList arrayList) {
 
-                                }
+                            }
 
-                                @Override
-                                public void OnSuccess(String responce) {
+                            @Override
+                            public void OnSuccess(String responce) {
 
-                                    Functions.cancel_loader();
-                                    finish();
+                                Functions.cancel_loader();
+                                finish();
 
-                                }
+                            }
 
-                                @Override
-                                public void OnFail(String responce) {
+                            @Override
+                            public void OnFail(String responce) {
 
-                                }
-                            });
-                        }
-                    } else if (options[item].equals("Cancel")) {
-
-                        dialog.dismiss();
-
+                            }
+                        });
                     }
+                } else if (options[item].equals("Cancel")) {
+
+                    dialog.dismiss();
 
                 }
 
-            });
+            }
 
-            builder.show();
+        });
+
+        builder.show();
 
     }
 

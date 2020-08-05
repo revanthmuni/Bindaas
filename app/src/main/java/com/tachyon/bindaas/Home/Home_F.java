@@ -397,7 +397,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     if (sound_data != null) {
                         JSONObject audio_path = sound_data.optJSONObject("audio_path");
                         item.sound_url_mp3 = audio_path.optString("mp3");
-                        item.sound_url_acc = audio_path.optString("acc");
+                        item.sound_url_acc = audio_path.optString("aac");
                     }
 
 
@@ -484,7 +484,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     if (sound_data != null) {
                         JSONObject audio_path = sound_data.optJSONObject("audio_path");
                         item.sound_url_mp3 = audio_path.optString("mp3");
-                        item.sound_url_acc = audio_path.optString("acc");
+                        item.sound_url_acc = audio_path.optString("aac");
                     }
 
 
@@ -812,17 +812,19 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     // this function will call for like the video and Call an Api for like the video
     public void Like_Video(final int position, final Home_Get_Set home_get_set) {
 
+            String action;
 
-            String action = home_get_set.liked;
-
-            if (action.equals("1")) {
+            if (home_get_set.liked.equals("1")) {
                 action = "0";
                 home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - 1);
-            } else {
+            } else if (home_get_set.liked.equals("0")){
                 action = "1";
                 home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) + 1);
+            }else{
+                action = "0";
+                home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
+                Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
             }
-
 
             data_list.remove(position);
             home_get_set.liked = action;
@@ -890,9 +892,13 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
 
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
+                try {
+                    TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
+                    profile.select();
+                }catch (Exception e){
+                    Log.d("Exception:", "OpenProfile: "+e.getMessage());
+                }
 
-                TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
-                profile.select();
 
             } else {
                 Profile_F profile_f = new Profile_F(new Fragment_Callback() {

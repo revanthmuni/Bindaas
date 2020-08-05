@@ -41,6 +41,7 @@ import com.tachyon.bindaas.AudioTrimming.customAudioViews.MarkerView;
 import com.tachyon.bindaas.AudioTrimming.customAudioViews.SamplePlayer;
 import com.tachyon.bindaas.AudioTrimming.customAudioViews.SoundFile;
 import com.tachyon.bindaas.AudioTrimming.customAudioViews.WaveformView;
+import com.tachyon.bindaas.AudioTrimming.utils.FileUtilsForAudio;
 import com.tachyon.bindaas.AudioTrimming.utils.Utility;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Variables;
@@ -477,16 +478,19 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 if (uri != null) {
                     File fil = new File(uri.toString());
                     String path = fil.getAbsolutePath();
-                    Log.d("Audio_Path", "::::" + path);
-                    Log.d("Audio_Path", "::::" + getRealPathFromURI(this, uri));
 
-                    String real_path = getRealPathFromURI(this, uri);
+                    String real_path = new FileUtilsForAudio(this).getPath(uri);
+                    Log.d("Audio_Path", "Intent results::::" + path);
+                    Log.d("Audio_Path", "provider path::::" + real_path);
+
                    /* if (real_path != null) {
                         audioGraph(real_path);
                     } else {
                         Toast.makeText(this, "Can't accessing this file try another way to choose this file", Toast.LENGTH_SHORT).show();
                     }*/
-                   audioGraph(getRealPathFromURI(this,uri));
+                    if (real_path != null) {
+                        audioGraph(real_path);
+                    }
                 }
             }
         }

@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="0dp"
+        app:cardCornerRadius="18dp"
         android:layout_marginBottom="50dp"
         app:cardBackgroundColor="@color/black">
 
-        <com.tachyon.bindaas.RoundedCornerLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mainlayout">
@@ -240,7 +241,7 @@
             </LinearLayout>
 
 
-        </com.tachyon.bindaas.RoundedCornerLayout>
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 

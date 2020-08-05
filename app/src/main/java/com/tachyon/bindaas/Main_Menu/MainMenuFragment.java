@@ -61,11 +61,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         context = getContext();
-    tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-            pager = view.findViewById(R.id.viewpager);
-            pager.setOffscreenPageLimit(3);
-            pager.setPagingEnabled(false);
-            view.setOnClickListener(this);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        pager = view.findViewById(R.id.viewpager);
+        pager.setOffscreenPageLimit(3);
+        pager.setPagingEnabled(false);
+        view.setOnClickListener(this);
 
         return view;
     }
@@ -84,11 +84,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-            // Note that we are passing childFragmentManager, not FragmentManager
-            adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
-            pager.setAdapter(adapter);
-            tabLayout.setupWithViewPager(pager);
-            setupTabIcons();
+        // Note that we are passing childFragmentManager, not FragmentManager
+        adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
+        pager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(pager);
+        setupTabIcons();
 
     }
 
@@ -111,13 +111,13 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     // Bottom tabs when we open an activity
     private void setupTabIcons() {
 
-            View view1 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
-            ImageView imageView1 = view1.findViewById(R.id.image);
+        View view1 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
+        ImageView imageView1 = view1.findViewById(R.id.image);
 //        TextView title1 = view1.findViewById(R.id.text);
-            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
+        imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
 //        title1.setText("");
 //        title1.setTextColor(context.getResources().getColor(R.color.white));
-            tabLayout.getTabAt(0).setCustomView(view1);
+        tabLayout.getTabAt(0).setCustomView(view1);
 
         /*View view2 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
         ImageView imageView2= view2.findViewById(R.id.image);
@@ -128,8 +128,8 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         title2.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
         tabLayout.getTabAt(1).setCustomView(view2);*/
 
-            View view3 = LayoutInflater.from(context).inflate(R.layout.item_add_tab_layout, null);
-            tabLayout.getTabAt(1).setCustomView(view3);
+        View view3 = LayoutInflater.from(context).inflate(R.layout.item_add_tab_layout, null);
+        tabLayout.getTabAt(1).setCustomView(view3);
 
       /*  View view4 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
         ImageView imageView4= view4.findViewById(R.id.image);
@@ -140,31 +140,31 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         title4.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
         tabLayout.getTabAt(3).setCustomView(view4);*/
 
-            View view5 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
-            ImageView imageView5 = view5.findViewById(R.id.image);
+        View view5 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
+        ImageView imageView5 = view5.findViewById(R.id.image);
 //        TextView title5 = view5.findViewById(R.id.text);
-            imageView5.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_person_24));
+        imageView5.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_person_24));
 //        imageView5.setColorFilter(ContextCompat.getColor(context, R.color.colorwhite_50), android.graphics.PorterDuff.Mode.SRC_IN);
 //        title5.setText("");
 //        title5.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
-            tabLayout.getTabAt(2).setCustomView(view5);
+        tabLayout.getTabAt(2).setCustomView(view5);
 
 
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
 
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    View v = tab.getCustomView();
-                    ImageView image = v.findViewById(R.id.image);
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                View v = tab.getCustomView();
+                ImageView image = v.findViewById(R.id.image);
 //                TextView title = v.findViewById(R.id.text);
 
-                    switch (tab.getPosition()) {
-                        case 0:
+                switch (tab.getPosition()) {
+                    case 0:
 //                        OnHome_Click();
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
 //                        title.setTextColor(context.getResources().getColor(R.color.white));
-                            break;
+                        break;
 
                   /*  case 1:
                         Onother_Tab_Click();
@@ -180,27 +180,27 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                         image.setColorFilter(ContextCompat.getColor(context, R.color.app_color), android.graphics.PorterDuff.Mode.SRC_IN);
                         title.setTextColor(context.getResources().getColor(R.color.app_color));
                         break;*/
-                        case 2:
+                    case 2:
 //                        Onother_Tab_Click();
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_user_profile_red));
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_user_profile_red));
 //                        image.setColorFilter(ContextCompat.getColor(context, R.color.app_color), android.graphics.PorterDuff.Mode.SRC_IN);
 //                        title.setTextColor(context.getResources().getColor(R.color.app_color));
-                            break;
-                    }
-                    tab.setCustomView(v);
+                        break;
                 }
+                tab.setCustomView(v);
+            }
 
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-                    View v = tab.getCustomView();
-                    ImageView image = v.findViewById(R.id.image);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View v = tab.getCustomView();
+                ImageView image = v.findViewById(R.id.image);
 //                TextView title = v.findViewById(R.id.text);
 
-                    switch (tab.getPosition()) {
-                        case 0:
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_home_24));
+                switch (tab.getPosition()) {
+                    case 0:
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_home_24));
 //                        title.setTextColor(context.getResources().getColor(R.color.darkgray));
-                            break;
+                        break;
                    /* case 1:
                         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_discovery_gray));
                         title.setTextColor(context.getResources().getColor(R.color.darkgray));
@@ -210,43 +210,43 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_notification_gray));
                         title.setTextColor(context.getResources().getColor(R.color.darkgray));
                         break;*/
-                        case 2:
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_person_24));
+                    case 2:
+                        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_person_24));
 //                        title.setTextColor(context.getResources().getColor(R.color.darkgray));
-                            break;
+                        break;
+                }
+                tab.setCustomView(v);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
+        });
+
+
+        final LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+        tabStrip.setEnabled(false);
+
+        tabStrip.getChildAt(1).setClickable(false);
+        view3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (check_permissions()) {
+                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+
+                        Intent intent = new Intent(getActivity(), Video_Recoder_A.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+                    } else {
+                        Toast.makeText(context, "You have to login First", Toast.LENGTH_SHORT).show();
                     }
-                    tab.setCustomView(v);
                 }
 
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-
-            });
-
-
-            final LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-            tabStrip.setEnabled(false);
-
-            tabStrip.getChildAt(1).setClickable(false);
-            view3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    if (check_permissions()) {
-                        if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
-
-                            Intent intent = new Intent(getActivity(), Video_Recoder_A.class);
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-                        } else {
-                            Toast.makeText(context, "You have to login First", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                }
-            });
+            }
+        });
 
 
       /*  tabStrip.getChildAt(3).setClickable(false);
@@ -269,58 +269,58 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             }
         });*/
 
-            tabStrip.getChildAt(2).setClickable(false);
-            view5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        tabStrip.getChildAt(2).setClickable(false);
+        view5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
 
-                        TabLayout.Tab tab = tabLayout.getTabAt(2);
-                        tab.select();
+                    TabLayout.Tab tab = tabLayout.getTabAt(2);
+                    tab.select();
 
-                    } else {
+                } else {
 
-                        Intent intent = new Intent(getActivity(), Login_A.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-                    }
-
-                }
-            });
-
-
-            if (MainMenuActivity.intent != null) {
-
-                if (MainMenuActivity.intent.hasExtra("action_type")) {
-
-
-                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
-                        String action_type = MainMenuActivity.intent.getExtras().getString("action_type");
-
-                        if (action_type.equals("message")) {
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    TabLayout.Tab tab = tabLayout.getTabAt(3);
-                                    tab.select();
-                                }
-                            }, 1500);
-
-
-                            String id = MainMenuActivity.intent.getExtras().getString("senderid");
-                            String name = MainMenuActivity.intent.getExtras().getString("title");
-                            String icon = MainMenuActivity.intent.getExtras().getString("icon");
-
-                            chatFragment(id, name, icon);
-
-                        }
-                    }
-
+                    Intent intent = new Intent(getActivity(), Login_A.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                 }
 
             }
+        });
+
+
+        if (MainMenuActivity.intent != null) {
+
+            if (MainMenuActivity.intent.hasExtra("action_type")) {
+
+
+                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                    String action_type = MainMenuActivity.intent.getExtras().getString("action_type");
+
+                    if (action_type.equals("message")) {
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                TabLayout.Tab tab = tabLayout.getTabAt(3);
+                                tab.select();
+                            }
+                        }, 1500);
+
+
+                        String id = MainMenuActivity.intent.getExtras().getString("senderid");
+                        String name = MainMenuActivity.intent.getExtras().getString("title");
+                        String icon = MainMenuActivity.intent.getExtras().getString("icon");
+
+                        chatFragment(id, name, icon);
+
+                    }
+                }
+
+            }
+
+        }
 
     }
 
@@ -388,8 +388,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         public void destroyItem(ViewGroup container, int position, Object object) {
 
 
-
-                registeredFragments.remove(position);
+            registeredFragments.remove(position);
 
 
             super.destroyItem(container, position, object);
@@ -534,18 +533,18 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     public void chatFragment(String receiverid, String name, String picture) {
 
 
-            Chat_Activity chat_activity = new Chat_Activity();
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+        Chat_Activity chat_activity = new Chat_Activity();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-            Bundle args = new Bundle();
-            args.putString("user_id", receiverid);
-            args.putString("user_name", name);
-            args.putString("user_pic", picture);
+        Bundle args = new Bundle();
+        args.putString("user_id", receiverid);
+        args.putString("user_name", name);
+        args.putString("user_pic", picture);
 
-            chat_activity.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+        chat_activity.setArguments(args);
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
 
     }
 

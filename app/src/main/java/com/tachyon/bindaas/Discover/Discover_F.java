@@ -198,7 +198,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                         if (sound_data != null) {
                             JSONObject audio_path = sound_data.optJSONObject("audio_path");
                             item.sound_url_mp3 = audio_path.optString("mp3");
-                            item.sound_url_acc = audio_path.optString("acc");
+                            item.sound_url_acc = audio_path.optString("aac");
                         }
 
 

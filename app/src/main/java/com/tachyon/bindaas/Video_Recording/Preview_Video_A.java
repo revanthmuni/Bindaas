@@ -3,10 +3,12 @@ package com.tachyon.bindaas.Video_Recording;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +41,12 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.List;
 
-public class Preview_Video_A extends AppCompatActivity  implements Player.EventListener {
+public class Preview_Video_A extends AppCompatActivity implements Player.EventListener {
 
 
     String video_url;
     GPUPlayerView gpuPlayerView;
-    public static int  select_postion=0;
+    public static int select_postion = 0;
     final List<FilterType> filterTypes = FilterType.createFilterList();
     Filter_Adapter adapter;
     RecyclerView recylerview;
@@ -56,16 +58,16 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_video);
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            draft_file=intent.getStringExtra("draft_file");
-            video_url = intent.getStringExtra("video_path");
-            Log.d("Audio_Test", "onCreate: "+video_url);
-            
-        }else {
-            video_url = Variables.outputfile2;
+        Intent intent = getIntent();
+        if (intent != null) {
+            draft_file = intent.getStringExtra("draft_file");
+            video_url = intent.getStringExtra("path");
+            Log.d("Audio_Test", "onCreate: " + video_url);
+
         }
-        select_postion=0;
+        video_url = Variables.outputfile2;
+
+        select_postion = 0;
 
         findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +83,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
             @Override
             public void onClick(View v) {
 
-                Save_Video(video_url,Variables.output_filter_file);
+                Save_Video(video_url, Variables.output_filter_file);
             }
         });
 
@@ -89,14 +91,14 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
         Set_Player(video_url);
 
 
-        recylerview=findViewById(R.id.recylerview);
+        recylerview = findViewById(R.id.recylerview);
 
         adapter = new Filter_Adapter(this, filterTypes, new Filter_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, FilterType item) {
-                select_postion=postion;
+                select_postion = postion;
                 gpuPlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(postion), getApplicationContext()));
-               // adapter.notifyDataSetChanged();
+                // adapter.notifyDataSetChanged();
 
             }
         });
@@ -107,13 +109,13 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     }
 
 
-
-     // this function will set the player to the current video
+    // this function will set the player to the current video
     SimpleExoPlayer player;
-    public void Set_Player(String path){
+
+    public void Set_Player(String path) {
 
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
-         player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
                 Util.getUserAgent(this, "TikTok"));
 
@@ -141,14 +143,13 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     }
 
 
-
     // this is lifecyle of the Activity which is importent for play,pause video or relaese the player
     @Override
     protected void onStop() {
         super.onStop();
-        if(player!=null){
-           player.setPlayWhenReady(false);
-         }
+        if (player != null) {
+            player.setPlayWhenReady(false);
+        }
 
     }
 
@@ -156,7 +157,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     protected void onStart() {
         super.onStart();
 
-        if(player!=null){
+        if (player != null) {
             player.setPlayWhenReady(true);
         }
 
@@ -166,7 +167,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     protected void onRestart() {
         super.onRestart();
 
-        if(player!=null){
+        if (player != null) {
             player.setPlayWhenReady(true);
         }
 
@@ -175,20 +176,18 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(player!=null){
+        if (player != null) {
             player.removeListener(Preview_Video_A.this);
             player.release();
-            player=null;
+            player = null;
         }
     }
 
 
-
-
     // this function will add the filter to video and save that same video for post the video in post video screen
-    public void Save_Video(String srcMp4Path, final String destMp4Path){
+    public void Save_Video(String srcMp4Path, final String destMp4Path) {
 
-        Functions.Show_determinent_loader(this,false,false);
+        Functions.Show_determinent_loader(this, false, false);
 
         new GPUMp4Composer(srcMp4Path, destMp4Path)
                 //.size(540, 960)
@@ -199,9 +198,8 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
                     @Override
                     public void onProgress(double progress) {
 
-                        Log.d("resp",""+(int) (progress*100));
-                        Functions.Show_loading_progress((int)(progress*100));
-
+                        Log.d("resp", "" + (int) (progress * 100));
+                        Functions.Show_loading_progress((int) (progress * 100));
 
 
                     }
@@ -232,7 +230,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
                     @Override
                     public void onFailed(Exception exception) {
 
-                        Log.d("resp",exception.toString());
+                        Log.d("resp", exception.toString());
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -242,7 +240,7 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
                                     Functions.cancel_determinent_loader();
 
                                     Toast.makeText(Preview_Video_A.this, "Try Again", Toast.LENGTH_SHORT).show();
-                                }catch (Exception e){
+                                } catch (Exception e) {
 
                                 }
                             }
@@ -254,18 +252,15 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     }
 
 
+    public void GotopostScreen() {
 
-
-    public void GotopostScreen(){
-
-        Intent intent =new Intent(Preview_Video_A.this,Post_Video_A.class);
-        intent.putExtra("draft_file",draft_file);
-        intent.putExtra("video_path",video_url);
+        Intent intent = new Intent(Preview_Video_A.this, Post_Video_A.class);
+        intent.putExtra("draft_file", draft_file);
+//        intent.putExtra("video_path", video_url);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
     }
-
 
 
     // Bottom all the function and the Call back listener of the Expo player
@@ -319,7 +314,6 @@ public class Preview_Video_A extends AppCompatActivity  implements Player.EventL
     public void onSeekProcessed() {
 
     }
-
 
 
     @Override
