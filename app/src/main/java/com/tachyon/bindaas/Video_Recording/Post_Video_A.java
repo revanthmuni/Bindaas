@@ -49,7 +49,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     String draft_file;
 
     TextView privcy_type_txt;
-    Switch comment_switch,duet_switch;
+    Switch comment_switch, duet_switch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +74,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
             if (bmThumbnail != null) {
                 video_thumbnail.setImageBitmap(bmThumbnail);
-                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb,Functions.Bitmap_to_base64(this,bmThumbnail)).commit();
+                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb, Functions.Bitmap_to_base64(this, bmThumbnail)).commit();
             }
 
 
-            privcy_type_txt=findViewById(R.id.privcy_type_txt);
-            comment_switch=findViewById(R.id.comment_switch);
-            duet_switch=findViewById(R.id.duet_switch);
+            privcy_type_txt = findViewById(R.id.privcy_type_txt);
+            comment_switch = findViewById(R.id.comment_switch);
+            duet_switch = findViewById(R.id.duet_switch);
 
 
             findViewById(R.id.Goback).setOnClickListener(this);
@@ -122,9 +122,9 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     }
 
     private void Privacy_dialog() {
-        final CharSequence[] options = new CharSequence[]{"Public","Private"};
+        final CharSequence[] options = new CharSequence[]{"Public", "Private"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogCustom);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
 
         builder.setTitle(null);
 
@@ -152,20 +152,20 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
                 mServiceIntent.setAction("startservice");
-                mServiceIntent.putExtra("draft_file",draft_file);
-                mServiceIntent.putExtra("uri",""+ video_path);
-                mServiceIntent.putExtra("desc",""+description_edit.getText().toString());
-                mServiceIntent.putExtra("privacy_type",privcy_type_txt.getText().toString());
+                mServiceIntent.putExtra("draft_file", draft_file);
+                mServiceIntent.putExtra("uri", "" + video_path);
+                mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
+                mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
 
-                if(comment_switch.isChecked())
-                    mServiceIntent.putExtra("allow_comment","true");
+                if (comment_switch.isChecked())
+                    mServiceIntent.putExtra("allow_comment", "true");
                 else
-                    mServiceIntent.putExtra("allow_comment","false");
+                    mServiceIntent.putExtra("allow_comment", "false");
 
-                if(duet_switch.isChecked())
-                    mServiceIntent.putExtra("allow_duet","1");
+                if (duet_switch.isChecked())
+                    mServiceIntent.putExtra("allow_duet", "1");
                 else
-                    mServiceIntent.putExtra("allow_duet","0");
+                    mServiceIntent.putExtra("allow_duet", "0");
 
                 startService(mServiceIntent);
 
@@ -176,7 +176,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                         sendBroadcast(new Intent("uploadVideo"));
                         startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
                     }
-                },1000);
+                }, 1000);
 
             } else {
                 Toast.makeText(this, "Please wait video already in uploading progress", Toast.LENGTH_LONG).show();
@@ -189,16 +189,14 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        try{
-        finish();
-        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-        }catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        try {
+            finish();
+            overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -206,15 +204,15 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     // when the video is uploading successfully it will restart the appliaction
     @Override
     public void ShowResponce(final String responce) {
-try{
-        if (mConnection != null)
-            unbindService(mConnection);
+        try {
+            if (mConnection != null)
+                unbindService(mConnection);
 
-    Toast.makeText(this, responce, Toast.LENGTH_SHORT).show();
-}catch (Exception e){
-    Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+            Toast.makeText(this, responce, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-}
+        }
     }
 
 
@@ -249,57 +247,58 @@ try{
 
     // this function will stop the the ruuning service
     public void Stop_Service() {
-try{
-        serviceCallback = this;
+        try {
+            serviceCallback = this;
 
-        Upload_Service mService = new Upload_Service(serviceCallback);
+            Upload_Service mService = new Upload_Service(serviceCallback);
 
-        if (Functions.isMyServiceRunning(this, mService.getClass())) {
-            Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
-            mServiceIntent.setAction("stopservice");
-            startService(mServiceIntent);
+            if (Functions.isMyServiceRunning(this, mService.getClass())) {
+                Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
+                mServiceIntent.setAction("stopservice");
+                startService(mServiceIntent);
+
+            }
+
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
-
-}catch (Exception e){
-    Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
-
-}
     }
 
 
     public void Save_file_in_draft() {
-        try{
-        File source = new File(video_path);
-        File destination = new File(Variables.draft_app_folder + Functions.getRandomString() + ".mp4");
         try {
-            if (source.exists()) {
+            File source = new File(video_path);
+            File destination = new File(Variables.draft_app_folder + Functions.getRandomString() + ".mp4");
+            try {
+                if (source.exists()) {
 
-                InputStream in = new FileInputStream(source);
-                OutputStream out = new FileOutputStream(destination);
+                    InputStream in = new FileInputStream(source);
+                    OutputStream out = new FileOutputStream(destination);
 
-                byte[] buf = new byte[1024];
-                int len;
+                    byte[] buf = new byte[1024];
+                    int len;
 
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+
+                    in.close();
+                    out.close();
+
+                    Toast.makeText(Post_Video_A.this, "File saved in Draft", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
+
+                } else {
+                    Toast.makeText(Post_Video_A.this, "File failed to saved in Draft", Toast.LENGTH_SHORT).show();
+
                 }
 
-                in.close();
-                out.close();
-
-                Toast.makeText(Post_Video_A.this, "File saved in Draft", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
-
-            } else {
-                Toast.makeText(Post_Video_A.this, "File failed to saved in Draft", Toast.LENGTH_SHORT).show();
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }}catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
@@ -311,8 +310,8 @@ try{
                 File file = new File(draft_file);
                 file.delete();
             }
-        }catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 

@@ -576,7 +576,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public void Parse_data(String responce) {
 
-        Log.d("Test", responce);
+        Log.d("Test", "showAllVideos:"+responce);
         try {
             JSONObject jsonObject = new JSONObject(responce);
             String code = jsonObject.optString("code");

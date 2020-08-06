@@ -98,6 +98,9 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,12 +144,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     ImageView uploading_thumb;
     ImageView uploading_icon;
     UploadingVideoBroadCast mReceiver;
-    private class UploadingVideoBroadCast extends BroadcastReceiver {
+    private class UploadingVideoBroadCast extends BroadcastReceiver implements Upload_Service.OnSuccessUpload {
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Upload_Service mService = new Upload_Service();
+            Upload_Service mService = new Upload_Service(this);
             if (Functions.isMyServiceRunning(context,mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
                 Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
@@ -159,6 +162,17 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             }
 
         }
+
+        @Override
+        public void onSuccess(String msg) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoUploadService(String res){
+        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+        upload_video_layout.setVisibility(View.GONE);
     }
 
     @Override
@@ -1300,6 +1314,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onResume() {
         super.onResume();
         try {
+            EventBus.getDefault().register(this);
             if ((privious_player != null && (is_visible_to_user && !is_user_stop_video)) && !is_fragment_exits()) {
                 privious_player.setPlayWhenReady(true);
             }
@@ -1314,6 +1329,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onPause() {
         super.onPause();
         try {
+            EventBus.getDefault().unregister(this);
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
             }
@@ -1342,6 +1358,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onDestroy() {
         super.onDestroy();
         try {
+
             if (privious_player != null) {
                 privious_player.release();
             }

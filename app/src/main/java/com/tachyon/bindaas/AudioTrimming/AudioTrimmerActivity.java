@@ -311,11 +311,12 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                 Log.d(TAG, "onClick: txtAudioDone");
                 double startTime = audioWaveform.pixelsToSeconds(mStartPos);
                 double endTime = audioWaveform.pixelsToSeconds(mEndPos);
+
                 double difference = endTime - startTime;
 
                 if (difference <= 0) {
                     Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be greater than 0 seconds", Toast.LENGTH_SHORT).show();
-                } else if (difference > 60) {
+                } else if (difference > Variables.max_recording_duration) {
                     Toast.makeText(AudioTrimmerActivity.this, "Trim seconds should be less than 1 minute", Toast.LENGTH_SHORT).show();
                 } else {
                     if (mIsPlaying) {
@@ -359,21 +360,30 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             } else if (view == txtAudioUpload) {
 
-                Log.d(TAG, "onClick: txtAudioUpload");
-                if (txtAudioDone.getVisibility() == View.VISIBLE) {
-                    if (mIsPlaying) {
-                        handlePause();
+                double startTime = audioWaveform.pixelsToSeconds(mStartPos);
+                double endTime = audioWaveform.pixelsToSeconds(mEndPos);
+
+                double difference = endTime - startTime;
+
+                if (difference<=Variables.max_recording_duration) {
+                    Log.d(TAG, "onClick: txtAudioUpload");
+                    if (txtAudioDone.getVisibility() == View.VISIBLE) {
+                        if (mIsPlaying) {
+                            handlePause();
+                        }
+                        saveRingtone(1);
+                    } else {
+                        Log.d(TAG, "onClick: else conditions");
+                        Bundle conData = new Bundle();
+                        conData.putString("INTENT_AUDIO_FILE", mFile.getAbsolutePath());
+                        Intent intent = new Intent();
+                        intent.putExtra("file", mFile);
+                        intent.putExtras(conData);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
-                    saveRingtone(1);
-                } else {
-                    Log.d(TAG, "onClick: else conditions");
-                    Bundle conData = new Bundle();
-                    conData.putString("INTENT_AUDIO_FILE", mFile.getAbsolutePath());
-                    Intent intent = new Intent();
-                    intent.putExtra("file", mFile);
-                    intent.putExtras(conData);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                }else{
+                    Toast.makeText(this, "Audio Length should be less than 30 sec", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -1229,49 +1239,53 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         final int endFrame = audioWaveform.secondsToFrames(endTime - 0.04);
         final int duration = (int) (endTime - startTime + 0.5);
 
-        // Create an indeterminate progress dialog
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setTitle("Saving....");
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
+        if (duration>Variables.max_recording_duration){
+            Toast.makeText(this, "length is high", Toast.LENGTH_SHORT).show();
+        }else {
+            // Create an indeterminate progress dialog
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setTitle("Saving....");
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
 
-        // Save the sound file in a background thread
-        Thread mSaveSoundFileThread = new Thread() {
-            public void run() {
-                // Try AAC first.
-                String outPath = makeRingtoneFilename("Bindaas" + Calendar.getInstance().getTimeInMillis(), Utility.AUDIO_FORMAT);
-                if (outPath == null) {
-                    Log.e(" >> ", "Unable to find unique filename");
-                    return;
-                }
-                File outFile = new File(outPath);
-                try {
-                    // Write the new file
-                    mRecordedSoundFile.WriteFile(outFile, startFrame, endFrame - startFrame);
-                } catch (Exception e) {
-                    // log the error and try to create a .wav file instead
-                    if (outFile.exists()) {
-                        outFile.delete();
+            // Save the sound file in a background thread
+            Thread mSaveSoundFileThread = new Thread() {
+                public void run() {
+                    // Try AAC first.
+                    String outPath = makeRingtoneFilename("Bindaas" + Calendar.getInstance().getTimeInMillis(), Utility.AUDIO_FORMAT);
+                    if (outPath == null) {
+                        Log.e(" >> ", "Unable to find unique filename");
+                        return;
                     }
-                    e.printStackTrace();
-                }
-
-                mProgressDialog.dismiss();
-
-                final String finalOutPath = outPath;
-                Runnable runnable = new Runnable() {
-                    public void run() {
-                        afterSavingRingtone("AUDIO_TEMP",
-                                finalOutPath,
-                                duration, finish);
+                    File outFile = new File(outPath);
+                    try {
+                        // Write the new file
+                        mRecordedSoundFile.WriteFile(outFile, startFrame, endFrame - startFrame);
+                    } catch (Exception e) {
+                        // log the error and try to create a .wav file instead
+                        if (outFile.exists()) {
+                            outFile.delete();
+                        }
+                        e.printStackTrace();
                     }
-                };
-                mHandler.post(runnable);
-            }
-        };
-        mSaveSoundFileThread.start();
+
+                    mProgressDialog.dismiss();
+
+                    final String finalOutPath = outPath;
+                    Runnable runnable = new Runnable() {
+                        public void run() {
+                            afterSavingRingtone("AUDIO_TEMP",
+                                    finalOutPath,
+                                    duration, finish);
+                        }
+                    };
+                    mHandler.post(runnable);
+                }
+            };
+            mSaveSoundFileThread.start();
+        }
         }catch (Exception e){
             Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 

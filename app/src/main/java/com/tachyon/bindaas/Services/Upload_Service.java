@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -28,12 +29,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.AnimatedGifEncoder;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,11 +93,15 @@ public class Upload_Service extends Service {
     String allow_comment, allow_duet;
 
     SharedPreferences sharedPreferences;
+    OnSuccessUpload onSuccessUpload;
 
     public Upload_Service() {
         super();
     }
 
+    public Upload_Service(OnSuccessUpload onSuccessUpload){
+        this.onSuccessUpload = onSuccessUpload;
+    }
     public Upload_Service(ServiceCallback serviceCallback) {
         Callback = serviceCallback;
     }
@@ -107,8 +115,49 @@ public class Upload_Service extends Service {
     public void onCreate() {
         sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
     }
+    public interface OnSuccessUpload{
+        void onSuccess(String msg);
+    }
+    /*private void writeToFile(String data, Context context) {
+        // Get the directory for the user's public pictures directory.
+        final File path =
+                Environment.getExternalStoragePublicDirectory
+                        (
+                                //Environment.DIRECTORY_PICTURES
+                                Environment.DIRECTORY_DCIM + "/YourFolder/"
+                        );
 
+        // Make sure the path directory exists.
+        if(!path.exists())
+        {
+            // Make it, if it doesn't exit
+            path.mkdirs();
+        }
 
+        final File file = new File(path, "config.txt");
+
+        // Save your stream, don't forget to flush() it before closing it.
+
+        try
+        {
+            file.createNewFile();
+            FileOutputStream fOut = new FileOutputStream(file);
+            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+            myOutWriter.append(data);
+
+            myOutWriter.close();
+
+            fOut.flush();
+            fOut.close();
+            Log.d("TESTTTTT", "writeToFile: done");
+
+        }
+        catch (IOException e)
+        {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+
+    }*/
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -128,12 +177,12 @@ public class Upload_Service extends Service {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
+                        StringBuilder base = new StringBuilder();
 
                         try {
 
                             video_base64 = encodeFileToBase64Binary(uri);
-
+                            base.append(encodeFileToBase64Binary(uri));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -150,7 +199,18 @@ public class Upload_Service extends Service {
                             vidoefiledata.put("file_data", video_base64);
                             parameters.put("videobase64", vidoefiledata);
 
-                            Log.d("Test", Variables.uploadVideo + " " + parameters.toString());
+                            Log.d("Test", "BASE64:"+new Gson().toJson(parameters));
+                            base.append("done");
+                            Log.d("Test", "run: "+video_base64.length());
+                          //  writeToFile(video_base64,getApplicationContext());
+                           /* int maxLogSize = 10000;
+                            for(int i = 0; i <= video_base64.length() / maxLogSize; i++) {
+                                int start = i * maxLogSize;
+                                int end = (i+1) * maxLogSize;
+                                end = end > video_base64.length() ? video_base64.length() : end;
+                                Log.v("Test::::>", video_base64.substring(start, end));
+
+                            }*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -165,17 +225,20 @@ public class Upload_Service extends Service {
 
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        String respo = response.toString();
+                                        try {
+                                            String respo = response.toString();
 
-                                        if (!Variables.is_secure_info)
-                                            Log.d("responce", respo);
+                                            if (!Variables.is_secure_info)
+                                                Log.d("responce", "uplod:"+respo);
 
-                                        stopForeground(true);
-                                        stopSelf();
-
-                                        if(Callback !=null)
-                                        Callback.ShowResponce("Your Video is uploaded Successfully");
-
+                                            stopForeground(true);
+                                            stopSelf();
+                                            EventBus.getDefault().post("Your Video is uploaded Successfully");
+                                            if (Callback != null)
+                                                Callback.ShowResponce("Your Video is uploaded Successfully");
+                                        }catch (Exception e){
+                                            Log.d("Crash Exception", "onResponse: "+e.getMessage());
+                                        }
 
                                     }
                                 }, new Response.ErrorListener() {
@@ -186,9 +249,12 @@ public class Upload_Service extends Service {
                                             Log.d("respo", error.toString());
                                         stopForeground(true);
                                         stopSelf();
+                                        EventBus.getDefault().post("Your Video is uploaded Successfully");
 
-                                        if(Callback != null)
-                                        Callback.ShowResponce("Please try again later");
+                                        if (Callback != null)
+                                            Callback.ShowResponce("Please try again later");
+                                        if (onSuccessUpload!=null)
+                                            onSuccessUpload.onSuccess("Please try again later");
 
 
                                     }
