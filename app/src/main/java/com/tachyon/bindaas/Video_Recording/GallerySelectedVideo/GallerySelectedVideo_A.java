@@ -238,6 +238,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                     }
                 });
 
+                try {
 
                 ArrayList<String> video_list = new ArrayList<>();
 
@@ -252,10 +253,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
                     video_list.add(path);
                 }
 
-
-                try {
-
-                    Movie[] inMovies = new Movie[video_list.size()];
+                Movie[] inMovies = new Movie[video_list.size()];
 
                     for (int i = 0; i < video_list.size(); i++) {
 
@@ -312,7 +310,7 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
 
                 } catch (Exception e) {
                     Functions.showLogMessage(GallerySelectedVideo_A.this, GallerySelectedVideo_A.this.getClass().getSimpleName(), e.getMessage());
-
+                    progressDialog.dismiss();
                 }
             }
         }).start();
@@ -535,5 +533,9 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
         }
     }
 
-
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Functions.deleteCache(this);
+    }
 }

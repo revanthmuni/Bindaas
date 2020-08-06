@@ -405,11 +405,13 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         }
     }
 
-
+    ProgressDialog progressDialog;
     public void Down_load_mp3(final String id, final String sound_name, String url) {
         try {
-            final ProgressDialog progressDialog = new ProgressDialog(context);
+            progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Please Wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
 
             prDownloader = PRDownloader.download(url, Variables.app_folder, Variables.SelectedAudio_AAC)

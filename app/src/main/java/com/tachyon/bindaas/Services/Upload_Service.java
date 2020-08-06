@@ -82,8 +82,11 @@ public class Upload_Service extends Service {
     Uri uri;
 
     String video_base64 = "";
-
+    String draft_file;
+    String videopath;
     String description;
+    String privacy_type;
+    String allow_comment, allow_duet;
 
     SharedPreferences sharedPreferences;
 
@@ -115,7 +118,12 @@ public class Upload_Service extends Service {
 
                 String uri_string = intent.getStringExtra("uri");
                 uri = Uri.parse(uri_string);
+                videopath = intent.getStringExtra("uri");
+                draft_file = intent.getStringExtra("draft_file");
                 description = intent.getStringExtra("desc");
+                privacy_type = intent.getStringExtra("privacy_type");
+                allow_comment = intent.getStringExtra("allow_comment");
+                allow_duet = intent.getStringExtra("allow_duet");
 
                 new Thread(new Runnable() {
                     @Override
@@ -165,6 +173,7 @@ public class Upload_Service extends Service {
                                         stopForeground(true);
                                         stopSelf();
 
+                                        if(Callback !=null)
                                         Callback.ShowResponce("Your Video is uploaded Successfully");
 
 
@@ -178,6 +187,7 @@ public class Upload_Service extends Service {
                                         stopForeground(true);
                                         stopSelf();
 
+                                        if(Callback != null)
                                         Callback.ShowResponce("Please try again later");
 
 

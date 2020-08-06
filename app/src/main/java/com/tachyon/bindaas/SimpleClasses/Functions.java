@@ -37,11 +37,18 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
@@ -201,6 +208,46 @@ public class Functions {
         return rotatedBitmap;
     }
 
+    public static String ChangeDate_to_today_or_yesterday(Context context,String date){
+        try {
+            Calendar current_cal = Calendar.getInstance();
+
+            Calendar date_cal=Calendar.getInstance();
+
+            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ");
+            Date d = null;
+            try {
+                d = f.parse(date);
+                date_cal.setTime(d);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            long difference=(current_cal.getTimeInMillis()- date_cal.getTimeInMillis())/1000;
+
+            if(difference<86400)
+            {
+                if(current_cal.get(Calendar.DAY_OF_YEAR)-date_cal.get(Calendar.DAY_OF_YEAR)==0) {
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+                    return sdf.format(d);
+                }
+                else
+                    return "yesterday";
+            }
+
+            else if(difference<172800){
+                return "yesterday";
+            }
+
+            else
+                return (difference/86400)+" day ago";
+
+        }catch (Exception e){
+            return date;
+        }
+    }
 
     public static String Bitmap_to_base64(Activity activity, Bitmap imagebitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -210,6 +257,17 @@ public class Functions {
         return base64;
     }
 
+    public static Bitmap Base64_to_bitmap(String base_64){
+        Bitmap decodedByte=null;
+        try {
+
+            byte[] decodedString = Base64.decode(base_64, Base64.DEFAULT);
+            decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }catch (Exception e){
+
+        }
+        return decodedByte;
+    }
 
     public static String Uri_to_base64(Activity activity, Uri uri) {
         InputStream imageStream = null;
@@ -510,12 +568,12 @@ public class Functions {
 
     public static void Call_Api_For_Get_User_data
             (final Activity activity,
-             String fb_id,
+             String user_id,
              final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
         try {
-            parameters.put("user_id", fb_id);
+            parameters.put("user_id", user_id);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -706,5 +764,29 @@ public class Functions {
         }
     }
 
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.getParentFile().exists())
+            destFile.getParentFile().mkdirs();
+
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+        }
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        } finally {
+            if (source != null) {
+                source.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
+    }
 
 }

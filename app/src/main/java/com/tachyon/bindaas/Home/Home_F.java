@@ -2,10 +2,13 @@ package com.tachyon.bindaas.Home;
 
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Outline;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -15,9 +18,12 @@ import androidx.annotation.Nullable;
 
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.gson.Gson;
+import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
+import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Bindaas;
@@ -107,7 +113,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 // this is the main view which is show all  the video in list
-public class Home_F extends RootFragment implements Player.EventListener, Fragment_Data_Send {
+public class Home_F extends RootFragment implements Player.EventListener, Fragment_Data_Send,View.OnClickListener {
 
     View view;
     Context context;
@@ -123,12 +129,37 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     SwipeRefreshLayout swiperefresh;
 
     boolean is_user_stop_video = false;
-
+    TextView following_btn,related_btn;
+    String type="related";
     public Home_F() {
         // Required empty public constructor
     }
 
     int swipe_count = 0;
+
+    RelativeLayout upload_video_layout;
+    ImageView uploading_thumb;
+    ImageView uploading_icon;
+    UploadingVideoBroadCast mReceiver;
+    private class UploadingVideoBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Upload_Service mService = new Upload_Service();
+            if (Functions.isMyServiceRunning(context,mService.getClass())) {
+                upload_video_layout.setVisibility(View.VISIBLE);
+                Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
+                if(bitmap!=null)
+                    uploading_thumb.setImageBitmap(bitmap);
+
+            }
+            else {
+                upload_video_layout.setVisibility(View.GONE);
+            }
+
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,6 +169,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         context = getContext();
 
         p_bar = view.findViewById(R.id.p_bar);
+
+        following_btn=view.findViewById(R.id.following_btn);
+        related_btn=view.findViewById(R.id.related_btn);
+
+        following_btn.setOnClickListener(this);
+        related_btn.setOnClickListener(this);
 
         recyclerView = view.findViewById(R.id.recylerview);
         layoutManager = new LinearLayoutManager(context);
@@ -220,8 +257,50 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         if (!Variables.is_remove_ads)
             Load_add();
+        upload_video_layout=view.findViewById(R.id.upload_video_layout);
+        uploading_thumb=view.findViewById(R.id.uploading_thumb);
+        uploading_icon=view.findViewById(R.id.uploading_icon);
 
+        mReceiver = new UploadingVideoBroadCast();
+        getActivity().registerReceiver(mReceiver, new IntentFilter("uploadVideo"));
+
+        Upload_Service mService = new Upload_Service();
+        if (Functions.isMyServiceRunning(context,mService.getClass())) {
+            upload_video_layout.setVisibility(View.VISIBLE);
+            Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
+            if(bitmap!=null)
+                uploading_thumb.setImageBitmap(bitmap);
+        }
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.following_btn:
+
+                if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                    type = "following";
+                    swiperefresh.setRefreshing(true);
+                    related_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
+                    following_btn.setTextColor(context.getResources().getColor(R.color.white));
+                    Call_Api_For_get_Allvideos();
+                }
+                else {
+                    Open_Login();
+                }
+                break;
+
+            case R.id.related_btn:
+                type="related";
+                swiperefresh.setRefreshing(true);
+                related_btn.setTextColor(context.getResources().getColor(R.color.white));
+                following_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
+                Call_Api_For_get_Allvideos();
+                break;
+        }
+
     }
 
     InterstitialAd mInterstitialAd;
@@ -344,7 +423,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             Log.d("test--", "Call_Api_For_get_Allvideos: " + Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", MainMenuActivity.token);
-
+            parameters.put("type",type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -363,13 +442,14 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     public void Parse_data(String responce) {
 
-        data_list = new ArrayList<>();
+        //data_list = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(responce);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
+                ArrayList<Home_Get_Set> temp_list=new ArrayList();
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
                     Home_Get_Set item = new Home_Get_Set();
@@ -398,7 +478,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
 
-
+                    item.privacy_type=itemdata.optString("privacy_type");
+                    item.allow_comments=itemdata.optString("allow_comments");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
@@ -409,10 +490,28 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.thum = itemdata.optString("thum");
                     item.created_date = itemdata.optString("created");
 
-                    data_list.add(item);
+                    temp_list.add(item);
                 }
 
-                Set_Adapter();
+                if(!temp_list.isEmpty()) {
+                    currentPage=-1;
+                    data_list=new ArrayList<>();
+                    data_list.addAll(temp_list);
+                    Set_Adapter();
+                }
+
+                else if(type.equalsIgnoreCase("related")) {
+                    type = "following";
+                    related_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
+                    following_btn.setTextColor(context.getResources().getColor(R.color.white));
+                }
+
+                else if(type.equalsIgnoreCase("following")){
+                    Toast.makeText(context, "Follow an account to see there videos here.", Toast.LENGTH_SHORT).show();
+                    type="related";
+                    related_btn.setTextColor(context.getResources().getColor(R.color.white));
+                    following_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
+                }
 
             } else {
                 Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
@@ -485,7 +584,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
 
-
+                    item.privacy_type=itemdata.optString("privacy_type");
+                    item.allow_comments=itemdata.optString("allow_comments");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
@@ -522,7 +622,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         HttpProxyCacheServer proxy = Bindaas.getProxy(context);
         String proxyUrl = proxy.getProxyUrl(item.video_url);
 
-        DefaultLoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024).createDefaultLoadControl();
+        LoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024).createDefaultLoadControl();
 
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
         final SimpleExoPlayer player = ExoPlayerFactory.newSimpleInstance(context, trackSelector, loadControl);
@@ -880,6 +980,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     }
 
+    public void Open_Login(){
+        Intent intent = new Intent(getActivity(), Login_A.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+    }
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
@@ -1122,7 +1227,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                                     @Override
                                     public void onError(Error error) {
-                                        Delete_file_no_watermark(item);
+                                        //Delete_file_no_watermark(item);
                                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                                         Functions.cancel_determinent_loader();
                                     }
@@ -1239,6 +1344,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         try {
             if (privious_player != null) {
                 privious_player.release();
+            }
+            if(mReceiver!=null) {
+                getActivity().unregisterReceiver(mReceiver);
+                mReceiver = null;
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

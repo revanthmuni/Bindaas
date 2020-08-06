@@ -83,6 +83,7 @@ public class ApiRequest {
         jsonObjReq.setRetryPolicy(new DefaultRetryPolicy(60000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.getCache().clear();
         requestQueue.add(jsonObjReq);
     }
 }

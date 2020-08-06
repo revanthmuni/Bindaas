@@ -382,6 +382,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                 return false;
             } else if (base_64 == null) {
                 Toast.makeText(context, "Please select the image", Toast.LENGTH_SHORT).show();
+                return false;
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

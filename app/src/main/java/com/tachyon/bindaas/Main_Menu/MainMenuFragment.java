@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.tachyon.bindaas.Chat.Chat_Activity;
-import com.tachyon.bindaas.Notifications.Notification_F;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.core.app.ActivityCompat;
@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +29,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tachyon.bindaas.Accounts.Login_A;
-import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Home.Home_F;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Profile.Profile_Tab_F;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.Services.Upload_Service;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.Video_Recoder_A;
@@ -243,13 +243,22 @@ try{
             public void onClick(View v) {
 
                 if (check_permissions()) {
-                    if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                    Functions.make_directry(Variables.app_hidden_folder);
+                    Functions.make_directry(Variables.app_folder);
+                    Functions.make_directry(Variables.draft_app_folder);
 
+                    if(!Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                        Toast.makeText(context, "You have to login First", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else if (Functions.isMyServiceRunning(getActivity(),new Upload_Service().getClass())) {
+                        Toast.makeText(getActivity(), "Please wait video already in uploading progress", Toast.LENGTH_LONG).show();
+                    }
+
+                    else {
                         Intent intent = new Intent(getActivity(), Video_Recoder_A.class);
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
-                    } else {
-                        Toast.makeText(context, "You have to login First", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -297,7 +306,7 @@ try{
             }
         });
 
-
+    OnHome_Click();
         if (MainMenuActivity.intent != null) {
 
             if (MainMenuActivity.intent.hasExtra("action_type")) {
@@ -459,6 +468,9 @@ try{
         RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         pager.setLayoutParams(params);*/
         tabLayout.setBackground(getResources().getDrawable(R.drawable.d_top_white_line));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(context, R.color.black));
+        }
     }
 
     public void Onother_Tab_Click() {
@@ -503,7 +515,9 @@ try{
         params.addRule(RelativeLayout.ABOVE, R.id.tabs);
         pager.setLayoutParams(params);*/
         tabLayout.setBackgroundColor(getResources().getColor(R.color.white));
-
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(context, R.color.white));
+        }
     }
 
 
@@ -544,7 +558,12 @@ try{
     public void chatFragment(String receiverid, String name, String picture) {
 
 
-        Chat_Activity chat_activity = new Chat_Activity();
+        Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+            @Override
+            public void Responce(Bundle bundle) {
+
+            }
+        });
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 

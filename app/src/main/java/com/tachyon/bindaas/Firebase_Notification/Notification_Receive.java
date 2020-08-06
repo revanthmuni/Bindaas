@@ -31,6 +31,7 @@ import com.tachyon.bindaas.Chat.Chat_Activity;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.google.android.material.snackbar.Snackbar;
@@ -311,7 +312,12 @@ public class Notification_Receive extends FirebaseMessagingService {
                     tab3.select();
                 }
 
-                Chat_Activity chat_activity = new Chat_Activity();
+                Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
+
+                    }
+                });
                 FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 

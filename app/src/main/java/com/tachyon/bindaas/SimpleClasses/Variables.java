@@ -18,12 +18,14 @@ public class Variables {
     public static final String SelectedAudio_AAC = "SelectedAudio.aac";
 
     public static final String root = Environment.getExternalStorageDirectory().toString();
+    public static final String app_hidden_folder =root+"/.HiddenBindaas/";
     public static final String app_folder = root + "/Bindaas/";
     public static final String draft_app_folder = app_folder + "Draft/";
 
 
     public static int max_recording_duration = 30000;
     public static int recording_duration = 30000;
+    public static int min_time_recording=5000;
 
     public static String outputfile = app_folder + "output.mp4";
     public static String outputfile2 = app_folder + "output2.mp4";
@@ -45,6 +47,7 @@ public class Variables {
     public static final String device_token = "device_token";
     public static final String api_token = "api_token";
     public static final String device_id = "device_id";
+    public static final String uploading_video_thumb="uploading_video_thumb";
 
     public static String user_id;
     public static String user_name;

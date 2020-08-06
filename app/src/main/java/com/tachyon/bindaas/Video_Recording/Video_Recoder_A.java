@@ -80,13 +80,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     ImageButton flash_btn;
     SegmentedProgressBar video_progress;
     LinearLayout camera_options;
-    ImageButton rotate_camera;
+    ImageButton rotate_camera,cut_video_btn;
 
 
     public static int Sounds_list_Request_code = 1;
     TextView add_sound_txt;
 
     int sec_passed = 0;
+    long time_in_milis=0;
 
     TextView countdown_timer_txt;
     boolean is_recording_timer_enable;
@@ -96,7 +97,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Hide_navigation();
+        //Hide_navigation();
 
         setContentView(R.layout.activity_video_recoder);
         try {
@@ -106,25 +107,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             cameraView = findViewById(R.id.camera);
             camera_options = findViewById(R.id.camera_options);
-
-            cameraView.addCameraKitListener(new CameraKitEventListener() {
-                @Override
-                public void onEvent(CameraKitEvent cameraKitEvent) {
-                }
-
-                @Override
-                public void onError(CameraKitError cameraKitError) {
-                }
-
-                @Override
-                public void onImage(CameraKitImage cameraKitImage) {
-                }
-
-                @Override
-                public void onVideo(CameraKitVideo cameraKitVideo) {
-
-                }
-            });
 
 
             record_image = findViewById(R.id.record_image);
@@ -232,6 +214,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             video_progress.SetListener(new ProgressBarListener() {
                 @Override
                 public void TimeinMill(long mills) {
+                    time_in_milis=mills;
                     sec_passed = (int) (mills / 1000);
 
                     if (sec_passed > (Variables.recording_duration / 1000) - 1) {
@@ -290,14 +273,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     audio.pause();
 
                 cameraView.stopVideo();
-
-                if (sec_passed > ((Variables.recording_duration / 1000) / 3)) {
-                    done_btn.setBackgroundResource(R.drawable.ic_done);
-                    done_btn.setEnabled(true);
-                } else {
-                    done_btn.setBackgroundResource(R.drawable.ic_not_done);
-                    done_btn.setEnabled(false);
-                }
+                Check_done_btn_enable();
 
 
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_no));
@@ -311,7 +287,15 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         }
     }
-
+    public void Check_done_btn_enable(){
+        if(sec_passed>(Variables.min_time_recording/1000)) {
+            done_btn.setBackgroundResource(R.drawable.ic_done);
+            done_btn.setEnabled(true);
+        }else {
+            done_btn.setBackgroundResource(R.drawable.ic_not_done);
+            done_btn.setEnabled(false);
+        }
+    }
 
     // this will apped all the videos parts in one  fullvideo
     private boolean append() {
@@ -387,7 +371,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                         String outputFilePath = null;
                         if (audio != null) {
-                            outputFilePath = Variables.outputfile2;
+                            outputFilePath = Variables.outputfile;
                         } else {
                             outputFilePath = Variables.outputfile2;
                         }
@@ -450,7 +434,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         }
     }
-
 
     @SuppressLint("WrongConstant")
     @Override
@@ -585,12 +568,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     try {
                         File video_file = FileUtils.getFileFromUri(this, uri);
 
-                        if (getfileduration(uri) < 19500) {
+                        if (getfileduration(uri) < Variables.max_recording_duration) {
                             Chnage_Video_size(video_file.getAbsolutePath(), Variables.gallery_resize_video);
 
                         } else {
                             try {
-                                startTrim(video_file, new File(Variables.gallery_trimed_video), 1000, 18000);
+                                startTrim(video_file, new File(Variables.gallery_trimed_video), 1000, Variables.max_recording_duration);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -628,7 +611,13 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     public void Chnage_Video_size(String src_path, String destination_path) {
         try {
-            Functions.Show_determinent_loader(this, false, false);
+            Functions.copyFile(new File(src_path),
+                    new File(destination_path));
+
+            Intent intent=new Intent(Video_Recoder_A.this, GallerySelectedVideo_A.class);
+            intent.putExtra("video_path",Variables.gallery_resize_video);
+            startActivity(intent);
+            /*Functions.Show_determinent_loader(this, false, false);
             new GPUMp4Composer(src_path, destination_path)
                     .size(720, 1280)
                     .videoBitrate((int) (0.25 * 16 * 540 * 960))
@@ -686,7 +675,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                         }
                     })
-                    .start();
+                    .start();*/
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
@@ -835,6 +824,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onDestroy() {
+        DeleteFile();
         super.onDestroy();
         try {
 
@@ -872,7 +862,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                             dialog.dismiss();
 
-                            DeleteFile();
+                            //DeleteFile();
                             finish();
                             overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
 
@@ -899,15 +889,16 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
 
     // this will delete all the video parts that is create during priviously created video
-    int delete_count = 0;
+    //int delete_count = 0;
 
     public void DeleteFile() {
         try {
-            delete_count++;
+            //delete_count++;
             File output = new File(Variables.outputfile);
             File output2 = new File(Variables.outputfile2);
-            File output_filter_file = new File(Variables.output_filter_file);
-
+            //File output_filter_file = new File(Variables.output_filter_file);
+            File gallery_trimed_video = new File(Variables.gallery_trimed_video);
+            File gallery_resize_video = new File(Variables.gallery_resize_video);
             if (output.exists()) {
                 output.delete();
             }
@@ -916,14 +907,19 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 output2.delete();
             }
 
-            if (output_filter_file.exists()) {
-                output_filter_file.delete();
+            if (gallery_trimed_video.exists()) {
+                gallery_trimed_video.delete();
+            }
+            if(gallery_resize_video.exists()){
+                gallery_resize_video.delete();
             }
 
-            File file = new File(Variables.app_folder + "myvideo" + (delete_count) + ".mp4");
-            if (file.exists()) {
-                file.delete();
-                DeleteFile();
+            for (int i=0;i<=12;i++) {
+                File file = new File(Variables.app_folder + "myvideo" + (i) + ".mp4");
+                if (file.exists()) {
+                    file.delete();
+                    //DeleteFile();
+                }
             }
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());

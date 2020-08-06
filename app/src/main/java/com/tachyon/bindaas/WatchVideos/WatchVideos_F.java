@@ -379,6 +379,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
+                    item.privacy_type=itemdata.optString("privacy_type");
+                    item.allow_comments=itemdata.optString("allow_comments");
 
                     item.video_url = itemdata.optString("video");
 
@@ -737,6 +739,14 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                 Functions.Call_Api_For_update_view(WatchVideos_F.this, item.video_id);
+
+            if(item.allow_comments!=null && item.allow_comments.equalsIgnoreCase("false"))
+            {
+                write_layout.setVisibility(View.INVISIBLE);
+            }
+            else {
+                write_layout.setVisibility(View.VISIBLE);
+            }
 
             Call_Api_For_Singlevideos(currentPage);
         } catch (Exception e) {
@@ -1159,7 +1169,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                                     @Override
                                     public void onError(Error error) {
-                                        Delete_file_no_watermark(item);
+                                        //Delete_file_no_watermark(item);
                                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
                                         Functions.cancel_determinent_loader();
                                     }

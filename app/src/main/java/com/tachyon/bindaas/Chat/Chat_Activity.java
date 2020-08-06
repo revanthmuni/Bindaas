@@ -49,7 +49,9 @@ import com.tachyon.bindaas.Chat.Audio.Play_Audio_F;
 import com.tachyon.bindaas.Chat.Audio.SendAudio;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.See_Full_Image_F;
+import com.tachyon.bindaas.SimpleClasses.API_CallBack;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.downloader.Error;
@@ -82,6 +84,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,6 +152,10 @@ public class Chat_Activity extends Fragment {
     File direct;
 
     SendAudio sendAudio;
+    Fragment_Callback callback;
+    public Chat_Activity(Fragment_Callback callback) {
+        this.callback = callback;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -176,17 +183,26 @@ public class Chat_Activity extends Fragment {
                 Receiverid = bundle.getString("user_id");
                 Receiver_name = bundle.getString("user_name");
                 Receiver_pic = bundle.getString("user_pic");
-                user_name.setText(Receiver_name);
-                senderid_for_check_notification = Receiverid;
-                Log.d("TestMessage", (Receiver_pic != null) + "-" + (Receiver_pic != "") + Receiver_pic + "-" + (Receiver_pic != " "));
-                Log.d("TestMessage", "onCreateView: " + Receiver_pic);
-                if (Receiver_pic != null) {
-                    // these two method will get other detail of user like there profile pic link and username
+                if(Receiverid == null && TextUtils.isEmpty(Receiverid)){
+                    if(callback!=null)
+                        callback.Responce(new Bundle());
+
+                    getFragmentManager().popBackStackImmediate();
+                }
+                else if(TextUtils.isEmpty(Receiver_name) || TextUtils.isEmpty(Receiver_pic)){
+                    Log.d(Variables.tag, "empty "+Receiver_name);
+                    Call_Api_For_User_Details();
+                }
+                else {
+                    user_name.setText(Receiver_name); // these two method will get other datial of user like there profile pic link and username
+
                     Picasso.with(context).load(Receiver_pic)
-                            .resize(100, 100)
+                            .resize(100,100)
                             .placeholder(R.drawable.profile_image_placeholder)
                             .into(profileimage);
                 }
+
+                senderid_for_check_notification = Receiverid;
 
                 sendAudio = new SendAudio(context, message, rootref, Adduser_to_inbox,
                         senderid, Receiverid, Receiver_name, Receiver_pic);
@@ -951,7 +967,7 @@ public class Chat_Activity extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        if (dataSnapshot.child("rid").getValue().equals(Receiverid)) {
+                        if(dataSnapshot.child("rid").getValue()!=null && dataSnapshot.child("rid").getValue().equals(Receiverid)){
                             HashMap<String, Object> result = new HashMap<>();
                             result.put("status", "1");
                             inbox_change_status_1.updateChildren(result);
@@ -972,7 +988,7 @@ public class Chat_Activity extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        if (dataSnapshot.child("rid").getValue().equals(Receiverid)) {
+                        if(dataSnapshot.child("rid").getValue()!=null && dataSnapshot.child("rid").getValue().equals(Receiverid)){
                             HashMap<String, Object> result = new HashMap<>();
                             result.put("status", "1");
                             inbox_change_status_2.updateChildren(result);
@@ -1852,5 +1868,57 @@ public class Chat_Activity extends Fragment {
 
     }
 
+    // this will get the user data and parse the data and show the data into views
+    public void Call_Api_For_User_Details(){
+        Functions.Show_loader(getActivity(),false,false);
+        Functions.Call_Api_For_Get_User_data(getActivity(),
+                Receiverid,
+                new API_CallBack() {
+                    @Override
+                    public void ArrayData(ArrayList arrayList) {
 
+                    }
+
+                    @Override
+                    public void OnSuccess(String responce) {
+                        Functions.cancel_loader();
+                        Parse_user_data(responce);
+                    }
+
+                    @Override
+                    public void OnFail(String responce) {
+
+                    }
+                });
+    }
+
+    public void Parse_user_data(String responce){
+        try {
+            JSONObject jsonObject=new JSONObject(responce);
+
+            String code=jsonObject.optString("code");
+
+            if(code.equals("200")) {
+                JSONArray msg = jsonObject.optJSONArray("msg");
+                JSONObject data = msg.getJSONObject(0);
+
+                Receiver_name = ""+data.optString("first_name")+" "+data.optString("last_name");
+
+                Receiver_pic = data.optString("profile_pic");
+                user_name.setText(Receiver_name);
+
+                // these two method will get other datial of user like there profile pic link and username
+                Picasso.with(context).load(Receiver_pic)
+                        .resize(100,100)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(profileimage);
+            }
+            else {
+                Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

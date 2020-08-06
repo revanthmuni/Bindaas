@@ -52,7 +52,7 @@ public class Liked_Video_F extends Fragment {
         // Required empty public constructor
     }
 
-    boolean is_my_profile;
+    boolean is_my_profile=true;
 
     @SuppressLint("ValidFragment")
     public Liked_Video_F(boolean is_my_profile, String user_id) {
@@ -214,7 +214,8 @@ public class Liked_Video_F extends Fragment {
                             item.sound_url_acc = audio_path.optString("aac");
                         }
 
-
+                        item.privacy_type=itemdata.optString("privacy_type");
+                        item.allow_comments=itemdata.optString("allow_comments");
                         item.video_id = itemdata.optString("id");
                         item.liked = itemdata.optString("liked");
                         item.gif = itemdata.optString("gif");

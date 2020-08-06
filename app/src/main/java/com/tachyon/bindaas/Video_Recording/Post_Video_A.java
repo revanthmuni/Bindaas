@@ -3,6 +3,7 @@ package com.tachyon.bindaas.Video_Recording;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
@@ -13,11 +14,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
@@ -39,11 +43,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     ImageView video_thumbnail;
     String video_path;
-    ProgressDialog progressDialog;
     ServiceCallback serviceCallback;
     EditText description_edit;
 
     String draft_file;
+
+    TextView privcy_type_txt;
+    Switch comment_switch,duet_switch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,34 +74,19 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
             if (bmThumbnail != null) {
                 video_thumbnail.setImageBitmap(bmThumbnail);
-            } else {
+                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb,Functions.Bitmap_to_base64(this,bmThumbnail)).commit();
             }
 
 
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Please wait");
-            progressDialog.setCancelable(false);
+            privcy_type_txt=findViewById(R.id.privcy_type_txt);
+            comment_switch=findViewById(R.id.comment_switch);
+            duet_switch=findViewById(R.id.duet_switch);
 
 
-            findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                }
-            });
+            findViewById(R.id.Goback).setOnClickListener(this);
 
-
-            findViewById(R.id.post_btn).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    progressDialog.show();
-                    Start_Service();
-
-                }
-            });
-
-
+            findViewById(R.id.privacy_type_layout).setOnClickListener(this);
+            findViewById(R.id.post_btn).setOnClickListener(this);
             findViewById(R.id.save_draft_btn).setOnClickListener(this);
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
@@ -108,8 +99,20 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     public void onClick(View v) {
         try {
             switch (v.getId()) {
+                case R.id.Goback:
+                    onBackPressed();
+                    break;
+
+                case R.id.privacy_type_layout:
+                    Privacy_dialog();
+                    break;
+
                 case R.id.save_draft_btn:
                     Save_file_in_draft();
+                    break;
+
+                case R.id.post_btn:
+                    Start_Service();
                     break;
             }
         } catch (Exception e) {
@@ -118,6 +121,27 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         }
     }
 
+    private void Privacy_dialog() {
+        final CharSequence[] options = new CharSequence[]{"Public","Private"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogCustom);
+
+        builder.setTitle(null);
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+
+            public void onClick(DialogInterface dialog, int item) {
+                privcy_type_txt.setText(options[item]);
+
+            }
+
+        });
+
+        builder.show();
+
+    }
 
     // this will start the service for uploading the video into database
     public void Start_Service() {
@@ -128,13 +152,31 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
                 mServiceIntent.setAction("startservice");
-                mServiceIntent.putExtra("uri", "" + Uri.fromFile(new File(video_path)));
-                mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
+                mServiceIntent.putExtra("draft_file",draft_file);
+                mServiceIntent.putExtra("uri",""+ video_path);
+                mServiceIntent.putExtra("desc",""+description_edit.getText().toString());
+                mServiceIntent.putExtra("privacy_type",privcy_type_txt.getText().toString());
+
+                if(comment_switch.isChecked())
+                    mServiceIntent.putExtra("allow_comment","true");
+                else
+                    mServiceIntent.putExtra("allow_comment","false");
+
+                if(duet_switch.isChecked())
+                    mServiceIntent.putExtra("allow_duet","1");
+                else
+                    mServiceIntent.putExtra("allow_duet","0");
+
                 startService(mServiceIntent);
 
 
-                Intent intent = new Intent(this, Upload_Service.class);
-                bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendBroadcast(new Intent("uploadVideo"));
+                        startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
+                    }
+                },1000);
 
             } else {
                 Toast.makeText(this, "Please wait video already in uploading progress", Toast.LENGTH_LONG).show();
@@ -147,12 +189,6 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     }
 
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Stop_Service();
-
-    }
 
 
     @Override
@@ -174,29 +210,7 @@ try{
         if (mConnection != null)
             unbindService(mConnection);
 
-
-        if (responce.equalsIgnoreCase("Your Video is uploaded Successfully")) {
-
-            Variables.Reload_my_videos = true;
-            Variables.Reload_my_videos_inner = true;
-            Delete_draft_file();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(Post_Video_A.this, responce, Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
-
-                    startActivity(new Intent(Post_Video_A.this, MainMenuActivity.class));
-
-                }
-            }, 1000);
-
-
-        } else {
-            Toast.makeText(Post_Video_A.this, responce, Toast.LENGTH_LONG).show();
-            progressDialog.dismiss();
-        }
+    Toast.makeText(this, responce, Toast.LENGTH_SHORT).show();
 }catch (Exception e){
     Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 

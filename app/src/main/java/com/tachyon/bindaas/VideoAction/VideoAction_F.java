@@ -145,7 +145,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                         adapter = new VideoSharingApps_Adapter(context, launchables, new VideoSharingApps_Adapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(int positon, ResolveInfo item, View view) {
-                                Toast.makeText(context, "" + item.activityInfo.name, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, "" + item.activityInfo.name, Toast.LENGTH_SHORT).show();
                                 Open_App(item);
                             }
                         });

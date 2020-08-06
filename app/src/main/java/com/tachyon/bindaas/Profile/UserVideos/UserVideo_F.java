@@ -2,8 +2,10 @@ package com.tachyon.bindaas.Profile.UserVideos;
 
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -45,14 +47,14 @@ public class UserVideo_F extends Fragment {
     String user_id;
 
     RelativeLayout no_data_layout;
-    public static int myvideo_count = 0;
+    NewVideoBroadCast mReceiver;
 
     public UserVideo_F() {
 
     }
 
-
-    boolean is_my_profile = false;
+    boolean is_my_profile=true;
+    String video_type="public";
 
     @SuppressLint("ValidFragment")
     public UserVideo_F(boolean is_my_profile, String user_id) {
@@ -60,6 +62,15 @@ public class UserVideo_F extends Fragment {
         this.user_id = user_id;
     }
 
+    private class NewVideoBroadCast extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Variables.Reload_my_videos_inner=false;
+            Call_Api_For_get_Allvideos();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +104,8 @@ public class UserVideo_F extends Fragment {
 
 
             Call_Api_For_get_Allvideos();
-
+            mReceiver = new NewVideoBroadCast();
+            getActivity().registerReceiver(mReceiver, new IntentFilter("newVideo"));
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -135,6 +147,15 @@ public class UserVideo_F extends Fragment {
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(mReceiver!=null) {
+            getActivity().unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
+    }
     Boolean is_api_run = false;
 
     //this will get the all videos data of user and then parse the data
@@ -190,7 +211,7 @@ public class UserVideo_F extends Fragment {
                         JSONObject itemdata = user_videos.optJSONObject(i);
 
                         Home_Get_Set item = new Home_Get_Set();
-                        item.user_id = user_id;
+                        item.user_id = user_info.optString("user_id");
 
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");
@@ -215,6 +236,8 @@ public class UserVideo_F extends Fragment {
                         }
 
 
+                        item.privacy_type=itemdata.optString("privacy_type");
+                        item.allow_comments=itemdata.optString("allow_comments");
                         item.video_id = itemdata.optString("id");
                         item.liked = itemdata.optString("liked");
                         item.gif = itemdata.optString("gif");
@@ -228,7 +251,7 @@ public class UserVideo_F extends Fragment {
                         data_list.add(item);
                     }
 
-                    myvideo_count = data_list.size();
+                    //myvideo_count = data_list.size();
 
                 } else {
                     no_data_layout.setVisibility(View.VISIBLE);

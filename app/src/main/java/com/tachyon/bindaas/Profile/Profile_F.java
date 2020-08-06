@@ -497,7 +497,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public void Open_Setting() {
 
-        Open_Chat_F();
+        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+            Open_Chat_F();
+        }
+        else {
+            Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -574,7 +579,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public void Open_Chat_F() {
 
         try {
-            Chat_Activity chat_activity = new Chat_Activity();
+            Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+                @Override
+                public void Responce(Bundle bundle) {
+
+                }
+            });
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
             Bundle args = new Bundle();
