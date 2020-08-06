@@ -27,7 +27,7 @@ public class RecordingTimeRang_F extends BottomSheetDialogFragment implements Vi
     Context context;
     RangeBar seekbar;
 
-    int selected_value = 3;
+    int selected_value = Variables.max_recording_duration;
     int recording_done_time = 0, total_time = 0;
     TextView range_txt;
 

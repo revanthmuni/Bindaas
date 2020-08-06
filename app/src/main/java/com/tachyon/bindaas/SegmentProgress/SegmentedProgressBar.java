@@ -109,7 +109,7 @@ public class SegmentedProgressBar extends View {
      *
      * @param millisPassed
      */
-    private void updateProgress(long millisPassed) {
+    public void updateProgress(long millisPassed) {
         listener.TimeinMill(millisPassed);
         percentCompleted = progressBarWidth * (float) millisPassed / maxTimeInMillis;
         invalidate();
@@ -120,14 +120,14 @@ public class SegmentedProgressBar extends View {
      *
      * @param percentValue
      */
-    private void updateProgress(float percentValue) {
+    public void updateProgress(float percentValue) {
         percentCompleted = progressBarWidth * percentValue;
         invalidate();
     }
 
 
-    public float GetPercentComplete() {
-        return percentCompleted;
+    public void back_countdown(long timeinmillis){
+        countDownTimerWithPause.back_countdown(timeinmillis);
     }
 
 
@@ -276,6 +276,7 @@ public class SegmentedProgressBar extends View {
             Log.w(TAG, "addDivider: Divider already added to current position");
         }
     }
+
 
     public void setCornerRadius(float cornerRadius) {
         this.cornerRadius = cornerRadius;

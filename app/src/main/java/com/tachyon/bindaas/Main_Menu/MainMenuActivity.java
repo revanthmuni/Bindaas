@@ -3,18 +3,20 @@ package com.tachyon.bindaas.Main_Menu;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.tachyon.bindaas.Chat.Chat_Activity;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -66,6 +68,7 @@ public class MainMenuActivity extends AppCompatActivity {
                 mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().getFragments().get(0);
             }
 
+            Functions.make_directry(Variables.app_hidden_folder);
             Functions.make_directry(Variables.app_folder);
             Functions.make_directry(Variables.draft_app_folder);
         } catch (Exception e) {
@@ -85,7 +88,12 @@ public class MainMenuActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Chat_Activity chat_activity = new Chat_Activity();
+                        Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+                            @Override
+                            public void Responce(Bundle bundle) {
+
+                            }
+                        });
                         FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
                         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
@@ -153,6 +161,21 @@ try{
 
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
 
+    }
+
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Functions.deleteCache(this);
+    }
 
 }

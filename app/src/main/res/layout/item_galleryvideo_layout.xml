@@ -10,6 +10,15 @@
         android:layout_margin="1dp"
         android:scaleType="centerCrop"/>
 
+    <ImageButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:scaleType="fitCenter"
+        android:padding="5dp"
+        android:id="@+id/cross_btn"
+        android:layout_alignParentEnd="true"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_white_cross"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,17 +31,17 @@
         android:layout_alignParentBottom="true">
 
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/view_txt"
-        android:layout_marginRight="5dp"
-        android:shadowColor="@color/darkgray"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="3"
-          android:layout_alignParentRight="true"
-        android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_txt"
+            android:layout_marginRight="5dp"
+            android:shadowColor="@color/darkgray"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"/>
 
     </RelativeLayout>
 

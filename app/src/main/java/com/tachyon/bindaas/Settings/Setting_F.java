@@ -44,6 +44,7 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
             view.findViewById(R.id.Goback).setOnClickListener(this);
             //view.findViewById(R.id.request_verification_txt).setOnClickListener(this);
             view.findViewById(R.id.privacy_policy_txt).setOnClickListener(this);
+            view.findViewById(R.id.terms_of_use_txt).setOnClickListener(this);
             view.findViewById(R.id.logout_txt).setOnClickListener(this);
 
 
@@ -71,6 +72,10 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
                 Open_Privacy_url();
                 break;
 
+            case R.id.terms_of_use_txt:
+                openTermsOfUse();
+                break;
+
             case R.id.logout_txt:
                 Logout();
                 break;
@@ -92,15 +97,32 @@ public class Setting_F extends RootFragment implements View.OnClickListener {
 
     public void Open_Privacy_url() {
         try{
-        Webview_F webview_f = new Webview_F();
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-        Bundle bundle = new Bundle();
-        bundle.putString("url", Variables.privacy_policy);
-        bundle.putString("title", "Privacy Policy");
-        webview_f.setArguments(bundle);
-        transaction.addToBackStack(null);
-        transaction.replace(R.id.Setting_F, webview_f).commit();
+            Webview_F webview_f = new Webview_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+            Bundle bundle = new Bundle();
+            bundle.putString("url", Variables.privacy_policy);
+            bundle.putString("title", "Privacy Policy");
+            webview_f.setArguments(bundle);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.Setting_F, webview_f).commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+
+        }
+    }
+
+    public void openTermsOfUse() {
+        try{
+            Webview_F webview_f = new Webview_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+            Bundle bundle = new Bundle();
+            bundle.putString("url", Variables.termsOfUse);
+            bundle.putString("title", "Terms Of Use");
+            webview_f.setArguments(bundle);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.Setting_F, webview_f).commit();
         }catch (Exception e){
             Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 

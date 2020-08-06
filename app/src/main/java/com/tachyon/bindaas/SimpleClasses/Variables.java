@@ -18,12 +18,14 @@ public class Variables {
     public static final String SelectedAudio_AAC = "SelectedAudio.aac";
 
     public static final String root = Environment.getExternalStorageDirectory().toString();
+    public static final String app_hidden_folder =root+"/.HiddenBindaas/";
     public static final String app_folder = root + "/Bindaas/";
     public static final String draft_app_folder = app_folder + "Draft/";
 
 
     public static int max_recording_duration = 30000;
     public static int recording_duration = 30000;
+    public static int min_time_recording=5000;
 
     public static String outputfile = app_folder + "output.mp4";
     public static String outputfile2 = app_folder + "output2.mp4";
@@ -45,6 +47,7 @@ public class Variables {
     public static final String device_token = "device_token";
     public static final String api_token = "api_token";
     public static final String device_id = "device_id";
+    public static final String uploading_video_thumb="uploading_video_thumb";
 
     public static String user_id;
     public static String user_name;
@@ -89,7 +92,7 @@ public class Variables {
     public static String gif_api_key1 = "giphy_api_key_here";
 
     //public static final String privacy_policy="https://www.privacypolicygenerator.info/live.php?";
-    public static final String privacy_policy = "http://bindaasonline.com/privacypolicy.php";
+
 
 
     //public static final String main_domain = "http://bindaasonline.com/";
@@ -101,6 +104,10 @@ public class Variables {
 
     //public static final String api_domain = "http://3.6.175.12/API/index.php?p=";
     public static final String api_domain = base_url + "index.php?p=";
+
+    public static final String privacy_policy = main_domain + "privacypolicy.php";
+    public static final String termsOfUse = main_domain + "tnc.php";
+
 
     public static final String SignUp = api_domain + "signup";
     public static final String uploadVideo = api_domain + "uploadVideo";

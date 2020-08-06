@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,8 +71,8 @@ public class Search_F extends RootFragment {
             shimmerFrameLayout.startShimmer();
 
             recyclerView = view.findViewById(R.id.recylerview);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            //recyclerView.setLayoutManager(linearLayoutManager);
 
             Call_Api();
 
@@ -87,6 +88,7 @@ public class Search_F extends RootFragment {
 
         JSONObject params = new JSONObject();
         try {
+            params.put("user_id",Variables.user_id);
             params.put("type", type);
             params.put("keyword", search_edit.getText().toString());
         } catch (JSONException e) {
@@ -146,7 +148,8 @@ public class Search_F extends RootFragment {
                     view.findViewById(R.id.no_data_image).setVisibility(View.VISIBLE);
                 } else
                     view.findViewById(R.id.no_data_image).setVisibility(View.GONE);
-
+                LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(linearLayoutManager);
                 Users_Adapter adapter = new Users_Adapter(context, data_list, new Adapter_Click_Listener() {
                     @Override
                     public void onItemClick(View view, int pos, Object object) {
@@ -185,6 +188,7 @@ public class Search_F extends RootFragment {
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
+                    item.username=user_info.optString("username");
                     item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
                     item.last_name = user_info.optString("last_name", "User");
                     item.profile_pic = user_info.optString("profile_pic", "null");
@@ -222,17 +226,19 @@ public class Search_F extends RootFragment {
                 } else
                     view.findViewById(R.id.no_data_image).setVisibility(View.GONE);
 
-
+                GridLayoutManager linearLayoutManager=new GridLayoutManager(context,2);
+                recyclerView.setLayoutManager(linearLayoutManager);
                 VideosList_Adapter adapter = new VideosList_Adapter(context, data_list, new Adapter_Click_Listener() {
                     @Override
                     public void onItemClick(View view, int pos, Object object) {
 
                         Home_Get_Set item = (Home_Get_Set) object;
-                        if (view.getId() == R.id.watch_btn) {
+                        OpenWatchVideo(item.video_id);
+                        /*if (view.getId() == R.id.watch_btn) {
                             OpenWatchVideo(item.video_id);
                         } else {
                             Open_Profile(item.user_id, item.first_name, item.last_name, item.profile_pic);
-                        }
+                        }*/
 
                     }
                 });
@@ -262,9 +268,9 @@ public class Search_F extends RootFragment {
         }
     }
 
-    public void Open_Profile(String fb_id, String first_name, String last_name, String profile_pic) {
+    public void Open_Profile(String user_id, String first_name, String last_name, String profile_pic) {
         try {
-            if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(fb_id)) {
+            if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(user_id)) {
 
                 TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
                 profile.select();
@@ -280,7 +286,7 @@ public class Search_F extends RootFragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
                 Bundle args = new Bundle();
-                args.putString("user_id", fb_id);
+                args.putString("user_id", user_id);
                 args.putString("user_name", first_name + " " + last_name);
                 args.putString("user_pic", profile_pic);
                 profile_f.setArguments(args);

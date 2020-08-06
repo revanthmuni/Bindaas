@@ -1,6 +1,7 @@
 package com.tachyon.bindaas.Video_Recording;
 
 import android.content.Intent;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -39,6 +40,8 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Preview_Video_A extends AppCompatActivity implements Player.EventListener {
@@ -82,7 +85,22 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
             findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(select_postion==0){
 
+                        try {
+                            Functions.copyFile(new File(Variables.outputfile2),
+                                    new File(Variables.output_filter_file));
+                            GotopostScreen();
+                        }
+
+                        catch (IOException e) {
+                            e.printStackTrace();
+                            Log.d(Variables.tag,e.toString());
+                            Save_Video(Variables.outputfile2,Variables.output_filter_file);
+                        }
+
+                    }
+                    else
                     Save_Video(video_url, Variables.output_filter_file);
                 }
             });
@@ -134,7 +152,16 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
 
 
             gpuPlayerView = new GPUPlayerView(this);
-            gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_NONE);
+
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            metaRetriever.setDataSource(path);
+            String rotation=metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+
+            if(rotation!=null && rotation.equalsIgnoreCase("0")){
+                gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_FIT_WIDTH);
+            }
+            else
+                gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_NONE);
 
             gpuPlayerView.setSimpleExoPlayer(player);
             gpuPlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

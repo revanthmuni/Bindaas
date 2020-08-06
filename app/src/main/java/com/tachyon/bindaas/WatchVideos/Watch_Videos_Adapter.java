@@ -128,6 +128,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             } else {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }
+
+            if(item.allow_comments!=null && item.allow_comments.equalsIgnoreCase("false"))
+                holder.comment_layout.setVisibility(View.GONE);
+            else
+                holder.comment_layout.setVisibility(View.VISIBLE);
             // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
             holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
 

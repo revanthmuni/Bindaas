@@ -282,7 +282,7 @@
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:layout_weight="1"
-                          android:text="Others"
+                          android:text="Prefer not to say"
                           android:textSize="15dp"
                           android:id="@+id/others_btn"
                           android:theme="@style/RadioButton"

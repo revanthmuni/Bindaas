@@ -106,7 +106,9 @@ public abstract class CountDownTimerWithPause {
             mPauseTimeRemaining = 0;
         }
     }
-
+    public void back_countdown(long backtime){
+        mPauseTimeRemaining = mPauseTimeRemaining+backtime;
+    }
     /**
      * Tests whether the timer is paused.
      *

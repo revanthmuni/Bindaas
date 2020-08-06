@@ -111,9 +111,9 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
             final Inbox_Get_Set item = inbox_dataList_filter.get(i);
             holder.username.setText(item.getName());
             holder.last_message.setText(item.getMsg());
-            holder.date_created.setText(item.getDate() != null ? ChangeDate(item.getDate()) : "DD/MM/YYY");
+            holder.date_created.setText(Functions.ChangeDate_to_today_or_yesterday(context,item.getDate()));
 
-            if (item.getPic() != null)
+            if (item.getPic() != null && !item.getPic().equals(""))
                 Picasso.with(context).
                         load(item.getPic())
                         .resize(100, 100)

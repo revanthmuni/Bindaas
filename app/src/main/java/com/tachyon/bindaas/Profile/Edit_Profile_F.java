@@ -50,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.helper.CommonUtils;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -325,68 +326,16 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                     }
                     Uri selectedImage = (Uri.fromFile(new File(imageFilePath)));
 
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
-
-                    Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.7), (int) (rotatedBitmap.getHeight() * 0.7), true);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-
-                    image_byte_array = baos.toByteArray();
-
-                    Save_Image();
+                    beginCrop(selectedImage);
 
                 } else if (requestCode == 2) {
                     Uri selectedImage = data.getData();
-                    InputStream imageStream = null;
-                    try {
-                        imageStream = getActivity().getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+                    beginCrop(selectedImage);
 
-                    String path = getPath(selectedImage);
-                    Matrix matrix = new Matrix();
-                    ExifInterface exif = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        try {
-                            exif = new ExifInterface(path);
-                            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-                            switch (orientation) {
-                                case ExifInterface.ORIENTATION_ROTATE_90:
-                                    matrix.postRotate(90);
-                                    break;
-                                case ExifInterface.ORIENTATION_ROTATE_180:
-                                    matrix.postRotate(180);
-                                    break;
-                                case ExifInterface.ORIENTATION_ROTATE_270:
-                                    matrix.postRotate(270);
-                                    break;
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
-                    Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
-
-
-                    Bitmap resized = Bitmap.createScaledBitmap(rotatedBitmap, (int) (rotatedBitmap.getWidth() * 0.5), (int) (rotatedBitmap.getHeight() * 0.5), true);
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-
-                    image_byte_array = baos.toByteArray();
-
-                    Save_Image();
-
+                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                    handleCrop(result.getUri());
                 }
 
             }
@@ -420,6 +369,56 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         return true;
     }
 
+    String image_bas64;
+
+    private void beginCrop(Uri source) {
+
+        CropImage.activity(source).start(getActivity());
+
+
+    }
+
+    private void handleCrop(Uri userimageuri) {
+
+        InputStream imageStream = null;
+        try {
+            imageStream = getActivity().getContentResolver().openInputStream(userimageuri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        final Bitmap imagebitmap = BitmapFactory.decodeStream(imageStream);
+
+        String path = userimageuri.getPath();
+        Matrix matrix = new Matrix();
+        android.media.ExifInterface exif = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            try {
+                exif = new android.media.ExifInterface(path);
+                int orientation = exif.getAttributeInt(android.media.ExifInterface.TAG_ORIENTATION, 1);
+                switch (orientation) {
+                    case android.media.ExifInterface.ORIENTATION_ROTATE_90:
+                        matrix.postRotate(90);
+                        break;
+                    case android.media.ExifInterface.ORIENTATION_ROTATE_180:
+                        matrix.postRotate(180);
+                        break;
+                    case android.media.ExifInterface.ORIENTATION_ROTATE_270:
+                        matrix.postRotate(270);
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Bitmap rotatedBitmap = Bitmap.createBitmap(imagebitmap, 0, 0, imagebitmap.getWidth(), imagebitmap.getHeight(), matrix, true);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+        image_bas64 = Functions.Bitmap_to_base64(getActivity(), rotatedBitmap);
+
+        Call_Api_For_image(userimageuri.getPath());
+    }
 
     byte[] image_byte_array;
 
@@ -536,7 +535,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                         parameters.put("gender", "Female");
                         break;
                     case R.id.others_btn:
-                        parameters.put("gender", "Others");
+                        parameters.put("gender", "Prefer not to say");
                         break;
                 }
 
@@ -636,7 +635,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 username_edit.setText(data.optString("username"));
 
                 String picture = data.optString("profile_pic");
-                if (!picture.isEmpty())
+                if (picture != null && !picture.equalsIgnoreCase(""))
                     Picasso.with(context)
                             .load(picture)
                             .placeholder(R.drawable.profile_image_placeholder)

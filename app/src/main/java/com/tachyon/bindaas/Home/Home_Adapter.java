@@ -113,6 +113,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }
 
+            if(item.allow_comments!=null && item.allow_comments.equalsIgnoreCase("false"))
+                holder.comment_layout.setVisibility(View.GONE);
+            else
+                holder.comment_layout.setVisibility(View.VISIBLE);
 
             Log.d("LikeData", "onBindViewHolder: " + item.like_count + "::" + item.username + "::" + new Gson().toJson(item));
             if (dataList.get(i).like_count.equals("0")) {

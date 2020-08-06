@@ -31,7 +31,7 @@ public class VideosList_Adapter extends RecyclerView.Adapter<VideosList_Adapter.
 
     @Override
     public VideosList_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_notification, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_search_video_layout, viewGroup, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
         VideosList_Adapter.CustomViewHolder viewHolder = new VideosList_Adapter.CustomViewHolder(view);
         return viewHolder;
@@ -44,18 +44,21 @@ public class VideosList_Adapter extends RecyclerView.Adapter<VideosList_Adapter.
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView user_image;
+        ImageView image,user_image;
 
-        TextView username, message, watch_btn;
+        TextView username_txt,description_txt,first_last_name_txt,likes_count_txt;
 
 
         public CustomViewHolder(View view) {
             super(view);
             try {
                 user_image = view.findViewById(R.id.user_image);
-                username = view.findViewById(R.id.username);
-                message = view.findViewById(R.id.message);
-                watch_btn = view.findViewById(R.id.watch_btn);
+                image=view.findViewById(R.id.image);
+                username_txt=view.findViewById(R.id.username_txt);
+                description_txt=view.findViewById(R.id.description_txt);
+
+                first_last_name_txt=view.findViewById(R.id.first_last_name_txt);
+                likes_count_txt=view.findViewById(R.id.likes_count_txt);
 
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -72,12 +75,6 @@ public class VideosList_Adapter extends RecyclerView.Adapter<VideosList_Adapter.
                     }
                 });
 
-                watch_btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listener.onItemClick(v, pos, item);
-                    }
-                });
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -94,14 +91,21 @@ public class VideosList_Adapter extends RecyclerView.Adapter<VideosList_Adapter.
 
             final Home_Get_Set item = (Home_Get_Set) datalist.get(i);
 
-            holder.username.setText(item.first_name + " " + item.last_name);
-            holder.message.setText(item.video_description);
+            holder.username_txt.setText(item.username);
+            holder.description_txt.setText(item.video_description);
 
-            if (item.thum != null && !item.thum.equals("")) {
+            if(item.thum!=null && !item.thum.equals("")) {
                 Uri uri = Uri.parse(item.thum);
+                holder.image.setImageURI(uri);
+            }
+
+            if(item.profile_pic!=null && !item.profile_pic.equals("")) {
+                Uri uri = Uri.parse(item.profile_pic);
                 holder.user_image.setImageURI(uri);
             }
 
+            holder.first_last_name_txt.setText(item.first_name+" "+item.last_name);
+            holder.likes_count_txt.setText(Functions.GetSuffix(item.like_count));
 
             holder.bind(i, item, adapter_click_listener);
         } catch (Exception e) {

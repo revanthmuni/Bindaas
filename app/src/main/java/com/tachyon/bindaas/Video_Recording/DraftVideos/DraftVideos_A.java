@@ -1,4 +1,4 @@
-package com.tachyon.bindaas.Video_Recording.GalleryVideos;
+package com.tachyon.bindaas.Video_Recording.DraftVideos;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.coremedia.iso.boxes.Container;
 import com.coremedia.iso.boxes.MovieHeaderBox;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A;
@@ -45,11 +46,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GalleryVideos_A extends AppCompatActivity {
+public class DraftVideos_A extends AppCompatActivity {
 
-    ArrayList<GalleryVideo_Get_Set> data_list;
+    ArrayList<DraftVideo_Get_Set> data_list;
     public RecyclerView recyclerView;
-    GalleryVideos_Adapter adapter;
+    DraftVideos_Adapter adapter;
 
     ProgressBar pbar;
 
@@ -69,31 +70,44 @@ public class GalleryVideos_A extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
 
             data_list = new ArrayList<>();
-            adapter = new GalleryVideos_Adapter(this, data_list, new GalleryVideos_Adapter.OnItemClickListener() {
+            adapter = new DraftVideos_Adapter(this, data_list, new DraftVideos_Adapter.OnItemClickListener() {
                 @Override
-                public void onItemClick(int postion, GalleryVideo_Get_Set item, View view) {
-                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                    Bitmap bmp = null;
-                    try {
-                        retriever.setDataSource(item.video_path);
-                        bmp = retriever.getFrameAtTime();
-                        int videoHeight = bmp.getHeight();
-                        int videoWidth = bmp.getWidth();
-
-                        Log.d("resp", "" + videoWidth + "---" + videoHeight);
-
-                    } catch (Exception e) {
-
-                    }
-
-                    if (item.video_duration_ms < 19500) {
-                        Chnage_Video_size(item.video_path, Variables.gallery_resize_video);
-
+                public void onItemClick(int postion, DraftVideo_Get_Set item, View view) {
+                    if (view.getId() == R.id.cross_btn) {
+                        File file_data = new File(item.video_path);
+                        if (file_data.exists()) {
+                            file_data.delete();
+                        }
+                        data_list.remove(postion);
+                        adapter.notifyItemRemoved(postion);
+                        adapter.notifyItemChanged(postion);
                     } else {
+                        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                        Bitmap bmp = null;
                         try {
-                            startTrim(new File(item.video_path), new File(Variables.gallery_trimed_video), 1000, 18000);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            retriever.setDataSource(item.video_path);
+                            bmp = retriever.getFrameAtTime();
+                            int videoHeight = bmp.getHeight();
+                            int videoWidth = bmp.getWidth();
+
+                            Log.d("resp", "" + videoWidth + "---" + videoHeight);
+
+                        } catch (Exception e) {
+
+                        }
+
+                        if (item.video_duration_ms <= Variables.max_recording_duration) {
+                            if (!Functions.isMyServiceRunning(DraftVideos_A.this, new Upload_Service().getClass())) {
+                                Chnage_Video_size(item.video_path, Variables.gallery_resize_video);
+                            } else {
+                                Toast.makeText(DraftVideos_A.this, "Please wait video already in uploading progress", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            try {
+                                startTrim(new File(item.video_path), new File(Variables.gallery_trimed_video), 1000, 18000);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -127,76 +141,24 @@ public class GalleryVideos_A extends AppCompatActivity {
             File[] files = directory.listFiles();
             for (int i = 0; i < files.length; i++) {
                 File file = files[i];
-                GalleryVideo_Get_Set item = new GalleryVideo_Get_Set();
+                DraftVideo_Get_Set item = new DraftVideo_Get_Set();
                 item.video_path = file.getAbsolutePath();
                 item.video_duration_ms = getfileduration(Uri.parse(file.getAbsolutePath()));
 
                 Log.d("resp", "" + item.video_duration_ms);
 
-                if (item.video_duration_ms > 1000) {
+
+                if (item.video_duration_ms > 5000) {
                     item.video_time = change_sec_to_time(item.video_duration_ms);
                     data_list.add(item);
                 }
+
             }
-            Log.d("draft", "getAllVideoPathDraft: " + data_list.size());
-            adapter.setDataList(data_list);
-            adapter.notifyDataSetChanged();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
-    public void getAllVideoPath(Context context) {
-
-        new AsyncTask<Object, Object, Object>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-            }
-
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                String[] projection = {MediaStore.Video.VideoColumns.DATA};
-                Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                if (cursor != null) {
-                    try {
-
-                        if (cursor != null) {
-                            while (cursor.moveToNext()) {
-                                GalleryVideo_Get_Set item = new GalleryVideo_Get_Set();
-                                item.video_path = cursor.getString(0);
-                                item.video_duration_ms = getfileduration(Uri.parse(cursor.getString(0)));
-
-                                Log.d("resp", "" + item.video_duration_ms);
-
-                                if (item.video_duration_ms > 5000) {
-                                    item.video_time = change_sec_to_time(item.video_duration_ms);
-                                    data_list.add(item);
-                                }
-
-                            }
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                pbar.setVisibility(View.GONE);
-                adapter.notifyDataSetChanged();
-            }
-        }.execute();
-
-
-    }
 
     // get the audio file duration that is store in our directory
     public long getfileduration(Uri uri) {
@@ -305,13 +267,13 @@ public class GalleryVideos_A extends AppCompatActivity {
                     in.close();
                     out.close();
 
-                    Intent intent = new Intent(GalleryVideos_A.this, GallerySelectedVideo_A.class);
+                    Intent intent = new Intent(DraftVideos_A.this, GallerySelectedVideo_A.class);
                     intent.putExtra("video_path", Variables.gallery_resize_video);
                     intent.putExtra("draft_file", src_path);
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(GalleryVideos_A.this, "Failed to get video from Draft", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DraftVideos_A.this, "Failed to get video from Draft", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -324,7 +286,8 @@ public class GalleryVideos_A extends AppCompatActivity {
         }
     }
 
-    public void startTrim(final File src, final File dst, final int startMs, final int endMs) throws IOException {
+    public void startTrim(final File src, final File dst, final int startMs, final int endMs) throws
+            IOException {
         try {
             new AsyncTask<String, Void, String>() {
                 @Override
@@ -397,13 +360,13 @@ public class GalleryVideos_A extends AppCompatActivity {
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
-                    Functions.Show_indeterminent_loader(GalleryVideos_A.this, true, true);
+                    Functions.Show_indeterminent_loader(DraftVideos_A.this, true, true);
                 }
 
                 @Override
                 protected void onPostExecute(String result) {
                     if (result.equals("error")) {
-                        Toast.makeText(GalleryVideos_A.this, "Try Again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DraftVideos_A.this, "Try Again", Toast.LENGTH_SHORT).show();
                     } else {
                         Functions.cancel_indeterminent_loader();
                         Chnage_Video_size(Variables.gallery_trimed_video, Variables.gallery_resize_video);
@@ -434,6 +397,12 @@ public class GalleryVideos_A extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
+        DeleteFile();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         DeleteFile();
     }
 

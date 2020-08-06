@@ -161,6 +161,7 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
 
         JSONObject params = new JSONObject();
         try {
+            params.put("user_id",Variables.user_id);
             params.put("type", type);
             params.put("keyword", Search_Main_F.search_edit.getText());
         } catch (JSONException e) {

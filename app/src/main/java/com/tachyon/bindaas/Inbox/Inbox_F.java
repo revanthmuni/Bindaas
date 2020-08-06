@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import com.tachyon.bindaas.Chat.Chat_Activity;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.google.android.gms.ads.AdRequest;
@@ -212,7 +213,12 @@ public class Inbox_F extends RootFragment {
     //you want to chat with them and this parameter is that is we move from match list or inbox list
     public void chatFragment(String receiverid, String name, String picture) {
         try {
-            Chat_Activity chat_activity = new Chat_Activity();
+            Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+                @Override
+                public void Responce(Bundle bundle) {
+
+                }
+            });
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 

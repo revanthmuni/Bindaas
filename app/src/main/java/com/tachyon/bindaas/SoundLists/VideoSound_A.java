@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,16 +35,11 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-import java.nio.file.Path;
 
 public class VideoSound_A extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,6 +55,9 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_sound);
+        Functions.make_directry(Variables.app_hidden_folder);
+        Functions.make_directry(Variables.app_folder);
+        Functions.make_directry(Variables.draft_app_folder);
         try {
             Intent intent = getIntent();
             if (intent.hasExtra("data")) {
@@ -109,27 +106,27 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
             switch (v.getId()) {
 
                 case R.id.back_btn:
-                    finish();
+                    onBackPressed();
                     break;
                 case R.id.save_btn:
 
                     String dest = "Bindaas" + item.video_id + ".mp3";
-
-                    try {
-                        copyFile(new File(Variables.app_folder + Variables.SelectedAudio_AAC),
-                                new File(Variables.app_folder + "/Saved/" + dest));
-                        Toast.makeText(this, "Audio Saved", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    if(audio_file!=null && audio_file.exists()) {
+                        try {
+                            Functions.copyFile(audio_file,
+                                    new File(Variables.app_folder +item.video_id+".acc"));
+                            Toast.makeText(this, "Audio Saved", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     break;
 
                 case R.id.create_btn:
-                    if (player != null) {
-                        if (player.getPlayWhenReady())
-                            player.setPlayWhenReady(false);
+                    if(audio_file!=null && audio_file.exists()) {
+                        StopPlaying();
+                        Open_video_recording();
                     }
-                    Open_video_recording();
                     break;
 
                 case R.id.play_btn:
@@ -186,15 +183,17 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        StopPlaying();
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
         try{
-        if (player != null) {
-            player.setPlayWhenReady(false);
-        }
-        Show_pause_state();
+            StopPlaying();
         }catch (Exception e){
             Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
 
@@ -223,10 +222,10 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     }
 
     DownloadRequest prDownloader;
-
+    ProgressDialog progressDialog;
     public void Save_Audio() {
         try{
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);

@@ -257,6 +257,8 @@ public class Taged_Videos_F extends RootFragment {
                     item.sound_pic = sound_data.optString("thum");
 
 
+                    item.privacy_type=itemdata.optString("privacy_type");
+                    item.allow_comments=itemdata.optString("allow_comments");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
                     item.gif = itemdata.optString("gif");

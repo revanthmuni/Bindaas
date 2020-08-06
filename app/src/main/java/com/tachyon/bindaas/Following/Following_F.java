@@ -102,8 +102,13 @@ public class Following_F extends Fragment {
 
                     switch (view.getId()) {
                         case R.id.action_txt:
-                            if (user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, "")))
-                                Follow_unFollow_User(item, postion);
+                            if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                                if(user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+                                    Follow_unFollow_User(item,postion);
+                            }
+                            else {
+                                Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
+                            }
                             break;
 
                         case R.id.mainlayout:
