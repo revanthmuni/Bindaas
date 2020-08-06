@@ -536,7 +536,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                         parameters.put("gender", "Female");
                         break;
                     case R.id.others_btn:
-                        parameters.put("gender", "Others");
+                        parameters.put("gender", "Prefer not to say");
                         break;
                 }
 

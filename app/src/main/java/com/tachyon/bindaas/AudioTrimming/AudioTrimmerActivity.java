@@ -45,6 +45,7 @@ import com.tachyon.bindaas.AudioTrimming.utils.FileUtilsForAudio;
 import com.tachyon.bindaas.AudioTrimming.utils.Utility;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
+import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -78,6 +79,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     private TextView txtAudioPlay;
     private TextView txtAudioRecordUpdate;
     private TextView txtAudioCrop;
+    private TextView txtAudioTitle;
 
     private boolean isAudioRecording = false;
     private long mRecordingLastUpdateTime;
@@ -157,6 +159,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             txtAudioPlay = (TextView) findViewById(R.id.txtAudioPlay);
             txtAudioRecordUpdate = (TextView) findViewById(R.id.txtAudioRecordUpdate);
             txtAudioCrop = (TextView) findViewById(R.id.txtAudioCrop);
+            txtAudioTitle = (TextView) findViewById(R.id.txtAudioEditTitle);
+            txtAudioTitle.setText("Edit Audio (Max " + (Variables.max_recording_duration/1000) + " seconds)");
 
             mRecordedSoundFile = null;
             mKeyDown = false;

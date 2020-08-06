@@ -34,7 +34,7 @@ public class Splash_A extends AppCompatActivity {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
             Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
-            countDownTimer = new CountDownTimer(3000, 100) {
+            countDownTimer = new CountDownTimer(3600, 100) {
 
                 public void onTick(long millisUntilFinished) {
 

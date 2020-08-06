@@ -89,7 +89,7 @@ public class Variables {
     public static String gif_api_key1 = "giphy_api_key_here";
 
     //public static final String privacy_policy="https://www.privacypolicygenerator.info/live.php?";
-    public static final String privacy_policy = "http://bindaasonline.com/privacypolicy.php";
+
 
 
     //public static final String main_domain = "http://bindaasonline.com/";
@@ -101,6 +101,10 @@ public class Variables {
 
     //public static final String api_domain = "http://3.6.175.12/API/index.php?p=";
     public static final String api_domain = base_url + "index.php?p=";
+
+    public static final String privacy_policy = main_domain + "privacypolicy.php";
+    public static final String termsOfUse = main_domain + "tnc.php";
+
 
     public static final String SignUp = api_domain + "signup";
     public static final String uploadVideo = api_domain + "uploadVideo";

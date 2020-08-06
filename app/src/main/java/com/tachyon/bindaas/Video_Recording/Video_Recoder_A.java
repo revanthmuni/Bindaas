@@ -387,7 +387,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                         String outputFilePath = null;
                         if (audio != null) {
-                            outputFilePath = Variables.outputfile;
+                            outputFilePath = Variables.outputfile2;
                         } else {
                             outputFilePath = Variables.outputfile2;
                         }
