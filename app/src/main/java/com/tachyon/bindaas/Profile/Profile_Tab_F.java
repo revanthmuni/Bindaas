@@ -74,7 +74,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public TextView username, username2_txt, video_count_txt, tvUserNotifications, tvUserChat;
     public ImageView imageView;
-    public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount;
+    public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount,tvPrivateCount;
 
     String videosCount = "0", likesCount = "0";
 
@@ -123,7 +123,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 @Override
                 public void onClick(View view) {
 //                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
-                    //update_profile();
+                  //update_profile();
                     Call_Api_For_get_Allvideos();
                 }
             });
@@ -389,6 +389,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             View view3 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
             ImageView imageView3 = view3.findViewById(R.id.image);
             imageView3.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_gray));
+            tvPrivateCount = view3.findViewById(R.id.tvCount);
+            tvPrivateCount.setTextColor(getResources().getColor(R.color.black));
             tabLayout.getTabAt(2).setCustomView(view3);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -444,10 +446,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
                             break;
                         case 2:
+                            count.setTextColor(getResources().getColor(R.color.black));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_gray));
                             break;
                     }
-
                     tab.setCustomView(v);
                 }
 
@@ -617,6 +619,20 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
                 } else {
                     tvVideosCount.setText("(" + 0 + ")");
+                    create_popup_layout.setVisibility(View.VISIBLE);
+                    Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.up_and_down_animation);
+                    create_popup_layout.startAnimation(aniRotate);
+                }
+                JSONArray private_videos = data.getJSONArray("private_videos");
+                if (!private_videos.toString().equals("[" + "0" + "]")) {
+                    myvideo_count=private_videos.length();
+//                    video_count_txt.setText(private_videos.length() + " Videos");
+                    tvPrivateCount.setText("(" + private_videos.length() + ")");
+                    create_popup_layout.setVisibility(View.GONE);
+                    create_popup_layout.clearAnimation();
+
+                } else {
+                    tvPrivateCount.setText("(" + 0 + ")");
                     create_popup_layout.setVisibility(View.VISIBLE);
                     Animation aniRotate = AnimationUtils.loadAnimation(context, R.anim.up_and_down_animation);
                     create_popup_layout.startAnimation(aniRotate);

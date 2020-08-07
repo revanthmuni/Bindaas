@@ -118,7 +118,7 @@ public class Upload_Service extends Service {
     public interface OnSuccessUpload{
         void onSuccess(String msg);
     }
-    /*private void writeToFile(String data, Context context) {
+    private void writeToFile(String data, Context context) {
         // Get the directory for the user's public pictures directory.
         final File path =
                 Environment.getExternalStoragePublicDirectory
@@ -157,7 +157,7 @@ public class Upload_Service extends Service {
             Log.e("Exception", "File write failed: " + e.toString());
         }
 
-    }*/
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -194,6 +194,8 @@ public class Upload_Service extends Service {
                             parameters.put("user_id", sharedPreferences.getString(Variables.u_id, ""));
                             parameters.put("sound_id", Variables.Selected_sound_id);
                             parameters.put("description", description);
+                            parameters.put("privacy_type",privacy_type);
+                            parameters.put("allow_comments",allow_comment);
 
                             JSONObject vidoefiledata = new JSONObject();
                             vidoefiledata.put("file_data", video_base64);
@@ -202,6 +204,8 @@ public class Upload_Service extends Service {
                             Log.d("Test", "BASE64:"+new Gson().toJson(parameters));
                             base.append("done");
                             Log.d("Test", "run: "+video_base64.length());
+
+                          //  writeToFile(new Gson().toJson(parameters),getApplicationContext());
                           //  writeToFile(video_base64,getApplicationContext());
                            /* int maxLogSize = 10000;
                             for(int i = 0; i <= video_base64.length() / maxLogSize; i++) {
@@ -249,7 +253,7 @@ public class Upload_Service extends Service {
                                             Log.d("respo", error.toString());
                                         stopForeground(true);
                                         stopSelf();
-                                        EventBus.getDefault().post("Your Video is uploaded Successfully");
+                                        EventBus.getDefault().post("Please try again later");
 
                                         if (Callback != null)
                                             Callback.ShowResponce("Please try again later");

@@ -456,6 +456,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     public void Parse_data(String responce) {
 
+        Log.d("Test", "Parse_data: "+responce);
         //data_list = new ArrayList<>();
 
         try {
@@ -1329,7 +1330,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onPause() {
         super.onPause();
         try {
-            EventBus.getDefault().unregister(this);
+             EventBus.getDefault().unregister(this);
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
             }
