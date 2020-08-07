@@ -10,7 +10,7 @@
     <color name="colorwhite_50">#CCffffff</color>
     <color name="colorwhite_10">#1Affffff</color>
     <color name="colorwhite_30">#4Dffffff</color>
-    <color name="black">#2F2F2F</color>
+    <color name="black">#000</color>
     <color name="graycolor">#D3D3D3</color>
     <color name="graycolor2">#C5C4C4</color>
     <color name="gainsboro">#DCDCDC</color>

@@ -32,6 +32,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.API_CallBack;
@@ -66,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 import static com.tachyon.bindaas.Main_Menu.MainMenuFragment.hasPermissions;
@@ -95,6 +98,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     RadioButton male_btn, female_btn, others_btn;
     RadioGroup genderGroup;
 
+    private static final String TAG = "Edit_Profile_F";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -416,8 +420,9 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
         image_bas64 = Functions.Bitmap_to_base64(getActivity(), rotatedBitmap);
-
-        Call_Api_For_image(userimageuri.getPath());
+        Log.d(TAG, "handleCrop: ");
+        //Call_Api_For_image(userimageuri.getPath());
+        uploadImageToFirebase(userimageuri);
     }
 
     byte[] image_byte_array;
@@ -439,8 +444,9 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                         filelocation.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                Log.d("Profile_Image", "onSuccess: " + uri.toString());
-                                Call_Api_For_image(uri.toString());
+                                Log.d(TAG, "onSuccess: " + uri.toString());
+//                                Call_Api_For_image(uri.toString());
+                                uploadImageToFirebase(uri);
                             }
                         });
                     } else {
@@ -455,6 +461,56 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     }
 
+    public void uploadImageToFirebase(Uri imageFilePath){
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore
+                    .Images
+                    .Media
+                    .getBitmap(
+                            context.getContentResolver(),
+                            imageFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        profile_image.setImageBitmap(bitmap);
+        StorageReference storage = FirebaseStorage.getInstance().getReference().child("User_image/"+ UUID.randomUUID().toString());
+
+        Log.d(TAG, "uploadImageToFirebase: called");
+        storage.putFile(imageFilePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(context, "Upload success", Toast.LENGTH_SHORT).show();
+                        Call_Api_For_image(uri.toString());
+                        Log.d(TAG, "onSuccess: download url "+uri.toString());
+                    }
+                });
+                //Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "failed to upload "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        /*Uri file_uri = imageFilePath;
+        storage.putFile(file_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, "upload successfull", Toast.LENGTH_SHORT).show();
+                storage.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Toast.makeText(context, uri.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onSuccess: Download url "+uri.toString());
+                    }
+                });
+            }
+        });*/
+    }
 
     public void Call_Api_For_image(final String image_link) {
 
@@ -467,10 +523,12 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "Call_Api_For_image: "+new Gson().toJson(parameters));
 
         ApiRequest.Call_Api(context, Variables.uploadImage, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Log.d(TAG, "Responce: "+resp);
                 Functions.cancel_loader();
                 try {
                     JSONObject response = new JSONObject(resp);
@@ -544,11 +602,12 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            Log.d(TAG, "Call_Api_For_Edit_profile: "+new Gson().toJson(parameters));
             ApiRequest.Call_Api(context, Variables.editProfile, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
                     Functions.cancel_loader();
+                    Log.d(TAG, "Responce: "+resp);
                     try {
                         JSONObject response = new JSONObject(resp);
                         String code = response.optString("code");
@@ -594,6 +653,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     // this will get the user data and parse the data and show the data into views
     public void Call_Api_For_User_Details() {
         try {
+            Log.d(TAG, "Call_Api_For_User_Details: "+Variables.sharedPreferences.getString(Variables.u_id, ""));
             Functions.Show_loader(getActivity(), false, false);
             Functions.Call_Api_For_Get_User_data(getActivity(),
                     Variables.sharedPreferences.getString(Variables.u_id, ""),
@@ -607,11 +667,12 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                         public void OnSuccess(String responce) {
                             Functions.cancel_loader();
                             Parse_user_data(responce);
+
                         }
 
                         @Override
                         public void OnFail(String responce) {
-
+                            Log.d(TAG, "OnFail:Call_Api_For_User_Details "+responce);
                         }
                     });
         } catch (Exception e) {
@@ -621,6 +682,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     }
 
     public void Parse_user_data(String responce) {
+        Log.d(TAG, "Parse_user_data: "+responce);
         try {
             JSONObject jsonObject = new JSONObject(responce);
 
