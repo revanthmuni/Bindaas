@@ -122,7 +122,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             View view1 = LayoutInflater.from(context).inflate(R.layout.item_tablayout, null);
             ImageView imageView1 = view1.findViewById(R.id.image);
 //        TextView title1 = view1.findViewById(R.id.text);
-            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
+            imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
 //        title1.setText("");
 //        title1.setTextColor(context.getResources().getColor(R.color.white));
             tabLayout.getTabAt(0).setCustomView(view1);
@@ -170,7 +170,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                     switch (tab.getPosition()) {
                         case 0:
 //                        OnHome_Click();
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_home_24));
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
 //                        title.setTextColor(context.getResources().getColor(R.color.white));
                             break;
 
@@ -206,7 +206,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                     switch (tab.getPosition()) {
                         case 0:
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_home_24));
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_gray));
 //                        title.setTextColor(context.getResources().getColor(R.color.darkgray));
                             break;
                    /* case 1:

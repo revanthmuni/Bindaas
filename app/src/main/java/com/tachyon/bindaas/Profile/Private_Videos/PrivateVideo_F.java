@@ -232,7 +232,7 @@ public class PrivateVideo_F extends Fragment {
                 adapter.notifyDataSetChanged();
 
             } else {
-                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
