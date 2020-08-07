@@ -26,16 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 // this is the class which will add the selected soung to the created video
-public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
+public class Merge_Video_Audio extends AsyncTask<String, Long, String> {
 
     ProgressDialog progressDialog;
     Context context;
 
-    String audio,video,output,draft_file;
+    String audio, video, output, draft_file;
 
-    public Merge_Video_Audio(Context context){
-        this.context=context;
-        progressDialog=new ProgressDialog(context);
+    public Merge_Video_Audio(Context context) {
+        this.context = context;
+        progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Please Wait...");
     }
 
@@ -49,18 +49,18 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
     public String doInBackground(String... strings) {
         try {
             progressDialog.show();
-        }catch (Exception e){
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-         audio=strings[0];
-         video=strings[1];
-         output=strings[2];
-         if(strings.length==4){
-             draft_file=strings[3];
-         }
+        audio = strings[0];
+        video = strings[1];
+        output = strings[2];
+        if (strings.length == 4) {
+            draft_file = strings[3];
+        }
 
-        Log.d("Audio_Test",audio+"----"+video+"-----"+output);
+        Log.d("Audio_Test", audio + "----" + video + "-----" + output);
 
         Thread thread = new Thread(runnable);
         thread.start();
@@ -72,35 +72,34 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Log.d("Audio_Test", "onPostExecute: "+s);
-        try{
-        if (progressDialog!=null){
-            progressDialog.dismiss();
-            Go_To_preview_Activity();
-        }
-        }catch (Exception e){
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+        Log.d("Audio_Test", "onPostExecute: " + s);
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+                Go_To_preview_Activity();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
     }
 
-    public void Go_To_preview_Activity(){
-        try{
-        Intent intent =new Intent(context,Preview_Video_A.class);
-        Log.d("Audio_Test", "Go_To_preview_Activity: "+Variables.outputfile2);
-        intent.putExtra("path", Variables.outputfile2);
-        intent.putExtra("draft_file",draft_file);
-        context.startActivity(intent);
-        }catch (Exception e){
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+    public void Go_To_preview_Activity() {
+        try {
+            Intent intent = new Intent(context, Preview_Video_A.class);
+            Log.d("Audio_Test", "Go_To_preview_Activity: " + Variables.outputfile2);
+            intent.putExtra("path", Variables.outputfile2);
+            intent.putExtra("draft_file", draft_file);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }
 
 
-
-    public Track CropAudio(String videopath,Track fullAudio){
+    public Track CropAudio(String videopath, Track fullAudio) {
         try {
 
             IsoFile isoFile = new IsoFile(videopath);
@@ -151,8 +150,7 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
     }
 
 
-
-   public Runnable runnable =new Runnable() {
+    public Runnable runnable = new Runnable() {
         @Override
         public void run() {
 
@@ -171,12 +169,12 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
                     }
                 }
 
-                 Track nuAudio = new AACTrackImpl(new FileDataSourceImpl(audio));
-                 Track crop_track= CropAudio(video,nuAudio);
-                Log.d("Audio_Test", "track croped "+crop_track);
+                Track nuAudio = new AACTrackImpl(new FileDataSourceImpl(audio));
+                Track crop_track = CropAudio(video, nuAudio);
+                Log.d("Audio_Test", "track croped " + crop_track);
 
                 nuTracks.add(crop_track);
-                 m.setTracks(nuTracks);
+                m.setTracks(nuTracks);
                 Container mp4file = new DefaultMp4Builder().build(m);
                 FileChannel fc = new FileOutputStream(new File(output)).getChannel();
                 mp4file.writeContainer(fc);
@@ -184,10 +182,9 @@ public class Merge_Video_Audio extends AsyncTask<String,Long,String> {
                 Log.d("Audio_Test", "all set");
 
 
-
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d(Variables.tag,e.toString());
+                Log.d(Variables.tag, e.toString());
             }
         }
 

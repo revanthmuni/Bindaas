@@ -80,14 +80,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     ImageButton flash_btn;
     SegmentedProgressBar video_progress;
     LinearLayout camera_options;
-    ImageButton rotate_camera,cut_video_btn;
+    ImageButton rotate_camera, cut_video_btn;
 
 
     public static int Sounds_list_Request_code = 1;
     TextView add_sound_txt;
 
     int sec_passed = 0;
-    long time_in_milis=0;
+    long time_in_milis = 0;
 
     TextView countdown_timer_txt;
     boolean is_recording_timer_enable;
@@ -214,7 +214,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             video_progress.SetListener(new ProgressBarListener() {
                 @Override
                 public void TimeinMill(long mills) {
-                    time_in_milis=mills;
+                    time_in_milis = mills;
                     sec_passed = (int) (mills / 1000);
 
                     if (sec_passed > (Variables.recording_duration / 1000) - 1) {
@@ -287,11 +287,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         }
     }
-    public void Check_done_btn_enable(){
-        if(sec_passed>(Variables.min_time_recording/1000)) {
+
+    public void Check_done_btn_enable() {
+        if (sec_passed > (Variables.min_time_recording / 1000)) {
             done_btn.setBackgroundResource(R.drawable.ic_done);
             done_btn.setEnabled(true);
-        }else {
+        } else {
             done_btn.setBackgroundResource(R.drawable.ic_not_done);
             done_btn.setEnabled(false);
         }
@@ -411,6 +412,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     // this will add the select audio with the video
     public void Merge_withAudio() {
+
         try {
             String audio_file;
             audio_file = Variables.app_folder + Variables.SelectedAudio_AAC;
@@ -614,8 +616,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             Functions.copyFile(new File(src_path),
                     new File(destination_path));
 
-            Intent intent=new Intent(Video_Recoder_A.this, GallerySelectedVideo_A.class);
-            intent.putExtra("video_path",Variables.gallery_resize_video);
+            Intent intent = new Intent(Video_Recoder_A.this, GallerySelectedVideo_A.class);
+            intent.putExtra("video_path", Variables.gallery_resize_video);
             startActivity(intent);
             /*Functions.Show_determinent_loader(this, false, false);
             new GPUMp4Composer(src_path, destination_path)
@@ -910,11 +912,11 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             if (gallery_trimed_video.exists()) {
                 gallery_trimed_video.delete();
             }
-            if(gallery_resize_video.exists()){
+            if (gallery_resize_video.exists()) {
                 gallery_resize_video.delete();
             }
 
-            for (int i=0;i<=12;i++) {
+            for (int i = 0; i <= 12; i++) {
                 File file = new File(Variables.app_folder + "myvideo" + (i) + ".mp4");
                 if (file.exists()) {
                     file.delete();
@@ -971,18 +973,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        try{
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-        }catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
