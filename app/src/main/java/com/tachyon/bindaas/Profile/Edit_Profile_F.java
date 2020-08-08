@@ -569,10 +569,8 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             try {
                 parameters.put("username", uname.replaceAll("@", ""));
                 if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")) {
-                    Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
                     parameters.put("user_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
                 } else {
-                    Toast.makeText(context, "false", Toast.LENGTH_SHORT).show();
                     parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
                 }
                 parameters.put("first_name", firstname_edit.getText().toString());

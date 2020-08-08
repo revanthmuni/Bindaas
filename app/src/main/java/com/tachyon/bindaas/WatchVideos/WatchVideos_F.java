@@ -929,7 +929,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         try {
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
                 onBackPressed();
-                Toast.makeText(context, "true", Toast.LENGTH_SHORT).show();
                 TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                 if (profile != null) {
                     profile.select();

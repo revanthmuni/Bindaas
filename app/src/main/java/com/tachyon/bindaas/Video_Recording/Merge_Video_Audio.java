@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // this is the class which will add the selected soung to the created video
-public class Merge_Video_Audio extends AsyncTask<String, Long, String> {
+public class Merge_Video_Audio extends AsyncTask<String, String, String> {
 
     ProgressDialog progressDialog;
     Context context;
@@ -70,25 +70,13 @@ public class Merge_Video_Audio extends AsyncTask<String, Long, String> {
 
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(String s)  {
         super.onPostExecute(s);
-        Log.d("Audio_Test", "onPostExecute: " + s);
-        try {
-            if (progressDialog != null) {
-                progressDialog.dismiss();
-                Go_To_preview_Activity();
-            }
-        } catch (Exception e) {
-            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
-        }
-
     }
 
     public void Go_To_preview_Activity() {
         try {
             Intent intent = new Intent(context, Preview_Video_A.class);
-            Log.d("Audio_Test", "Go_To_preview_Activity: " + Variables.outputfile2);
             intent.putExtra("path", Variables.outputfile2);
             intent.putExtra("draft_file", draft_file);
             context.startActivity(intent);
@@ -179,6 +167,14 @@ public class Merge_Video_Audio extends AsyncTask<String, Long, String> {
                 FileChannel fc = new FileOutputStream(new File(output)).getChannel();
                 mp4file.writeContainer(fc);
                 fc.close();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){
+                    Log.d(Variables.tag,e.toString());
+
+                }finally {
+                    Go_To_preview_Activity();
+                }
                 Log.d("Audio_Test", "all set");
 
 
