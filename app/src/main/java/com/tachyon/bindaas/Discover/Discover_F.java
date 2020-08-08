@@ -96,7 +96,6 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
                     String query = search_edit.getText().toString();
                     if (adapter != null)
                         adapter.getFilter().filter(s);

@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Adapter_Click_Listener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -50,8 +52,13 @@ class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.CustomViewHolder>
             Users_Model item = (Users_Model) datalist.get(i);
 
             if (item.profile_pic != null && !item.profile_pic.equals("")) {
-                Uri uri = Uri.parse(item.profile_pic);
-                holder.image.setImageURI(uri);
+                Picasso.with(context)
+                        .load(item.profile_pic)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(holder.image);
+
+                //Uri uri = Uri.parse(item.profile_pic);
+                //holder.image.setImageURI(uri);
             }
 
             holder.username_txt.setText(item.first_name + " " + item.last_name);
@@ -66,7 +73,7 @@ class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.CustomViewHolder>
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        SimpleDraweeView image;
+        ImageView image;
         TextView username_txt, description_txt, video_count;
 
         public CustomViewHolder(View view) {
