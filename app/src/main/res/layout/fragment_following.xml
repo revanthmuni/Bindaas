@@ -114,7 +114,7 @@
                     android:textColor="@color/dimgray"
                     android:layout_marginLeft="55dp"
                     android:layout_marginRight="55dp"
-                    android:text="There is no data you have so far"
+                    android:text="@string/no_followers"
                     android:textSize="14sp"/>
 
             </RelativeLayout>

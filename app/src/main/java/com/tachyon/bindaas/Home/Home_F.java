@@ -547,6 +547,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", Variables.sharedPreferences.getString(Variables.device_token, "Null"));
             parameters.put("video_id", data_list.get(postion).video_id);
+            parameters.put("type",type);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -673,8 +674,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         playerView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-                private static final int SWIPE_THRESHOLD = 1;
-                private static final int SWIPE_VELOCITY_THRESHOLD = 1;
+                private static final int SWIPE_THRESHOLD = 0;
+                private static final int SWIPE_VELOCITY_THRESHOLD = 0;
 
                 @Override
                 public boolean onDown(MotionEvent e) {

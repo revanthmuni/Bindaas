@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.R;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -47,7 +49,7 @@ public class Notification_Adapter extends RecyclerView.Adapter<Notification_Adap
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        SimpleDraweeView user_image;
+        ImageView user_image;
 
         TextView username,message,watch_btn;
 
@@ -97,8 +99,10 @@ try{
             holder.username.setText(item.username);
 
             if(item.profile_pic!=null && !item.profile_pic.equals("")) {
-                Uri uri = Uri.parse(item.profile_pic);
-                holder.user_image.setImageURI(uri);
+                Picasso.with(context)
+                        .load(item.profile_pic)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(holder.user_image);
             }
 
             if(item.type.equalsIgnoreCase("comment_video")){

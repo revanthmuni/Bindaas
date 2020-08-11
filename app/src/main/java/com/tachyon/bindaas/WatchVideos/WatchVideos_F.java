@@ -227,7 +227,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
                 parameters.put("token", MainMenuActivity.token);
                 parameters.put("video_id", id);
-
+                parameters.put("type","related");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -324,7 +324,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", Variables.sharedPreferences.getString(Variables.device_token, "Null"));
             parameters.put("video_id", data_list.get(postion).video_id);
-
+            parameters.put("type","related");
 
             ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
                 @Override
@@ -655,21 +655,50 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             final RelativeLayout mainlayout = layout.findViewById(R.id.mainlayout);
             playerView.setOnTouchListener(new View.OnTouchListener() {
                 private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                    private static final int SWIPE_THRESHOLD = 0;
+                    private static final int SWIPE_VELOCITY_THRESHOLD = 0;
 
                     @Override
                     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                        super.onFling(e1, e2, velocityX, velocityY);
-                        float deltaX = e1.getX() - e2.getX();
-                        float deltaXAbs = Math.abs(deltaX);
-                        // Only when swipe distance between minimal and maximal distance value then we treat it as effective swipe
-                        if ((deltaXAbs > 100) && (deltaXAbs < 1000)) {
-                            if (deltaX > 0) {
-                                OpenProfile(item, true);
+                        boolean result = false;
+                        try {
+                            float diffY = e2.getY() - e1.getY();
+                            float diffX = e2.getX() - e1.getX();
+                            if (Math.abs(diffX) > Math.abs(diffY)) {
+                                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                                    if (diffX > 0) {
+                                        onSwipeRight();
+                                    } else {
+                                        onSwipeLeft();
+                                    }
+                                    result = true;
+                                }
+                            } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                                if (diffY > 0) {
+                                    onSwipeBottom();
+                                } else {
+                                    onSwipeTop();
+                                }
+                                result = true;
                             }
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
                         }
+                        return result;
+                    }
 
+                    public void onSwipeRight() {
+                        OpenProfile(item, true);
+                    }
 
-                        return true;
+                    public void onSwipeLeft() {
+                        OpenProfile(item, true);
+                    }
+
+                    public void onSwipeTop() {
+                    }
+
+                    public void onSwipeBottom() {
                     }
 
                     @Override
@@ -947,8 +976,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 });
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-                if (from_right_to_left)
+                if (from_right_to_left) {
+                    if (privious_player != null) privious_player.setPlayWhenReady(false);
                     transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                }
                 else
                     transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
 

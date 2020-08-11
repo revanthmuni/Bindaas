@@ -22,8 +22,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
+                android:background="@color/black"
                 app:controller_layout_id="@layout/item_player_controler"
-                app:resize_mode="fixed_height"
+                app:resize_mode="fit"
                 app:show_timeout="1000">
 
                 <ImageView
