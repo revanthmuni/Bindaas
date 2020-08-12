@@ -777,7 +777,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 write_layout.setVisibility(View.VISIBLE);
             }
 
-            Call_Api_For_Singlevideos(currentPage);
+             Call_Api_For_Singlevideos(currentPage);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
