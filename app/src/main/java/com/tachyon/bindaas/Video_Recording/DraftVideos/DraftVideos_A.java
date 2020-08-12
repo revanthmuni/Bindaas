@@ -1,6 +1,8 @@
 package com.tachyon.bindaas.Video_Recording.DraftVideos;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -74,13 +76,32 @@ public class DraftVideos_A extends AppCompatActivity {
                 @Override
                 public void onItemClick(int postion, DraftVideo_Get_Set item, View view) {
                     if (view.getId() == R.id.cross_btn) {
-                        File file_data = new File(item.video_path);
-                        if (file_data.exists()) {
-                            file_data.delete();
+                        try {
+                            new AlertDialog.Builder(DraftVideos_A.this)
+                                    .setTitle("Alert")
+                                    .setMessage("Are you sure want to delete the video!!!")
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            File file_data = new File(item.video_path);
+                                            if (file_data.exists()) {
+                                                file_data.delete();
+                                            }
+                                            data_list.remove(postion);
+                                            adapter.notifyItemRemoved(postion);
+                                            adapter.notifyItemChanged(postion);
+                                        }
+                                    }).show();
+
+                        } catch (Exception e) {
+                            Functions.Show_Alert(DraftVideos_A.this, this.getClass().getSimpleName(), e.getMessage());
                         }
-                        data_list.remove(postion);
-                        adapter.notifyItemRemoved(postion);
-                        adapter.notifyItemChanged(postion);
                     } else {
                         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                         Bitmap bmp = null;

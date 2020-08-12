@@ -83,6 +83,9 @@ public class DraftVideos_Adapter extends RecyclerView.Adapter<DraftVideos_Adapte
                         listener.onItemClick(position, item, v);
                     }
                 });
+                cross_btn.setOnClickListener(view -> {
+                    listener.onItemClick(position,item,view);
+                });
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
