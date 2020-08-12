@@ -644,7 +644,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 }
 
             } else {
-                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

@@ -372,7 +372,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                         String outputFilePath = null;
                         if (audio != null) {
-                            outputFilePath = Variables.outputfile2;
+                            outputFilePath = Variables.outputfile;
                         } else {
                             outputFilePath = Variables.outputfile2;
                         }
@@ -420,7 +420,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             Merge_Video_Audio merge_video_audio = new Merge_Video_Audio(Video_Recoder_A.this);
 //        merge_video_audio.doInBackground();
-            merge_video_audio.execute(audio_file, Variables.outputfile, Variables.outputfile2);
+            merge_video_audio.doInBackground(audio_file, Variables.outputfile, Variables.outputfile2);
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 

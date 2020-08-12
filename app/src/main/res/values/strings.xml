@@ -23,4 +23,8 @@
     <string name="device">android</string>
     <string name="delete_function_not_available_in_demo">Delete Function not available in demo</string>
     <string name="save_video_message">"Watch the video now at Bindaas Online: "</string>
+    <string name="no_notifications">"You do not have any notifications."</string>
+    <string name="no_messages">"You do not have any messages."</string>
+    <string name="no_followers">"No Followers."</string>
+
 </resources>

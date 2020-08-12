@@ -112,11 +112,12 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
             holder.user_name.setText(item.first_name + " " + item.last_name);
 
-
-            Picasso.with(context)
-                    .load(item.profile_pic)
-                    .placeholder(R.drawable.profile_image_placeholder)
-                    .into(holder.user_image);
+            if(item.profile_pic!=null && !item.profile_pic.equals("")) {
+                Picasso.with(context)
+                        .load(item.profile_pic)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(holder.user_image);
+            }
 
             holder.user_id.setText(item.username);
             Log.d("TTTT", "onBindViewHolder: "+item.is_show_follow_unfollow_btn);

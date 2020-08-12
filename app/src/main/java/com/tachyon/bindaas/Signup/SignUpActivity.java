@@ -233,7 +233,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
         Log.d("firebase", "Call_Api_For_Signup: request :" + new Gson().toJson(parameters));
         Functions.Show_loader(this, false, false);
-        ApiRequest.Call_Api(this, Variables.SIGN_UP, parameters, new Callback() {
+        ApiRequest.Call_Api(this, Variables.SignUp, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();

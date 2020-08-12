@@ -354,11 +354,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 switch (view.getId()) {
 
                     case R.id.user_pic:
-                        OpenProfile(item, false);
+                        OpenProfile(item, false, false);
                         break;
                     case R.id.username:
                         onPause();
-                        OpenProfile(item, false);
+                        OpenProfile(item, false, false);
                         break;
 
                     case R.id.ivSearch:
@@ -547,6 +547,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", Variables.sharedPreferences.getString(Variables.device_token, "Null"));
             parameters.put("video_id", data_list.get(postion).video_id);
+            parameters.put("type",type);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -673,8 +674,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         playerView.setOnTouchListener(new View.OnTouchListener() {
             private GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-                private static final int SWIPE_THRESHOLD = 1;
-                private static final int SWIPE_VELOCITY_THRESHOLD = 1;
+                private static final int SWIPE_THRESHOLD = 0;
+                private static final int SWIPE_VELOCITY_THRESHOLD = 0;
 
                 @Override
                 public boolean onDown(MotionEvent e) {
@@ -710,11 +711,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
 
                 public void onSwipeRight() {
-                    OpenProfile(item, true);
+                    OpenProfile(item, true, false);
                 }
 
                 public void onSwipeLeft() {
-                    OpenProfile(item, true);
+                    OpenProfile(item, true, true);
                 }
 
                 public void onSwipeTop() {
@@ -1002,7 +1003,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     }
 
     // this will open the profile of user which have uploaded the currenlty running video
-    private void OpenProfile(Home_Get_Set item, boolean from_right_to_left) {
+    private void OpenProfile(Home_Get_Set item, boolean from_right_to_left, boolean rightSwipe) {
 
         try {
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
@@ -1025,7 +1026,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (from_right_to_left) {
                     if (privious_player != null) privious_player.setPlayWhenReady(false);
-                    transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                    if(rightSwipe) {
+                        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                    }else{
+                        transaction.setCustomAnimations(R.anim.in_from_left, R.anim.out_to_right, R.anim.in_from_right, R.anim.out_to_left);
+                    }
                 } else {
                     if (privious_player != null) privious_player.setPlayWhenReady(false);
                     transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);

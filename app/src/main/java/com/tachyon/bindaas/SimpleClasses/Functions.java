@@ -26,6 +26,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.downloader.Error;
+import com.downloader.OnCancelListener;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnPauseListener;
+import com.downloader.OnProgressListener;
+import com.downloader.OnStartOrResumeListener;
+import com.downloader.PRDownloader;
+import com.downloader.PRDownloaderConfig;
+import com.downloader.Progress;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Comments.Comment_Get_Set;
 import com.tachyon.bindaas.R;
@@ -53,6 +62,7 @@ import java.util.Date;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class Functions {
 
@@ -112,6 +122,53 @@ public class Functions {
     }
 
     public static Dialog dialog;
+
+    public static void downloadFile(String url, String folderpath, String fileName){
+        PRDownloader.initialize(getApplicationContext());
+
+        PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
+                .setDatabaseEnabled(true)
+                .build();
+        PRDownloader.initialize(getApplicationContext(), config);
+
+        PRDownloader.download(url, folderpath, fileName)
+                .build()
+                .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                    @Override
+                    public void onStartOrResume() {
+
+                    }
+                })
+                .setOnPauseListener(new OnPauseListener() {
+                    @Override
+                    public void onPause() {
+
+                    }
+                })
+                .setOnCancelListener(new OnCancelListener() {
+                    @Override
+                    public void onCancel() {
+
+                    }
+                })
+                .setOnProgressListener(new OnProgressListener() {
+                    @Override
+                    public void onProgress(Progress progress) {
+
+                    }
+
+                })
+                .start(new OnDownloadListener() {
+                    @Override
+                    public void onDownloadComplete() {
+                    }
+
+                    @Override
+                    public void onError(Error error) {
+                    }
+
+                });
+    }
 
     public static void Show_loader(Context context, boolean outside_touch, boolean cancleable) {
         dialog = new Dialog(context);

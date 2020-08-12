@@ -17,7 +17,7 @@
         android:layout_margin="0dp"
         android:padding="0dp"
         app:show_timeout="1000"
-        app:resize_mode="fixed_height"
+        app:resize_mode="fit"
         android:background="@color/black"
         app:shutter_background_color="@color/black"
         app:controller_layout_id="@layout/item_player_controler"/>

@@ -35,6 +35,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="Following"
                     android:id="@+id/following_btn"
                     android:textSize="17dp"
@@ -49,6 +50,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="Related"
                     android:id="@+id/related_btn"
                     android:textSize="17dp"

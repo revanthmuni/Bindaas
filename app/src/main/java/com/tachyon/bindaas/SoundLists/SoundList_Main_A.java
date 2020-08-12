@@ -225,11 +225,13 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                                 JSONObject data = jsonArray.getJSONObject(0);
                                 if (status.equals("200")) {
                                     String soundID = data.optString("sound_id");
+                                    String accURL = data.optString("sound_url");
                                     Intent output = new Intent();
                                     output.putExtra("isSelected", "yes");
                                     output.putExtra("sound_name", oldFile.getName());
                                     output.putExtra("sound_id", soundID);
                                     setResult(RESULT_OK, output);
+                                    Functions.downloadFile(accURL, Variables.app_folder, Variables.SelectedAudio_AAC);
                                     finish();
                                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                                 } else {

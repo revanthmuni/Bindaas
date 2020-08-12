@@ -101,7 +101,7 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
 
                     }
                     else
-                    Save_Video(video_url, Variables.output_filter_file);
+                    Save_Video(Variables.outputfile2, Variables.output_filter_file);
                 }
             });
 
