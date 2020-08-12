@@ -589,7 +589,9 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 JSONObject user_info = data.optJSONObject("user_info");
                 username2_txt.setText(user_info.optString("username"));
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
-
+                int has_new_notification = data.optInt("has_new_notification");
+                Log.d("TAG", "Parse_data: "+has_new_notification);
+                tvUserNotifications.setText("("+has_new_notification+")");
                 pic_url = user_info.optString("profile_pic");
                 if (pic_url != null && !pic_url.equals(""))
                     Picasso.with(context)
