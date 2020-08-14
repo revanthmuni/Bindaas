@@ -207,7 +207,8 @@ public class Chat_Activity extends Fragment {
                 sendAudio = new SendAudio(context, message, rootref, Adduser_to_inbox,
                         senderid, Receiverid, Receiver_name, Receiver_pic);
 
-                rootref.child("Users").child(Receiverid).addListenerForSingleValueEvent(new ValueEventListener() {
+                rootref.child("Users").child(Receiverid)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists())

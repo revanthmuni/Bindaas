@@ -3,6 +3,7 @@ package com.tachyon.bindaas.Inbox;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -14,6 +15,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
@@ -74,6 +80,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
     class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView username, last_message, date_created = itemView.findViewById(R.id.datetxt);
         ImageView user_image;
+        TextView count;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -81,6 +88,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
                 user_image = itemView.findViewById(R.id.user_image);
                 username = itemView.findViewById(R.id.username);
                 last_message = itemView.findViewById(R.id.message);
+                count = itemView.findViewById(R.id.count);
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -104,7 +112,30 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
 
     }
 
+    void getMsgCount(CustomViewHolder holder, String id){
+        DatabaseReference mchatRef_reteriving = FirebaseDatabase.getInstance().getReference();
 
+        mchatRef_reteriving.child("chat").child(Variables.user_id+"-"+id)
+                .orderByChild("status").equalTo("0")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int size = (int) snapshot.getChildrenCount();
+                        Log.d("Firebase_Unread_count", "in adapter onDataChange: " + size);
+                        if (size > 0) {
+                            holder.count.setVisibility(View.VISIBLE);
+                            holder.count.setText(""+size);
+                        }else{
+                            holder.count.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
     @Override
     public void onBindViewHolder(final Inbox_Adapter.CustomViewHolder holder, final int i) {
         try {
@@ -113,6 +144,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
             holder.last_message.setText(item.getMsg());
             holder.date_created.setText(Functions.ChangeDate_to_today_or_yesterday(context,item.getDate()));
 
+            getMsgCount(holder,item.getId());
             if (item.getPic() != null && !item.getPic().equals(""))
                 Picasso.with(context).
                         load(item.getPic())

@@ -8,6 +8,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tachyon.bindaas.Inbox.Inbox_F;
 import com.tachyon.bindaas.Notifications.Notification_F;
 import com.tachyon.bindaas.Profile.Private_Videos.PrivateVideo_F;
@@ -74,7 +79,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public TextView username, username2_txt, video_count_txt, tvUserNotifications, tvUserChat;
     public ImageView imageView;
-    public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount,tvPrivateCount;
+    public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount, tvPrivateCount;
 
     String videosCount = "0", likesCount = "0";
 
@@ -123,8 +128,9 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 @Override
                 public void onClick(View view) {
 //                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
-                  //update_profile();
+                    //update_profile();
                     Call_Api_For_get_Allvideos();
+                    getUnreadMsgCount();
                 }
             });
             swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -132,6 +138,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 public void onRefresh() {
                     //update_profile();
                     Call_Api_For_get_Allvideos();
+                    getUnreadMsgCount();
                 }
             });
         } catch (Exception e) {
@@ -141,6 +148,30 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         return init();
     }
 
+    public void getUnreadMsgCount() {
+        DatabaseReference mchatRef_reteriving = FirebaseDatabase.getInstance().getReference();
+
+        mchatRef_reteriving.child("Inbox").child(Variables.user_id)
+                .orderByChild("status").equalTo("0")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int size = (int) snapshot.getChildrenCount();
+                        Log.d("Firebase_Unread_count", "onDataChange: " + size);
+                        if (size > 0) {
+                            tvUserChat.setText("(" + size + ")");
+                        }else{
+                            tvUserChat.setText("");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -280,7 +311,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
             tvUserChat = view.findViewById(R.id.tvUserChat);
             tvUserNotifications = view.findViewById(R.id.tvUserNotifications);
-
+            getUnreadMsgCount();
 
             tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
             top_layout = view.findViewById(R.id.top_layout);
@@ -578,7 +609,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public void Parse_data(String responce) {
 
-        Log.d("Test", "showAllVideos:"+responce);
+        Log.d("Test", "showAllVideos:" + responce);
         try {
             JSONObject jsonObject = new JSONObject(responce);
             String code = jsonObject.optString("code");
@@ -590,8 +621,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 username2_txt.setText(user_info.optString("username"));
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
                 int has_new_notification = data.optInt("has_new_notification");
-                Log.d("TAG", "Parse_data: "+has_new_notification);
-                tvUserNotifications.setText("("+has_new_notification+")");
+                Log.d("TAG", "Parse_data: " + has_new_notification);
+                tvUserNotifications.setText("(" + has_new_notification + ")");
                 pic_url = user_info.optString("profile_pic");
                 if (pic_url != null && !pic_url.equals(""))
                     Picasso.with(context)
@@ -613,7 +644,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
                 JSONArray user_videos = data.getJSONArray("user_videos");
                 if (!user_videos.toString().equals("[" + "0" + "]")) {
-                    myvideo_count=user_videos.length();
+                    myvideo_count = user_videos.length();
                     video_count_txt.setText(user_videos.length() + " Videos");
                     tvVideosCount.setText("(" + user_videos.length() + ")");
                     create_popup_layout.setVisibility(View.GONE);
@@ -627,7 +658,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 }
                 JSONArray private_videos = data.getJSONArray("private_videos");
                 if (!private_videos.toString().equals("[" + "0" + "]")) {
-                    myvideo_count=private_videos.length();
+                    myvideo_count = private_videos.length();
 //                    video_count_txt.setText(private_videos.length() + " Videos");
                     tvPrivateCount.setText("(" + private_videos.length() + ")");
                     create_popup_layout.setVisibility(View.GONE);
