@@ -26,5 +26,8 @@
     <string name="no_notifications">"You do not have any notifications."</string>
     <string name="no_messages">"You do not have any messages."</string>
     <string name="no_followers">"No Followers."</string>
+    <string name="no_private_videos">There is no private videos available.</string>
+    <string name="no_liked_videos">There is no liked videos so far.</string>
+    <string name="no_user_videos">There is no User videos so far.</string>
 
 </resources>

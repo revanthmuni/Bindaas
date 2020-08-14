@@ -493,10 +493,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     JSONObject count = itemdata.optJSONObject("count");
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
-//                    item.views  = count.optString("view");
+                    item.views  = count.optString("view");
                     item.privacy_type=itemdata.optString("privacy_type");
                     item.allow_comments=itemdata.optString("allow_comments");
                     item.video_id = itemdata.optString("id");
+                    item.views = itemdata.optString("view");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
 

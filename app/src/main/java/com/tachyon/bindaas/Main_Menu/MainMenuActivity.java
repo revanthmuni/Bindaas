@@ -81,37 +81,37 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(final Intent intent) {
         super.onNewIntent(intent);
-        try{
-        if (intent != null) {
-            String type = intent.getStringExtra("type");
-            if (type != null && type.equalsIgnoreCase("message")) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
-                            @Override
-                            public void Responce(Bundle bundle) {
+        try {
+            if (intent != null) {
+                String type = intent.getStringExtra("type");
+                if (type != null && type.equalsIgnoreCase("message")) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Chat_Activity chat_activity = new Chat_Activity(new Fragment_Callback() {
+                                @Override
+                                public void Responce(Bundle bundle) {
 
-                            }
-                        });
-                        FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
-                        transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                                }
+                            });
+                            FragmentTransaction transaction = MainMenuActivity.mainMenuActivity.getSupportFragmentManager().beginTransaction();
+                            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
 
-                        Bundle args = new Bundle();
-                        args.putString("user_id", intent.getStringExtra("user_id"));
-                        args.putString("user_name", intent.getStringExtra("user_name"));
-                        args.putString("user_pic", intent.getStringExtra("user_pic"));
+                            Bundle args = new Bundle();
+                            args.putString("user_id", intent.getStringExtra("user_id"));
+                            args.putString("user_name", intent.getStringExtra("user_name"));
+                            args.putString("user_pic", intent.getStringExtra("user_pic"));
 
-                        chat_activity.setArguments(args);
-                        transaction.addToBackStack(null);
-                        transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
-                    }
-                }, 2000);
+                            chat_activity.setArguments(args);
+                            transaction.addToBackStack(null);
+                            transaction.replace(R.id.MainMenuFragment, chat_activity).commit();
+                        }
+                    }, 2000);
 
+                }
             }
-        }
-        }catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -119,48 +119,49 @@ public class MainMenuActivity extends AppCompatActivity {
 
     private void initScreen() {
 
-try{
-        mainMenuFragment = new MainMenuFragment();
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, mainMenuFragment)
-                .commit();
+        try {
+            mainMenuFragment = new MainMenuFragment();
+            final FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, mainMenuFragment)
+                    .commit();
 
-        findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-}catch (Exception e){
-    Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+            findViewById(R.id.container).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
-}
+        }
     }
 
 
     @Override
     public void onBackPressed() {
-        try{
-        if (!mainMenuFragment.onBackPressed()) {
-            int count = this.getSupportFragmentManager().getBackStackEntryCount();
-            if (count == 0) {
-                if (mBackPressed + 2000 > System.currentTimeMillis()) {
-                    super.onBackPressed();
-                    return;
-                } else {
-                    Toast.makeText(getBaseContext(), "Tap Again To Exit", Toast.LENGTH_SHORT).show();
-                    mBackPressed = System.currentTimeMillis();
+        try {
+            if (!mainMenuFragment.onBackPressed()) {
+                int count = this.getSupportFragmentManager().getBackStackEntryCount();
+                if (count == 0) {
+                    if (mBackPressed + 2000 > System.currentTimeMillis()) {
+                        super.onBackPressed();
+                        return;
+                    } else {
+                        Toast.makeText(getBaseContext(), "Tap Again To Exit", Toast.LENGTH_SHORT).show();
+                        mBackPressed = System.currentTimeMillis();
 
+                    }
+                } else {
+                    super.onBackPressed();
                 }
-            } else {
-                super.onBackPressed();
             }
-        }
-        }catch (Exception e){
-            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -169,7 +170,6 @@ try{
         }
 
     }
-
 
 
     @Override

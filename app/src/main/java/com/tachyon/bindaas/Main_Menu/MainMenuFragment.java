@@ -123,7 +123,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             ImageView imageView1 = view1.findViewById(R.id.image);
 //        TextView title1 = view1.findViewById(R.id.text);
             imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
-//        title1.setText("");
+   //        title1.setText("");
 //        title1.setTextColor(context.getResources().getColor(R.color.white));
             tabLayout.getTabAt(0).setCustomView(view1);
 

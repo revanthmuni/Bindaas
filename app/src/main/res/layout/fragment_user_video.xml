@@ -17,36 +17,35 @@
       android:scrollingCache="true"/>
 
 
-
     <RelativeLayout
+        android:id="@+id/no_data_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/no_data_layout"
+        android:background="@color/white"
         android:paddingTop="50dp"
-        android:visibility="gone"
-        android:background="@color/white">
+        android:visibility="gone">
 
       <TextView
-          android:layout_height="wrap_content"
+          android:id="@+id/whoops"
           android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:layout_below="@+id/img_no_job"
           android:layout_centerHorizontal="true"
           android:text="Whoops!"
           android:textColor="@color/dimgray"
-          android:id="@+id/whoops"
-          android:textSize="22sp"/>
+          android:textSize="22sp" />
 
       <TextView
-          android:layout_height="wrap_content"
           android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:layout_below="@+id/whoops"
           android:layout_centerHorizontal="true"
-          android:gravity="center"
-          android:textColor="@color/dimgray"
           android:layout_marginLeft="55dp"
           android:layout_marginRight="55dp"
-          android:text="There is no liked videos so far."
-          android:textSize="14sp"/>
+          android:gravity="center"
+          android:text="@string/no_user_videos"
+          android:textColor="@color/dimgray"
+          android:textSize="14sp" />
 
     </RelativeLayout>
 
