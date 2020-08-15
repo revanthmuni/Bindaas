@@ -23,9 +23,12 @@ public class Variables {
     public static final String draft_app_folder = app_folder + "Draft/";
 
 
-    public static int max_recording_duration = 60000;
-    public static int recording_duration = 60000;
-    public static int min_time_recording=5000;
+    public static int max_recording_duration = 30000;
+    public static int recording_duration =30000;
+    public static int longVideoDuration = 30000;
+    public static int mediumVideoDuration = 20000;
+    public static int shortVideoDuration = 10000;
+    public static int min_time_recording=3000;
 
     public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";

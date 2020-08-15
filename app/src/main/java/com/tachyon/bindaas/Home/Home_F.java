@@ -719,11 +719,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
 
                 public void onSwipeRight() {
-                    OpenProfile(item, true, false);
+                    //OpenProfile(item, true, false);
                 }
 
                 public void onSwipeLeft() {
-                    OpenProfile(item, true, true);
+                    //OpenProfile(item, true, true);
                 }
 
                 public void onSwipeTop() {

@@ -141,7 +141,7 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
                     holder.ivPhoto.setFilter(new GPUImageExposureFilter());
                     break;
 
-                case "FILTER_GROUP_SAMPLE":
+                case "VIGNETTE_SEPIA":
                     holder.ivPhoto.setFilter(new GPUImageVignetteFilter());
                     break;
 
