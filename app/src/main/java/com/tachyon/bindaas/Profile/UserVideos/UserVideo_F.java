@@ -203,7 +203,7 @@ public class UserVideo_F extends Fragment {
 
 
                 JSONArray user_videos = data.getJSONArray("user_videos");
-                if (!user_videos.toString().equals("[" + "0" + "]")) {
+                if (!user_videos.toString().equals("[" + "]")) {
 
                     no_data_layout.setVisibility(View.GONE);
 

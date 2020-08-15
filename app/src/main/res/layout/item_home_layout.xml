@@ -130,19 +130,18 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="45dp"
-                android:layout_height="61dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/llUserDetailsLayout"
-                android:layout_marginBottom="25dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="37dp"
+                    android:layout_width="25dp"
+                    android:layout_height="27dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_eye_white" />
 
@@ -153,6 +152,7 @@
                     android:shadowColor="@color/darkgray"
                     android:shadowDx="2"
                     android:shadowDy="2"
+                    android:layout_marginLeft="8dp"
                     android:layout_gravity="center"
                     android:shadowRadius="3"
                     android:textColor="@color/white" />

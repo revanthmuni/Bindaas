@@ -91,6 +91,7 @@ public class Upload_Service extends Service {
     String description;
     String privacy_type;
     String allow_comment, allow_duet;
+    String category;
 
     SharedPreferences sharedPreferences;
     OnSuccessUpload onSuccessUpload;
@@ -173,6 +174,7 @@ public class Upload_Service extends Service {
                 privacy_type = intent.getStringExtra("privacy_type");
                 allow_comment = intent.getStringExtra("allow_comment");
                 allow_duet = intent.getStringExtra("allow_duet");
+                category = intent.getStringExtra("cat");
 
                 new Thread(new Runnable() {
                     @Override
@@ -197,32 +199,20 @@ public class Upload_Service extends Service {
                             parameters.put("privacy_type",privacy_type);
                             parameters.put("allow_comments",allow_comment);
                             parameters.put("allow_duet",allow_duet);
-
+                            parameters.put("category",category);
                             JSONObject vidoefiledata = new JSONObject();
                             vidoefiledata.put("file_data", video_base64);
                             parameters.put("videobase64", vidoefiledata);
 
                             Log.d("Test", "BASE64:"+new Gson().toJson(parameters));
                             base.append("done");
-                            Log.d("Test", "run: "+video_base64.length());
-
-                            //  writeToFile(new Gson().toJson(parameters),getApplicationContext());
-                            //  writeToFile(video_base64,getApplicationContext());
-                           /* int maxLogSize = 10000;
-                            for(int i = 0; i <= video_base64.length() / maxLogSize; i++) {
-                                int start = i * maxLogSize;
-                                int end = (i+1) * maxLogSize;
-                                end = end > video_base64.length() ? video_base64.length() : end;
-                                Log.v("Test::::>", video_base64.substring(start, end));
-
-                            }*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-
-                        generateNoteOnSD("parameters", parameters.toString());
+                        Log.d("Test", "run: upload service request parameters"+new Gson().toJson(parameters));
+                        //generateNoteOnSD("parameters", parameters.toString());
 
                         RequestQueue rq = Volley.newRequestQueue(Upload_Service.this);
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest

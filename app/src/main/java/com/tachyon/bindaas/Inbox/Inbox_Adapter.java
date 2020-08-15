@@ -144,7 +144,7 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
             holder.last_message.setText(item.getMsg());
             holder.date_created.setText(Functions.ChangeDate_to_today_or_yesterday(context,item.getDate()));
 
-            getMsgCount(holder,item.getId());
+            //getMsgCount(holder,item.getId());
             if (item.getPic() != null && !item.getPic().equals(""))
                 Picasso.with(context).
                         load(item.getPic())

@@ -201,6 +201,9 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
             intent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.save_video_message) + Variables.DOWNLOAD_VIDEO + video_id);
             intent.setComponent(name);
             startActivity(intent);
+           Functions.callApiForShareVideo(getActivity(),video_id);
+            Log.d("TAG", "Open_App: "+video_id);
+            //Toast.makeText(context, "shared", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 

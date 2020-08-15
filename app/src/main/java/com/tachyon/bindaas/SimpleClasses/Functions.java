@@ -542,6 +542,63 @@ public class Functions {
 
     }
 
+    public static void callApiForShareVideo(final Activity activity, String video_id) {
+
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("video_id", video_id);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiRequest.Call_Api(activity, Variables.SHARE_VIDEO, parameters, new Callback() {
+            @Override
+            public void Responce(String resp) {
+                Toast.makeText(activity, resp, Toast.LENGTH_SHORT).show();
+               /* ArrayList<Comment_Get_Set> arrayList = new ArrayList<>();
+                try {
+                    JSONObject response = new JSONObject(resp);
+                    String code = response.optString("code");
+                    if (code.equals("200")) {
+                        JSONArray msgArray = response.getJSONArray("msg");
+                        for (int i = 0; i < msgArray.length(); i++) {
+                            JSONObject itemdata = msgArray.optJSONObject(i);
+                            Comment_Get_Set item = new Comment_Get_Set();
+                            item.user_id = itemdata.optString("user_id");
+
+                            JSONObject user_info = itemdata.optJSONObject("user_info");
+                            item.first_name = user_info.optString("first_name");
+                            item.last_name = user_info.optString("last_name");
+                            item.profile_pic = user_info.optString("profile_pic");
+
+
+                            item.video_id = itemdata.optString("id");
+                            item.comments = itemdata.optString("comments");
+                            item.created = itemdata.optString("created");
+                            item.comment_id = itemdata.optString("comment_id");
+
+
+                            arrayList.add(item);
+                        }
+
+                        api_callBack.ArrayData(arrayList);
+
+                    } else {
+                        Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    api_callBack.OnFail(e.toString());
+                    e.printStackTrace();
+                }*/
+
+            }
+        });
+
+
+    }
+
     public static void Call_Api_For_get_Comment(final Activity activity, String video_id, final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();

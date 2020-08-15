@@ -30,4 +30,10 @@
     <string name="no_liked_videos">No like videos yet!</string>
     <string name="no_user_videos">No videos are uploaded.</string>
 
+    <array name="categories">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+    </array>
+
 </resources>

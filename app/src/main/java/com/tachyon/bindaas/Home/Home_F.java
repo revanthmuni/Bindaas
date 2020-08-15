@@ -50,6 +50,7 @@ import android.view.ViewOutlineProvider;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -800,10 +801,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         }).handle(desc_txt);
 
 
-       /* LinearLayout soundimage = (LinearLayout) layout.findViewById(R.id.sound_image_layout);
+        LinearLayout soundimage = (LinearLayout) layout.findViewById(R.id.sound_image_layout);
         Animation sound_animation = AnimationUtils.loadAnimation(context, R.anim.d_clockwise_rotation);
         soundimage.startAnimation(sound_animation);
-*/
         if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
             Functions.Call_Api_For_update_view(getActivity(), item.video_id);
 
