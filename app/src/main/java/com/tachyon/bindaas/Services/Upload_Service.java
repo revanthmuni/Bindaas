@@ -205,8 +205,8 @@ public class Upload_Service extends Service {
                             base.append("done");
                             Log.d("Test", "run: "+video_base64.length());
 
-                          //  writeToFile(new Gson().toJson(parameters),getApplicationContext());
-                          //  writeToFile(video_base64,getApplicationContext());
+                            //  writeToFile(new Gson().toJson(parameters),getApplicationContext());
+                            //  writeToFile(video_base64,getApplicationContext());
                            /* int maxLogSize = 10000;
                             for(int i = 0; i <= video_base64.length() / maxLogSize; i++) {
                                 int start = i * maxLogSize;

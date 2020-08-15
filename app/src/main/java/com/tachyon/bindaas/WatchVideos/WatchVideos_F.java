@@ -83,6 +83,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.tachyon.bindaas.Video_Recording.Video_Recoder_Duet_A;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import org.json.JSONArray;
@@ -381,6 +382,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     item.liked = itemdata.optString("liked");
                     item.privacy_type=itemdata.optString("privacy_type");
                     item.allow_comments=itemdata.optString("allow_comments");
+                    item.allow_duet=itemdata.optString("allow_duet");
 
                     item.video_url = itemdata.optString("video");
 
@@ -452,6 +454,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                                     if (bundle.getString("action").equals("save")) {
                                         Save_Video(item);
                                     }
+                                    else if(bundle.getString("action").equals("duet")){
+                                        Duet_video(item);
+                                    }
                                     if (bundle.getString("action").equals("delete")) {
 
                                         Functions.Show_loader(WatchVideos_F.this, false, false);
@@ -482,6 +487,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             Bundle bundle = new Bundle();
                             bundle.putString("video_id", item.video_id);
                             bundle.putString("user_id", item.user_id);
+                            bundle.putSerializable("data",item);
                             fragment.setArguments(bundle);
 
                             fragment.show(getSupportFragmentManager(), "");
@@ -865,7 +871,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             } else {
                 action = "0";
                 home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
-                Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
             }
 
             data_list.remove(position);
@@ -1039,6 +1045,69 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         }
     }
 
+    public void Duet_video(final Home_Get_Set item){
+
+        Log.d(Variables.tag,item.video_url);
+        if(item.video_url!=null){
+
+            Functions.Show_determinent_loader(context,false,false);
+            PRDownloader.initialize(getApplicationContext());
+            DownloadRequest prDownloader= PRDownloader.download(item.video_url, Variables.app_folder, item.video_id+".mp4")
+                    .build()
+                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                        @Override
+                        public void onStartOrResume() {
+
+                        }
+                    })
+                    .setOnPauseListener(new OnPauseListener() {
+                        @Override
+                        public void onPause() {
+
+                        }
+                    })
+                    .setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    })
+                    .setOnProgressListener(new OnProgressListener() {
+                        @Override
+                        public void onProgress(Progress progress) {
+                            int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
+                            Functions.Show_loading_progress(prog);
+
+                        }
+                    });
+
+
+            prDownloader.start(new OnDownloadListener() {
+                @Override
+                public void onDownloadComplete() {
+                    Functions.cancel_determinent_loader();
+                    Open_duet_Recording(item);
+                }
+
+                @Override
+                public void onError(Error error) {
+
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    Functions.cancel_determinent_loader();
+                }
+
+
+            });
+
+        }
+
+    }
+
+    public void Open_duet_Recording(Home_Get_Set item){
+        Intent intent=new Intent(WatchVideos_F.this, Video_Recoder_Duet_A.class);
+        intent.putExtra("data",item);
+        startActivity(intent);
+    }
 
     // this will open the profile of user which have uploaded the currenlty running video
     private void OpenHashtag(String tag) {

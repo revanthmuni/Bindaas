@@ -192,12 +192,12 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 public void onClick(DialogInterface dialog, int item) {
 
                     if (options[item].equals("Take Photo")) {
-                        if (check_permissions())
+                        if(Functions.check_permissions(getActivity()))
                             openCameraIntent();
 
                     } else if (options[item].equals("Choose from Gallery")) {
 
-                        if (check_permissions()) {
+                        if(Functions.check_permissions(getActivity())) {
                             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(intent, 2);
                         }
@@ -217,26 +217,6 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
         }
     }
-
-
-    public boolean check_permissions() {
-
-        String[] PERMISSIONS = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA
-        };
-
-        if (!hasPermissions(context, PERMISSIONS)) {
-            requestPermissions(PERMISSIONS, 2);
-        } else {
-
-            return true;
-        }
-
-        return false;
-    }
-
 
     // below three method is related with taking the picture from camera
     private void openCameraIntent() {

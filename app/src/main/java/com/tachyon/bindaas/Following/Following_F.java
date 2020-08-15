@@ -103,7 +103,7 @@ public class Following_F extends Fragment {
                     switch (view.getId()) {
                         case R.id.action_txt:
                             if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
-                                if(user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
+                                if(!item.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")))
                                     Follow_unFollow_User(item,postion);
                             }
                             else {
@@ -157,6 +157,7 @@ public class Following_F extends Fragment {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", user_id);
+                parameters.put("my_user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -202,9 +203,12 @@ public class Following_F extends Fragment {
                         item.follow = follow_Status.optString("follow");
                         item.follow_status_button = follow_Status.optString("follow_status_button");
 
-                        if (!user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, "")))
-                            item.is_show_follow_unfollow_btn = false;
-
+                        if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
+                            item.is_show_follow_unfollow_btn=false;
+                        }
+                        else {
+                            item.is_show_follow_unfollow_btn=true;
+                        }
 
                         datalist.add(item);
                         adapter.notifyItemInserted(i);
@@ -239,7 +243,7 @@ public class Following_F extends Fragment {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", user_id);
-
+                parameters.put("my_user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -282,7 +286,17 @@ public class Following_F extends Fragment {
 
                         item.follow = follow_Status.optString("follow");
                         item.follow_status_button = follow_Status.optString("follow_status_button");
+                        if(item.follow.equalsIgnoreCase("1")){
+                            item.follow_status_button="Friends";
+                        }
 
+
+                        if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
+                            item.is_show_follow_unfollow_btn=false;
+                        }
+                        else {
+                            item.is_show_follow_unfollow_btn=true;
+                        }
 
                         datalist.add(item);
                         adapter.notifyItemInserted(i);
@@ -320,15 +334,28 @@ public class Following_F extends Fragment {
 
                 }
             });
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-            Bundle args = new Bundle();
-            args.putString("user_id", item.user_id);
-            args.putString("user_name", item.first_name + " " + item.last_name);
-            args.putString("user_pic", item.profile_pic);
-            profile_f.setArguments(args);
-            transaction.addToBackStack(null);
-            transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+            View view=getActivity().findViewById(R.id.MainMenuFragment);
+            if(view!=null) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                Bundle args = new Bundle();
+                args.putString("user_id", item.user_id);
+                args.putString("user_name", item.first_name + " " + item.last_name);
+                args.putString("user_pic", item.profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+            }else {
+                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+                Bundle args = new Bundle();
+                args.putString("user_id",item.user_id);
+                args.putString("user_name",item.first_name+" "+item.last_name);
+                args.putString("user_pic",item.profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.following_layout, profile_f).commit();
+            }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -361,10 +388,15 @@ public class Following_F extends Fragment {
 
                             if (send_status.equals("1")) {
                                 item.follow = "1";
+                                if(following_or_fan.equalsIgnoreCase("fan")){
+                                    item.follow_status_button="Friends";
+                                }else
+                                    item.follow_status_button="UnFollow";
                                 datalist.remove(position);
                                 datalist.add(position, item);
                             } else if (send_status.equals("0")) {
                                 item.follow = "0";
+                                item.follow_status_button="Follow";
                                 datalist.remove(position);
                                 datalist.add(position, item);
                             }

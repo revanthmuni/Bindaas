@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,10 +47,12 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     ServiceCallback serviceCallback;
     EditText description_edit;
 
-    String draft_file;
+    String draft_file,duet_video_id;
 
     TextView privcy_type_txt;
     Switch comment_switch, duet_switch;
+
+    Bitmap bmThumbnail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             Intent intent = getIntent();
             if (intent != null) {
                 draft_file = intent.getStringExtra("draft_file");
+                duet_video_id=intent.getStringExtra("duet_video_id");
                 // video_path = intent.getStringExtra("video_path");
             }
             video_path = Variables.output_filter_file;
@@ -68,11 +72,21 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             description_edit = findViewById(R.id.description_edit);
 
             // this will get the thumbnail of video and show them in imageview
-            Bitmap bmThumbnail;
             bmThumbnail = ThumbnailUtils.createVideoThumbnail(video_path,
                     MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
 
-            if (bmThumbnail != null) {
+            if(bmThumbnail != null && duet_video_id!=null){
+                Bitmap duet_video_bitmap = null;
+                if(duet_video_id!=null){
+                    duet_video_bitmap= ThumbnailUtils.createVideoThumbnail(Variables.app_folder+duet_video_id+".mp4",
+                            MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
+                }
+                Bitmap combined=combineImages(bmThumbnail,duet_video_bitmap);
+                video_thumbnail.setImageBitmap(combined);
+                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb,Functions.Bitmap_to_base64(this,combined)).commit();
+
+            }
+            else if(bmThumbnail != null){
                 video_thumbnail.setImageBitmap(bmThumbnail);
                 Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb, Functions.Bitmap_to_base64(this, bmThumbnail)).commit();
             }
@@ -88,12 +102,48 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             findViewById(R.id.privacy_type_layout).setOnClickListener(this);
             findViewById(R.id.post_btn).setOnClickListener(this);
             findViewById(R.id.save_draft_btn).setOnClickListener(this);
+
+            if(duet_video_id!=null){
+                findViewById(R.id.duet_layout).setVisibility(View.GONE);
+                duet_switch.setChecked(false);
+            }
+
+            else if(Variables.is_enable_duet)
+                findViewById(R.id.duet_layout).setVisibility(View.VISIBLE);
+
+            else {
+                findViewById(R.id.duet_layout).setVisibility(View.GONE);
+                duet_switch.setChecked(false);
+            }
+
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
     }
 
+    public Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom
+        Bitmap cs = null;
+
+        int width, height = 0;
+
+        if(c.getWidth() > s.getWidth()) {
+            width = c.getWidth() + s.getWidth();
+            height = c.getHeight();
+        } else {
+            width = s.getWidth() + s.getWidth();
+            height = c.getHeight();
+        }
+
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas comboImage = new Canvas(cs);
+
+        comboImage.drawBitmap(c, 0f, 0f, null);
+        comboImage.drawBitmap(s, c.getWidth(), 0f, null);
+
+        return cs;
+    }
 
     @Override
     public void onClick(View v) {
@@ -153,6 +203,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
                 mServiceIntent.setAction("startservice");
                 mServiceIntent.putExtra("draft_file", draft_file);
+                mServiceIntent.putExtra("duet_video_id",duet_video_id);
                 mServiceIntent.putExtra("uri", "" + video_path);
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
@@ -241,6 +292,9 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     @Override
     protected void onDestroy() {
+        if(bmThumbnail!=null){
+            bmThumbnail.recycle();
+        }
         super.onDestroy();
     }
 

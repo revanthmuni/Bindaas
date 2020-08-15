@@ -285,5 +285,9 @@ public class Filter_Adapter extends RecyclerView.Adapter<Filter_Adapter.CustomVi
         }
     }
 
+    public void recycle_bitmap(){
+        image.recycle();
+    }
+
 }
 

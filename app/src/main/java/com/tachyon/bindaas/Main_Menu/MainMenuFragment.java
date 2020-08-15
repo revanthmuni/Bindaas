@@ -242,7 +242,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                 @Override
                 public void onClick(View v) {
 
-                    if (check_permissions()) {
+                    if(Functions.check_permissions(getActivity())) {
                         Functions.make_directry(Variables.app_hidden_folder);
                         Functions.make_directry(Variables.app_folder);
                         Functions.make_directry(Variables.draft_app_folder);
@@ -514,28 +514,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(context, R.color.white));
         }
-    }
-
-
-    // we need 4 permission during creating an video so we will get that permission
-    // before start the video recording
-    public boolean check_permissions() {
-
-        String[] PERMISSIONS = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.CAMERA
-        };
-
-        if (!hasPermissions(context, PERMISSIONS)) {
-            requestPermissions(PERMISSIONS, 2);
-        } else {
-
-            return true;
-        }
-
-        return false;
     }
 
 
