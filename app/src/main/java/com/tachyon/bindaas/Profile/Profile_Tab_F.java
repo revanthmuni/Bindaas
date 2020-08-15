@@ -163,7 +163,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                         int size = (int) snapshot.getChildrenCount();
                         Log.d("Firebase_Unread_count", "onDataChange: " + size);
                         if (size > 0) {
-                            tvUserChat.setText("(" + size + ")");
+                            tvUserChat.setText(""+size);
                         }else{
                             tvUserChat.setText("");
                         }
@@ -630,7 +630,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 int has_new_notification = data.optInt("has_new_notification");
                 if (has_new_notification>0) {
                     Log.d("TAG", "Parse_data: " + has_new_notification);
-                    tvUserNotifications.setText("(" + has_new_notification + ")");
+                    tvUserNotifications.setText(""+has_new_notification);
                 }else{
                     tvUserNotifications.setText("");
                 }

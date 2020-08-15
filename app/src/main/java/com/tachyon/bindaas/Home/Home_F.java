@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
+import com.tachyon.bindaas.NewsFeedFragment;
 import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
@@ -118,7 +119,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 // this is the main view which is show all  the video in list
-public class Home_F extends RootFragment implements Player.EventListener, Fragment_Data_Send,View.OnClickListener {
+public class Home_F extends RootFragment implements Player.EventListener, Fragment_Data_Send, View.OnClickListener {
 
     View view;
     Context context;
@@ -134,8 +135,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     SwipeRefreshLayout swiperefresh;
 
     boolean is_user_stop_video = false;
-    TextView following_btn,related_btn;
-    String type="related";
+    TextView following_btn, related_btn;
+    String type = "related";
+
     public Home_F() {
         // Required empty public constructor
     }
@@ -146,20 +148,20 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     ImageView uploading_thumb;
     ImageView uploading_icon;
     UploadingVideoBroadCast mReceiver;
-    private class UploadingVideoBroadCast extends BroadcastReceiver{
+
+    private class UploadingVideoBroadCast extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
             Upload_Service mService = new Upload_Service();
-            if (Functions.isMyServiceRunning(context,mService.getClass())) {
+            if (Functions.isMyServiceRunning(context, mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
-                Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
-                if(bitmap!=null)
+                Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+                if (bitmap != null)
                     uploading_thumb.setImageBitmap(bitmap);
 
-            }
-            else {
+            } else {
                 upload_video_layout.setVisibility(View.GONE);
             }
 
@@ -168,7 +170,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     //For destroying upload layout after the download gets completed...
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onVideoUploadService(String res){
+    public void onVideoUploadService(String res) {
         Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
         upload_video_layout.setVisibility(View.GONE);
     }
@@ -182,8 +184,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         p_bar = view.findViewById(R.id.p_bar);
 
-        following_btn=view.findViewById(R.id.following_btn);
-        related_btn=view.findViewById(R.id.related_btn);
+        following_btn = view.findViewById(R.id.following_btn);
+        related_btn = view.findViewById(R.id.related_btn);
 
         following_btn.setOnClickListener(this);
         related_btn.setOnClickListener(this);
@@ -269,18 +271,18 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         if (!Variables.is_remove_ads)
             Load_add();
-        upload_video_layout=view.findViewById(R.id.upload_video_layout);
-        uploading_thumb=view.findViewById(R.id.uploading_thumb);
-        uploading_icon=view.findViewById(R.id.uploading_icon);
+        upload_video_layout = view.findViewById(R.id.upload_video_layout);
+        uploading_thumb = view.findViewById(R.id.uploading_thumb);
+        uploading_icon = view.findViewById(R.id.uploading_icon);
 
         mReceiver = new UploadingVideoBroadCast();
         getActivity().registerReceiver(mReceiver, new IntentFilter("uploadVideo"));
 
         Upload_Service mService = new Upload_Service();
-        if (Functions.isMyServiceRunning(context,mService.getClass())) {
+        if (Functions.isMyServiceRunning(context, mService.getClass())) {
             upload_video_layout.setVisibility(View.VISIBLE);
-            Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
-            if(bitmap!=null)
+            Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+            if (bitmap != null)
                 uploading_thumb.setImageBitmap(bitmap);
         }
         return view;
@@ -289,23 +291,22 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.following_btn:
 
-                if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
                     type = "following";
                     swiperefresh.setRefreshing(true);
                     related_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
                     following_btn.setTextColor(context.getResources().getColor(R.color.white));
                     Call_Api_For_get_Allvideos();
-                }
-                else {
+                } else {
                     Open_Login();
                 }
                 break;
 
             case R.id.related_btn:
-                type="related";
+                type = "related";
                 swiperefresh.setRefreshing(true);
                 related_btn.setTextColor(context.getResources().getColor(R.color.white));
                 following_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
@@ -386,7 +387,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                                 public void Responce(Bundle bundle) {
                                     if (bundle.getString("action").equals("save")) {
                                         Save_Video(item);
-                                    } else if(bundle.getString("action").equals("duet")){
+                                    } else if (bundle.getString("action").equals("duet")) {
                                         Duet_video(item);
                                     } else if (bundle.getString("action").equals("delete")) {
                                         deleteVideo(item);
@@ -397,7 +398,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                             Bundle bundle = new Bundle();
                             bundle.putString("video_id", item.video_id);
                             bundle.putString("user_id", item.user_id);
-                            bundle.putSerializable("data",item);
+                            bundle.putSerializable("data", item);
                             fragment.setArguments(bundle);
                             fragment.show(getChildFragmentManager(), "");
                         }
@@ -438,7 +439,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             Log.d("test--", "Call_Api_For_get_Allvideos: " + Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", MainMenuActivity.token);
-            parameters.put("type",type);
+            parameters.put("type", type);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -457,7 +458,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     public void Parse_data(String responce) {
 
-        Log.d("Test", "Parse_data: "+responce);
+        Log.d("Test", "Parse_data: " + responce);
         //data_list = new ArrayList<>();
 
         try {
@@ -465,7 +466,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-                ArrayList<Home_Get_Set> temp_list=new ArrayList();
+                ArrayList<Home_Get_Set> temp_list = new ArrayList();
                 for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject itemdata = msgArray.optJSONObject(i);
                     Home_Get_Set item = new Home_Get_Set();
@@ -493,10 +494,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     JSONObject count = itemdata.optJSONObject("count");
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
-                    item.views  = count.optString("view");
-                    item.privacy_type=itemdata.optString("privacy_type");
-                    item.allow_comments=itemdata.optString("allow_comments");
-                    item.allow_duet=itemdata.optString("allow_duet");
+                    item.views = count.optString("view");
+                    item.privacy_type = itemdata.optString("privacy_type");
+                    item.allow_comments = itemdata.optString("allow_comments");
+                    item.allow_duet = itemdata.optString("allow_duet");
                     item.video_id = itemdata.optString("id");
                     item.views = itemdata.optString("view");
                     item.liked = itemdata.optString("liked");
@@ -509,30 +510,26 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.thum = itemdata.optString("thum");
                     item.created_date = itemdata.optString("created");
 
-                    if(Variables.is_demo_app) {
-                        if(i<5)
+                    if (Variables.is_demo_app) {
+                        if (i < 5)
                             temp_list.add(item);
-                    }else {
+                    } else {
                         temp_list.add(item);
                     }
                 }
 
-                if(!temp_list.isEmpty()) {
-                    currentPage=-1;
-                    data_list= new ArrayList<>();
+                if (!temp_list.isEmpty()) {
+                    currentPage = -1;
+                    data_list = new ArrayList<>();
                     data_list.addAll(temp_list);
                     Set_Adapter();
-                }
-
-                else if(type.equalsIgnoreCase("related")) {
+                } else if (type.equalsIgnoreCase("related")) {
                     type = "following";
                     related_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
                     following_btn.setTextColor(context.getResources().getColor(R.color.white));
-                }
-
-                else if(type.equalsIgnoreCase("following")){
+                } else if (type.equalsIgnoreCase("following")) {
                     Toast.makeText(context, "Follow an account to see there videos here.", Toast.LENGTH_SHORT).show();
-                    type="related";
+                    type = "related";
                     related_btn.setTextColor(context.getResources().getColor(R.color.white));
                     following_btn.setTextColor(context.getResources().getColor(R.color.graycolor2));
                 }
@@ -556,7 +553,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("token", Variables.sharedPreferences.getString(Variables.device_token, "Null"));
             parameters.put("video_id", data_list.get(postion).video_id);
-            parameters.put("type",type);
+            parameters.put("type", type);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -609,8 +606,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
 
-                    item.privacy_type=itemdata.optString("privacy_type");
-                    item.allow_comments=itemdata.optString("allow_comments");
+                    item.privacy_type = itemdata.optString("privacy_type");
+                    item.allow_comments = itemdata.optString("allow_comments");
                     item.allow_duet = itemdata.optString("allow_duet");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
@@ -720,7 +717,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
 
                 public void onSwipeRight() {
-                    OpenProfile(item, true, false);
+                    openNewsFeed(item,true,true);
+//                    OpenProfile(item, true, false);
                 }
 
                 public void onSwipeLeft() {
@@ -1004,7 +1002,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     }
 
-    public void Open_Login(){
+    public void Open_Login() {
         Intent intent = new Intent(getActivity(), Login_A.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
@@ -1034,9 +1032,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 if (from_right_to_left) {
                     if (privious_player != null) privious_player.setPlayWhenReady(false);
-                    if(rightSwipe) {
+                    if (rightSwipe) {
                         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
-                    }else{
+                    } else {
                         transaction.setCustomAnimations(R.anim.in_from_left, R.anim.out_to_right, R.anim.in_from_right, R.anim.out_to_left);
                     }
                 } else {
@@ -1052,6 +1050,30 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.MainMenuFragment, profile_f).commit();
             }
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+
+    private void openNewsFeed(Home_Get_Set item, boolean from_right_to_left, boolean rightSwipe) {
+
+        try {
+
+            NewsFeedFragment newsFeedFragment = new NewsFeedFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            if (privious_player != null) privious_player.setPlayWhenReady(false);
+            transaction.setCustomAnimations(R.anim.in_from_left, R.anim.out_to_right, R.anim.in_from_right, R.anim.out_to_left);
+
+            Bundle args = new Bundle();
+            args.putString("user_id", item.user_id);
+            args.putString("user_name", item.first_name + " " + item.last_name);
+            args.putString("user_pic", item.profile_pic);
+            //profile_f.setArguments(args);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, newsFeedFragment).commit();
+
 
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -1312,14 +1334,14 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         }
     }
 
-    public void Duet_video(final Home_Get_Set item){
+    public void Duet_video(final Home_Get_Set item) {
 
-        Log.d(Variables.tag,item.video_url);
-        if(item.video_url!=null){
+        Log.d(Variables.tag, item.video_url);
+        if (item.video_url != null) {
 
-            Functions.Show_determinent_loader(context,false,false);
+            Functions.Show_determinent_loader(context, false, false);
             PRDownloader.initialize(getActivity().getApplicationContext());
-            DownloadRequest prDownloader= PRDownloader.download(item.video_url, Variables.app_folder, item.video_id+".mp4")
+            DownloadRequest prDownloader = PRDownloader.download(item.video_url, Variables.app_folder, item.video_id + ".mp4")
                     .build()
                     .setOnStartOrResumeListener(new OnStartOrResumeListener() {
                         @Override
@@ -1342,7 +1364,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     .setOnProgressListener(new OnProgressListener() {
                         @Override
                         public void onProgress(Progress progress) {
-                            int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
+                            int prog = (int) ((progress.currentBytes * 100) / progress.totalBytes);
                             Functions.Show_loading_progress(prog);
 
                         }
@@ -1372,9 +1394,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
     }
 
-    public void Open_duet_Recording(Home_Get_Set item){
-        Intent intent=new Intent(getActivity(), Video_Recoder_Duet_A.class);
-        intent.putExtra("data",item);
+    public void Open_duet_Recording(Home_Get_Set item) {
+        Intent intent = new Intent(getActivity(), Video_Recoder_Duet_A.class);
+        intent.putExtra("data", item);
         startActivity(intent);
     }
 
@@ -1407,7 +1429,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void onPause() {
         super.onPause();
         try {
-             EventBus.getDefault().unregister(this);
+            EventBus.getDefault().unregister(this);
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
             }
@@ -1440,7 +1462,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             if (privious_player != null) {
                 privious_player.release();
             }
-            if(mReceiver!=null) {
+            if (mReceiver != null) {
                 getActivity().unregisterReceiver(mReceiver);
                 mReceiver = null;
             }

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
             token = FirebaseInstanceId.getInstance().getToken();
+            Log.d("token::", "onCreate: "+token);
             if (token == null || (token.equals("") || token.equals("null")))
                 token = Variables.sharedPreferences.getString(Variables.device_token, "null");
 
