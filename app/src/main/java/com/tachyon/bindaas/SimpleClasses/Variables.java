@@ -107,10 +107,10 @@ public class Variables {
 
     //public static final String main_domain = "http://bindaasonline.com/";
     //public static final  String main_domain="http://funworld.sciflock.com/";
-    public static final  String main_domain="http://bindaasonlinedev.com/";
+    public static final  String main_domain="http://bindaasonline.com/";
 
     //public static final String base_url=main_domain+"API/funworld/";
-    public static final String base_url = main_domain + "API/";
+    public static final String base_url = main_domain + "coreapi/";
 
     //public static final String api_domain = "http://3.6.175.12/API/index.php?p=";
     public static final String api_domain = base_url + "index.php?p=";
@@ -146,7 +146,7 @@ public class Variables {
     public static final String getVerified = api_domain + "getVerified";
     public static final String downloadFile = api_domain + "downloadFile";
 
-    public static final String DOWNLOAD_VIDEO = base_url + "view.php?id=";
+    public static final String DOWNLOAD_VIDEO = main_domain + "watch.php?id=";
 
     public static final String FLAG_VIDEO = api_domain + "flagVideo";
     public static final String FLAG_COMMENT = api_domain + "flagComment";

@@ -291,7 +291,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 findViewById(R.id.upload_layout).setEnabled(true);
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_no));
                 camera_options.setVisibility(View.VISIBLE);
-                Toast.makeText(this, "" + "No", Toast.LENGTH_SHORT).show();
             } else if (sec_passed > (Variables.recording_duration / 1000)) {
                 Functions.Show_Alert(this, "Alert", "Video only can be a " + (int) Variables.recording_duration / 1000 + " S");
             }
