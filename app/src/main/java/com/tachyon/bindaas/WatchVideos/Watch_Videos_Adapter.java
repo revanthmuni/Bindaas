@@ -68,6 +68,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             // holder.setVideoData(item);
             holder.bind(i, item, listener);
 
+            Log.d("username_check", "onBindViewHolder: before"+item.username);
             holder.username.setText(item.username);
 
 
