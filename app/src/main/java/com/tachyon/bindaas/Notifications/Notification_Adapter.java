@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.R;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;

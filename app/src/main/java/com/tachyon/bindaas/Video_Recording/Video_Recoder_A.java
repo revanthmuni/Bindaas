@@ -38,6 +38,7 @@ import com.googlecode.mp4parser.util.Path;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SegmentProgress.ProgressBarListener;
 import com.tachyon.bindaas.SegmentProgress.SegmentedProgressBar;
+import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.FileUtils;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -116,6 +117,9 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             findViewById(R.id.upload_layout).setOnClickListener(this);
 
+            cut_video_btn=findViewById(R.id.cut_video_btn);
+            cut_video_btn.setVisibility(View.GONE);
+            cut_video_btn.setOnClickListener(this);
 
             done_btn = findViewById(R.id.done);
             done_btn.setEnabled(false);
@@ -186,7 +190,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             record_image.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {Toast.makeText(getBaseContext(), "click" + is_recording, Toast.LENGTH_SHORT).show();
                     Start_or_Stop_Recording();
                 }
             });
@@ -224,10 +228,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     sec_passed = (int) (mills / 1000);
 
                     if (sec_passed > (Variables.recording_duration / 1000) - 1) {
+                        Toast.makeText(getBaseContext(), "Sec>" + is_recording, Toast.LENGTH_SHORT).show();
                         Start_or_Stop_Recording();
                     }
 
                     if (is_recording_timer_enable && sec_passed >= recording_time) {
+                        Toast.makeText(getBaseContext(), "&&" + is_recording, Toast.LENGTH_SHORT).show();
                         is_recording_timer_enable = false;
                         Start_or_Stop_Recording();
                     }
@@ -244,7 +250,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     // if the Recording is stop then it we start the recording
     // and if the mobile is recording the video then it will stop the recording
     public void Start_or_Stop_Recording() {
-        try {
+        try {Toast.makeText(this, "" + is_recording, Toast.LENGTH_SHORT).show();
             if (!is_recording && sec_passed < (Variables.recording_duration / 1000) - 1) {
                 number = number + 1;
 
@@ -261,7 +267,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 done_btn.setEnabled(false);
 
                 video_progress.resume();
-
+                //Toast.makeText(this, "" + is_recording, Toast.LENGTH_SHORT).show();
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_yes));
                 cut_video_btn.setVisibility(View.GONE);
                 findViewById(R.id.time_layout).setVisibility(View.INVISIBLE);
@@ -286,7 +292,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 findViewById(R.id.upload_layout).setEnabled(true);
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_no));
                 camera_options.setVisibility(View.VISIBLE);
-
+                Toast.makeText(this, "" + "No", Toast.LENGTH_SHORT).show();
             } else if (sec_passed > (Variables.recording_duration / 1000)) {
                 Functions.Show_Alert(this, "Alert", "Video only can be a " + (int) Variables.recording_duration / 1000 + " S");
             }
@@ -582,7 +588,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     append();
                     break;
 
+                case R.id.cut_video_btn:
 
+                    Functions.Show_Alert(this, null, "Discard the last clip?", "DELETE", "CANCEL", new Callback() {
+                        @Override
+                        public void Responce(String resp) {
+                            if(resp.equalsIgnoreCase("yes")){
+                                Remove_Last_Section();
+                            }
+                        }
+                    });
+
+                    break;
                 case R.id.flash_camera:
 
                     if (is_flash_on) {

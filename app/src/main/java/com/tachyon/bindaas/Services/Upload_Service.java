@@ -196,6 +196,7 @@ public class Upload_Service extends Service {
                             parameters.put("description", description);
                             parameters.put("privacy_type",privacy_type);
                             parameters.put("allow_comments",allow_comment);
+                            parameters.put("allow_duet",allow_duet);
 
                             JSONObject vidoefiledata = new JSONObject();
                             vidoefiledata.put("file_data", video_base64);

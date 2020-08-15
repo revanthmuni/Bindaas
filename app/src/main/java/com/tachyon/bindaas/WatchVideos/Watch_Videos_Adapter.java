@@ -62,8 +62,9 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.setIsRecyclable(false);
             Log.d("TAG", "onBindViewHolder: " + item.liked);
 
-        /*holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
+            /*holder.like_image.setImageDrawable(item.liked.equals("1") ? context.getResources().getDrawable(R.drawable.ic_like_fill) :
                 context.getResources().getDrawable(R.drawable.ic_like));*/
+
             // holder.setVideoData(item);
             holder.bind(i, item, listener);
 
@@ -136,7 +137,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             // holder.like_txt.setText(""+((Integer.parseInt(item.like_count)>0)?Functions.GetSuffix(item.like_count):0));
             holder.comment_txt.setText(Functions.GetSuffix(item.video_comment_count));
 
-
+            holder.view_txt.setText(item.views);
        /* if (item.verified != null && item.verified.equalsIgnoreCase("1")) {
             holder.varified_btn.setVisibility(View.VISIBLE);
         } else {
@@ -158,14 +159,14 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
         LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout, side_menu;
         ImageView like_image, comment_image;
-        TextView like_txt, desc_txt, comment_txt;
+        TextView like_txt, desc_txt, comment_txt,view_txt;
 
 
         public CustomViewHolder(View view) {
             super(view);
             try {
                 playerview = view.findViewById(R.id.playerview);
-
+                view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
                 sound_name = view.findViewById(R.id.sound_name);

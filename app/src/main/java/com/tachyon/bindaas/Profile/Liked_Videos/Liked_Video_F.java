@@ -182,6 +182,7 @@ public class Liked_Video_F extends Fragment {
 
                 JSONArray user_videos = data.getJSONArray("user_videos");
 
+                Log.d("TAG", "Parse_data: adjflkadj"+user_videos);
 
                 if (!user_videos.toString().equals("[" + "0" + "]")) {
 

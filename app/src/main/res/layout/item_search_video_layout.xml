@@ -71,14 +71,15 @@
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/like_layout">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
+
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
+                        android:layout_toRightOf="@+id/Goback"
                         android:id="@+id/user_image"
-                        fresco:placeholderImage="@drawable/image_placeholder"
-                        fresco:placeholderImageScaleType="centerCrop"
-                        app:roundAsCircle="true"/>
-
+                        android:layout_marginTop="10dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/image_placeholder"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

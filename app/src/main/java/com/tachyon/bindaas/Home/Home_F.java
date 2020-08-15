@@ -165,6 +165,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         }
     }
 
+    //For destroying upload layout after the download gets completed...
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoUploadService(String res){
         Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
@@ -491,11 +492,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     JSONObject count = itemdata.optJSONObject("count");
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
-
+                    item.views  = count.optString("view");
                     item.privacy_type=itemdata.optString("privacy_type");
                     item.allow_comments=itemdata.optString("allow_comments");
                     item.allow_duet=itemdata.optString("allow_duet");
                     item.video_id = itemdata.optString("id");
+                    item.views = itemdata.optString("view");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
                     itemdata.optString("video");
@@ -516,7 +518,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 if(!temp_list.isEmpty()) {
                     currentPage=-1;
-                    data_list=new ArrayList<>();
+                    data_list= new ArrayList<>();
                     data_list.addAll(temp_list);
                     Set_Adapter();
                 }
@@ -1400,7 +1402,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         }
     }
-
 
     @Override
     public void onPause() {

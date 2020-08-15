@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SoundLists.VideoSound_A;
@@ -327,6 +328,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             parameters.put("video_id", data_list.get(postion).video_id);
             parameters.put("type","related");
 
+            Log.d("Test", "Call_Api_For_Singlevideos: "+new Gson().toJson(parameters));
             ApiRequest.Call_Api(context, Variables.showAllVideos, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
@@ -343,6 +345,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     }
 
     public void Singal_Video_Parse_data(int pos, String responce) {
+        Log.d("Test", "Singal_Video_Parse_data: "+responce);
 
         try {
             JSONObject jsonObject = new JSONObject(responce);
@@ -783,7 +786,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 write_layout.setVisibility(View.VISIBLE);
             }
 
-            Call_Api_For_Singlevideos(currentPage);
+             Call_Api_For_Singlevideos(currentPage);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 

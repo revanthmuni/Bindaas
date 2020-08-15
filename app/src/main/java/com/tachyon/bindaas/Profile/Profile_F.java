@@ -448,6 +448,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 JSONObject user_info = data.optJSONObject("user_info");
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
                 username2_txt.setText(user_info.optString("username"));
+                String has_new_notification = data.optString("has_new_notification");
+                Log.d("TAG", "Parse_data: "+has_new_notification);
+
 
                 pic_url = user_info.optString("profile_pic");
                 if (pic_url != null && !pic_url.equals(""))

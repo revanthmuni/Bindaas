@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Adapter_Click_Listener;
@@ -100,8 +101,11 @@ public class VideosList_Adapter extends RecyclerView.Adapter<VideosList_Adapter.
             }
 
             if(item.profile_pic!=null && !item.profile_pic.equals("")) {
-                Uri uri = Uri.parse(item.profile_pic);
-                holder.user_image.setImageURI(uri);
+                Picasso.with(context).load(item.profile_pic)
+                        .resize(100, 100)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(holder.user_image);
+
             }
 
             holder.first_last_name_txt.setText(item.first_name+" "+item.last_name);

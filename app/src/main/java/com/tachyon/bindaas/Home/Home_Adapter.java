@@ -54,7 +54,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
     @Override
     public int getItemCount() {
-        return dataList!=null?dataList.size():0;
+        return dataList != null ? dataList.size() : 0;
     }
 
 
@@ -112,8 +112,9 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             } else {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }
-
-            if(item.allow_comments!=null && item.allow_comments.equalsIgnoreCase("false"))
+            Log.d("TAG", "onBindViewHolder:views count "+item.views);
+            holder.view_txt.setText(item.views);
+            if (item.allow_comments != null && item.allow_comments.equalsIgnoreCase("false"))
                 holder.comment_layout.setVisibility(View.GONE);
             else
                 holder.comment_layout.setVisibility(View.VISIBLE);
@@ -141,7 +142,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
-        TextView username, desc_txt, sound_name;
+        TextView username, desc_txt, sound_name, view_txt;
         ImageView user_pic, varified_btn;
         GifImageView sound_image;
 
@@ -153,9 +154,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
         public CustomViewHolder(View view) {
             super(view);
-try{
+            try {
 
 //            videoView = view.findViewById(R.id.playerview);
+                view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
                 sound_name = view.findViewById(R.id.sound_name);
@@ -176,39 +178,39 @@ try{
                 sound_image_layout = view.findViewById(R.id.sound_image_layout);
                 shared_layout = view.findViewById(R.id.shared_layout);
 
-}catch (Exception e){
-    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-}
+            }
         }
 
         void setVideoData(Home_Get_Set item) {
-            try{
-            videoView.setVideoPath(item.video_url);
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    mediaPlayer.start();
+            try {
+                videoView.setVideoPath(item.video_url);
+                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediaPlayer.start();
 
-                    float videoRatio = mediaPlayer.getVideoWidth() / (float) mediaPlayer.getVideoHeight();
+                        float videoRatio = mediaPlayer.getVideoWidth() / (float) mediaPlayer.getVideoHeight();
 
-                    float screenRatio = videoView.getWidth() / (float) videoView.getHeight();
-                    float scale = videoRatio / screenRatio;
-                    if (scale >= 1f) {
-                        videoView.setScaleX(scale);
-                    } else {
-                        videoView.setScaleY(1f / scale);
+                        float screenRatio = videoView.getWidth() / (float) videoView.getHeight();
+                        float scale = videoRatio / screenRatio;
+                        if (scale >= 1f) {
+                            videoView.setScaleX(scale);
+                        } else {
+                            videoView.setScaleY(1f / scale);
+                        }
                     }
-                }
-            });
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    mediaPlayer.start();
-                }
-            });
-            }catch (Exception e){
-                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+                });
+                videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mediaPlayer.start();
+                    }
+                });
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
             }
         }
