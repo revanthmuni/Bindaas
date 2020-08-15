@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,16 +204,23 @@ public class Discover_Adapter extends RecyclerView.Adapter<Discover_Adapter.Cust
 
 
             try {
-                Glide.with(context)
-                        .asGif()
-                        .load(item.gif)
-                        .skipMemoryCache(true)
-                        .thumbnail(new RequestBuilder[]{Glide
-                                .with(context)
-                                .load(item.thum)})
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
-                                .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
-                        .into(holder.video_thumbnail);
+                if(Variables.is_show_gif) {
+                    Glide.with(context)
+                            .asGif()
+                            .load(item.gif)
+                            .skipMemoryCache(true)
+                            .thumbnail(new RequestBuilder[]{Glide
+                                    .with(context)
+                                    .load(item.thum)})
+                            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                                    .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
+                            .into(holder.video_thumbnail);
+                }else{
+                    if(item.thum!=null && !item.thum.equals("")) {
+                        Uri uri = Uri.parse(item.thum);
+                        holder.video_thumbnail.setImageURI(uri);
+                    }
+                }
 
             } catch (Exception e) {
 

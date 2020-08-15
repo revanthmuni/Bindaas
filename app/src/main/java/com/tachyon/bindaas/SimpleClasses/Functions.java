@@ -1,5 +1,6 @@
 package com.tachyon.bindaas.SimpleClasses;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -12,9 +13,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.util.Base64;
@@ -105,16 +108,40 @@ public class Functions {
                             dialog.dismiss();
                         }
                     }).show();
-        }catch (Exception e){
-                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
             Log.e("Exception:", "" + e.getMessage());
 //            Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
-    public static void showLogMessage(Context context, String class_name, String msg){
 
-        Log.d("Crash Exections:", class_name+": "+msg);
+    public static void Show_Alert(Context context, String title, String Message, String postivebtn, String negitivebtn, final Callback callback) {
+
+        new AlertDialog.Builder(context)
+                .setTitle(null)
+                .setMessage(Message)
+                .setNegativeButton(negitivebtn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        callback.Responce("no");
+                    }
+                })
+                .setPositiveButton(postivebtn, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                        callback.Responce("yes");
+
+                    }
+                }).show();
+    }
+
+    public static void showLogMessage(Context context, String class_name, String msg) {
+
+        Log.d("Crash Exections:", class_name + ": " + msg);
 
 
         //send custom crash report
@@ -123,7 +150,7 @@ public class Functions {
 
     public static Dialog dialog;
 
-    public static void downloadFile(String url, String folderpath, String fileName){
+    public static void downloadFile(String url, String folderpath, String fileName) {
         PRDownloader.initialize(getApplicationContext());
 
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
@@ -266,11 +293,11 @@ public class Functions {
         return rotatedBitmap;
     }
 
-    public static String ChangeDate_to_today_or_yesterday(Context context,String date){
+    public static String ChangeDate_to_today_or_yesterday(Context context, String date) {
         try {
             Calendar current_cal = Calendar.getInstance();
 
-            Calendar date_cal=Calendar.getInstance();
+            Calendar date_cal = Calendar.getInstance();
 
             SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ");
             Date d = null;
@@ -282,27 +309,21 @@ public class Functions {
             }
 
 
-            long difference=(current_cal.getTimeInMillis()- date_cal.getTimeInMillis())/1000;
+            long difference = (current_cal.getTimeInMillis() - date_cal.getTimeInMillis()) / 1000;
 
-            if(difference<86400)
-            {
-                if(current_cal.get(Calendar.DAY_OF_YEAR)-date_cal.get(Calendar.DAY_OF_YEAR)==0) {
+            if (difference < 86400) {
+                if (current_cal.get(Calendar.DAY_OF_YEAR) - date_cal.get(Calendar.DAY_OF_YEAR) == 0) {
 
                     SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
                     return sdf.format(d);
-                }
-                else
+                } else
                     return "yesterday";
-            }
-
-            else if(difference<172800){
+            } else if (difference < 172800) {
                 return "yesterday";
-            }
+            } else
+                return (difference / 86400) + " day ago";
 
-            else
-                return (difference/86400)+" day ago";
-
-        }catch (Exception e){
+        } catch (Exception e) {
             return date;
         }
     }
@@ -315,13 +336,13 @@ public class Functions {
         return base64;
     }
 
-    public static Bitmap Base64_to_bitmap(String base_64){
-        Bitmap decodedByte=null;
+    public static Bitmap Base64_to_bitmap(String base_64) {
+        Bitmap decodedByte = null;
         try {
 
             byte[] decodedString = Base64.decode(base_64, Base64.DEFAULT);
             decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return decodedByte;
@@ -419,6 +440,20 @@ public class Functions {
 
     }
 
+    public static long getfileduration(Context context, Uri uri) {
+        try {
+
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(context, uri);
+            String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            final int file_duration = Integer.parseInt(durationStr);
+
+            return file_duration;
+        } catch (Exception e) {
+
+        }
+        return 0;
+    }
 
     // Bottom is all the Apis which is mostly used in app we have add it
     // just one time and whenever we need it we will call it
@@ -580,6 +615,7 @@ public class Functions {
         });
 
     }
+
     public static void Call_Api_For_Follow_or_unFollow
             (final Activity activity,
              String user_id,
@@ -599,12 +635,12 @@ public class Functions {
             e.printStackTrace();
         }
 
-        Log.d("Test", "Call_Api_For_Follow_or_unFollow: input"+new Gson().toJson(parameters));
+        Log.d("Test", "Call_Api_For_Follow_or_unFollow: input" + new Gson().toJson(parameters));
         ApiRequest.Call_Api(activity, Variables.followUsers, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
-                Log.d("Test", "Responce: follow "+resp);
+                Log.d("Test", "Responce: follow " + resp);
                 try {
                     JSONObject response = new JSONObject(resp);
                     String code = response.optString("code");
@@ -683,7 +719,7 @@ public class Functions {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
-                Log.d(TAG, "Responce: "+resp);
+                Log.d(TAG, "Responce: " + resp);
                 try {
                     JSONObject response = new JSONObject(resp);
                     String code = response.optString("code");
@@ -792,6 +828,38 @@ public class Functions {
         }
     }
 
+    public static boolean check_permissions(Activity context) {
+
+        String[] PERMISSIONS = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+        };
+
+        if (!hasPermissions(context, PERMISSIONS)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                context.requestPermissions(PERMISSIONS, 2);
+            }
+        } else {
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     // these function are remove the cache memory which is very helpfull in memmory managmet
     public static void deleteCache(Context context) {

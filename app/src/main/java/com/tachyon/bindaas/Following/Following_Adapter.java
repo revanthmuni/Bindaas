@@ -121,36 +121,30 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
             holder.user_id.setText(item.username);
             Log.d("TTTT", "onBindViewHolder: "+item.is_show_follow_unfollow_btn);
-            if (item.is_show_follow_unfollow_btn) {
+            holder.action_txt.setText(item.follow_status_button);
+
+            if(item.follow_status_button.equalsIgnoreCase("Follow")){
+                holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            }
+
+            else if(item.follow_status_button.equalsIgnoreCase("Unfollow")){
+                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
+
+            }
+
+            else if(item.follow_status_button.equalsIgnoreCase("Friends")){
+                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
+
+            }
+
+            if(item.is_show_follow_unfollow_btn){
                 holder.action_txt.setVisibility(View.VISIBLE);
-
-                if (following_or_fans.equals("following")) {
-
-                    if (item.follow.equals("0")) {
-                        holder.action_txt.setText("Follow");
-                        holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
-                        holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
-                    } else {
-                        holder.action_txt.setText("UnFollow");
-                        holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
-                        holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    }
-
-
-                } else {
-
-                    if (item.follow.equals("0")) {
-                        holder.action_txt.setText("Follow");
-                        holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
-                        holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
-                    } else {
-                        holder.action_txt.setText("Friends");
-                        holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
-                        holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
-                    }
-                }
-
-            } else {
+            }
+            else {
                 holder.action_txt.setVisibility(View.GONE);
             }
 

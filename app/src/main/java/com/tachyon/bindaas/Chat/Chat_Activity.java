@@ -196,10 +196,12 @@ public class Chat_Activity extends Fragment {
                 else {
                     user_name.setText(Receiver_name); // these two method will get other datial of user like there profile pic link and username
 
-                    Picasso.with(context).load(Receiver_pic)
-                            .resize(100,100)
-                            .placeholder(R.drawable.profile_image_placeholder)
-                            .into(profileimage);
+                    if(Receiver_pic!=null && !Receiver_pic.equalsIgnoreCase("")) {
+                        Picasso.with(context).load(Receiver_pic)
+                                .resize(100, 100)
+                                .placeholder(R.drawable.profile_image_placeholder)
+                                .into(profileimage);
+                    }
                 }
 
                 senderid_for_check_notification = Receiverid;
@@ -1909,10 +1911,12 @@ public class Chat_Activity extends Fragment {
                 user_name.setText(Receiver_name);
 
                 // these two method will get other datial of user like there profile pic link and username
-                Picasso.with(context).load(Receiver_pic)
-                        .resize(100,100)
-                        .placeholder(R.drawable.profile_image_placeholder)
-                        .into(profileimage);
+                if(Receiver_pic!=null && !Receiver_pic.equalsIgnoreCase("")) {
+                    Picasso.with(context).load(Receiver_pic)
+                            .resize(100, 100)
+                            .placeholder(R.drawable.profile_image_placeholder)
+                            .into(profileimage);
+                }
             }
             else {
                 Toast.makeText(context, ""+jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();

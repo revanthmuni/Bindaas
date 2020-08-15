@@ -23,10 +23,11 @@ public class Variables {
     public static final String draft_app_folder = app_folder + "Draft/";
 
 
-    public static int max_recording_duration = 30000;
-    public static int recording_duration = 30000;
+    public static int max_recording_duration = 60000;
+    public static int recording_duration = 60000;
     public static int min_time_recording=5000;
 
+    public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";
     public static String outputfile2 = app_folder + "output2.mp4";
     public static String output_filter_file = app_folder + "output-filtered.mp4";
@@ -80,7 +81,13 @@ public class Variables {
 
     public static final boolean is_secure_info = false;
     public static final boolean is_remove_ads = true;
+    public static final boolean is_show_gif=true;
 
+    public static final boolean is_demo_app=false;
+
+    // if you want to add a duet function into our project you have to set this value to "true"
+    // and also get the extended apis
+    public static final boolean is_enable_duet=false;
 
     public final static int permission_camera_code = 786;
     public final static int permission_write_data = 788;

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
+import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 
@@ -99,17 +101,24 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
             holder.view_txt.setText(item.views);
             holder.view_txt.setText(Functions.GetSuffix(item.views));
 
-            Glide.with(context)
-                    .asGif()
-                    .load(item.gif)
-                    .skipMemoryCache(true)
-                    .thumbnail(new RequestBuilder[]{Glide
-                            .with(context)
-                            .load(item.thum)})
-                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.RESOURCE)
-                            .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
-
-                    .into(holder.thumb_image);
+            if(Variables.is_show_gif) {
+                Glide.with(context)
+                        .asGif()
+                        .load(item.gif)
+                        .skipMemoryCache(true)
+                        .thumbnail(new RequestBuilder[]{Glide
+                                .with(context)
+                                .load(item.thum)})
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE)
+                                .placeholder(context.getResources().getDrawable(R.drawable.image_placeholder)).centerCrop())
+                        .into(holder.thumb_image);
+            }
+            else {
+                if(item.thum!=null && !item.thum.equals("")) {
+                    Uri uri = Uri.parse(item.thum);
+                    holder.thumb_image.setImageURI(uri);
+                }
+            }
 
 
             holder.bind(i, item, listener);

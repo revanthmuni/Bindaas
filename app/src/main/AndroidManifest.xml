@@ -26,6 +26,10 @@
             android:name=".AudioTrimming.AudioTrimmerActivity"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".Video_Recording.Trim_video_A"
+            android:theme="@style/black_status"/>
+        <activity android:name=".Video_Recording.Video_Recoder_Duet_A"
+            android:theme="@style/black_status"/>
         <activity
             android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
             android:process=":error_activity"
@@ -171,23 +175,6 @@
     <uses-feature
         android:name="android.hardware.camera2.full"
         android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature
-        android:name="android.hardware.camera2.full"
-        android:required="false" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.MANAGE_DOCUMENTS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.RECORD_VIDEO" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

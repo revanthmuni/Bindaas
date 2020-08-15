@@ -220,6 +220,8 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     protected void onDestroy() {
         super.onDestroy();
         try {
+            if(adapter!=null)
+                adapter.recycle_bitmap();
             if (player != null) {
                 player.removeListener(Preview_Video_A.this);
                 player.release();

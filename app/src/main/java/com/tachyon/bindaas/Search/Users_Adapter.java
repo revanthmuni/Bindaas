@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Adapter_Click_Listener;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;

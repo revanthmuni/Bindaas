@@ -139,7 +139,31 @@
                     android:textSize="13dp"
                     android:layout_marginTop="5dp"/>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/duet_layout">
 
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_duet"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="Duet"
+                    android:textSize="13dp"
+                    android:layout_marginTop="5dp"/>
+
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

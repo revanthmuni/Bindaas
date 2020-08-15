@@ -13,6 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -49,6 +50,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
     String video_id, user_id;
 
     ProgressBar progressBar;
+    Home_Get_Set item;
 
     public VideoAction_F() {
     }
@@ -71,6 +73,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
             Bundle bundle = getArguments();
             if (bundle != null) {
+                item=(Home_Get_Set) bundle.getSerializable("data");
                 video_id = bundle.getString("video_id");
                 user_id = bundle.getString("user_id");
             }
@@ -103,6 +106,14 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
+        }
+
+        if(Variables.is_enable_duet && (item.allow_duet!=null && item.allow_duet.equalsIgnoreCase("1"))) {
+            view.findViewById(R.id.duet_layout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.duet_layout).setOnClickListener(this);
+        }
+        else {
+            view.findViewById(R.id.duet_layout).setVisibility(View.GONE);
         }
         return view;
     }
@@ -207,11 +218,20 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                         Bundle bundle = new Bundle();
                         bundle.putString("action", "save");
                         dismiss();
+                        if(fragment_callback!=null)
                         fragment_callback.Responce(bundle);
                     }
 
                     break;
-
+                case R.id.duet_layout:
+                    if(Functions.check_permissions(getActivity())) {
+                        Bundle duet_bundle = new Bundle();
+                        duet_bundle.putString("action", "duet");
+                        dismiss();
+                        if (fragment_callback != null)
+                            fragment_callback.Responce(duet_bundle);
+                    }
+                    break;
                 case R.id.copy_layout:
                     ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("Copied Text", context.getResources().getString(R.string.save_video_message) + " " + Variables.DOWNLOAD_VIDEO + video_id);
@@ -226,6 +246,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                         Bundle bundle = new Bundle();
                         bundle.putString("action", "delete");
                         dismiss();
+                        if(fragment_callback!=null)
                         fragment_callback.Responce(bundle);
                     }
                     break;

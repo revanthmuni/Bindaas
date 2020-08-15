@@ -96,6 +96,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.tachyon.bindaas.Video_Recording.Video_Recoder_Duet_A;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -144,12 +145,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     ImageView uploading_thumb;
     ImageView uploading_icon;
     UploadingVideoBroadCast mReceiver;
-    private class UploadingVideoBroadCast extends BroadcastReceiver implements Upload_Service.OnSuccessUpload {
+    private class UploadingVideoBroadCast extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Upload_Service mService = new Upload_Service(this);
+            Upload_Service mService = new Upload_Service();
             if (Functions.isMyServiceRunning(context,mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
                 Bitmap bitmap=Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb,""));
@@ -161,11 +162,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 upload_video_layout.setVisibility(View.GONE);
             }
 
-        }
-
-        @Override
-        public void onSuccess(String msg) {
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -389,6 +385,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                                 public void Responce(Bundle bundle) {
                                     if (bundle.getString("action").equals("save")) {
                                         Save_Video(item);
+                                    } else if(bundle.getString("action").equals("duet")){
+                                        Duet_video(item);
                                     } else if (bundle.getString("action").equals("delete")) {
                                         deleteVideo(item);
                                     }
@@ -398,6 +396,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                             Bundle bundle = new Bundle();
                             bundle.putString("video_id", item.video_id);
                             bundle.putString("user_id", item.user_id);
+                            bundle.putSerializable("data",item);
                             fragment.setArguments(bundle);
                             fragment.show(getChildFragmentManager(), "");
                         }
@@ -496,10 +495,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.views  = count.optString("view");
                     item.privacy_type=itemdata.optString("privacy_type");
                     item.allow_comments=itemdata.optString("allow_comments");
+                    item.allow_duet=itemdata.optString("allow_duet");
                     item.video_id = itemdata.optString("id");
                     item.views = itemdata.optString("view");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
+                    itemdata.optString("video");
 
 
                     item.video_description = itemdata.optString("description");
@@ -507,7 +508,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     item.thum = itemdata.optString("thum");
                     item.created_date = itemdata.optString("created");
 
-                    temp_list.add(item);
+                    if(Variables.is_demo_app) {
+                        if(i<5)
+                            temp_list.add(item);
+                    }else {
+                        temp_list.add(item);
+                    }
                 }
 
                 if(!temp_list.isEmpty()) {
@@ -604,6 +610,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                     item.privacy_type=itemdata.optString("privacy_type");
                     item.allow_comments=itemdata.optString("allow_comments");
+                    item.allow_duet = itemdata.optString("allow_duet");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
                     item.video_url = itemdata.optString("video");
@@ -635,11 +642,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     public void Set_Player(final int currentPage) {
         final Home_Get_Set item = data_list.get(currentPage);
 
-        Call_cache();
+        /*Call_cache();
 
         HttpProxyCacheServer proxy = Bindaas.getProxy(context);
         String proxyUrl = proxy.getProxyUrl(item.video_url);
-
+*/
         LoadControl loadControl = new DefaultLoadControl.Builder().setBufferDurationsMs(1 * 1024, 1 * 1024, 500, 1024).createDefaultLoadControl();
 
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
@@ -649,10 +656,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
 
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(proxyUrl));
+                .createMediaSource(Uri.parse(item.video_url));
 
         Log.d(Variables.tag, item.video_url);
-        Log.d(Variables.tag, proxyUrl);
 
 
         player.prepare(videoSource);
@@ -934,7 +940,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         } else {
             action = "0";
             home_get_set.like_count = "" + (Integer.parseInt(home_get_set.like_count) - Integer.parseInt(home_get_set.liked));
-            Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "liked count can't be > 1", Toast.LENGTH_SHORT).show();
         }
 
         data_list.remove(position);
@@ -1306,6 +1312,71 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         }
     }
 
+    public void Duet_video(final Home_Get_Set item){
+
+        Log.d(Variables.tag,item.video_url);
+        if(item.video_url!=null){
+
+            Functions.Show_determinent_loader(context,false,false);
+            PRDownloader.initialize(getActivity().getApplicationContext());
+            DownloadRequest prDownloader= PRDownloader.download(item.video_url, Variables.app_folder, item.video_id+".mp4")
+                    .build()
+                    .setOnStartOrResumeListener(new OnStartOrResumeListener() {
+                        @Override
+                        public void onStartOrResume() {
+
+                        }
+                    })
+                    .setOnPauseListener(new OnPauseListener() {
+                        @Override
+                        public void onPause() {
+
+                        }
+                    })
+                    .setOnCancelListener(new OnCancelListener() {
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    })
+                    .setOnProgressListener(new OnProgressListener() {
+                        @Override
+                        public void onProgress(Progress progress) {
+                            int prog=(int)((progress.currentBytes*100)/progress.totalBytes);
+                            Functions.Show_loading_progress(prog);
+
+                        }
+                    });
+
+
+            prDownloader.start(new OnDownloadListener() {
+                @Override
+                public void onDownloadComplete() {
+                    Functions.cancel_determinent_loader();
+
+                    //  Chnage_Video_size(Variables.app_showing_folder+item.video_id+".mp4",Variables.app_showing_folder+"changed_size"+".mp4");
+                    Open_duet_Recording(item);
+                }
+
+                @Override
+                public void onError(Error error) {
+
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    Functions.cancel_determinent_loader();
+                }
+
+
+            });
+
+        }
+
+    }
+
+    public void Open_duet_Recording(Home_Get_Set item){
+        Intent intent=new Intent(getActivity(), Video_Recoder_Duet_A.class);
+        intent.putExtra("data",item);
+        startActivity(intent);
+    }
 
     public boolean is_fragment_exits() {
         FragmentManager fm = getActivity().getSupportFragmentManager();

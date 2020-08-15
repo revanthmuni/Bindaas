@@ -152,16 +152,6 @@ public class SegmentedProgressBar extends View {
         countDownTimerWithPause.resume();
     }
 
-    public void reset() {
-        countDownTimerWithPause.cancel();
-        enableAutoProgressView(maxTimeInMillis);
-        dividerPositions.removeAll(dividerPositions);
-        percentCompleted = 0;
-        lastDividerPosition = 0;
-        dividerCount = 0;
-        invalidate();
-    }
-
     public void cancel() {
         if (countDownTimerWithPause == null) {
             Log.e(TAG, "cancel: Auto progress is not initialized. Use \"enableAutoProgressView\" to initialize the progress bar.");
@@ -185,29 +175,10 @@ public class SegmentedProgressBar extends View {
         }
     }
 
-    /**
-     * Set the color for the progress bar
-     *
-     * @param color
-     */
-    public void setProgressColor(int color) {
-        progressPaint.setColor(color);
-    }
-
-    /**
-     * Set the color for the divider bar
-     *
-     * @param color
-     */
     public void setDividerColor(int color) {
         dividerPaint.setColor(color);
     }
 
-    /**
-     * set the width of the divider
-     *
-     * @param width
-     */
     public void setDividerWidth(float width) {
         if (width < 0) {
             Log.w(TAG, "setDividerWidth: Divider width can not be negative");
@@ -250,20 +221,6 @@ public class SegmentedProgressBar extends View {
     }
 
     /**
-     * Manually update the progress bar completion status
-     *
-     * @param value can only be in between 0 and 1 inclusive.
-     */
-    public void publishProgress(final float value) {
-        if (value < 0 || value > 1) {
-            Log.w(TAG, "publishProgress: Progress value can only be in between 0 and 1");
-            return;
-        }
-
-        updateProgress(value);
-    }
-
-    /**
      * Add Divider to current position
      */
     public void addDivider() {
@@ -276,7 +233,49 @@ public class SegmentedProgressBar extends View {
             Log.w(TAG, "addDivider: Divider already added to current position");
         }
     }
+    public void removeDivider(){
+        dividerCount -= 1;
+        dividerPositions.remove(dividerPositions.size()-1);
+        lastDividerPosition=percentCompleted;
+        invalidate();
+    }
 
+
+
+    public void reset() {
+        countDownTimerWithPause.cancel();
+        enableAutoProgressView(maxTimeInMillis);
+        dividerPositions.removeAll(dividerPositions);
+        percentCompleted = 0;
+        lastDividerPosition = 0;
+        dividerCount = 0;
+        invalidate();
+    }
+
+    public float GetPercentComplete(){
+        return percentCompleted;
+    }
+
+
+
+    public void setProgressColor(int color) {
+        progressPaint.setColor(color);
+    }
+
+
+    /**
+     * Manually update the progress bar completion status
+     *
+     * @param value can only be in between 0 and 1 inclusive.
+     */
+    public void publishProgress(final float value) {
+        if (value < 0 || value > 1) {
+            Log.w(TAG, "publishProgress: Progress value can only be in between 0 and 1");
+            return;
+        }
+
+        updateProgress(value);
+    }
 
     public void setCornerRadius(float cornerRadius) {
         this.cornerRadius = cornerRadius;
