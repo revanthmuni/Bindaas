@@ -65,6 +65,7 @@
             android:padding="5dp"
             android:id="@+id/side_menu"
             android:src="@drawable/ic_black_dots"
+            android:layout_marginRight="16dp"
             android:rotation="90"/>
     </LinearLayout>
 

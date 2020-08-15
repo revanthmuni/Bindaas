@@ -153,6 +153,8 @@ public class Variables {
     public static final String SIGN_UP = api_domain + "localSignup";
     public static final String DELETE_COMMENT = api_domain + "deleteComment";
     public static final String POST_AUDIO = api_domain + "uploadLocalSound";
+    public static final String SHARE_VIDEO = api_domain + "shareVideo";
+    public static final String NEWS_FEED = api_domain + "getNewsFeed";
 
 
 }

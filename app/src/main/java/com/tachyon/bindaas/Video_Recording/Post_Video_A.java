@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     TextView privcy_type_txt;
     Switch comment_switch, duet_switch;
-
+    Spinner category;
     Bitmap bmThumbnail;
 
     @Override
@@ -70,6 +71,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             video_thumbnail = findViewById(R.id.video_thumbnail);
 
             description_edit = findViewById(R.id.description_edit);
+            category = findViewById(R.id.cat_spinner);
 
             // this will get the thumbnail of video and show them in imageview
             bmThumbnail = ThumbnailUtils.createVideoThumbnail(video_path,
@@ -206,6 +208,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 mServiceIntent.putExtra("duet_video_id",duet_video_id);
                 mServiceIntent.putExtra("uri", "" + video_path);
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
+                mServiceIntent.putExtra("cat",category.getSelectedItem().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
 
                 if (comment_switch.isChecked())

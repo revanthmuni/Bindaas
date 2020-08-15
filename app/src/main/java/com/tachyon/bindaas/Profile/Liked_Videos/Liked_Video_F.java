@@ -184,7 +184,7 @@ public class Liked_Video_F extends Fragment {
 
                 Log.d("TAG", "Parse_data: adjflkadj"+user_videos);
 
-                if (!user_videos.toString().equals("[" + "0" + "]")) {
+                if (!user_videos.toString().equals("["  + "]")) {
 
                     no_data_layout.setVisibility(View.GONE);
 

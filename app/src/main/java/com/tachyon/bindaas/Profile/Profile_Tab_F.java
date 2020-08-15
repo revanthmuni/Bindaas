@@ -45,6 +45,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -77,7 +78,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     View view;
     Context context;
 
-    public TextView username, username2_txt, video_count_txt, tvUserNotifications, tvUserChat;
+    public TextView username, username2_txt, video_count_txt, tvUserNotifications,tvUserChat;
     public ImageView imageView;
     public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount, tvPrivateCount;
 
@@ -100,6 +101,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     RelativeLayout tabs_main_layout;
 
     ConstraintLayout top_layout;
+    FrameLayout inbox_view,notification_view;
 
 
     public String pic_url;
@@ -123,6 +125,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             swiperefresh.setProgressViewOffset(false, 0, 200);
 
             swiperefresh.setColorSchemeResources(R.color.black);
+            notification_view = view.findViewById(R.id.notification_view);
+            inbox_view = view.findViewById(R.id.inbox_view);
 
             view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,7 +163,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                         int size = (int) snapshot.getChildrenCount();
                         Log.d("Firebase_Unread_count", "onDataChange: " + size);
                         if (size > 0) {
-                            tvUserChat.setText("(" + size + ")");
+                            tvUserChat.setText(""+size);
                         }else{
                             tvUserChat.setText("");
                         }
@@ -199,10 +203,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
                     break;
 
-                case R.id.tvUserChat:
+                case R.id.inbox_view:
                     Open_inbox_F();
                     break;
-                case R.id.tvUserNotifications:
+                case R.id.notification_view:
                     openNotificationFragment();
                     break;
 
@@ -352,8 +356,11 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
             view.findViewById(R.id.following_layout).setOnClickListener(this);
             view.findViewById(R.id.fans_layout).setOnClickListener(this);
-            tvUserNotifications.setOnClickListener(this);
-            tvUserChat.setOnClickListener(this);
+            /*tvUserNotifications.setOnClickListener(this);
+            tvUserChat.setOnClickListener(this);*/
+
+            notification_view.setOnClickListener(this);
+            inbox_view.setOnClickListener(this);
 
             setupTabIcons();
 
@@ -621,9 +628,14 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 username2_txt.setText(user_info.optString("username"));
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
                 int has_new_notification = data.optInt("has_new_notification");
-                Log.d("TAG", "Parse_data: " + has_new_notification);
-                tvUserNotifications.setText("(" + has_new_notification + ")");
+                if (has_new_notification>0) {
+                    Log.d("TAG", "Parse_data: " + has_new_notification);
+                    tvUserNotifications.setText(""+has_new_notification);
+                }else{
+                    tvUserNotifications.setText("");
+                }
                 pic_url = user_info.optString("profile_pic");
+
                 if (pic_url != null && !pic_url.equals(""))
                     Picasso.with(context)
                             .load(pic_url)

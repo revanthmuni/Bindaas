@@ -93,6 +93,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -249,6 +250,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     }
 
     public void Parse_data(String responce) {
+        Log.d("username_check", "Parse_data: "+responce);
         try {
             data_list = new ArrayList<>();
 
@@ -264,19 +266,19 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         item.user_id = itemdata.optString("user_id");
 
                         JSONObject user_info = itemdata.optJSONObject("user_info");
-                        item.username = user_info.optString("username");
+                        item.username = Objects.requireNonNull(user_info).optString("username");
                         item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
                         item.last_name = user_info.optString("last_name", "User");
                         item.profile_pic = user_info.optString("profile_pic", "null");
                         item.verified = user_info.optString("verified");
 
                         JSONObject sound_data = itemdata.optJSONObject("sound");
-                        item.sound_id = sound_data.optString("id");
+                        item.sound_id = Objects.requireNonNull(sound_data).optString("id");
                         item.sound_name = sound_data.optString("sound_name");
                         item.sound_pic = sound_data.optString("thum");
                         if (sound_data != null) {
                             JSONObject audio_path = sound_data.optJSONObject("audio_path");
-                            item.sound_url_mp3 = audio_path.optString("mp3");
+                            item.sound_url_mp3 = Objects.requireNonNull(audio_path).optString("mp3");
                             item.sound_url_acc = audio_path.optString("aac");
                         }
 
@@ -360,6 +362,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
                     item.username = user_info.optString("username");
+                    Log.d("username_check", "Singal_Video_Parse_data: "+user_info.optString("username"));
                     item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
                     item.last_name = user_info.optString("last_name", "User");
                     item.profile_pic = user_info.optString("profile_pic", "null");
@@ -375,12 +378,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         item.sound_url_acc = audio_path.optString("aac");
                     }
 
-
                     JSONObject count = itemdata.optJSONObject("count");
                     item.like_count = count.optString("like_count");
                     item.video_comment_count = count.optString("video_comment_count");
-
-
+                    item.views = itemdata.optString("view");
                     item.video_id = itemdata.optString("id");
                     item.liked = itemdata.optString("liked");
                     item.privacy_type=itemdata.optString("privacy_type");
@@ -771,9 +772,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
 
-      /*  LinearLayout soundimage = (LinearLayout)layout.findViewById(R.id.sound_image_layout);
+        LinearLayout soundimage = (LinearLayout)layout.findViewById(R.id.sound_image_layout);
         Animation aniRotate = AnimationUtils.loadAnimation(context,R.anim.d_clockwise_rotation);
-        soundimage.startAnimation(aniRotate);*/
+        soundimage.startAnimation(aniRotate);
 
             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                 Functions.Call_Api_For_update_view(WatchVideos_F.this, item.video_id);
