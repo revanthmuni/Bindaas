@@ -23,9 +23,12 @@ public class Variables {
     public static final String draft_app_folder = app_folder + "Draft/";
 
 
-    public static int max_recording_duration = 60000;
-    public static int recording_duration = 60000;
-    public static int min_time_recording=5000;
+    public static int max_recording_duration = 30000;
+    public static int recording_duration =30000;
+    public static int longVideoDuration = 30000;
+    public static int mediumVideoDuration = 20000;
+    public static int shortVideoDuration = 10000;
+    public static int min_time_recording=3000;
 
     public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";
@@ -107,7 +110,7 @@ public class Variables {
     public static final  String main_domain="http://bindaasonlinedev.com/";
 
     //public static final String base_url=main_domain+"API/funworld/";
-    public static final String base_url = main_domain + "API/";
+    public static final String base_url = main_domain + "coreapi/";
 
     //public static final String api_domain = "http://3.6.175.12/API/index.php?p=";
     public static final String api_domain = base_url + "index.php?p=";
@@ -143,7 +146,7 @@ public class Variables {
     public static final String getVerified = api_domain + "getVerified";
     public static final String downloadFile = api_domain + "downloadFile";
 
-    public static final String DOWNLOAD_VIDEO = base_url + "view.php?id=";
+    public static final String DOWNLOAD_VIDEO = main_domain + "watch.php?id=";
 
     public static final String FLAG_VIDEO = api_domain + "flagVideo";
     public static final String FLAG_COMMENT = api_domain + "flagComment";

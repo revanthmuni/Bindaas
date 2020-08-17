@@ -460,7 +460,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                         case 2:
                             create_popup_layout.clearAnimation();
                             create_popup_layout.setVisibility(View.GONE);
-                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_black));
+                            image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_black_red));
                             break;
                     }
                     tab.setCustomView(v);

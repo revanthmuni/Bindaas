@@ -52,7 +52,7 @@ public enum FilterType {
     DEFAULT,
     BRIGHTNESS,
     EXPOSURE,
-    FILTER_GROUP_SAMPLE,
+    VIGNETTE_SEPIA,
     GAMMA,
     GRAY_SCALE,
     HAZE,
@@ -115,7 +115,7 @@ public enum FilterType {
                 return new GlCrosshatchFilter();
             case EXPOSURE:
                 return new GlExposureFilter();
-            case FILTER_GROUP_SAMPLE:
+            case VIGNETTE_SEPIA:
                 return new GlFilterGroup(new GlSepiaFilter(), new GlVignetteFilter());
             case GAMMA:
                 GlGammaFilter glGammaFilter = new GlGammaFilter();

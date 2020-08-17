@@ -218,11 +218,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="60s"
+                android:text="10s"
                 android:padding="6dp"
                 android:textStyle="bold"
-                android:id="@+id/long_video_time_txt"
-                android:layout_toStartOf="@+id/short_video_time_txt"
+                android:id="@+id/short_video_time_txt"
+                android:layout_toStartOf="@+id/medium_video_time_txt"
                 android:textSize="15dp"
                 android:textColor="@color/graycolor2"/>
 
@@ -230,10 +230,21 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15s"
+                android:text="20s"
                 android:padding="6dp"
                 android:textStyle="bold"
-                android:id="@+id/short_video_time_txt"
+                android:id="@+id/medium_video_time_txt"
+                android:layout_toStartOf="@+id/long_video_time_txt"
+                android:textSize="15dp"
+                android:textColor="@color/graycolor2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30s"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:id="@+id/long_video_time_txt"
                 android:layout_centerHorizontal="true"
                 android:textSize="15dp"
                 android:textColor="@color/white"/>

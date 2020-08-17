@@ -95,7 +95,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     TextView countdown_timer_txt;
     boolean is_recording_timer_enable;
     int recording_time = 3;
-    TextView short_video_time_txt,long_video_time_txt;
+    TextView short_video_time_txt,long_video_time_txt,medium_video_time_txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +190,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             record_image.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {Toast.makeText(getBaseContext(), "click" + is_recording, Toast.LENGTH_SHORT).show();
+                public void onClick(View v) {
                     Start_or_Stop_Recording();
                 }
             });
@@ -198,8 +198,10 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             countdown_timer_txt = findViewById(R.id.countdown_timer_txt);
 
             short_video_time_txt=findViewById(R.id.short_video_time_txt);
+            medium_video_time_txt=findViewById(R.id.medium_video_time_txt);
             long_video_time_txt=findViewById(R.id.long_video_time_txt);
             short_video_time_txt.setOnClickListener(this);
+            medium_video_time_txt.setOnClickListener(this);
             long_video_time_txt.setOnClickListener(this);
             initlize_Video_progress();
         } catch (Exception e) {
@@ -228,12 +230,10 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     sec_passed = (int) (mills / 1000);
 
                     if (sec_passed > (Variables.recording_duration / 1000) - 1) {
-                        Toast.makeText(getBaseContext(), "Sec>" + is_recording, Toast.LENGTH_SHORT).show();
                         Start_or_Stop_Recording();
                     }
 
                     if (is_recording_timer_enable && sec_passed >= recording_time) {
-                        Toast.makeText(getBaseContext(), "&&" + is_recording, Toast.LENGTH_SHORT).show();
                         is_recording_timer_enable = false;
                         Start_or_Stop_Recording();
                     }
@@ -250,7 +250,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     // if the Recording is stop then it we start the recording
     // and if the mobile is recording the video then it will stop the recording
     public void Start_or_Stop_Recording() {
-        try {Toast.makeText(this, "" + is_recording, Toast.LENGTH_SHORT).show();
+        try {
             if (!is_recording && sec_passed < (Variables.recording_duration / 1000) - 1) {
                 number = number + 1;
 
@@ -267,7 +267,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 done_btn.setEnabled(false);
 
                 video_progress.resume();
-                //Toast.makeText(this, "" + is_recording, Toast.LENGTH_SHORT).show();
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_yes));
                 cut_video_btn.setVisibility(View.GONE);
                 findViewById(R.id.time_layout).setVisibility(View.INVISIBLE);
@@ -292,7 +291,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 findViewById(R.id.upload_layout).setEnabled(true);
                 record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_no));
                 camera_options.setVisibility(View.VISIBLE);
-                Toast.makeText(this, "" + "No", Toast.LENGTH_SHORT).show();
             } else if (sec_passed > (Variables.recording_duration / 1000)) {
                 Functions.Show_Alert(this, "Alert", "Video only can be a " + (int) Variables.recording_duration / 1000 + " S");
             }
@@ -675,13 +673,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     short_video_time_txt.setLayoutParams(param);
 
                     RelativeLayout.LayoutParams param4 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param4.addRule(RelativeLayout.START_OF,R.id.short_video_time_txt);
-                    long_video_time_txt.setLayoutParams(param4);
+                    param4.addRule(RelativeLayout.END_OF,R.id.short_video_time_txt);
+                    medium_video_time_txt.setLayoutParams(param4);
+
+                    RelativeLayout.LayoutParams param5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param5.addRule(RelativeLayout.END_OF,R.id.medium_video_time_txt);
+                    long_video_time_txt.setLayoutParams(param5);
 
                     short_video_time_txt.setTextColor(getResources().getColor(R.color.white));
+                    medium_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     long_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
 
-                    Variables.recording_duration=60000;
+                    Variables.recording_duration=Variables.shortVideoDuration;
 
                     initlize_Video_progress();
                     break;
@@ -693,13 +696,40 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     long_video_time_txt.setLayoutParams(param2);
 
                     RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param3.addRule(RelativeLayout.END_OF,R.id.long_video_time_txt);
-                    short_video_time_txt.setLayoutParams(param3);
+                    param3.addRule(RelativeLayout.START_OF,R.id.long_video_time_txt);
+                    medium_video_time_txt.setLayoutParams(param3);
+
+                    RelativeLayout.LayoutParams param6 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param6.addRule(RelativeLayout.START_OF,R.id.medium_video_time_txt);
+                    short_video_time_txt.setLayoutParams(param6);
 
                     short_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
+                    medium_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     long_video_time_txt.setTextColor(getResources().getColor(R.color.white));
 
-                    Variables.recording_duration=60000;
+                    Variables.recording_duration=Variables.longVideoDuration;
+
+                    initlize_Video_progress();
+                    break;
+
+                case R.id.medium_video_time_txt:
+                    RelativeLayout.LayoutParams param7 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param7.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                    medium_video_time_txt.setLayoutParams(param7);
+
+                    RelativeLayout.LayoutParams param8 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param8.addRule(RelativeLayout.END_OF,R.id.medium_video_time_txt);
+                    long_video_time_txt.setLayoutParams(param8);
+
+                    RelativeLayout.LayoutParams param9= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param9.addRule(RelativeLayout.START_OF,R.id.medium_video_time_txt);
+                    short_video_time_txt.setLayoutParams(param9);
+
+                    short_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
+                    medium_video_time_txt.setTextColor(getResources().getColor(R.color.white));
+                    long_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
+
+                    Variables.recording_duration=Variables.mediumVideoDuration;
 
                     initlize_Video_progress();
                     break;
