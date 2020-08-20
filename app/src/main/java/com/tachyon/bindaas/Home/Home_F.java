@@ -22,7 +22,9 @@ import com.google.android.exoplayer2.LoadControl;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Discover.Discover_F;
+import com.tachyon.bindaas.DummyModel;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
+import com.tachyon.bindaas.LinearLayoutManagerWithSmoothScroller;
 import com.tachyon.bindaas.NewsFeedFragment;
 import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -35,6 +37,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -125,7 +128,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     Context context;
 
 
-    ViewPager2 recyclerView;
+    RecyclerView recyclerView;
     ArrayList<Home_Get_Set> data_list;
     int currentPage = -1;
     LinearLayoutManager layoutManager;
@@ -175,6 +178,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         upload_video_layout.setVisibility(View.GONE);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -192,21 +196,21 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
         recyclerView = view.findViewById(R.id.recylerview);
         layoutManager = new LinearLayoutManager(context);
-        // layoutManager = new LinearLayoutManagerWithSmoothScroller(context);
-        // recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setHasFixedSize(false);
+        layoutManager = new LinearLayoutManagerWithSmoothScroller(context);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(false);
 
         SnapHelper snapHelper = new PagerSnapHelper();
-        //snapHelper.attachToRecyclerView(recyclerView);
+        snapHelper.attachToRecyclerView(recyclerView);
 
         // this is the scroll listener of recycler view which will tell the current item number
 
-        recyclerView.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        /*recyclerView.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-               /* final int scrollOffset = recyclerView.getCurrentItem();
+               *//* final int scrollOffset = recyclerView.getCurrentItem();
                 final int height = recyclerView.getHeight();
-                int page_no = scrollOffset / height;*/
+                int page_no = scrollOffset / height;*//*
                 Log.d("TAG", "onPageScrolled: outside block");
 
                 if (position != currentPage) {
@@ -229,9 +233,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
                 // Release_Privious_Player();
             }
-        });
+        });*/
 
-        /*recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -253,7 +257,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     Set_Player(currentPage);
                 }
             }
-        });*/
+        });
 
         swiperefresh = view.findViewById(R.id.swiperefresh);
         swiperefresh.setProgressViewOffset(false, 0, 200);
@@ -717,7 +721,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 }
 
                 public void onSwipeRight() {
-                    openNewsFeed(item,true,true);
+                    openNewsFeed(item, true, true);
 //                    OpenProfile(item, true, false);
                 }
 

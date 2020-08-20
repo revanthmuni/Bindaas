@@ -131,6 +131,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Animation rotation = AnimationUtils.loadAnimation(context, R.anim.rotate);
+                    refresh.startAnimation(rotation);
 //                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
                     //update_profile();
                     Call_Api_For_get_Allvideos();

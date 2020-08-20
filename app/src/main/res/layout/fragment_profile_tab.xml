@@ -386,9 +386,9 @@
 
                                     <ImageView
                                         android:id="@+id/myImageView1"
-                                        android:layout_width="65dp"
-                                        android:layout_height="55dp"
-                                        android:padding="15dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+
                                         android:src="@drawable/ic_notification_red"
                                         android:scaleType="centerCrop" />
 
@@ -434,11 +434,11 @@
 
                                     <ImageView
                                         android:id="@+id/myImageView"
-                                        android:layout_width="65dp"
-                                        android:layout_height="55dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
                                         android:padding="15dp"
                                         android:scaleType="centerCrop"
-                                        android:src="@drawable/ic_send_black" />
+                                        android:src="@drawable/ic_message" />
 
                                     <TextView
                                         android:id="@+id/tvUserChat"
