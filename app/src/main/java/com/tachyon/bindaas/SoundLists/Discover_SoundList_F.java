@@ -134,7 +134,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.play_pressed, Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -143,7 +143,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.pause_pressed, Toast.LENGTH_SHORT).show();
                     } else {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();

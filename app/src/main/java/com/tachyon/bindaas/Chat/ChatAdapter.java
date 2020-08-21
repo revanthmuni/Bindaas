@@ -320,7 +320,7 @@ class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 alertviewholder.message.setTextColor(context.getResources().getColor(R.color.delete_message_text));
                 alertviewholder.message.setBackground(context.getResources().getDrawable(R.drawable.d_round_gray_background_2));
 
-                alertviewholder.message.setText("This message is deleted by " + chat.getSender_name());
+                alertviewholder.message.setText(context.getString(R.string.this_msg_deleted_by) + chat.getSender_name());
 
                 if (position != 0) {
                     Chat_GetSet chat2 = mDataSet.get(position - 1);

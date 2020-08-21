@@ -115,7 +115,7 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
                         try {
                             Functions.copyFile(audio_file,
                                     new File(Variables.app_folder +item.video_id+".acc"));
-                            Toast.makeText(this, "Audio Saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, R.string.audio_saved, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

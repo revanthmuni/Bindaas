@@ -22,7 +22,6 @@ import com.google.android.exoplayer2.LoadControl;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Discover.Discover_F;
-import com.tachyon.bindaas.DummyModel;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
 import com.tachyon.bindaas.LinearLayoutManagerWithSmoothScroller;
 import com.tachyon.bindaas.NewsFeedFragment;
@@ -373,7 +372,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                         if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
                             Like_Video(postion, item);
                         } else {
-                            Toast.makeText(context, "Please Login.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.please_login, Toast.LENGTH_SHORT).show();
                         }
                         break;
 

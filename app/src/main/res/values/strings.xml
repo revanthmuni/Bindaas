@@ -39,5 +39,26 @@
 
     <string name="no_user_videos">No videos are uploaded.</string>
     <string name="image_uploaded_successfully">Image Updated Successfully</string>
+    <string name="user_blocked">User Blocked</string>
+    <string name="user_un_blocked">User UnBlocked</string>
+    <string name="login_to_app">Please login in to app</string>
+    <string name="try_again">Tap again</string>
+    <string name="audio_stored_at">\"Audio stored at \"</string>
+    <string name="no_network_connection">No network conection</string>
+    <string name="authentication_failed">Authentication failed.</string>
+    <string name="login_cancel">Login Cancel</string>
+    <string name="login_error">Login Error</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="camera_permission_denied">camera permission denied</string>
+    <string name="please_login">Please Login.</string>
+    <string name="refresh">Refresh</string>
+    <string name="play_pressed">Play pressed</string>
+    <string name="pause_pressed">Pause pressed</string>
+    <string name="audio_saved">Audio Saved</string>
+    <string name="this_msg_deleted_by">\"This message is deleted by \"</string>
+    <string name="video_only_can_be">\"Video only can be a \"</string>
+    <string name="discard_last_clip">Discard the last clip?</string>
+    <string name="delete">DELETE</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>

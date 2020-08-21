@@ -169,7 +169,7 @@ public class Login_A extends AppCompatActivity {
                             //callLoginApi(email, password);
                             callLoginApiWithFirebase(email, password);
                         } else {
-                            Toast.makeText(activity, "No network conection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.no_network_connection, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -254,7 +254,7 @@ public class Login_A extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("firebase", "signInWithEmail:failure", task.getException());
-                                Toast.makeText(activity, "Authentication failed.",
+                                Toast.makeText(activity, R.string.authentication_failed,
                                         Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                             }
@@ -470,13 +470,13 @@ public class Login_A extends AppCompatActivity {
                 @Override
                 public void onCancel() {
                     // App code
-                    Toast.makeText(Login_A.this, "Login Cancel", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login_A.this, R.string.login_cancel, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onError(FacebookException error) {
                     Log.d("resp", "" + error.toString());
-                    Toast.makeText(Login_A.this, "Login Error" + error.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login_A.this, getString(R.string.login_error) + error.toString(), Toast.LENGTH_SHORT).show();
                 }
 
             });
@@ -534,7 +534,7 @@ public class Login_A extends AppCompatActivity {
                                         request.executeAsync();
                                     } else {
                                         Functions.cancel_loader();
-                                        Toast.makeText(Login_A.this, "Authentication failed.",
+                                        Toast.makeText(Login_A.this, R.string.authentication_failed,
                                                 Toast.LENGTH_SHORT).show();
                                     }
 
@@ -719,7 +719,7 @@ public class Login_A extends AppCompatActivity {
                 top_view.setVisibility(View.GONE);
                 finish();
                 startActivity(new Intent(this, MainMenuActivity.class));
-                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.login_successful, Toast.LENGTH_SHORT).show();
 
 
             } else {

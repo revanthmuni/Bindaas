@@ -1202,7 +1202,7 @@ public class Chat_Activity extends Fragment {
             rootref.child("Inbox")
                     .child(Receiverid)
                     .child(Variables.user_id).child("block").setValue("1");
-            Toast.makeText(context, "User Blocked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.user_blocked, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -1214,7 +1214,7 @@ public class Chat_Activity extends Fragment {
             rootref.child("Inbox")
                     .child(Receiverid)
                     .child(Variables.user_id).child("block").setValue("0");
-            Toast.makeText(context, "User UnBlocked", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.user_un_blocked, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -1380,11 +1380,11 @@ public class Chat_Activity extends Fragment {
             if (requestCode == Variables.permission_camera_code) {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Tap again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show();
 
                 } else {
 
-                    Toast.makeText(context, "camera permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.camera_permission_denied, Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -1392,14 +1392,14 @@ public class Chat_Activity extends Fragment {
             if (requestCode == Variables.permission_Read_data) {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Tap again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show();
                 }
             }
 
             if (requestCode == Variables.permission_write_data) {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Tap Again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -1407,7 +1407,7 @@ public class Chat_Activity extends Fragment {
             if (requestCode == Variables.permission_Recording_audio) {
 
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(context, "Tap Again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.try_again, Toast.LENGTH_SHORT).show();
                 }
             }
 

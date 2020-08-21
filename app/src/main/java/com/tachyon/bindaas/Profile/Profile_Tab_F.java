@@ -788,7 +788,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                             Logout();
                             break;
                         case R.id.profile_refresh:
-                            Toast.makeText(getContext(), "Refresh ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.refresh, Toast.LENGTH_SHORT).show();
                             break;
 
                     }
