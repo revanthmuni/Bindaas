@@ -15,11 +15,43 @@
       },
       "oauth_client": [
         {
-          "client_id": "829287734458-nicestll9aa646a65ejelnal85utmdnf.apps.googleusercontent.com",
+          "client_id": "829287734458-59bpr6icf3n81fjoiiavtik5s1m9a16h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tachyon.bindaas",
-            "certificate_hash": "e4ced241232f7409d49556a838e59ac8f6a3e40c"
+            "certificate_hash": "1172db15703d54f3836dbfdd5d0ec53d786396d6"
+          }
+        },
+        {
+          "client_id": "829287734458-3ckajehigaorbuvm0mqngt69nkjda7r7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "9f358279bec3c64ac8b444741684eff9d51636cf"
+          }
+        },
+        {
+          "client_id": "829287734458-ak7ifet3m75dqgrlre4heqe39to9f6jc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "22f653ea1a151f8bdcad5aad71083074e1c3ef64"
+          }
+        },
+        {
+          "client_id": "829287734458-tbhh29pq8gs5fs51mur9og54one0ba28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "bab15ecdc3ef62ab3bca22b536dcd7a3ed5592eb"
+          }
+        },
+        {
+          "client_id": "829287734458-d10qohcphaj2jp7irteht981ia97lb6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "b03a3d5d5fcba6d210dc0cc3fa5dffa75cfe15a9"
           }
         },
         {
@@ -36,7 +68,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "829287734458-4hs129kr2k24gm06giv07v0q5ajvemka.apps.googleusercontent.com",
+              "client_id": "829287734458-2gsjhltva0vlqfifcfgkkf8ilb6eljjb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

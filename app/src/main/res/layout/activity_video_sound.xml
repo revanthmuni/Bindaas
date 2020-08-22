@@ -62,7 +62,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
                     android:src="@color/colorAccent"
-                    fresco:placeholderImage="@color/colorAccent"
+                    fresco:roundedCornerRadius="20dp"
+                    fresco:placeholderImage="@drawable/ganesh"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
