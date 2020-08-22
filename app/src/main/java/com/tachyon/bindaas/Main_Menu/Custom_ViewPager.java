@@ -21,6 +21,7 @@ public class Custom_ViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (this.enabled) {
             return super.onTouchEvent(event);
         }
@@ -33,7 +34,6 @@ public class Custom_ViewPager extends ViewPager {
         if (this.enabled) {
             return super.onInterceptTouchEvent(event);
         }
-
         return false;
     }
 

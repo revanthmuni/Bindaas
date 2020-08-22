@@ -237,7 +237,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
         }
 
         else if(sec_passed>(Variables.recording_duration/1000)){
-            Functions.Show_Alert(this,"Alert","Video only can be a "+(int)Variables.recording_duration/1000+" S");
+            Functions.Show_Alert(this,"Alert",getString(R.string.video_only_can_be)+(int)Variables.recording_duration/1000+" S");
         }
 
 
@@ -465,7 +465,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
             case R.id.cut_video_btn:
 
-                Functions.Show_Alert(this, null, "Discard the last clip?", "DELETE", "CANCEL", new Callback() {
+                Functions.Show_Alert(this, null, getString(R.string.discard_last_clip), getString(R.string.delete), getString(R.string.cancel), new Callback() {
                     @Override
                     public void Responce(String resp) {
                         if(resp.equalsIgnoreCase("yes")){

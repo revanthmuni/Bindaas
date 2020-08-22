@@ -191,7 +191,7 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
                     Log.d(TAG, "onActivityResult Uri: " + String.valueOf(uri));
 
 //                    File fi = (File) data.getExtras().get("file");
-                    Toast.makeText(this, "Audio stored at " + path, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.audio_stored_at) + path, Toast.LENGTH_LONG).show();
 
                     Log.d("Audio_Test", "" + path);
                     JSONObject params = new JSONObject();

@@ -36,6 +36,7 @@
           android:textSize="22sp" />
 
       <TextView
+          android:id="@+id/error_text"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_below="@+id/whoops"
@@ -43,7 +44,7 @@
           android:layout_marginLeft="55dp"
           android:layout_marginRight="55dp"
           android:gravity="center"
-          android:text="@string/no_private_videos"
+          android:text="@string/no_user_videos"
           android:textColor="@color/dimgray"
           android:textSize="14sp" />
 

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -43,7 +44,7 @@ public class PrivateVideo_F extends Fragment {
     MyVideos_Adapter adapter;
     View view;
     Context context;
-
+    TextView error_text;
     RelativeLayout no_data_layout;
 
     NewVideoBroadCast mReceiver;
@@ -73,6 +74,7 @@ public class PrivateVideo_F extends Fragment {
         context = getContext();
 
 
+        error_text = view.findViewById(R.id.error_text);
         recyclerView = view.findViewById(R.id.recylerview);
         final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -228,6 +230,7 @@ public class PrivateVideo_F extends Fragment {
 
                 } else {
                     no_data_layout.setVisibility(View.VISIBLE);
+                    error_text.setText(getString(R.string.no_private_videos));
                 }
                 adapter.notifyDataSetChanged();
 

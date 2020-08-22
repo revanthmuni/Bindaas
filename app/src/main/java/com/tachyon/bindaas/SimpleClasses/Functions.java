@@ -117,26 +117,29 @@ public class Functions {
     }
 
     public static void Show_Alert(Context context, String title, String Message, String postivebtn, String negitivebtn, final Callback callback) {
+        try {
+            new AlertDialog.Builder(context)
+                    .setTitle(null)
+                    .setMessage(Message)
+                    .setNegativeButton(negitivebtn, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            callback.Responce("no");
+                        }
+                    })
+                    .setPositiveButton(postivebtn, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-        new AlertDialog.Builder(context)
-                .setTitle(null)
-                .setMessage(Message)
-                .setNegativeButton(negitivebtn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        callback.Responce("no");
-                    }
-                })
-                .setPositiveButton(postivebtn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            callback.Responce("yes");
 
-                        dialog.dismiss();
-                        callback.Responce("yes");
-
-                    }
-                }).show();
+                        }
+                    }).show();
+        } catch (Exception e) {
+            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+        }
     }
 
     public static void showLogMessage(Context context, String class_name, String msg) {

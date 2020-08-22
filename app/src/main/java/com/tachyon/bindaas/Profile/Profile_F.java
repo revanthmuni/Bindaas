@@ -136,7 +136,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.profile_refresh) {
             // Refresh the Layout
-            Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.refresh, Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -154,7 +154,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                         Follow_unFollow_User();
                     else
-                        Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.login_to_app, Toast.LENGTH_SHORT).show();
 
                     break;
 
@@ -504,7 +504,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             Open_Chat_F();
         }
         else {
-            Toast.makeText(context, "Please login in to app", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.login_to_app, Toast.LENGTH_SHORT).show();
         }
 
     }

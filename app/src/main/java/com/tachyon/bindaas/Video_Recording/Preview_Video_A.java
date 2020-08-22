@@ -289,7 +289,7 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
 
                                         Functions.cancel_determinent_loader();
 
-                                        Toast.makeText(Preview_Video_A.this, "Try Again", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Preview_Video_A.this, R.string.try_again, Toast.LENGTH_SHORT).show();
                                     } catch (Exception e) {
 
                                     }

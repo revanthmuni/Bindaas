@@ -494,7 +494,6 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
     public void Call_Api_For_image(final String image_link) {
 
-
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
@@ -524,8 +523,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                                     .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
                                     .resize(200, 200).centerCrop().into(profile_image);
 
-
-                        Toast.makeText(context, "Image Update Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.image_uploaded_successfully, Toast.LENGTH_SHORT).show();
 
                     }
                 } catch (JSONException e) {
