@@ -147,7 +147,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         GifImageView sound_image;
 
         LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout;
-        ImageView like_image, comment_image, ivSearch;
+        ImageView like_image, comment_image, ivSearch, ivRefresh;
         TextView like_txt, comment_txt;
 
         VideoView videoView;
@@ -157,6 +157,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             try {
 
 //            videoView = view.findViewById(R.id.playerview);
+                ivRefresh = view.findViewById(R.id.ivRefresh);
                 view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
@@ -275,6 +276,12 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 });
 
                 ivSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+                ivRefresh.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listener.onItemClick(postion, item, v);

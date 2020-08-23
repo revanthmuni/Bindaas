@@ -421,6 +421,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                         }
 
                         break;
+
+                    case R.id.ivRefresh:
+                        swiperefresh.setRefreshing(true);
+                        currentPage = -1;
+                        Call_Api_For_get_Allvideos();
+                        break;
                 }
 
             }
