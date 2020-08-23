@@ -2,6 +2,7 @@ package com.tachyon.bindaas;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.provider.Settings;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.VideoView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
@@ -30,6 +32,11 @@ public class Splash_A extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash);
+        VideoView videoView = findViewById(R.id.video_view);
+        String uriPath = "android.resource://"+getPackageName()+"/raw/myvideo";
+
+        videoView.setVideoURI(Uri.parse(uriPath));
+        videoView.start();
         try {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
