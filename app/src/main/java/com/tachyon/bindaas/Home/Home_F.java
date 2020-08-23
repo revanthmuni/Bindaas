@@ -803,8 +803,8 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
 
         LinearLayout soundimage = (LinearLayout) layout.findViewById(R.id.sound_image_layout);
-        Animation sound_animation = AnimationUtils.loadAnimation(context, R.anim.d_clockwise_rotation);
-        soundimage.startAnimation(sound_animation);
+        //Animation sound_animation = AnimationUtils.loadAnimation(context, R.anim.d_clockwise_rotation);
+        //soundimage.startAnimation(sound_animation);
         if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
             Functions.Call_Api_For_update_view(getActivity(), item.video_id);
 
