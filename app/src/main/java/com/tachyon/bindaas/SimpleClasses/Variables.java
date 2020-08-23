@@ -90,7 +90,7 @@ public class Variables {
 
     // if you want to add a duet function into our project you have to set this value to "true"
     // and also get the extended apis
-    public static final boolean is_enable_duet=false;
+    public static final boolean is_enable_duet=true;
 
     public final static int permission_camera_code = 786;
     public final static int permission_write_data = 788;
