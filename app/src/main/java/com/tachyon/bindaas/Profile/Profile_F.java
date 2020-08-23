@@ -534,7 +534,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                         public void OnSuccess(String responce) {
 
                             if (send_status.equals("1")) {
-                                follow_unfollow_btn.setText("UnFollow");
+                                follow_unfollow_btn.setText("Unfollow");
                                 follow_status = "1";
 
                             } else if (send_status.equals("0")) {
