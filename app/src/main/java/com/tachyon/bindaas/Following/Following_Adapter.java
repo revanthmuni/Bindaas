@@ -125,17 +125,22 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
             if(item.follow_status_button.equalsIgnoreCase("Follow")){
                 holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
                 holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
 
             }
 
             else if(item.follow_status_button.equalsIgnoreCase("Unfollow")){
                 holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
+
                 holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
 
             }
 
             else if(item.follow_status_button.equalsIgnoreCase("Friends")){
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
+
                 holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
                 holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
 

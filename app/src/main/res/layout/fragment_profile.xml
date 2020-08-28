@@ -86,12 +86,58 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <LinearLayout
+                        android:id="@+id/constraintLayout4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="15dp"
+                        app:layout_constraintStart_toStartOf="@+id/view"
+                        app:layout_constraintTop_toBottomOf="@+id/llUserNameLayout"
+                        fresco:layout_constraintEnd_toEndOf="parent">
+                        <ImageView
+                            android:id="@+id/bio_image"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/ic_bio"
+                            />
+                        <TextView
+                            android:id="@+id/bio_text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="7"
+                            android:maxLines="5"
+                            android:layout_gravity="center"
+                            android:text="Hi i'm user007 , the Rockstoar"
+                            android:textColor="@color/black"/>
+                        <ImageView
+                            android:id="@+id/fb_image"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_facebook"
+                        />
+                        <ImageView
+                            android:id="@+id/insta_image"
+                            android:layout_width="0dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/insta_img"
+                          />
+
+
+                    </LinearLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/llUserNameLayout"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        app:layout_constraintRight_toLeftOf="@id/llUserInformationLayout"
+                        app:layout_constraintEnd_toStartOf="@+id/llUserInformationLayout"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_chainStyle="spread_inside"
                         fresco:layout_constraintLeft_toLeftOf="parent">
@@ -105,12 +151,6 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/user_image"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:src="@drawable/profile_image_placeholder" />
-
                             <ImageView
                                 android:id="@+id/varified_btn"
                                 android:layout_width="28dp"
@@ -121,6 +161,12 @@
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/ic_verified"
                                 android:visibility="gone" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/user_image"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:src="@drawable/profile_image_placeholder" />
                         </RelativeLayout>
 
                         <TextView
@@ -170,94 +216,94 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:id="@+id/llUserInformationLayout"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginRight="24dp"
 
                         android:orientation="vertical"
-                        app:layout_constraintLeft_toRightOf="@id/llUserNameLayout"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/llUserNameLayout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.16000003">
 
                         <LinearLayout
-                            android:id="@+id/following_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-                            <TextView
-                                android:id="@+id/follow_count_txt"
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:id="@+id/fans_layout"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="2dp"
-                                android:text="0"
-                                android:textColor="@color/black"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
+                                <TextView
+                                    android:id="@+id/fan_count_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:paddingLeft="15dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingRight="15dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:paddingLeft="15dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingRight="15dp"
+                                    android:paddingBottom="5dp"
+                                    android:text="Followers"
+                                    android:textColor="@color/darkgray"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/following_layout"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="5dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="5dp"
-                                android:text="Following"
-                                android:textColor="@color/darkgray"
-                                android:textSize="13dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical">
 
+                                <TextView
+                                    android:id="@+id/follow_count_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:paddingLeft="15dp"
+                                    android:paddingTop="2dp"
+                                    android:paddingRight="15dp"
+                                    android:paddingBottom="2dp"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
-                        <LinearLayout
-                            android:id="@+id/fans_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:orientation="vertical"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/following_layout">
-
-                            <TextView
-                                android:id="@+id/fan_count_txt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="2dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="2dp"
-                                android:text="0"
-                                android:textColor="@color/black"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingLeft="15dp"
-                                android:paddingTop="5dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="5dp"
-                                android:text="Followers"
-                                android:textColor="@color/darkgray"
-                                android:textSize="13dp"
-                                android:textStyle="bold" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:paddingLeft="15dp"
+                                    android:paddingTop="5dp"
+                                    android:paddingRight="15dp"
+                                    android:paddingBottom="5dp"
+                                    android:text="Following"
+                                    android:textColor="@color/darkgray"
+                                    android:textSize="13dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
 
 
@@ -300,21 +346,21 @@
                         </LinearLayout>
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
 
                     <androidx.constraintlayout.widget.Barrier
                         android:id="@+id/userInfoBarrier"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="llUserInformationLayout,llUserNameLayout" />
+                        app:constraint_referenced_ids="llUserInformationLayout,llUserNameLayout"
+                        tools:layout_editor_absoluteY="146dp" />
 
 
                     <TextView
                         android:id="@+id/follow_unfollow_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
                         android:background="@drawable/roundcorner_green_background"
                         android:paddingLeft="20dp"
                         android:paddingTop="10dp"
@@ -326,10 +372,11 @@
                         android:visibility="gone"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/userInfoBarrier"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
                         tools:text="Follow" />
 
                     <View
+                        android:id="@+id/view"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginTop="15dp"

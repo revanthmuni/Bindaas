@@ -95,7 +95,8 @@ public class ReportVideo extends AppCompatActivity {
                     callFlagCommentApi(commentId, radioButton.getText().toString());
                 } else {
                     FlagVideoRequest flagVideoRequest = new FlagVideoRequest();
-                    flagVideoRequest.setUser_id(videoItem.user_id);
+                    flagVideoRequest.setUser_id(Variables.sharedPreferences.getString(Variables.u_id, "0"));
+//                    flagVideoRequest.setUser_id(videoItem.user_id);
                     flagVideoRequest.setVideo_id(videoItem.video_id);
                     flagVideoRequest.setReason(radioButton.getText().toString());
                     callFlagVideoApi(flagVideoRequest);

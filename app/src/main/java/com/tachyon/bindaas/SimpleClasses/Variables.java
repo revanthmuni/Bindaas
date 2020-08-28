@@ -29,6 +29,7 @@ public class Variables {
     public static int mediumVideoDuration = 20000;
     public static int shortVideoDuration = 10000;
     public static int min_time_recording=3000;
+    public static long auto_scroll_duration = 15000;
 
     public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";
@@ -52,6 +53,7 @@ public class Variables {
     public static final String api_token = "api_token";
     public static final String device_id = "device_id";
     public static final String uploading_video_thumb="uploading_video_thumb";
+    public static final String auto_scroll_key = "auto_scroll_key";
 
     public static String user_id;
     public static String user_name;
@@ -155,6 +157,7 @@ public class Variables {
     public static final String POST_AUDIO = api_domain + "uploadLocalSound";
     public static final String SHARE_VIDEO = api_domain + "shareVideo";
     public static final String NEWS_FEED = api_domain + "getNewsFeed";
+    public static final String HASH_TAGS = api_domain + "getHashTags";
 
 
 }

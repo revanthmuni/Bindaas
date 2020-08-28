@@ -3,7 +3,9 @@ package com.tachyon.bindaas.Profile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -87,6 +89,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public String pic_url;
     private TextView tvVideosCount;
     private TextView tvLikesCount;
+    private ImageView insta_view,fb_view,bio_view;
+    private TextView bio_textview;
+    private String fb_link="";
+    private String inst_link="";
 
     public Profile_F() {
     }
@@ -173,6 +179,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 case R.id.back_btn:
                     getActivity().onBackPressed();
                     break;
+                case R.id.insta_image:
+                    Functions.openBrowser(context,inst_link);
+                    break;
+                case R.id.fb_image:
+                    Functions.openBrowser(context,fb_link);
+                    break;
 
             }
         } catch (Exception e) {
@@ -210,6 +222,13 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             adapter = new ViewPagerAdapter(getResources(), getChildFragmentManager());
             pager.setAdapter(adapter);
             tabLayout.setupWithViewPager(pager);
+
+            insta_view = view.findViewById(R.id.insta_image);
+            fb_view = view.findViewById(R.id.fb_image);
+            bio_textview  = view.findViewById(R.id.bio_text);
+            bio_view = view.findViewById(R.id.bio_image);
+            fb_view.setOnClickListener(this);
+            insta_view.setOnClickListener(this);
 
             setupTabIcons();
 
@@ -448,6 +467,17 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 JSONObject user_info = data.optJSONObject("user_info");
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
                 username2_txt.setText(user_info.optString("username"));
+//                fb_link = "https://www.google.com";
+                fb_link = user_info.optString("fb_link");
+                inst_link = user_info.optString("insta_link");
+                String bio_text = user_info.optString("bio");
+                fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
+                insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
+//                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+//                bio_textview.setText(bio_text.equals("")?"":bio_text);
+                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
+                String anyone_can_message = user_info.optString("anyone_can_message");
+
                 String has_new_notification = data.optString("has_new_notification");
                 Log.d("TAG", "Parse_data: "+has_new_notification);
 
@@ -472,6 +502,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     JSONObject follow_Status = data.optJSONObject("follow_Status");
                     follow_unfollow_btn.setText(follow_Status.optString("follow_status_button"));
                     follow_status = follow_Status.optString("follow");
+                    setting_btn.setVisibility(anyone_can_message.equals("true") ||
+                            follow_Status.equals("1")?View.VISIBLE:View.GONE);
                 }
 
                 JSONArray user_videos = data.getJSONArray("user_videos");

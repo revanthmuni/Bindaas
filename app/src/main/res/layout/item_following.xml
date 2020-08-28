@@ -70,7 +70,7 @@
                 android:textSize="10sp"
                 android:text="Following"
                 android:textStyle="bold"
-                android:background="@drawable/d_gray_border"
+                android:background="@drawable/roundcorner_green_background"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="15dp"

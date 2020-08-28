@@ -1,10 +1,12 @@
 package com.tachyon.bindaas.Video_Recording;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -14,7 +16,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
@@ -31,11 +38,14 @@ import android.widget.Toast;
 import com.coremedia.iso.boxes.Container;
 import com.coremedia.iso.boxes.MovieHeaderBox;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 import com.googlecode.mp4parser.util.Matrix;
 import com.googlecode.mp4parser.util.Path;
+import com.tachyon.bindaas.Constant;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.RecyclerViewAdapter;
 import com.tachyon.bindaas.SegmentProgress.ProgressBarListener;
 import com.tachyon.bindaas.SegmentProgress.SegmentedProgressBar;
 import com.tachyon.bindaas.SimpleClasses.Callback;
@@ -44,6 +54,7 @@ import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.SoundLists.SoundList_Main_A;
+import com.tachyon.bindaas.StorageUtil;
 import com.tachyon.bindaas.Video_Recording.GallerySelectedVideo.GallerySelectedVideo_A;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
@@ -51,11 +62,6 @@ import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.wonderkiln.camerakit.CameraKit;
-import com.wonderkiln.camerakit.CameraKitError;
-import com.wonderkiln.camerakit.CameraKitEvent;
-import com.wonderkiln.camerakit.CameraKitEventListener;
-import com.wonderkiln.camerakit.CameraKitImage;
-import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraProperties;
 import com.wonderkiln.camerakit.CameraView;
 
@@ -85,6 +91,9 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     LinearLayout camera_options;
     ImageButton rotate_camera, cut_video_btn;
 
+    RecyclerViewAdapter recyclerViewAdapter;
+    private File storage;
+    private String[] storagePaths;
 
     public static int Sounds_list_Request_code = 1;
     TextView add_sound_txt;
@@ -95,7 +104,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     TextView countdown_timer_txt;
     boolean is_recording_timer_enable;
     int recording_time = 3;
-    TextView short_video_time_txt,long_video_time_txt,medium_video_time_txt;
+    TextView short_video_time_txt,long_video_time_txt,medium_video_time_txt,from_storage;
+    BottomSheetBehavior behavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,10 +128,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             findViewById(R.id.upload_layout).setOnClickListener(this);
 
             cut_video_btn=findViewById(R.id.cut_video_btn);
+            from_storage = findViewById(R.id.textView2);
             cut_video_btn.setVisibility(View.GONE);
             cut_video_btn.setOnClickListener(this);
 
             done_btn = findViewById(R.id.done);
+
             done_btn.setEnabled(false);
             done_btn.setOnClickListener(this);
 
@@ -204,6 +216,61 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             medium_video_time_txt.setOnClickListener(this);
             long_video_time_txt.setOnClickListener(this);
             initlize_Video_progress();
+
+            LinearLayout bottomSheet = findViewById(R.id.bottom_sheet);
+            checkStorageAccessPermission();
+            RecyclerView recyclerView;
+
+
+            recyclerView = findViewById(R.id.recyclerview);
+            recyclerView.setLayoutManager(new GridLayoutManager(Video_Recoder_A.this,3));
+
+
+            recyclerViewAdapter = new RecyclerViewAdapter(Video_Recoder_A.this, new RecyclerViewAdapter.OnVideoClick() {
+                @Override
+                public void onVideoSelected(File file) {
+
+                    // Uri uri = data.getData();
+                    try {
+                        File video_file = file;
+//                    File video_file = FileUtils.getFileFromUri(this, uri);
+
+                        if (Functions.getfileduration(getApplicationContext(),Uri.fromFile(file)) < Variables.max_recording_duration) {
+                            Chnage_Video_size(video_file.getAbsolutePath(), Variables.gallery_resize_video);
+
+                        } else {
+                            Intent intent=new Intent(getApplicationContext(), Trim_video_A.class);
+                            intent.putExtra("path",video_file.getAbsolutePath());
+                            startActivity(intent);
+                        }
+//                    finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            recyclerView.setAdapter(recyclerViewAdapter);
+            behavior = BottomSheetBehavior.from(bottomSheet);
+            behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    // React to state change
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    // React to dragging events
+                }
+            });
+
+            from_storage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Pick_video_from_gallery();
+                }
+            });
+
+
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
@@ -211,7 +278,61 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    private void checkStorageAccessPermission() {
+        //ContextCompat use to retrieve resources. It provide uniform interface to access resources.
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("Permission Needed")
+                        .setMessage("This permission is needed to access media file in your phone")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(Video_Recoder_A.this,
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                        1);
+                            }
+                        })
+                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            Constant.allMediaList.clear();
+            storagePaths = StorageUtil.getStorageDirectories(this);
+
+            for (String path : storagePaths) {
+                storage = new File(path);
+                Functions.load_Directory_Files(storage);
+            }
+            Toast.makeText(this, ""+ Constant.allMediaList.size(), Toast.LENGTH_SHORT).show();
+            // Permission has already been granted
+            // Do nothing. Because if permission is already granted then files will be accessed/loaded in splash_screen_activity
+        }
+    }
     public void initlize_Video_progress() {
 
         try {
@@ -263,7 +384,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 if (audio != null)
                     audio.start();
 
-                done_btn.setBackgroundResource(R.drawable.ic_not_done);
+//                done_btn.setBackgroundResource(R.drawable.ic_not_done);
                 done_btn.setEnabled(false);
 
                 video_progress.resume();
@@ -302,10 +423,10 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
     public void Check_done_btn_enable() {
         if (sec_passed > (Variables.min_time_recording / 1000)) {
-            done_btn.setBackgroundResource(R.drawable.ic_done);
+            done_btn.setImageResource(R.drawable.ic_done);
             done_btn.setEnabled(true);
         } else {
-            done_btn.setBackgroundResource(R.drawable.ic_not_done);
+            done_btn.setImageResource(R.drawable.ic_not_done);
             done_btn.setEnabled(false);
         }
     }
@@ -594,6 +715,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                         public void Responce(String resp) {
                             if(resp.equalsIgnoreCase("yes")){
                                 Remove_Last_Section();
+//                                button.setVisibility(View.VISIBLE);
                             }
                         }
                     });

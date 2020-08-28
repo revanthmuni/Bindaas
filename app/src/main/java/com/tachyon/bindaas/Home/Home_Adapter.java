@@ -35,11 +35,15 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         void onItemClick(int positon, Home_Get_Set item, View view);
     }
 
+    public interface VideoDurationListner{
+        void onLoadDuration(long mills);
+    }
 
     public Home_Adapter(Context context, ArrayList<Home_Get_Set> dataList, Home_Adapter.OnItemClickListener listener) {
         this.context = context;
         this.dataList = dataList;
         this.listener = listener;
+       // this.videoDurationListner = videoDurationListner;
 
     }
 
@@ -69,6 +73,20 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
             holder.username.setText(item.username);
 
+
+           /* MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            if (Build.VERSION.SDK_INT >= 14) {
+                retriever.setDataSource(item.video_url, new HashMap<String, String>());
+            }
+            else {
+                retriever.setDataSource(item.video_url);
+            }
+            String mVideoDuration =  retriever .extractMetadata(retriever.METADATA_KEY_DURATION);
+            long mTimeInMilliseconds= Long.parseLong(mVideoDuration);
+            Log.d("META_DATA", "onBindViewHolder: video url:"+item.video_url);
+            Log.d("META_DATA", "onBindViewHolder: Duration"+mTimeInMilliseconds);
+
+            videoDurationListner.onLoadDuration(mTimeInMilliseconds);*/
 
             if ((item.sound_name == null || item.sound_name.equals("") || item.sound_name.equals("null"))) {
                 holder.sound_name.setText("original sound - " + item.first_name + " " + item.last_name);
@@ -147,7 +165,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         GifImageView sound_image;
 
         LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout;
-        ImageView like_image, comment_image, ivSearch;
+        ImageView like_image, comment_image, ivSearch, ivRefresh;
         TextView like_txt, comment_txt;
 
         VideoView videoView;
@@ -157,6 +175,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             try {
 
 //            videoView = view.findViewById(R.id.playerview);
+                ivRefresh = view.findViewById(R.id.ivRefresh);
                 view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
@@ -275,6 +294,12 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 });
 
                 ivSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(postion, item, v);
+                    }
+                });
+                ivRefresh.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listener.onItemClick(postion, item, v);

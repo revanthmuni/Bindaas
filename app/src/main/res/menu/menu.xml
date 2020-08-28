@@ -14,6 +14,9 @@
             android:id="@+id/delete_id"
             android:title="Delete Account"/>-->
         <item
+            android:id="@+id/preferences_id"
+            android:title="Preferences"/>
+        <item
             android:id="@+id/logout_id"
             android:title="Logout"/>
 
