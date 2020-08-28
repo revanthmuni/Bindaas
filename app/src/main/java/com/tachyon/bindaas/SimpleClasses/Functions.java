@@ -40,6 +40,7 @@ import com.downloader.PRDownloaderConfig;
 import com.downloader.Progress;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Comments.Comment_Get_Set;
+import com.tachyon.bindaas.Constant;
 import com.tachyon.bindaas.R;
 import com.gmail.samehadar.iosdialog.CamomileSpinner;
 import com.googlecode.mp4parser.authoring.Track;
@@ -976,7 +977,27 @@ public class Functions {
             }
         }
     }
-
+    public static void load_Directory_Files(File directory){
+        File[] fileList = directory.listFiles();
+        if(fileList != null && fileList.length > 0){
+            for (int i=0; i<fileList.length; i++){
+                if(fileList[i].isDirectory()){
+                    load_Directory_Files(fileList[i]);
+                }
+                else {
+                    String name = fileList[i].getName().toLowerCase();
+                    for (String extension: Constant.videoExtensions){
+                        //check the type of file
+                        if(name.endsWith(extension)){
+                            Constant.allMediaList.add(fileList[i]);
+                            //when we found file
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
     public static void openBrowser(Context context,String url) {
         try {
             Intent i = new Intent(Intent.ACTION_VIEW);

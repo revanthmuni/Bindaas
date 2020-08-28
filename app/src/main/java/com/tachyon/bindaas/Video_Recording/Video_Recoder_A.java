@@ -24,13 +24,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,13 +39,11 @@ import com.coremedia.iso.boxes.Container;
 import com.coremedia.iso.boxes.MovieHeaderBox;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 import com.googlecode.mp4parser.util.Matrix;
 import com.googlecode.mp4parser.util.Path;
 import com.tachyon.bindaas.Constant;
-import com.tachyon.bindaas.Method;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.RecyclerViewAdapter;
 import com.tachyon.bindaas.SegmentProgress.ProgressBarListener;
@@ -66,11 +62,6 @@ import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
 import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.wonderkiln.camerakit.CameraKit;
-import com.wonderkiln.camerakit.CameraKitError;
-import com.wonderkiln.camerakit.CameraKitEvent;
-import com.wonderkiln.camerakit.CameraKitEventListener;
-import com.wonderkiln.camerakit.CameraKitImage;
-import com.wonderkiln.camerakit.CameraKitVideo;
 import com.wonderkiln.camerakit.CameraProperties;
 import com.wonderkiln.camerakit.CameraView;
 
@@ -335,7 +326,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             for (String path : storagePaths) {
                 storage = new File(path);
-                Method.load_Directory_Files(storage);
+                Functions.load_Directory_Files(storage);
             }
             Toast.makeText(this, ""+ Constant.allMediaList.size(), Toast.LENGTH_SHORT).show();
             // Permission has already been granted
