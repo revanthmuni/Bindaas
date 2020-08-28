@@ -17,6 +17,8 @@ import android.provider.MediaStore;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.EditText;
@@ -26,12 +28,20 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.C;
+import com.google.gson.JsonObject;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.Services.ServiceCallback;
 import com.tachyon.bindaas.Services.Upload_Service;
+import com.tachyon.bindaas.SimpleClasses.ApiRequest;
+import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +49,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Post_Video_A extends AppCompatActivity implements ServiceCallback, View.OnClickListener {
 
@@ -55,6 +68,9 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     Spinner category;
     Bitmap bmThumbnail;
 
+    RecyclerView recyclerView;
+    HashTagsAdapter adapter;
+    List<String> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +113,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             privcy_type_txt = findViewById(R.id.privcy_type_txt);
             comment_switch = findViewById(R.id.comment_switch);
             duet_switch = findViewById(R.id.duet_switch);
-
-
+            recyclerView = findViewById(R.id.hashtags);
+            recyclerView.setLayoutManager(new GridLayoutManager(this,3));
             findViewById(R.id.Goback).setOnClickListener(this);
 
             findViewById(R.id.privacy_type_layout).setOnClickListener(this);
@@ -118,9 +134,56 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 duet_switch.setChecked(false);
             }
 
+            callApiForHashTags();
+
+
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
+    }
+
+    private void callApiForHashTags() {
+        try {
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.user_id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ApiRequest.Call_Api(getApplicationContext(), Variables.HASH_TAGS, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    parseData(resp);
+                }
+            });
+        }catch (Exception e){
+
+        }
+    }
+
+    private void parseData(String resp) {
+        try {
+            JSONObject jsonObject = new JSONObject(resp);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                JSONObject object = msgArray.getJSONObject(0);
+                JSONArray array = object.getJSONArray("hashtags");
+                for (int i=0;i<array.length();i++){
+                    list.add(array.getString(i));
+                }
+                Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
+            }
+            adapter = new HashTagsAdapter(this, list, new HashTagsAdapter.ClickListener() {
+                @Override
+                public void onClick(String item, int postion) {
+                    description_edit.setText("#"+item+" "+description_edit.getText().toString());
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } catch (JSONException e) {
         }
     }
 

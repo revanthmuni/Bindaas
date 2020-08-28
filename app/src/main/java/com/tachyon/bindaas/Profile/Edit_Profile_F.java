@@ -95,6 +95,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
     ImageView profile_image;
     EditText username_edit, firstname_edit, lastname_edit, user_bio_edit;
 
+    EditText fb_link,insta_link;
     RadioButton male_btn, female_btn, others_btn;
     RadioGroup genderGroup;
 
@@ -111,6 +112,8 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             view.findViewById(R.id.save_btn).setOnClickListener(this);
             view.findViewById(R.id.upload_pic_btn).setOnClickListener(this);
 
+            fb_link = view.findViewById(R.id.fb_link);
+            insta_link = view.findViewById(R.id.insta_link);
 
             username_edit = view.findViewById(R.id.username_edit);
             profile_image = view.findViewById(R.id.profile_image);

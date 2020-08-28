@@ -977,4 +977,14 @@ public class Functions {
         }
     }
 
+    public static void openBrowser(Context context,String url) {
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            context.startActivity(i);
+        }catch (Exception e){
+            Functions.showLogMessage(context,"OpenBrowser",e.getMessage());
+        }
+    }
+
 }

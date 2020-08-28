@@ -6,6 +6,10 @@
         <item>Romance</item>
         <item>Cute</item>
         <item>Other</item>
+    </array><array name="languages">
+        <item>Telugu</item>
+        <item>Tamil</item>
+        <item>Hindi</item>
     </array>
 
 

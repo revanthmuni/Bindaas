@@ -773,8 +773,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
         LinearLayout soundimage = (LinearLayout)layout.findViewById(R.id.sound_image_layout);
-        Animation aniRotate = AnimationUtils.loadAnimation(context,R.anim.d_clockwise_rotation);
-        soundimage.startAnimation(aniRotate);
+//        Animation aniRotate = AnimationUtils.loadAnimation(context,R.anim.d_clockwise_rotation);
+//        soundimage.startAnimation(aniRotate);
 
             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                 Functions.Call_Api_For_update_view(WatchVideos_F.this, item.video_id);

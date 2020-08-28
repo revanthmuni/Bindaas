@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tachyon.bindaas.Inbox.Inbox_F;
 import com.tachyon.bindaas.Notifications.Notification_F;
+import com.tachyon.bindaas.PreferencesFragment;
 import com.tachyon.bindaas.Profile.Private_Videos.PrivateVideo_F;
 import com.tachyon.bindaas.Settings.Setting_F;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -63,6 +64,7 @@ import com.tachyon.bindaas.See_Full_Image_F;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.squareup.picasso.Picasso;
+import com.tachyon.bindaas.TabsView;
 import com.tachyon.bindaas.Video_Recording.DraftVideos.DraftVideos_A;
 
 import org.json.JSONArray;
@@ -81,7 +83,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     public TextView username, username2_txt, video_count_txt, tvUserNotifications,tvUserChat;
     public ImageView imageView;
     public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount, tvPrivateCount;
-
+    private String fb_link="";
+    private String inst_link="";
     String videosCount = "0", likesCount = "0";
 
     ImageView setting_btn;
@@ -107,6 +110,9 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     public String pic_url;
 
 
+    private ImageView insta_view,fb_view,bio_view;
+    private TextView bio_textview;
+
     public LinearLayout create_popup_layout;
     public int myvideo_count = 0;
 
@@ -120,6 +126,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
         context = getContext();
+
         try {
             swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setProgressViewOffset(false, 0, 200);
@@ -128,12 +135,20 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             notification_view = view.findViewById(R.id.notification_view);
             inbox_view = view.findViewById(R.id.inbox_view);
 
+            insta_view = view.findViewById(R.id.insta_image2);
+            fb_view = view.findViewById(R.id.fb_image2);
+            bio_textview  = view.findViewById(R.id.bio_text2);
+            bio_view = view.findViewById(R.id.bio_image2);
+
+            fb_view.setOnClickListener(this);
+            insta_view.setOnClickListener(this);
+
             view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Animation rotation = AnimationUtils.loadAnimation(context, R.anim.rotate);
-                    refresh.startAnimation(rotation);
-//                Toast.makeText(context, "Refresh", Toast.LENGTH_SHORT).show();
+                    /*Animation rotation = AnimationUtils.loadAnimation(context, R.anim.rotate);
+                    refresh.startAnimation(rotation);*/
+                    swiperefresh.setRefreshing(true);
                     //update_profile();
                     Call_Api_For_get_Allvideos();
                     getUnreadMsgCount();
@@ -212,6 +227,13 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     openNotificationFragment();
                     break;
 
+                case R.id.insta_image:
+                    Functions.openBrowser(context,inst_link);
+                    break;
+                case R.id.fb_image:
+                    Functions.openBrowser(context,fb_link);
+                    break;
+
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -221,7 +243,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     private void openNotificationFragment() {
         try {
-            Notification_F notification_F = new Notification_F();
+            TabsView notification_F = new TabsView();
+//            Notification_F notification_F = new Notification_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
             transaction.addToBackStack(null);
@@ -629,6 +652,17 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 JSONObject user_info = data.optJSONObject("user_info");
                 username2_txt.setText(user_info.optString("username"));
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
+
+                 fb_link = user_info.optString("fb_link");
+                 inst_link = user_info.optString("insta_link");
+                String bio_text = user_info.optString("bio");
+                fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
+                insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
+//                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+//                bio_textview.setText(bio_text.equals("")?"":bio_text);
+
+                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
+
                 int has_new_notification = data.optInt("has_new_notification");
                 if (has_new_notification>0) {
                     Log.d("TAG", "Parse_data: " + has_new_notification);
@@ -787,7 +821,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                         case R.id.logout_id:
                             Logout();
                             break;
-                        case R.id.profile_refresh:
+                        case R.id.preferences_id:
+                            openPreferences();
                             Toast.makeText(getContext(), R.string.refresh, Toast.LENGTH_SHORT).show();
                             break;
 
@@ -795,6 +830,19 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     return true;
                 }
             });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+
+    private void openPreferences() {
+        try {
+            PreferencesFragment fragment = new PreferencesFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, fragment).commit();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 

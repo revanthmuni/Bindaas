@@ -49,7 +49,6 @@ public class Following_F extends Fragment {
 
     ArrayList<Following_Get_Set> datalist;
 
-
     RelativeLayout no_data_layout;
 
     ProgressBar pbar;
@@ -84,7 +83,6 @@ public class Following_F extends Fragment {
                 user_id = bundle.getString("id");
                 following_or_fan = bundle.getString("from_where");
             }
-
 
             title_txt = view.findViewById(R.id.title_txt);
 
@@ -289,7 +287,6 @@ public class Following_F extends Fragment {
                         if(item.follow.equalsIgnoreCase("1")){
                             item.follow_status_button="Friends";
                         }
-
 
                         if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
                             item.is_show_follow_unfollow_btn=false;
