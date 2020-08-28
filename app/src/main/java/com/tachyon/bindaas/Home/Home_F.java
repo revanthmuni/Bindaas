@@ -163,9 +163,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             Upload_Service mService = new Upload_Service();
             if (Functions.isMyServiceRunning(context, mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
-                Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+                /*Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
                 if (bitmap != null)
-                    uploading_thumb.setImageBitmap(bitmap);
+                    uploading_thumb.setImageBitmap(bitmap);*/
 
             } else {
                 upload_video_layout.setVisibility(View.GONE);
