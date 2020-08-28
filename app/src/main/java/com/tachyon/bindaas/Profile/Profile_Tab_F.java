@@ -227,10 +227,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     openNotificationFragment();
                     break;
 
-                case R.id.insta_image:
+                case R.id.insta_image2:
                     Functions.openBrowser(context,inst_link);
                     break;
-                case R.id.fb_image:
+                case R.id.fb_image2:
                     Functions.openBrowser(context,fb_link);
                     break;
 

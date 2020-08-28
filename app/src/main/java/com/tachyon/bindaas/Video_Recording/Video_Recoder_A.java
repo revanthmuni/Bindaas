@@ -642,50 +642,53 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     }
 
     public void Remove_Last_Section(){
+        try {
+            if (videopaths.size() > 0) {
+                File file = new File(videopaths.get(videopaths.size() - 1));
+                if (file.exists()) {
 
-        if(videopaths.size()>0){
-            File file=new File(videopaths.get(videopaths.size()-1));
-            if(file.exists()) {
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(Video_Recoder_A.this, Uri.fromFile(file));
+                    String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+                    String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    long timeInMillisec = Long.parseLong(time);
+                    boolean isVideo = "yes".equals(hasVideo);
+                    if (isVideo) {
+                        time_in_milis = time_in_milis - timeInMillisec;
+                        video_progress.removeDivider();
+                        videopaths.remove(videopaths.size() - 1);
+                        video_progress.updateProgress(time_in_milis);
+                        video_progress.back_countdown(timeInMillisec);
+                        if (audio != null) {
+                            int audio_backtime = (int) (audio.getCurrentPosition() - timeInMillisec);
+                            audio.seekTo(audio_backtime);
+                        }
 
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(Video_Recoder_A.this, Uri.fromFile(file));
-                String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
-                String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                long timeInMillisec = Long.parseLong(time );
-                boolean isVideo = "yes".equals(hasVideo);
-                if (isVideo) {
-                    time_in_milis=time_in_milis-timeInMillisec;
-                    video_progress.removeDivider();
-                    videopaths.remove(videopaths.size()-1);
-                    video_progress.updateProgress(time_in_milis);
-                    video_progress.back_countdown(timeInMillisec);
-                    if(audio!=null) {
-                        int audio_backtime = (int) (audio.getCurrentPosition()- timeInMillisec);
-                        audio.seekTo(audio_backtime);
+                        sec_passed = (int) (time_in_milis / 1000);
+
+                        Check_done_btn_enable();
+
                     }
+                }
 
-                    sec_passed = (int) (time_in_milis/1000);
+                if (videopaths.isEmpty()) {
 
-                    Check_done_btn_enable();
+                    findViewById(R.id.time_layout).setVisibility(View.VISIBLE);
+                    cut_video_btn.setVisibility(View.GONE);
+                    add_sound_txt.setClickable(true);
+                    rotate_camera.setVisibility(View.VISIBLE);
+
+                    initlize_Video_progress();
+
+                    if (audio != null)
+                        PreparedAudio();
 
                 }
+
+                file.delete();
             }
-
-            if(videopaths.isEmpty()){
-
-                findViewById(R.id.time_layout).setVisibility(View.VISIBLE);
-                cut_video_btn.setVisibility(View.GONE);
-                add_sound_txt.setClickable(true);
-                rotate_camera.setVisibility(View.VISIBLE);
-
-                initlize_Video_progress();
-
-                if(audio!=null)
-                    PreparedAudio();
-
-            }
-
-            file.delete();
+        }catch (Exception e){
+            Functions.showLogMessage(this,"video recorder",e.getMessage());
         }
     }
 
