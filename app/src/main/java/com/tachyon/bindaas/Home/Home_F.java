@@ -163,9 +163,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             Upload_Service mService = new Upload_Service();
             if (Functions.isMyServiceRunning(context, mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
-                /*Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+                Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
                 if (bitmap != null)
-                    uploading_thumb.setImageBitmap(bitmap);*/
+                    uploading_thumb.setImageBitmap(bitmap);
 
             } else {
                 upload_video_layout.setVisibility(View.GONE);
@@ -281,7 +281,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         if (!Variables.is_remove_ads)
             Load_add();
         upload_video_layout = view.findViewById(R.id.upload_video_layout);
-       // uploading_thumb = view.findViewById(R.id.uploading_thumb);
+        uploading_thumb = view.findViewById(R.id.uploading_thumb);
         uploading_icon = view.findViewById(R.id.uploading_icon);
 
         mReceiver = new UploadingVideoBroadCast();
@@ -290,9 +290,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         Upload_Service mService = new Upload_Service();
         if (Functions.isMyServiceRunning(context, mService.getClass())) {
             upload_video_layout.setVisibility(View.VISIBLE);
-           /* Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+            Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
             if (bitmap != null)
-                uploading_thumb.setImageBitmap(bitmap);*/
+                uploading_thumb.setImageBitmap(bitmap);
         }
 
         return view;

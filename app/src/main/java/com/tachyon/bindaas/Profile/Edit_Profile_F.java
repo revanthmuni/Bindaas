@@ -602,9 +602,18 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                             if (!u_name.contains("@"))
                                 u_name = "@" + u_name;
 
+                            JSONObject object = msg.getJSONObject(0);
                             editor.putString(Variables.u_name, u_name);
                             editor.putString(Variables.f_name, firstname_edit.getText().toString());
                             editor.putString(Variables.l_name, lastname_edit.getText().toString());
+
+                            editor.putString(Variables.gender, object.optString("gender"));
+                            editor.putString(Variables.bio, object.optString("bio"));
+                            editor.putString(Variables.fb_link,object.optString("fb_link"));
+                            editor.putString(Variables.insta_link,object.optString("insta_link"));
+                            editor.putString(Variables.auto_scroll_key, String.valueOf(object.optBoolean("auto_scroll")));
+
+
                             editor.commit();
 
                             Variables.user_name = u_name;

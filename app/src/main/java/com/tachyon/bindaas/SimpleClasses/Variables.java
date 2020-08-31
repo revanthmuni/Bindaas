@@ -160,4 +160,7 @@ public class Variables {
     public static final String HASH_TAGS = api_domain + "getHashTags";
 
 
+    public static String bio = "bio_key";
+    public static String fb_link = "fb_link";
+    public static String insta_link = "insta_link";
 }
