@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
@@ -602,7 +603,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                             if (!u_name.contains("@"))
                                 u_name = "@" + u_name;
 
-                            JSONObject object = msg.getJSONObject(0);
+                            JSONObject object = Objects.requireNonNull(msg).getJSONObject(0);
                             editor.putString(Variables.u_name, u_name);
                             editor.putString(Variables.f_name, firstname_edit.getText().toString());
                             editor.putString(Variables.l_name, lastname_edit.getText().toString());
@@ -611,9 +612,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                             editor.putString(Variables.bio, object.optString("bio"));
                             editor.putString(Variables.fb_link,object.optString("fb_link"));
                             editor.putString(Variables.insta_link,object.optString("insta_link"));
-                            editor.putString(Variables.auto_scroll_key, String.valueOf(object.optBoolean("auto_scroll")));
-
-
+                            editor.putBoolean(Variables.auto_scroll_key, Boolean.parseBoolean(object.optString("auto_scroll")));
                             editor.commit();
 
                             Variables.user_name = u_name;
@@ -636,10 +635,8 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
-
 
     // this will get the user data and parse the data and show the data into views
     public void Call_Api_For_User_Details() {
@@ -686,7 +683,8 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 firstname_edit.setText(data.optString("first_name"));
                 lastname_edit.setText(data.optString("last_name"));
                 username_edit.setText(data.optString("username"));
-
+                fb_link.setText(data.optString("fb_link"));
+                insta_link.setText(data.optString("insta_link"));
                 String picture = data.optString("profile_pic");
                 if (picture != null && !picture.equalsIgnoreCase(""))
                     Picasso.with(context)

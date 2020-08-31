@@ -576,7 +576,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             } else {
                 Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
-            Log.d("Auto-Scrolling", "onScrolled:parsedata "+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
+            //Log.d("Auto-Scrolling", "onScrolled:parsedata "+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
             if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                 autoScrollVideos();
