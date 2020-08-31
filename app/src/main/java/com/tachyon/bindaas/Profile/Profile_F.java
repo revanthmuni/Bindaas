@@ -475,9 +475,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 String bio_text = user_info.optString("bio");
                 fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
                 insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
-//                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
-//                bio_textview.setText(bio_text.equals("")?"":bio_text);
-                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
+                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+                bio_textview.setText(bio_text.equals("")?"":bio_text);
+                bio_textview.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+//                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
                 String anyone_can_message = user_info.optString("anyone_can_message");
 
                 String has_new_notification = data.optString("has_new_notification");

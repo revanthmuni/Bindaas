@@ -228,7 +228,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="7"
                                 android:maxLines="5"
-                                android:text="Hi i'm user007 , the Rockstoar"
+                                android:text="Hi i'm user"
                                 android:textColor="@color/black" />
 
                             <ImageView

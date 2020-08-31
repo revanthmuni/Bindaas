@@ -95,15 +95,16 @@
                         app:layout_constraintStart_toStartOf="@+id/view"
                         app:layout_constraintTop_toBottomOf="@+id/llUserNameLayout"
                         fresco:layout_constraintEnd_toEndOf="parent">
+
                         <ImageView
                             android:id="@+id/bio_image"
-                            android:layout_width="0dp"
+                            android:layout_width="29dp"
                             android:layout_height="30dp"
-                            android:layout_weight="1"
+                            android:visibility="gone"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:src="@drawable/ic_bio"
-                            />
+                            android:layout_weight="1"
+
+                            android:src="@drawable/ic_bio" />
                         <TextView
                             android:id="@+id/bio_text"
                             android:layout_width="0dp"
@@ -111,13 +112,15 @@
                             android:layout_marginStart="12dp"
                             android:layout_weight="7"
                             android:maxLines="5"
+                            android:visibility="gone"
                             android:layout_gravity="center"
-                            android:text="Hi i'm user007 , the Rockstoar"
+                            android:text="Hi i'm user"
                             android:textColor="@color/black"/>
                         <ImageView
                             android:id="@+id/fb_image"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
+                            android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
                             android:src="@drawable/ic_facebook"
@@ -126,6 +129,7 @@
                             android:id="@+id/insta_image"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
+                            android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
                             android:src="@drawable/insta_img"
