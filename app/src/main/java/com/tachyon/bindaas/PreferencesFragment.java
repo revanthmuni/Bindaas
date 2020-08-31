@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -37,7 +38,6 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
 
     View view;
     Context context;
-
     Switch auto_scrool_enabled;
     public PreferencesFragment() {
         // Required empty public constructor
@@ -51,11 +51,13 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         view = inflater.inflate(R.layout.fragment_preferences, container, false);
         context = getContext();
         auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
+        view.findViewById(R.id.Goback).setOnClickListener(this);
         auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
         auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
             SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
             editor.putBoolean(Variables.auto_scroll_key, b);
             editor.commit();
+            //Call_Api_For_Edit_profile();
             Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
         });
 
@@ -79,7 +81,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 parameters.put("fb_link",Variables.sharedPreferences.getString(Variables.fb_link,""));
                 parameters.put("insta_link", Variables.sharedPreferences.getString(Variables.insta_link,""));
                 parameters.put("gender",Variables.sharedPreferences.getString(Variables.gender,""));
-
+                parameters.put("auto_scroll",auto_scrool_enabled.isChecked());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -130,7 +132,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             switch (v.getId()) {
 
                 case R.id.Goback:
-                    getActivity().onBackPressed();
+                    Objects.requireNonNull(getActivity()).onBackPressed();
                     break;
 
             }
@@ -138,10 +140,5 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
 
         }
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return super.onBackPressed();
     }
 }

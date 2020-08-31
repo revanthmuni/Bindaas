@@ -708,6 +708,13 @@ public class Login_A extends AppCompatActivity {
                 editor.putString(Variables.gender, userdata.optString("gender"));
                 editor.putString(Variables.u_pic, userdata.optString("profile_pic"));
                 editor.putString(Variables.api_token, userdata.optString("tokon"));
+
+                editor.putBoolean(Variables.auto_scroll_key, Boolean.parseBoolean(userdata.optString("auto_scroll")));
+                editor.putString(Variables.fb_link,userdata.optString("fb_link"));
+                editor.putString(Variables.insta_link,userdata.optString("insta_link"));
+                editor.putString(Variables.bio,userdata.optString("bio"));
+                editor.putString(Variables.gender,userdata.optString("gender"));
+
                 editor.putBoolean(Variables.islogin, true);
                 editor.commit();
                 Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
