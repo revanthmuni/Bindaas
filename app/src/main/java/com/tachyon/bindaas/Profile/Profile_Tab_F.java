@@ -604,7 +604,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     //this will get the all videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-
+        Functions.Show_loader(context,false,false);
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
@@ -617,6 +617,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
+                Functions.cancel_loader();
                 Parse_data(resp);
                 swiperefresh.setRefreshing(false);
             }
@@ -658,10 +659,11 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 String bio_text = user_info.optString("bio");
                 fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
                 insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
-//                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
-//                bio_textview.setText(bio_text.equals("")?"":bio_text);
+                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+                bio_textview.setText(bio_text.equals("")?"":bio_text);
+                bio_textview.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
 
-                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
+//              bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
 
                 int has_new_notification = data.optInt("has_new_notification");
                 if (has_new_notification>0) {

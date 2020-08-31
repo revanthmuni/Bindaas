@@ -42,7 +42,7 @@
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="10dp">
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/search_edit"
@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="@color/transparent"
                 android:clickable="false"
                 android:focusable="false"
@@ -96,6 +97,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
 </LinearLayout>

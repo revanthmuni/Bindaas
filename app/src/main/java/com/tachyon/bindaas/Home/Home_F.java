@@ -142,7 +142,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     boolean is_user_stop_video = false;
     TextView following_btn, related_btn;
     String type = "related";
-    Timer timer;
+   // Timer timer;
 
     public Home_F() {
         // Required empty public constructor
@@ -163,9 +163,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             Upload_Service mService = new Upload_Service();
             if (Functions.isMyServiceRunning(context, mService.getClass())) {
                 upload_video_layout.setVisibility(View.VISIBLE);
-                /*Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+                Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
                 if (bitmap != null)
-                    uploading_thumb.setImageBitmap(bitmap);*/
+                    uploading_thumb.setImageBitmap(bitmap);
 
             } else {
                 upload_video_layout.setVisibility(View.GONE);
@@ -237,7 +237,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 // Release_Privious_Player();
             }
         });*/
-        timer = new Timer();
+      //  timer = new Timer();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -254,7 +254,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 final int scrollOffset = recyclerView.computeVerticalScrollOffset();
                 final int height = recyclerView.getHeight();
                 int page_no = scrollOffset / height;
-                Log.d("Auto-Scrolling", "onScrolled:onscrolled "+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
                 if (page_no != currentPage) {
                     currentPage = page_no;
                     Release_Privious_Player();
@@ -281,7 +280,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         if (!Variables.is_remove_ads)
             Load_add();
         upload_video_layout = view.findViewById(R.id.upload_video_layout);
-       // uploading_thumb = view.findViewById(R.id.uploading_thumb);
+        uploading_thumb = view.findViewById(R.id.uploading_thumb);
         uploading_icon = view.findViewById(R.id.uploading_icon);
 
         mReceiver = new UploadingVideoBroadCast();
@@ -290,15 +289,15 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         Upload_Service mService = new Upload_Service();
         if (Functions.isMyServiceRunning(context, mService.getClass())) {
             upload_video_layout.setVisibility(View.VISIBLE);
-           /* Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
+            Bitmap bitmap = Functions.Base64_to_bitmap(Variables.sharedPreferences.getString(Variables.uploading_video_thumb, ""));
             if (bitmap != null)
-                uploading_thumb.setImageBitmap(bitmap);*/
+                uploading_thumb.setImageBitmap(bitmap);
         }
 
         return view;
     }
 
-    private void autoScrollVideos() {
+    /*private void autoScrollVideos() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -315,7 +314,7 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             }
 
         }, auto_scroll_duration, auto_scroll_duration);
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -576,11 +575,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             } else {
                 Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
             }
-            Log.d("Auto-Scrolling", "onScrolled:parsedata "+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-            if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+           /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                 autoScrollVideos();
-            }
+            }*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -781,22 +779,20 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                     if (!player.getPlayWhenReady()) {
                         is_user_stop_video = false;
                         privious_player.setPlayWhenReady(true);
-                        Log.d("Auto-Scrolling", "onScrolled: onsingletap when ready"+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-                        if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
 
                             autoScrollVideos();
-                        }
+                        }*/
                     } else {
                         is_user_stop_video = true;
 
                         privious_player.setPlayWhenReady(false);
-                        Log.d("Auto-Scrolling", "onScrolled:on single tap not ready "+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-                        if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                             Toast.makeText(context, "timer stopped", Toast.LENGTH_SHORT).show();
                             timer.cancel();
-                        }
+                        }*/
                     }
 
 
@@ -1089,9 +1085,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 if (from_right_to_left) {
                     if (privious_player != null){
                         privious_player.setPlayWhenReady(false);
-                        if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
+                       /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
                             timer.cancel();
-                        }
+                        }*/
                     }
                     if (rightSwipe) {
                         transaction.setCustomAnimations(R.anim.in_from_right, R.anim.out_to_left, R.anim.in_from_left, R.anim.out_to_right);
@@ -1101,9 +1097,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
                 } else {
                     if (privious_player != null) {
                         privious_player.setPlayWhenReady(false);
-                        if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
+                       /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
                             timer.cancel();
-                        }
+                        }*/
                     }
                     transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
                 }
@@ -1131,9 +1127,9 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             if (privious_player != null){
                 privious_player.setPlayWhenReady(false);
-                if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
+               /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)){
                     timer.cancel();
-                }
+                }*/
             }
             transaction.setCustomAnimations(R.anim.in_from_left, R.anim.out_to_right, R.anim.in_from_right, R.anim.out_to_left);
 
@@ -1489,11 +1485,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             EventBus.getDefault().register(this);
             if ((privious_player != null && (is_visible_to_user && !is_user_stop_video)) && !is_fragment_exits()) {
                 privious_player.setPlayWhenReady(true);
-                Log.d("Auto-Scrolling", "onScrolled: onresume"+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-                if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+               /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                     autoScrollVideos();
-                }
+                }*/
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -1508,11 +1503,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
             EventBus.getDefault().unregister(this);
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
-                Log.d("Auto-Scrolling", "onScrolled: onpause"+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-                if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+               /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                     timer.cancel();
-                }
+                }*/
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -1527,11 +1521,10 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         try {
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
-                Log.d("Auto-Scrolling", "onScrolled: onstop"+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
 
-                if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+                /*if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
                     timer.cancel();
-                }
+                }*/
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

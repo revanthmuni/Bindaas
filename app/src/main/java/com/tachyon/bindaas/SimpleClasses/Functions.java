@@ -747,7 +747,6 @@ public class Functions {
                     String code = response.optString("code");
                     if (code.equals("200")) {
                         api_callBack.OnSuccess(response.toString());
-
                     } else {
                         Toast.makeText(activity, "" + response.optString("msg"), Toast.LENGTH_SHORT).show();
                     }

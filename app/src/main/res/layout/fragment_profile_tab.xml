@@ -57,7 +57,6 @@
                         android:id="@+id/notification_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/refresh"
                         app:layout_constraintTop_toTopOf="parent">
@@ -66,6 +65,7 @@
                             android:id="@+id/myImageView1"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
+                            android:padding="5dp"
                             android:layout_marginLeft="16dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_notification_red" />
@@ -78,9 +78,9 @@
                             android:layout_alignTop="@+id/myImageView1"
                             android:layout_alignRight="@+id/myImageView1"
                             android:layout_alignBottom="@+id/myImageView1"
-                            android:layout_margin="1dp"
-                            android:gravity="center"
-                            android:textColor="#000000" />
+                            android:layout_gravity="right"
+                            android:textColor="#000000"
+                            android:textStyle="bold" />
                     </FrameLayout>
 
                     <ImageButton
@@ -103,9 +103,10 @@
                         android:layout_height="24dp"
                         android:layout_centerInParent="true"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="10dp"
+                        android:padding="5dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_refresh"
+                        android:src="@drawable/ic_refresh_black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/setting_btn"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -209,6 +210,7 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/edit_profile_btn">
@@ -228,7 +230,7 @@
                                 android:layout_gravity="center"
                                 android:layout_weight="7"
                                 android:maxLines="5"
-                                android:text="Hi i'm user007 , the Rockstoar"
+                                android:text="Hi i'm user"
                                 android:textColor="@color/black" />
 
                             <ImageView
@@ -236,6 +238,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="30dp"
                                 android:layout_weight="1"
+                                android:layout_marginRight="4dp"
                                 android:src="@drawable/ic_facebook" />
 
                             <ImageView
