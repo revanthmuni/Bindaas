@@ -328,7 +328,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 storage = new File(path);
                 Functions.load_Directory_Files(storage);
             }
-            Toast.makeText(this, ""+ Constant.allMediaList.size(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, ""+ Constant.allMediaList.size(), Toast.LENGTH_SHORT).show();
             // Permission has already been granted
             // Do nothing. Because if permission is already granted then files will be accessed/loaded in splash_screen_activity
         }
@@ -630,18 +630,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    public void RotateCamera(){
+    public void RotateCamera() {
         cameraView.toggleFacing();
 
-        if(cameraView.getFacing()== CameraKit.Constants.FACING_FRONT)
+        if (cameraView.getFacing() == CameraKit.Constants.FACING_FRONT)
             cameraView.setScaleX(1);
 
-        CameraProperties properties=cameraView.getCameraProperties();
-        Log.d(Variables.tag,properties.verticalViewingAngle+"--"+properties.horizontalViewingAngle);
+        CameraProperties properties = cameraView.getCameraProperties();
+        Log.d(Variables.tag, properties.verticalViewingAngle + "--" + properties.horizontalViewingAngle);
 
     }
 
-    public void Remove_Last_Section(){
+    public void Remove_Last_Section() {
         try {
             if (videopaths.size() > 0) {
                 File file = new File(videopaths.get(videopaths.size() - 1));
@@ -687,8 +687,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
                 file.delete();
             }
-        }catch (Exception e){
-            Functions.showLogMessage(this,"video recorder",e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, "video recorder", e.getMessage());
         }
     }
 
@@ -799,18 +799,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     short_video_time_txt.setLayoutParams(param);
 
                     RelativeLayout.LayoutParams param4 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param4.addRule(RelativeLayout.END_OF,R.id.short_video_time_txt);
+                    param4.addRule(RelativeLayout.END_OF, R.id.short_video_time_txt);
                     medium_video_time_txt.setLayoutParams(param4);
 
                     RelativeLayout.LayoutParams param5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param5.addRule(RelativeLayout.END_OF,R.id.medium_video_time_txt);
+                    param5.addRule(RelativeLayout.END_OF, R.id.medium_video_time_txt);
                     long_video_time_txt.setLayoutParams(param5);
 
                     short_video_time_txt.setTextColor(getResources().getColor(R.color.white));
                     medium_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     long_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
 
-                    Variables.recording_duration=Variables.shortVideoDuration;
+                    Variables.recording_duration = Variables.shortVideoDuration;
 
                     initlize_Video_progress();
                     break;
@@ -822,18 +822,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     long_video_time_txt.setLayoutParams(param2);
 
                     RelativeLayout.LayoutParams param3 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param3.addRule(RelativeLayout.START_OF,R.id.long_video_time_txt);
+                    param3.addRule(RelativeLayout.START_OF, R.id.long_video_time_txt);
                     medium_video_time_txt.setLayoutParams(param3);
 
                     RelativeLayout.LayoutParams param6 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param6.addRule(RelativeLayout.START_OF,R.id.medium_video_time_txt);
+                    param6.addRule(RelativeLayout.START_OF, R.id.medium_video_time_txt);
                     short_video_time_txt.setLayoutParams(param6);
 
                     short_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     medium_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     long_video_time_txt.setTextColor(getResources().getColor(R.color.white));
 
-                    Variables.recording_duration=Variables.longVideoDuration;
+                    Variables.recording_duration = Variables.longVideoDuration;
 
                     initlize_Video_progress();
                     break;
@@ -844,18 +844,18 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     medium_video_time_txt.setLayoutParams(param7);
 
                     RelativeLayout.LayoutParams param8 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param8.addRule(RelativeLayout.END_OF,R.id.medium_video_time_txt);
+                    param8.addRule(RelativeLayout.END_OF, R.id.medium_video_time_txt);
                     long_video_time_txt.setLayoutParams(param8);
 
-                    RelativeLayout.LayoutParams param9= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    param9.addRule(RelativeLayout.START_OF,R.id.medium_video_time_txt);
+                    RelativeLayout.LayoutParams param9 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    param9.addRule(RelativeLayout.START_OF, R.id.medium_video_time_txt);
                     short_video_time_txt.setLayoutParams(param9);
 
                     short_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
                     medium_video_time_txt.setTextColor(getResources().getColor(R.color.white));
                     long_video_time_txt.setTextColor(getResources().getColor(R.color.graycolor2));
 
-                    Variables.recording_duration=Variables.mediumVideoDuration;
+                    Variables.recording_duration = Variables.mediumVideoDuration;
 
                     initlize_Video_progress();
                     break;
@@ -903,12 +903,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     try {
                         File video_file = FileUtils.getFileFromUri(this, uri);
 
-                        if (Functions.getfileduration(this,uri) < Variables.max_recording_duration) {
+                        if (Functions.getfileduration(this, uri) < Variables.max_recording_duration) {
                             Chnage_Video_size(video_file.getAbsolutePath(), Variables.gallery_resize_video);
 
                         } else {
-                            Intent intent=new Intent(Video_Recoder_A.this,Trim_video_A.class);
-                            intent.putExtra("path",video_file.getAbsolutePath());
+                            Intent intent = new Intent(Video_Recoder_A.this, Trim_video_A.class);
+                            intent.putExtra("path", video_file.getAbsolutePath());
                             startActivity(intent);
                         }
                     } catch (Exception e) {
@@ -1161,7 +1161,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
         super.onDestroy();
     }
 
-    public void Release_Resources(){
+    public void Release_Resources() {
         try {
 
             if (audio != null) {
@@ -1171,7 +1171,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             }
             cameraView.stop();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
         }
         DeleteFile();

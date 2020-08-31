@@ -73,7 +73,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (view == itemView){
                 onVideoClick.onVideoSelected(Constant.allMediaList.get(getAdapterPosition()));
                 Log.d("ADAPTER", "onClick: "+Constant.allMediaList.get(getAdapterPosition()));
-                Toast.makeText(mContext, "path :"+Constant.allMediaList.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
             }
         }
     }
