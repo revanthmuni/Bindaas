@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -353,6 +354,26 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             Toast.makeText(context, "Please enter last name", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (!fb_link.getText().toString().equals("")){
+            if(fb_link.getText().toString().contains("https://www.facebook.com")||fb_link.getText().toString().contains("http://www.facebook.com")){
+                return true;
+            }else{
+                fb_link.setText("");
+                fb_link.setError("Ex:https://www.facebook.com/[username]");
+                Toast.makeText(context, "Please enter valid fb link", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        if (!insta_link.getText().toString().equals("")){
+            if(insta_link.getText().toString().contains("https://www.instagram.com")||insta_link.getText().toString().contains("http://www.instagram.com")){
+                return true;
+            }else{
+                insta_link.setText("");
+                insta_link.setError("Example:https://www.instagram.com/[username]");
+                Toast.makeText(context, "Please enter valid instagram link", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
 
         return true;
     }
@@ -558,6 +579,11 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 parameters.put("first_name", firstname_edit.getText().toString());
                 parameters.put("last_name", lastname_edit.getText().toString());
                 parameters.put("bio", user_bio_edit.getText().toString());
+                parameters.put("gender",Variables.sharedPreferences.getString(Variables.gender,""));
+                parameters.put("language",Variables.sharedPreferences.getString(Variables.language,""));
+                parameters.put("anyone_can_message",""+Variables.sharedPreferences.getBoolean(Variables.anyone_can_message,false));
+                parameters.put("auto_scroll",""+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
+
                 parameters.put("fb_link", fb_link.getText().toString());
                 parameters.put("insta_link", insta_link.getText().toString());
 

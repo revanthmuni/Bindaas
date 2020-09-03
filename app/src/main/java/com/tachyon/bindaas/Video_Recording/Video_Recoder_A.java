@@ -23,12 +23,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -106,6 +109,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     int recording_time = 3;
     TextView short_video_time_txt,long_video_time_txt,medium_video_time_txt,from_storage;
     BottomSheetBehavior behavior;
+    private EditText search_text;
+    private ImageButton search_Btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +133,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             findViewById(R.id.upload_layout).setOnClickListener(this);
 
             cut_video_btn=findViewById(R.id.cut_video_btn);
-            from_storage = findViewById(R.id.textView2);
             cut_video_btn.setVisibility(View.GONE);
             cut_video_btn.setOnClickListener(this);
 
@@ -218,15 +222,17 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             initlize_Video_progress();
 
             LinearLayout bottomSheet = findViewById(R.id.bottom_sheet);
+
             checkStorageAccessPermission();
             RecyclerView recyclerView;
 
-
+            search_text = findViewById(R.id.search_edit);
+            search_Btn = findViewById(R.id.search);
+            from_storage = findViewById(R.id.textView2);
             recyclerView = findViewById(R.id.recyclerview);
             recyclerView.setLayoutManager(new GridLayoutManager(Video_Recoder_A.this,3));
 
-
-            recyclerViewAdapter = new RecyclerViewAdapter(Video_Recoder_A.this, new RecyclerViewAdapter.OnVideoClick() {
+            recyclerViewAdapter = new RecyclerViewAdapter(Video_Recoder_A.this,Constant.allMediaList ,new RecyclerViewAdapter.OnVideoClick() {
                 @Override
                 public void onVideoSelected(File file) {
 
@@ -250,22 +256,38 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 }
             });
             recyclerView.setAdapter(recyclerViewAdapter);
-            behavior = BottomSheetBehavior.from(bottomSheet);
-            behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+
+
+            search_text.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                    // React to state change
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 }
 
                 @Override
-                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                    // React to dragging events
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    filter(charSequence);
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
                 }
             });
-
+            search_Btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!search_text.getText().toString().trim().equals("")) {
+                        filter(search_text.getText().toString());
+                    }else {
+                        Toast.makeText(Video_Recoder_A.this, "Please enter any text", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             from_storage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                   // behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     Pick_video_from_gallery();
                 }
             });
@@ -276,6 +298,19 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         }
 
+    }
+
+    private void filter(CharSequence text) {
+        ArrayList<File> temp = new ArrayList();
+        for(File d: Constant.allMediaList){
+            //or use .equal(text) with you want equal match
+            //use .toLowerCase() for better matches
+            if(d.getName().contains(text)){
+                temp.add(d);
+            }
+        }
+        //update recyclerview
+        recyclerViewAdapter.updateList(temp);
     }
 
     private void checkStorageAccessPermission() {

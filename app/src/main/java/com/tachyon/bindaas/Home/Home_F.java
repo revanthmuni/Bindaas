@@ -18,9 +18,12 @@ import androidx.annotation.Nullable;
 
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Accounts.Login_A;
+import com.tachyon.bindaas.AudioTrimming.customAudioViews.SamplePlayer;
 import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
 import com.tachyon.bindaas.LinearLayoutManagerWithSmoothScroller;
@@ -124,7 +127,8 @@ import static com.tachyon.bindaas.SimpleClasses.Variables.auto_scroll_duration;
  */
 
 // this is the main view which is show all  the video in list
-public class Home_F extends RootFragment implements Player.EventListener, Fragment_Data_Send, View.OnClickListener {
+public class Home_F extends RootFragment implements Player.EventListener,
+        Fragment_Data_Send, View.OnClickListener {
 
     View view;
     Context context;
@@ -701,10 +705,12 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
 
 
         player.prepare(videoSource);
-
-        player.setRepeatMode(Player.REPEAT_MODE_ALL);
+        if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)) {
+            player.setRepeatMode(Player.REPEAT_MODE_OFF);
+        }else{
+            player.setRepeatMode(Player.REPEAT_MODE_ALL);
+        }
         player.addListener(this);
-
 
 //        View layout = layoutManager.findViewByPosition(currentPage);
         View layout = recyclerView.getRootView();
@@ -843,7 +849,6 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
             @Override
             public void onHashTagClicked(String hashTag) {
-
                 onPause();
                 OpenHashtag(hashTag);
 
@@ -1597,11 +1602,11 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
     }
 
 
+
     @Override
     public void onLoadingChanged(boolean isLoading) {
 
     }
-
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -1611,7 +1616,17 @@ public class Home_F extends RootFragment implements Player.EventListener, Fragme
         } else if (playbackState == Player.STATE_READY) {
             p_bar.setVisibility(View.GONE);
         }
+        else if (playbackState == Player.STATE_ENDED){
 
+            if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false)) {
+                if (data_list != null) {
+                    if (currentPage != data_list.size()) {
+                        recyclerView.smoothScrollToPosition(currentPage + 1);
+                    }
+                }
+            }
+            Log.d("TAG", "onPlayerStateChanged: ended");
+        }
 
     }
 

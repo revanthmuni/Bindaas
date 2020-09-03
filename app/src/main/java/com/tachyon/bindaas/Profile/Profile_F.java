@@ -183,6 +183,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     Functions.openBrowser(context,inst_link);
                     break;
                 case R.id.fb_image:
+                    Log.d("TAG", "onClick: "+fb_link);
                     Functions.openBrowser(context,fb_link);
                     break;
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +22,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private Context mContext;
     private OnVideoClick onVideoClick;
+    private ArrayList<File> mainList;
 
-    public RecyclerViewAdapter(Context mContext, OnVideoClick onVideoClick){
+    public RecyclerViewAdapter(Context mContext,ArrayList<File> mainList, OnVideoClick onVideoClick){
         this.mContext = mContext;
+        this.mainList = mainList;
         this.onVideoClick = onVideoClick;
     }
-
+    public void updateList(ArrayList<File> list){
+        mainList = list;
+        notifyDataSetChanged();
+    }
     public interface OnVideoClick{
         void onVideoSelected(File file);
     }
@@ -39,9 +45,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((FileLayoutHolder)holder).videoTitle.setText(Constant.allMediaList.get(position).getName());
+        ((FileLayoutHolder)holder).videoTitle.setText(mainList.get(position).getName());
         //we will load thumbnail using glid library
-        Uri uri = Uri.fromFile(Constant.allMediaList.get(position));
+        Uri uri = Uri.fromFile(mainList.get(position));
 
         Glide.with(mContext)
                 .load(uri).thumbnail(0.1f).into(((FileLayoutHolder)holder).thumbnail);
@@ -49,7 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return Constant.allMediaList.size();
+        return mainList.size();
     }
 
     class FileLayoutHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -76,5 +82,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
     }
-
 }

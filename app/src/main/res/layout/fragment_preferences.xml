@@ -155,14 +155,22 @@
                     tools:layout_editor_absoluteX="10dp"
                     tools:layout_editor_absoluteY="132dp" />
 
-                <Spinner
+                <!--<Spinner
                     android:id="@+id/lang_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="15dp"
                     android:entries="@array/languages"
                     android:layout_weight="1"
-                    android:checked="true" />
+                    android:checked="true" />-->
+                <ImageView
+                    android:id="@+id/right_arrow"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_next"
+                    android:layout_marginRight="10dp"
+                    android:tint="@color/black" />
             </LinearLayout>
 
 

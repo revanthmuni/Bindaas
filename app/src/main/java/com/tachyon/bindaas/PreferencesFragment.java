@@ -1,6 +1,8 @@
 package com.tachyon.bindaas;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -39,6 +43,9 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     View view;
     Context context;
     Switch auto_scrool_enabled;
+    Switch anyone_can_message;
+    LinearLayout language_layout;
+    CheckBox telugu,tamil,hindi,english,kannada;
     public PreferencesFragment() {
         // Required empty public constructor
     }
@@ -49,76 +56,137 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_preferences, container, false);
-        context = getContext();
-        auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
-        view.findViewById(R.id.Goback).setOnClickListener(this);
-        auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
-        auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
-            /*SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-            editor.putBoolean(Variables.auto_scroll_key, b);
-            editor.commit();
-            //Call_Api_For_Edit_profile();
-            Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();*/
-        });
+        try {
+            context = getContext();
+            language_layout = view.findViewById(R.id.linearLayout5);
+            auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
+            anyone_can_message = view.findViewById(R.id.any_one_can_msg);
+            view.findViewById(R.id.Goback).setOnClickListener(this);
+            auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
+            anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+            language_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openLanguageLayout();
+                }
+            });
+            auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
+                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                editor.putBoolean(Variables.auto_scroll_key, b);
+                editor.commit();
+                callApiForSavePreferences();
+                //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
+            });
+            anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
+                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                editor.putBoolean(Variables.anyone_can_message, b);
+                editor.commit();
+                callApiForSavePreferences();
+                // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
+            });
 
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
 
         return view;
     }
-    public void Call_Api_For_Edit_profile() {
+
+    private void openLanguageLayout() {
         try {
-            Functions.Show_loader(context, false, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.language_layout, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Select Language");
+            builder.setView(view);
+            tamil = view.findViewById(R.id.tamil);
+            telugu = view.findViewById(R.id.telugu);
+            hindi = view.findViewById(R.id.hindi);
+            english = view.findViewById(R.id.english);
+            kannada = view.findViewById(R.id.kannada);
+            loadLanguages();
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    addCommaSeperatedString();
+                    callApiForSavePreferences();
+                }
+            });
+            builder.show();
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
+    }
+
+    private void loadLanguages() {
+        try{
+        String languages = Variables.sharedPreferences.getString(Variables.language,"");
+        if (languages.contains("Telugu")){
+            telugu.setChecked(true);
+        }if (languages.contains("Tamil")){
+            tamil.setChecked(true);
+        }if (languages.contains("Hindi")){
+            hindi.setChecked(true);
+        }if (languages.contains("English")){
+            english.setChecked(true);
+        }if (languages.contains("Kannada")){
+            kannada.setChecked(true);
+        }
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
+    }
+
+    private void addCommaSeperatedString() {
+        try{
+        String cSValue = "";
+        if (telugu.isChecked()){
+            cSValue = cSValue + telugu.getText().toString() + ",";
+        }if (tamil.isChecked()){
+            cSValue = cSValue +  tamil.getText().toString() + ",";
+        }if (hindi.isChecked()){
+            cSValue = cSValue +  hindi.getText().toString() + ",";
+        }if (english.isChecked()){
+            cSValue = cSValue +  english.getText().toString() + ",";
+        }if (kannada.isChecked()){
+            cSValue = cSValue +  kannada.getText().toString() +",";
+        }
+        StringBuffer sb= new StringBuffer(cSValue);
+//invoking the method
+        sb.deleteCharAt(sb.length()-1);
+
+        Log.d(TAG, "addCommaSeperatedString: "+sb.toString());
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+        editor.putString(Variables.language, sb.toString());
+        editor.commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
+    }
+
+    /* user_id,first_name,last_name,gender,bio,username,
+    language,anyone_can_message,auto_scroll,fb_link,insta_link */
+    public void callApiForSavePreferences() {
+        /*user_id,language,anyone_can_message,auto_scroll*/
+        try {
+            Functions.Show_loader(context, true, true);
 
             JSONObject parameters = new JSONObject();
             try {
-                if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals("0")) {
-                    parameters.put("user_id", CommonUtils.generateRandomID() + Calendar.getInstance().getTimeInMillis());
-                } else {
-                    parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                }
-                parameters.put("first_name", Variables.sharedPreferences.getString(Variables.f_name,""));
-                parameters.put("last_name",Variables.sharedPreferences.getString(Variables.l_name,""));
-                parameters.put("bio",Variables.sharedPreferences.getString(Variables.bio,""));
-                parameters.put("fb_link",Variables.sharedPreferences.getString(Variables.fb_link,""));
-                parameters.put("insta_link", Variables.sharedPreferences.getString(Variables.insta_link,""));
-                parameters.put("gender",Variables.sharedPreferences.getString(Variables.gender,""));
-                parameters.put("auto_scroll",auto_scrool_enabled.isChecked());
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                parameters.put("language",Variables.sharedPreferences.getString(Variables.language,""));
+                parameters.put("anyone_can_message",""+anyone_can_message.isChecked());
+                parameters.put("auto_scroll",""+auto_scrool_enabled.isChecked());
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "Call_Api_For_Edit_profile: "+new Gson().toJson(parameters));
-            ApiRequest.Call_Api(context, Variables.editProfile, parameters, new Callback() {
+            Log.d(TAG, "save Prefernces : "+new Gson().toJson(parameters));
+            ApiRequest.Call_Api(context, Variables.SAVE_PREFERENCES, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
                     Functions.cancel_loader();
                     Log.d(TAG, "Responce: "+resp);
-                    try {
-                        JSONObject response = new JSONObject(resp);
-                        String code = response.optString("code");
-                        JSONArray msg = response.optJSONArray("msg");
-                        if (code.equals("200")) {
-
-                            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-                            JSONObject object = msg.getJSONObject(0);
-
-                            editor.putBoolean(Variables.auto_scroll_key, Boolean.parseBoolean(object.optString("auto_scroll")));
-
-                            editor.commit();
-
-                            getActivity().onBackPressed();
-                        } else {
-
-                            if (msg != null) {
-                                JSONObject jsonObject = msg.optJSONObject(0);
-                                Toast.makeText(context, jsonObject.optString("response"), Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                  //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {

@@ -54,6 +54,11 @@ public class Variables {
     public static final String device_id = "device_id";
     public static final String uploading_video_thumb="uploading_video_thumb";
     public static final String auto_scroll_key = "auto_scroll_key";
+    public static final String bio = "bio_key";
+    public static final String fb_link = "fb_link";
+    public static final String insta_link = "insta_link";
+    public static final String language = "language";
+    public static final String anyone_can_message = "anyone_can_message";
 
     public static String user_id;
     public static String user_name;
@@ -158,9 +163,6 @@ public class Variables {
     public static final String SHARE_VIDEO = api_domain + "shareVideo";
     public static final String NEWS_FEED = api_domain + "getNewsFeed";
     public static final String HASH_TAGS = api_domain + "getHashTags";
+    public static final String SAVE_PREFERENCES = api_domain + "getPreference";
 
-
-    public static String bio = "bio_key";
-    public static String fb_link = "fb_link";
-    public static String insta_link = "insta_link";
 }
