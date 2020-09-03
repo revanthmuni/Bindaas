@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -352,6 +353,22 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         } else if (TextUtils.isEmpty(lastname)) {
             Toast.makeText(context, "Please enter last name", Toast.LENGTH_SHORT).show();
             return false;
+        }
+        if (!TextUtils.isEmpty(fb_link.getText().toString())){
+            if(Patterns.WEB_URL.matcher(fb_link.getText().toString()).matches()){
+                return true;
+            }else{
+                Toast.makeText(context, "Please enter valid fb link", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        if (!TextUtils.isEmpty(insta_link.getText().toString())){
+            if(Patterns.WEB_URL.matcher(insta_link.getText().toString()).matches()){
+                return true;
+            }else{
+                Toast.makeText(context, "Please enter valid instagram link", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
 
         return true;
