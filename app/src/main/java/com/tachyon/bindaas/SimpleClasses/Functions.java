@@ -998,6 +998,7 @@ public class Functions {
         }
     }
     public static void openBrowser(Context context,String url) {
+        Log.d("URL->", "openBrowser: "+url);
         try {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));

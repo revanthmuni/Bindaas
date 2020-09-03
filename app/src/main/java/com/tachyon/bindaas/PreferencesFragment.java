@@ -56,61 +56,69 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_preferences, container, false);
-        context = getContext();
-        language_layout = view.findViewById(R.id.linearLayout5);
-        auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
-        anyone_can_message = view.findViewById(R.id.any_one_can_msg);
-        view.findViewById(R.id.Goback).setOnClickListener(this);
-        auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
-        anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message,false));
-        language_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openLanguageLayout();
-            }
-        });
-        auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
-            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-            editor.putBoolean(Variables.auto_scroll_key, b);
-            editor.commit();
-            callApiForSavePreferences();
-            //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
-        });
-        anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
-            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-            editor.putBoolean(Variables.anyone_can_message, b);
-            editor.commit();
-            callApiForSavePreferences();
-           // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
-        });
+        try {
+            context = getContext();
+            language_layout = view.findViewById(R.id.linearLayout5);
+            auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
+            anyone_can_message = view.findViewById(R.id.any_one_can_msg);
+            view.findViewById(R.id.Goback).setOnClickListener(this);
+            auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
+            anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+            language_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openLanguageLayout();
+                }
+            });
+            auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
+                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                editor.putBoolean(Variables.auto_scroll_key, b);
+                editor.commit();
+                callApiForSavePreferences();
+                //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
+            });
+            anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
+                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                editor.putBoolean(Variables.anyone_can_message, b);
+                editor.commit();
+                callApiForSavePreferences();
+                // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
+            });
 
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
 
         return view;
     }
 
     private void openLanguageLayout() {
-        View view = LayoutInflater.from(context).inflate(R.layout.language_layout,null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select Language");
-        builder.setView(view);
-        tamil = view.findViewById(R.id.tamil);
-        telugu = view.findViewById(R.id.telugu);
-        hindi = view.findViewById(R.id.hindi);
-        english = view.findViewById(R.id.english);
-        kannada = view.findViewById(R.id.kannada);
-        loadLanguages();
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                addCommaSeperatedString();
-                callApiForSavePreferences();
-            }
-        });
-        builder.show();
-
+        try {
+            View view = LayoutInflater.from(context).inflate(R.layout.language_layout, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Select Language");
+            builder.setView(view);
+            tamil = view.findViewById(R.id.tamil);
+            telugu = view.findViewById(R.id.telugu);
+            hindi = view.findViewById(R.id.hindi);
+            english = view.findViewById(R.id.english);
+            kannada = view.findViewById(R.id.kannada);
+            loadLanguages();
+            builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    addCommaSeperatedString();
+                    callApiForSavePreferences();
+                }
+            });
+            builder.show();
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
     }
 
     private void loadLanguages() {
+        try{
         String languages = Variables.sharedPreferences.getString(Variables.language,"");
         if (languages.contains("Telugu")){
             telugu.setChecked(true);
@@ -123,9 +131,13 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         }if (languages.contains("Kannada")){
             kannada.setChecked(true);
         }
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
     }
 
     private void addCommaSeperatedString() {
+        try{
         String cSValue = "";
         if (telugu.isChecked()){
             cSValue = cSValue + telugu.getText().toString() + ",";
@@ -146,6 +158,9 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
         editor.putString(Variables.language, sb.toString());
         editor.commit();
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Preferences Fragment",e.getMessage());
+        }
     }
 
     /* user_id,first_name,last_name,gender,bio,username,

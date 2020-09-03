@@ -354,18 +354,22 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             Toast.makeText(context, "Please enter last name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!TextUtils.isEmpty(fb_link.getText().toString())){
-            if(Patterns.WEB_URL.matcher(fb_link.getText().toString()).matches()){
+        if (!fb_link.getText().toString().equals("")){
+            if(fb_link.getText().toString().contains("https://www.facebook.com")||fb_link.getText().toString().contains("http://www.facebook.com")){
                 return true;
             }else{
+                fb_link.setText("");
+                fb_link.setError("Ex:https://www.facebook.com/[username]");
                 Toast.makeText(context, "Please enter valid fb link", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
-        if (!TextUtils.isEmpty(insta_link.getText().toString())){
-            if(Patterns.WEB_URL.matcher(insta_link.getText().toString()).matches()){
+        if (!insta_link.getText().toString().equals("")){
+            if(insta_link.getText().toString().contains("https://www.instagram.com")||insta_link.getText().toString().contains("http://www.instagram.com")){
                 return true;
             }else{
+                insta_link.setText("");
+                insta_link.setError("Example:https://www.instagram.com/[username]");
                 Toast.makeText(context, "Please enter valid instagram link", Toast.LENGTH_SHORT).show();
                 return false;
             }
