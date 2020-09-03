@@ -54,11 +54,11 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         view.findViewById(R.id.Goback).setOnClickListener(this);
         auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
         auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
-            /*SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
             editor.putBoolean(Variables.auto_scroll_key, b);
             editor.commit();
             //Call_Api_For_Edit_profile();
-            Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();*/
+           // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
         });
 
 
