@@ -575,6 +575,11 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 parameters.put("first_name", firstname_edit.getText().toString());
                 parameters.put("last_name", lastname_edit.getText().toString());
                 parameters.put("bio", user_bio_edit.getText().toString());
+                parameters.put("gender",Variables.sharedPreferences.getString(Variables.gender,""));
+                parameters.put("language",Variables.sharedPreferences.getString(Variables.language,""));
+                parameters.put("anyone_can_message",""+Variables.sharedPreferences.getBoolean(Variables.anyone_can_message,false));
+                parameters.put("auto_scroll",""+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
+
                 parameters.put("fb_link", fb_link.getText().toString());
                 parameters.put("insta_link", insta_link.getText().toString());
 

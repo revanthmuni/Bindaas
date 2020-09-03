@@ -45,21 +45,6 @@
             android:background="@drawable/d_bottom_gray_line"
             android:padding="10dp">
 
-            <EditText
-                android:id="@+id/search_edit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="Search"
-                android:padding="7dp"
-                android:textSize="14dp"
-                app:layout_constraintBottom_toBottomOf="@+id/search"
-                app:layout_constraintEnd_toStartOf="@+id/search"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/search"
-                app:layout_constraintVertical_bias="0.444" />
-
             <ImageButton
                 android:id="@+id/search"
                 android:layout_width="24dp"
@@ -72,7 +57,6 @@
                 android:tint="@color/dimgray"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/search_edit"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -87,6 +71,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/search"
                 app:layout_constraintVertical_bias="0.6" />
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter video name"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/search"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
