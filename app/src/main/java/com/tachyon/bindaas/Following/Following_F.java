@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -178,6 +179,7 @@ public class Following_F extends Fragment {
     public void Parse_following_data(String responce) {
         try {
             datalist.clear();
+            Log.d("Follow_Test", "Parse_following_data: follow responce :"+responce);
 
             try {
                 JSONObject jsonObject = new JSONObject(responce);
@@ -199,7 +201,9 @@ public class Following_F extends Fragment {
 
 
                         item.follow = follow_Status.optString("follow");
-                        item.follow_status_button = follow_Status.optString("follow_status_button");
+
+
+                            item.follow_status_button = follow_Status.optString("follow_status_button");
 
                         if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
                             item.is_show_follow_unfollow_btn=false;
@@ -262,6 +266,7 @@ public class Following_F extends Fragment {
     public void Parse_fans_data(String responce) {
         try {
             datalist.clear();
+            Log.d("Follow_Test", "Parse_following_data: follow responce :"+responce);
 
             try {
                 JSONObject jsonObject = new JSONObject(responce);
@@ -284,7 +289,7 @@ public class Following_F extends Fragment {
 
                         item.follow = follow_Status.optString("follow");
                         item.follow_status_button = follow_Status.optString("follow_status_button");
-                        if(item.follow.equalsIgnoreCase("1")){
+                        if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
                             item.follow_status_button="Friends";
                         }
 
@@ -363,11 +368,12 @@ public class Following_F extends Fragment {
     public void Follow_unFollow_User(final Following_Get_Set item, final int position) {
         try {
             final String send_status;
-            if (item.follow.equals("0")) {
-                send_status = "1";
-            } else {
-                send_status = "0";
-            }
+
+                if (item.follow_status_button.equals("UnFollow")) {
+                    send_status = "0";
+                } else {
+                    send_status = "1";
+                }
 
             Functions.Call_Api_For_Follow_or_unFollow(getActivity(),
                     Variables.sharedPreferences.getString(Variables.u_id, ""),
