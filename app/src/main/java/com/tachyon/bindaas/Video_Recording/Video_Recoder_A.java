@@ -75,6 +75,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Video_Recoder_A extends AppCompatActivity implements View.OnClickListener {
 
@@ -305,7 +306,12 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
         for(File d: Constant.allMediaList){
             //or use .equal(text) with you want equal match
             //use .toLowerCase() for better matches
+            //String s = d.getName();
+            /*
             if(d.getName().contains(text)){
+                temp.add(d);
+            }*/
+            if (Pattern.compile(Pattern.quote(text.toString()), Pattern.CASE_INSENSITIVE).matcher(d.getName()).find()){
                 temp.add(d);
             }
         }
