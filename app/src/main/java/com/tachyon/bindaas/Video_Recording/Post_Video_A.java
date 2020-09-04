@@ -173,7 +173,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 for (int i=0;i<array.length();i++){
                     list.add(array.getString(i));
                 }
-                Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
             }
             adapter = new HashTagsAdapter(this, list, new HashTagsAdapter.ClickListener() {
                 @Override
