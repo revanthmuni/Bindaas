@@ -90,11 +90,8 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 action_txt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (item.follow_status_button.equals("Friends")){
-                            Log.d("Follow_Test", "onClick: friends");
-                        }else {
+
                             listener.onItemClick(v, pos, item);
-                        }
                     }
                 });
 

@@ -203,7 +203,10 @@ public class Following_F extends Fragment {
                         item.follow = follow_Status.optString("follow");
 
 
-                            item.follow_status_button = follow_Status.optString("follow_status_button");
+                        item.follow_status_button = follow_Status.optString("follow_status_button");
+                        if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
+                            item.follow_status_button="Friends";
+                        }
 
                         if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
                             item.is_show_follow_unfollow_btn=false;
@@ -369,7 +372,7 @@ public class Following_F extends Fragment {
         try {
             final String send_status;
 
-                if (item.follow_status_button.equals("UnFollow")) {
+                if (item.follow_status_button.equals("UnFollow")||item.follow_status_button.equals("Friends")) {
                     send_status = "0";
                 } else {
                     send_status = "1";
