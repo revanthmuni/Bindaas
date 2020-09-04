@@ -400,7 +400,7 @@ public class Following_F extends Fragment {
                                     item.follow_status_button="UnFollow";
                                 datalist.remove(position);
                                 datalist.add(position, item);
-                            } else if (send_status.equals("0")) {
+                            } else  {
                                 item.follow = "0";
                                 item.follow_status_button="Follow";
                                 datalist.remove(position);
