@@ -696,12 +696,12 @@ public class Functions {
             e.printStackTrace();
         }
 
-        Log.d("Test", "Call_Api_For_Follow_or_unFollow: input" + new Gson().toJson(parameters));
+        Log.d("Follow_Test", "Call_Api_For_Follow_or_unFollow: input" + new Gson().toJson(parameters));
         ApiRequest.Call_Api(activity, Variables.followUsers, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
                 Functions.cancel_loader();
-                Log.d("Test", "Responce: follow " + resp);
+                Log.d("Follow_Test", "Responce: follow " + resp);
                 try {
                     JSONObject response = new JSONObject(resp);
                     String code = response.optString("code");

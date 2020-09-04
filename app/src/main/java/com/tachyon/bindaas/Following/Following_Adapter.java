@@ -90,7 +90,8 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 action_txt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onItemClick(v, pos, item);
+
+                            listener.onItemClick(v, pos, item);
                     }
                 });
 
@@ -156,7 +157,6 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
             holder.bind(i, datalist.get(i), listener);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
 
     }
