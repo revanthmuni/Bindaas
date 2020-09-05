@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Home.Home_F;
+import com.tachyon.bindaas.Home.Home_F_New;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Profile.Profile_Tab_F;
@@ -357,7 +358,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             final Fragment result;
             switch (position) {
                 case 0:
-                    result = new Home_F();
+                    //One line comment for smooth left and right swipe functionality
+//                    result = new Home_F();
+                    result = new Home_F_New();
                     break;
 
                 /*case 1:
