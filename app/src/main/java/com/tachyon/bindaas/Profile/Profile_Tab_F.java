@@ -635,7 +635,6 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.profile_refresh) {
-            Toast.makeText(context, "rerjskdj", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -825,7 +824,6 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                             break;
                         case R.id.preferences_id:
                             openPreferences();
-                            Toast.makeText(getContext(), R.string.refresh, Toast.LENGTH_SHORT).show();
                             break;
 
                     }
@@ -906,6 +904,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             editor.putString(Variables.u_name, "");
             editor.putString(Variables.u_pic, "");
             editor.putBoolean(Variables.islogin, false);
+            editor.putBoolean(Variables.auto_scroll_key,false);
             editor.commit();
             getActivity().finish();
             startActivity(new Intent(getActivity(), MainMenuActivity.class));

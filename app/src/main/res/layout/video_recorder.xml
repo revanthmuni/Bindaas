@@ -102,7 +102,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_margin="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:layout_alignParentBottom="true">
                 <ImageButton
                     android:layout_width="40dp"
@@ -224,12 +225,14 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:id="@+id/bottom_layout"
+            android:layout_marginBottom="20dp"
             android:layout_alignParentBottom="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/time_layout">
+                android:id="@+id/time_layout"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
