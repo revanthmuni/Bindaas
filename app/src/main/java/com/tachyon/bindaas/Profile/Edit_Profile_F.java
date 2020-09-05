@@ -356,22 +356,22 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
         }
         if (!fb_link.getText().toString().equals("")){
             if(fb_link.getText().toString().contains("https://www.facebook.com")||fb_link.getText().toString().contains("http://www.facebook.com")){
-                return true;
-            }else{
                 fb_link.setText("");
-                fb_link.setError("Ex:https://www.facebook.com/[username]");
-                Toast.makeText(context, "Please enter valid fb link", Toast.LENGTH_SHORT).show();
+                fb_link.setError("Enter Valid profile link");
+                Toast.makeText(context, "Enter Valid profile link", Toast.LENGTH_SHORT).show();
                 return false;
+            }else{
+                return true;
             }
         }
         if (!insta_link.getText().toString().equals("")){
             if(insta_link.getText().toString().contains("https://www.instagram.com")||insta_link.getText().toString().contains("http://www.instagram.com")){
-                return true;
-            }else{
                 insta_link.setText("");
-                insta_link.setError("Example:https://www.instagram.com/[username]");
+                insta_link.setError("Please enter valid instagram link");
                 Toast.makeText(context, "Please enter valid instagram link", Toast.LENGTH_SHORT).show();
                 return false;
+            }else{
+                return true;
             }
         }
 
@@ -579,13 +579,18 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 parameters.put("first_name", firstname_edit.getText().toString());
                 parameters.put("last_name", lastname_edit.getText().toString());
                 parameters.put("bio", user_bio_edit.getText().toString());
-                parameters.put("gender",Variables.sharedPreferences.getString(Variables.gender,""));
-                parameters.put("language",Variables.sharedPreferences.getString(Variables.language,""));
-                parameters.put("anyone_can_message",""+Variables.sharedPreferences.getBoolean(Variables.anyone_can_message,false));
-                parameters.put("auto_scroll",""+Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key,false));
-
-                parameters.put("fb_link", fb_link.getText().toString());
-                parameters.put("insta_link", insta_link.getText().toString());
+                parameters.put("gender", Variables.sharedPreferences.getString(Variables.gender, ""));
+                parameters.put("language", Variables.sharedPreferences.getString(Variables.language, ""));
+                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+                parameters.put("auto_scroll", "" + Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
+                if (!fb_link.getText().toString().equals("")) {
+                    parameters.put("fb_link", "https://www.facebook.com/" + fb_link.getText().toString());
+                }else
+                    parameters.put("fb_link", "");
+                if (!insta_link.getText().toString().equals(""))
+                parameters.put("insta_link", "https://www.instagram.com/"+insta_link.getText().toString());
+                else
+                    parameters.put("insta_link", "");
 
 //            if (male_btn.isChecked()) {
 //                parameters.put("gender", "Male");
@@ -709,8 +714,21 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 firstname_edit.setText(data.optString("first_name"));
                 lastname_edit.setText(data.optString("last_name"));
                 username_edit.setText(data.optString("username"));
-                fb_link.setText(data.optString("fb_link"));
-                insta_link.setText(data.optString("insta_link"));
+                String f = data.optString("fb_link");
+                String i = data.optString("insta_link");
+                Log.d(TAG, "Parse_user_data: "+f);;
+                Log.d(TAG, "Parse_user_data: "+i);;
+
+                if (!f.equals("")){
+                    Log.d(TAG, "Parse_user_data: "+f.split("https://www.facebook.com/")[1]);;
+                    fb_link.setText(f.split("https://www.facebook.com/")[1]);
+                }
+                if (!i.equals("")){
+                    Log.d(TAG, "Parse_user_data: "+i.split("https://www.instagram.com/")[1]);;
+                    insta_link.setText(i.split("https://www.instagram.com/")[1]);
+                }
+//                fb_link.setText(data.optString("fb_link"));
+//                insta_link.setText(data.optString("insta_link"));
                 String picture = data.optString("profile_pic");
                 if (picture != null && !picture.equalsIgnoreCase(""))
                     Picasso.with(context)
