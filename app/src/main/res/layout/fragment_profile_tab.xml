@@ -247,7 +247,7 @@
                                 android:layout_height="30dp"
                                 android:layout_weight="1"
                                 android:layout_marginRight="16dp"
-                                android:src="@drawable/insta_img" />
+                                android:src="@drawable/ic_insta" />
                         </LinearLayout>
 
 

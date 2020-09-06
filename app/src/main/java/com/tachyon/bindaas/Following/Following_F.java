@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,7 +51,7 @@ public class Following_F extends Fragment {
 
     ArrayList<Following_Get_Set> datalist;
 
-    RelativeLayout no_data_layout;
+    ConstraintLayout no_data_layout;
 
     ProgressBar pbar;
 

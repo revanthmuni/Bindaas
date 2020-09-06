@@ -61,6 +61,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
+                    android:visibility="gone"
                     android:background="@color/transparent"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_message" />
@@ -132,7 +133,7 @@
                             android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
-                            android:src="@drawable/insta_img"
+                            android:src="@drawable/ic_insta"
                           />
 
 
