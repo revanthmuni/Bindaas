@@ -359,7 +359,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             switch (position) {
                 case 0:
                     //One line comment for smooth left and right swipe functionality
-//                    result = new Home_F();
+//                  result = new Home_F();
                     result = new Home_F_New();
                     break;
 

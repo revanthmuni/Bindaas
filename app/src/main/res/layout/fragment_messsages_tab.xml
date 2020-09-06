@@ -30,46 +30,52 @@
             </com.chauthai.overscroll.RecyclerViewBouncy>
 
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/no_data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/no_data_layout"
-                android:visibility="gone"
                 android:layout_below="@+id/toolbar"
                 android:layout_marginTop="5dp"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:visibility="visible">
 
                 <ImageView
+                    android:id="@+id/img_no_job"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:id="@+id/img_no_job"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/ic_whoops"
-                    />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:id="@+id/whoops"
                     android:layout_width="wrap_content"
-                    android:layout_below="@+id/img_no_job"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
                     android:text="Whoops!"
                     android:textColor="@color/dimgray"
-                    android:id="@+id/whoops"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="@+id/img_no_job"
+                    app:layout_constraintStart_toStartOf="@+id/img_no_job"
+                    app:layout_constraintTop_toBottomOf="@+id/img_no_job" />
 
                 <TextView
-                    android:layout_height="wrap_content"
+                    android:id="@+id/textView9"
                     android:layout_width="wrap_content"
-                    android:layout_below="@+id/whoops"
-                    android:layout_centerHorizontal="true"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/no_messages"
                     android:textAlignment="center"
                     android:textColor="@color/dimgray"
-                    android:layout_marginLeft="55dp"
-                    android:layout_marginRight="55dp"
-                    android:text="@string/no_messages"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/whoops"
+                    app:layout_constraintStart_toStartOf="@+id/whoops"
+                    app:layout_constraintTop_toBottomOf="@+id/whoops" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ProgressBar
                 android:layout_width="wrap_content"

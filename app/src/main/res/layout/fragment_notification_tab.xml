@@ -93,43 +93,50 @@
                 </LinearLayout>
 
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/no_data_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/img_no_job"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_whoops" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_whoops"
+                        ads:layout_constraintBottom_toBottomOf="parent"
+                        ads:layout_constraintLeft_toLeftOf="parent"
+                        ads:layout_constraintRight_toRightOf="parent"
+                        ads:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/whoops"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/img_no_job"
-                        android:layout_centerHorizontal="true"
                         android:text="Whoops!"
                         android:textColor="@color/dimgray"
-                        android:textSize="22sp" />
+                        android:textSize="22sp"
+                        ads:layout_constraintEnd_toEndOf="@+id/img_no_job"
+                        ads:layout_constraintStart_toStartOf="@+id/img_no_job"
+                        ads:layout_constraintTop_toBottomOf="@+id/img_no_job" />
 
                     <TextView
+                        android:id="@+id/textView8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/whoops"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="55dp"
-                        android:layout_marginRight="55dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/no_notifications"
                         android:textColor="@color/dimgray"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        ads:layout_constraintEnd_toEndOf="@+id/whoops"
+                        ads:layout_constraintStart_toStartOf="@+id/whoops"
+                        ads:layout_constraintTop_toBottomOf="@+id/whoops" />
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>
 

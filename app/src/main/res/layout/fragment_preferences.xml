@@ -1,12 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/Setting_F"
-    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Setting_F"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
     tools:context="com.tachyon.bindaas.Settings.Setting_F">
-
 
 
     <RelativeLayout
@@ -19,34 +18,36 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:background="@color/white"
             app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/white">
+            app:contentInsetStart="0dp">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/d_bottom_gray_line">
+
                 <ImageButton
+                    android:id="@+id/Goback"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentLeft="true"
-                    android:background="@android:color/transparent"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:background="@android:color/transparent"
                     android:scaleType="fitStart"
-                    android:id="@+id/Goback"
-                    android:tint="@color/black"
                     android:src="@drawable/ic_back"
-                    android:layout_centerVertical="true"/>
+                    android:tint="@color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Preferences"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/black"/>
+                    android:text="Preferences"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
@@ -56,10 +57,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginRight="10dp"
+            android:layout_below="@+id/toolbar"
             android:layout_marginLeft="10dp"
-            android:layout_below="@+id/toolbar">
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -131,31 +132,20 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
                 android:background="@drawable/d_bottom_gray_line"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:padding="15dp"
-                    android:text="Language"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    tools:layout_conversion_absoluteHeight="50dp"
-                    tools:layout_conversion_absoluteWidth="392dp"
-                    tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="132dp" />
+                    android:background="@drawable/d_bottom_gray_line"
+                    android:orientation="horizontal">
 
-                <!--<Spinner
+                    <!--<Spinner
                     android:id="@+id/lang_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -163,14 +153,39 @@
                     android:entries="@array/languages"
                     android:layout_weight="1"
                     android:checked="true" />-->
-                <ImageView
-                    android:id="@+id/right_arrow"
-                    android:layout_width="25dp"
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:padding="15dp"
+                        android:text="Language"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        tools:layout_conversion_absoluteHeight="50dp"
+                        tools:layout_conversion_absoluteWidth="392dp"
+                        tools:layout_editor_absoluteX="10dp"
+                        tools:layout_editor_absoluteY="132dp" />
+                    <ImageView
+                        android:id="@+id/right_arrow"
+                        android:layout_width="25dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_next"
+                        android:tint="@color/black" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/selected_languages"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_next"
-                    android:layout_marginRight="10dp"
-                    android:tint="@color/black" />
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/black"
+                    android:text="Selected Languages are: " />
+
             </LinearLayout>
 
 
