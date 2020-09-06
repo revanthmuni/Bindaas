@@ -77,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         @Override
         public void onClick(View view) {
             if (view == itemView){
-                onVideoClick.onVideoSelected(Constant.allMediaList.get(getAdapterPosition()));
+                onVideoClick.onVideoSelected(mainList.get(getAdapterPosition()));
                 Log.d("ADAPTER", "onClick: "+Constant.allMediaList.get(getAdapterPosition()));
             }
         }
