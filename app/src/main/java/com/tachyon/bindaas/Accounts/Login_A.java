@@ -710,7 +710,7 @@ public class Login_A extends AppCompatActivity {
                 editor.putString(Variables.api_token, userdata.optString("tokon"));
                 editor.putString(Variables.language,userdata.optString("language"));
                 editor.putBoolean(Variables.auto_scroll_key, Boolean.parseBoolean(userdata.optString("auto_scroll")));
-                editor.putBoolean(Variables.anyone_can_message, Boolean.parseBoolean(userdata.optString("anyone_can_message")));
+                editor.putString(Variables.anyone_can_message, userdata.optString("anyone_can_message"));
                 editor.putString(Variables.fb_link,userdata.optString("fb_link"));
                 editor.putString(Variables.insta_link,userdata.optString("insta_link"));
                 editor.putString(Variables.bio,userdata.optString("bio"));

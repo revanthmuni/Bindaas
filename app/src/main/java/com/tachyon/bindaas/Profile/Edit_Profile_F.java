@@ -581,7 +581,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
                 parameters.put("bio", user_bio_edit.getText().toString());
                 parameters.put("gender", Variables.sharedPreferences.getString(Variables.gender, ""));
                 parameters.put("language", Variables.sharedPreferences.getString(Variables.language, ""));
-                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message, "anyone"));
                 parameters.put("auto_scroll", "" + Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
                 if (!fb_link.getText().toString().equals("")) {
                     parameters.put("fb_link", "https://www.facebook.com/" + fb_link.getText().toString());

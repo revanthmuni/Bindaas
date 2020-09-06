@@ -74,6 +74,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+
                 <TextView
                     android:id="@+id/auto_scroll"
                     android:layout_width="0dp"
@@ -84,7 +85,6 @@
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="bold" />
-
                 <Switch
                     android:id="@+id/auto_scroll_switch"
                     android:layout_width="wrap_content"
@@ -100,42 +100,84 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/d_bottom_gray_line"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-
-                <TextView
-                    android:id="@+id/terms_of_use_txt"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/d_bottom_gray_line"
-                    android:padding="15dp"
-                    android:text="Any one Can Message me"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    tools:layout_conversion_absoluteHeight="50dp"
-                    tools:layout_conversion_absoluteWidth="392dp"
-                    tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="132dp" />
+                    android:orientation="horizontal"
+                    android:background="@drawable/d_bottom_gray_line">
 
-                <Switch
-                    android:id="@+id/any_one_can_msg"
-                    android:layout_width="wrap_content"
+
+
+                    <TextView
+                        android:id="@+id/terms_of_use_txt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/d_bottom_gray_line"
+                        android:padding="15dp"
+                        android:text="Who can message me"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        tools:layout_conversion_absoluteHeight="50dp"
+                        tools:layout_conversion_absoluteWidth="392dp"
+                        tools:layout_editor_absoluteX="10dp"
+                        tools:layout_editor_absoluteY="132dp" />
+                    <Switch
+                        android:id="@+id/any_one_can_msg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone"
+                        android:checked="true" />
+                </LinearLayout>
+                <RadioGroup
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:checked="true" />
-
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/who_can_msg_rbtn"
+                    android:paddingLeft="10dp">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No one"
+                        android:textSize="15dp"
+                        android:id="@+id/no_one_btn"
+                        android:layout_weight="1"
+                        android:theme="@style/RadioButton"
+                        android:textColor="@color/black"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mutual Friends"
+                        android:textSize="15dp"
+                        android:layout_weight="1"
+                        android:id="@+id/m_friends_btn"
+                        android:theme="@style/RadioButton"
+                        android:textColor="@color/black"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Anyone"
+                        android:textSize="15dp"
+                        android:id="@+id/anyone_btn"
+                        android:theme="@style/RadioButton"
+                        android:textColor="@color/black"/>
+                </RadioGroup>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
                 android:background="@drawable/d_bottom_gray_line"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                 <LinearLayout
@@ -153,6 +195,8 @@
                     android:entries="@array/languages"
                     android:layout_weight="1"
                     android:checked="true" />-->
+
+
 
                     <TextView
                         android:layout_width="0dp"
@@ -175,7 +219,6 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/ic_next"
                         android:tint="@color/black" />
-
                 </LinearLayout>
 
                 <TextView
