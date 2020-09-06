@@ -480,6 +480,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 //                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
                 String anyone_can_message = user_info.optString("anyone_can_message");
 
+
                 String has_new_notification = data.optString("has_new_notification");
                 Log.d("TAG", "Parse_data: "+has_new_notification);
 
@@ -504,7 +505,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     JSONObject follow_Status = data.optJSONObject("follow_Status");
                     follow_unfollow_btn.setText(follow_Status.optString("follow_status_button"));
                     follow_status = follow_Status.optString("follow");
-                    setting_btn.setVisibility(anyone_can_message.equals("true") ||
+
+                    setting_btn.setVisibility(anyone_can_message.equals("anyone") ||
                             follow_Status.equals("1")?View.VISIBLE:View.GONE);
                 }
 

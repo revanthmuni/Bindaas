@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +51,9 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     CheckBox telugu, tamil, hindi, english, malayalam, punjabi, marathi, bengali, gujarati;
     TextView selected_languages;
 
+    RadioGroup who_can_msg_me;
+    RadioButton no_oneBtn,anyoneBtn,mutual_friendsBtn;
+
     public PreferencesFragment() {
         // Required empty public constructor
     }
@@ -66,16 +71,56 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             language_layout = view.findViewById(R.id.linearLayout5);
             auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
             anyone_can_message = view.findViewById(R.id.any_one_can_msg);
+
+            who_can_msg_me = view.findViewById(R.id.who_can_msg_rbtn);
+            no_oneBtn = view.findViewById(R.id.no_one_btn);
+            anyoneBtn = view.findViewById(R.id.anyone_btn);
+            mutual_friendsBtn = view.findViewById(R.id.m_friends_btn);
+
+            who_can_msg_me.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (radioGroup.getCheckedRadioButtonId()){
+                        case R.id.no_one_btn:
+                            saveWhoCanMsgme("no_one");
+//                            Toast.makeText(context, "No one", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.m_friends_btn:
+                            saveWhoCanMsgme("mutual_friends");
+//                            Toast.makeText(context, "Mutual", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.anyone_btn:
+                            saveWhoCanMsgme("anyone");
+//                            Toast.makeText(context, "Anyone", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             view.findViewById(R.id.Goback).setOnClickListener(this);
-            //selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
-            String languages = Variables.sharedPreferences.getString(Variables.language,"");
-            if (languages.equals("all")){
+            selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+            String languages = Variables.sharedPreferences.getString(Variables.language, "");
+            if (languages.equals("all")) {
                 selected_languages.setText("No language selected");
-            }else {
+            } else {
                 selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
             }
+
             auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
-            anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+           // anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
+            String anyOnecan = Variables.sharedPreferences.getString(Variables.anyone_can_message, "anyone");
+            switch (anyOnecan){
+                case "no_one":
+                    no_oneBtn.setChecked(true);
+                    break;
+                case "mutual_friends":
+                    mutual_friendsBtn.setChecked(true);
+                    break;
+                case "anyone":
+                    anyoneBtn.setChecked(true);
+                    break;
+                default:
+                    anyoneBtn.setChecked(true);
+                    break;
+            }
             language_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,10 +135,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
             });
             anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
-                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-                editor.putBoolean(Variables.anyone_can_message, b);
-                editor.commit();
-                callApiForSavePreferences();
+
                 // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
             });
 
@@ -102,6 +144,13 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         }
 
         return view;
+    }
+
+    private void saveWhoCanMsgme(String msg) {
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+        editor.putString(Variables.anyone_can_message, msg);
+        editor.commit();
+        callApiForSavePreferences();
     }
 
     private void openLanguageLayout() {
@@ -137,6 +186,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     private void loadLanguages() {
         try {
             String languages = Variables.sharedPreferences.getString(Variables.language, "");
+            //telugu, tamil, hindi, english, malayalam, punjabi, marathi, bengali, gujarati;
             if (languages.contains("Telugu")) {
                 telugu.setChecked(true);
             }
@@ -163,7 +213,20 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             }
             if (languages.contains("Gujarati")) {
                 gujarati.setChecked(true);
-            }
+            }/*
+            if (languages.equals("all")){
+                telugu.setChecked(true);
+                tamil.setChecked(true);
+                hindi.setChecked(true);
+                english.setChecked(true);
+                malayalam.setChecked(true);
+                punjabi.setChecked(true);
+                marathi.setChecked(true);
+                bengali.setChecked(true);
+                gujarati.setChecked(true);
+            }else {
+
+            }*/
         } catch (Exception e) {
             Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
         }
@@ -201,18 +264,31 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             }
             SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
             StringBuffer sb = new StringBuffer(cSValue);
-            if (sb.toString().equals("")) {
+            if (sb.toString().equals("") ) {
                 editor.putString(Variables.language, "all");
-            }else{
+                Log.d(TAG, "addCommaSeperatedString: " + "all");
+//                Toast.makeText(context, "" + sb.toString(), Toast.LENGTH_SHORT).show();
+            }else {
                 sb.deleteCharAt(sb.length() - 1);
-                editor.putString(Variables.language,sb.toString());
+                Log.d(TAG, "addCommaSeperatedString: " + sb.toString());
+                editor.putString(Variables.language, sb.toString());
             }
+
             editor.commit();
             //invoking the method
 
-            Log.d(TAG, "addCommaSeperatedString: " + sb.toString());
         } catch (Exception e) {
             Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
+        }
+    }
+
+    private boolean isAllChecked() {
+        if (telugu.isChecked() && tamil.isChecked() && hindi.isChecked() && english.isChecked()
+                && malayalam.isChecked() && punjabi.isChecked() && marathi.isChecked() && bengali.isChecked()
+                && gujarati.isChecked()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -226,8 +302,8 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("language", Variables.sharedPreferences.getString(Variables.language, ""));
-                parameters.put("anyone_can_message", "" + anyone_can_message.isChecked());
+                parameters.put("language", Variables.sharedPreferences.getString(Variables.language, "all"));
+                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message,"anyone"));
                 parameters.put("auto_scroll", "" + auto_scrool_enabled.isChecked());
 
             } catch (JSONException e) {
@@ -239,10 +315,10 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 public void Responce(String resp) {
                     Functions.cancel_loader();
                     Log.d(TAG, "Responce: " + resp);
-                    String languages = Variables.sharedPreferences.getString(Variables.language,"");
-                    if (languages.equals("all")){
-                        selected_languages.setText("No language selected");
-                    }else {
+                    String languages = Variables.sharedPreferences.getString(Variables.language, "");
+                    if (languages.equals("all")) {
+                        selected_languages.setText("No Language Selected");
+                    } else {
                         selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
                     }
                     //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
