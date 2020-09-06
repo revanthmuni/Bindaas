@@ -373,7 +373,8 @@ public class Following_F extends Fragment {
         try {
             final String send_status;
 
-                if (item.follow_status_button.equals("UnFollow")||item.follow_status_button.equals("Friends")) {
+                if (item.follow_status_button.equals("UnFollow")
+                        ||item.follow_status_button.equals("Friends")) {
                     send_status = "0";
                 } else {
                     send_status = "1";
@@ -395,10 +396,15 @@ public class Following_F extends Fragment {
 
                             if (send_status.equals("1")) {
                                 item.follow = "1";
+                                item.follow_status_button="UnFollow";
+                                //commented this line ,when we clicked on others profile followers ,
+                                // click on any user who you are not following ,the button goes to Friends .which is wrong.
+/*
+
                                 if(following_or_fan.equalsIgnoreCase("fan")){
                                     item.follow_status_button="Friends";
                                 }else
-                                    item.follow_status_button="UnFollow";
+*/
                                 datalist.remove(position);
                                 datalist.add(position, item);
                             } else  {
