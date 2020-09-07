@@ -111,6 +111,7 @@
                     android:padding="5dp"
                     android:layout_marginRight="15dp"
                     android:scaleType="fitCenter"
+                    android:visibility="invisible"
                     android:id="@+id/time_btn"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_timer"
