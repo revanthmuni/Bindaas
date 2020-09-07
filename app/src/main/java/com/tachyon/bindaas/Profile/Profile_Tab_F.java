@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.telecom.Call;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
@@ -67,6 +68,9 @@ import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.TabsView;
 import com.tachyon.bindaas.Video_Recording.DraftVideos.DraftVideos_A;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -287,10 +291,30 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onRefresh(String flag){
+//        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
+        try {
+            Call_Api_For_get_Allvideos();
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
+        }
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        try{
+            EventBus.getDefault().unregister(this);
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         try {
+            EventBus.getDefault().register(this);
             Show_draft_count();
 
             if (view != null && Variables.Reload_my_videos) {

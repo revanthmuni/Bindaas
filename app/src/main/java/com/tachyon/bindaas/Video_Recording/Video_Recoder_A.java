@@ -142,7 +142,6 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
             done_btn.setEnabled(false);
             done_btn.setOnClickListener(this);
 
-
             rotate_camera = findViewById(R.id.rotate_camera);
             rotate_camera.setOnClickListener(this);
             flash_btn = findViewById(R.id.flash_camera);

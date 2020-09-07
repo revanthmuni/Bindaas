@@ -30,7 +30,7 @@
             android:theme="@style/black_status"/>
         <activity android:name=".Video_Recording.Video_Recoder_Duet_A"
             android:theme="@style/black_status"/>
-        <activity android:name=".GallerySelectActivity"/>
+<!--        <activity android:name=".GallerySelectActivity"/>-->
         <activity
             android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
             android:process=":error_activity"

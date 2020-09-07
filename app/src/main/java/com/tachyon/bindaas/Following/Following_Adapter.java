@@ -90,7 +90,6 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 action_txt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                             listener.onItemClick(v, pos, item);
                     }
                 });
