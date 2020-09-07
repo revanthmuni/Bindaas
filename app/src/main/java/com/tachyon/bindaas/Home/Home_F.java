@@ -181,8 +181,10 @@ public class Home_F extends RootFragment implements Player.EventListener,
     //For destroying upload layout after the download gets completed...
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoUploadService(String res) {
-        Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
-        upload_video_layout.setVisibility(View.GONE);
+        if (!res.equals("done")){
+            Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
+            upload_video_layout.setVisibility(View.GONE);
+        }
     }
 
 

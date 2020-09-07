@@ -649,7 +649,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
                             Variables.user_name = u_name;
 
-                            EventBus.getDefault().post("finish");
+                            EventBus.getDefault().post("done");
                             getActivity().onBackPressed();
                         } else {
 

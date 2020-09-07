@@ -291,9 +291,9 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefresh(String msg){
-//        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onRefresh(String flag){
+//        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
         try {
             Call_Api_For_get_Allvideos();
         }catch (Exception e){

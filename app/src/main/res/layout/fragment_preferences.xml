@@ -155,7 +155,7 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mutual Friends"
+                        android:text="Only Mutual Followers"
                         android:textSize="15dp"
                         android:layout_weight="1"
                         android:id="@+id/m_friends_btn"
