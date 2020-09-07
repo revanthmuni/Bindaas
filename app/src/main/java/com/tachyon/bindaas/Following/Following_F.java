@@ -93,6 +93,7 @@ public class Following_F extends Fragment {
             recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setNestedScrollingEnabled(false);
             recyclerView.setHasFixedSize(true);
 
 
