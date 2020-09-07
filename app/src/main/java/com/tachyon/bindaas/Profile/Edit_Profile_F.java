@@ -55,6 +55,7 @@ import com.squareup.picasso.Picasso;
 import com.tachyon.bindaas.helper.CommonUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -648,6 +649,7 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
 
                             Variables.user_name = u_name;
 
+                            EventBus.getDefault().post("finish");
                             getActivity().onBackPressed();
                         } else {
 
