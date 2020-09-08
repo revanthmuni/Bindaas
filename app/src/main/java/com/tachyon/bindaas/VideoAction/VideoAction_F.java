@@ -108,7 +108,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
         }
 
-        if(Variables.is_enable_duet && (item.allow_duet!=null && item.allow_duet.equalsIgnoreCase("1"))) {
+        if(Variables.is_enable_duet && (item.allow_duet!=null && item.allow_duet.equalsIgnoreCase("true"))) {
             view.findViewById(R.id.duet_layout).setVisibility(View.VISIBLE);
             view.findViewById(R.id.duet_layout).setOnClickListener(this);
         }

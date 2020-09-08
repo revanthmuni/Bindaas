@@ -277,14 +277,14 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
 
                 if (comment_switch.isChecked())
-                    mServiceIntent.putExtra("allow_comment", "true");
+                    mServiceIntent.putExtra("allow_comments", "true");
                 else
-                    mServiceIntent.putExtra("allow_comment", "false");
+                    mServiceIntent.putExtra("allow_comments", "false");
 
                 if (duet_switch.isChecked())
-                    mServiceIntent.putExtra("allow_duet", "1");
+                    mServiceIntent.putExtra("allow_duet", "true");
                 else
-                    mServiceIntent.putExtra("allow_duet", "0");
+                    mServiceIntent.putExtra("allow_duet", "false");
 
                 startService(mServiceIntent);
 

@@ -30,11 +30,15 @@ public class Variables {
     public static int shortVideoDuration = 10000;
     public static int min_time_recording=3000;
     public static long auto_scroll_duration = 15000;
+    public static int maxVideoWidth = 720;
+    public static int maxVideoHeight = 1280;
+    public static double bitRateMultiplier = 4;
 
     public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";
     public static String outputfile2 = app_folder + "output2.mp4";
     public static String output_filter_file = app_folder + "output-filtered.mp4";
+    public static String output_compressed_file = app_folder + "";
 
     public static String gallery_trimed_video = app_folder + "gallery_trimed_video.mp4";
     public static String gallery_resize_video = app_folder + "gallery_resize_video.mp4";
@@ -114,7 +118,7 @@ public class Variables {
 
     //public static final String main_domain = "http://bindaasonline.com/";
     //public static final  String main_domain="http://funworld.sciflock.com/";
-    public static final  String main_domain="http://bindaasonlinedev.com/";
+    public static final  String main_domain="https://bindaasonline.com/";
 
     //public static final String base_url=main_domain+"API/funworld/";
     public static final String base_url = main_domain + "coreapi/";

@@ -16,10 +16,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+//import com.abedelazizshe.lightcompressorlibrary.CompressionListener;
+//import com.abedelazizshe.lightcompressorlibrary.VideoCompressor;
+//import com.abedelazizshe.lightcompressorlibrary.VideoQuality;
+import com.daasuu.gpuv.composer.FillMode;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.daasuu.gpuv.egl.filter.GlFilterGroup;
 import com.daasuu.gpuv.player.GPUPlayerView;
 import com.daasuu.gpuv.player.PlayerScaleType;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.tachyon.bindaas.Filter.FilterType;
 import com.tachyon.bindaas.Filter.Filter_Adapter;
 import com.tachyon.bindaas.R;
@@ -42,7 +47,10 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+
+import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
 
 public class Preview_Video_A extends AppCompatActivity implements Player.EventListener {
 
@@ -55,6 +63,11 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     RecyclerView recylerview;
 
     String draft_file;
+    long bestBitrate = 0;
+    int bestVideoHeight = 0;
+    int bestVideoWidth = 0;
+    boolean compressionNeeded = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +98,22 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
             findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    setVideoOptimumValues(Variables.outputfile2);
                     if(select_postion==0){
 
                         try {
-                            Functions.copyFile(new File(Variables.outputfile2),
-                                    new File(Variables.output_filter_file));
-                            GotopostScreen();
+                            if(compressionNeeded){
+                                Save_Video(Variables.outputfile2,Variables.output_filter_file);
+                            }else {
+                                Functions.copyFile(new File(Variables.outputfile2),
+                                        new File(Variables.output_filter_file));
+                                GotopostScreen();
+                            }
+
                         }
 
-                        catch (IOException e) {
+                        //catch (IOException e) {
+                        catch (Exception e) {
                             e.printStackTrace();
                             Log.d(Variables.tag,e.toString());
                             Save_Video(Variables.outputfile2,Variables.output_filter_file);
@@ -152,10 +172,9 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
 
 
             gpuPlayerView = new GPUPlayerView(this);
-
             MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
             metaRetriever.setDataSource(path);
-            String rotation=metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+            String rotation=metaRetriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
 
             if(rotation!=null && rotation.equalsIgnoreCase("0")){
                 gpuPlayerView.setPlayerScaleType(PlayerScaleType.RESIZE_FIT_WIDTH);
@@ -238,10 +257,11 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     public void Save_Video(String srcMp4Path, final String destMp4Path) {
         try {
             Functions.Show_determinent_loader(this, false, false);
-
+            //setVideoOptimumValues(srcMp4Path);
             new GPUMp4Composer(srcMp4Path, destMp4Path)
-                    //.size(540, 960)
-                    //.videoBitrate((int) (0.25 * 16 * 540 * 960))
+                    .size(bestVideoWidth, bestVideoHeight)
+                    //.fillMode(FillMode.PRESERVE_ASPECT_FIT)
+                    .videoBitrate((int) (bestBitrate))
                     .filter(new GlFilterGroup(FilterType
                             .createGlFilter(filterTypes.get(select_postion), getApplicationContext())))
                     .listener(new GPUMp4Composer.Listener() {
@@ -262,7 +282,14 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
                                 public void run() {
 
                                     Functions.cancel_determinent_loader();
+                                    /*try {
+                                        Toast.makeText(Preview_Video_A.this, "Compression Started", Toast.LENGTH_SHORT).show();
+                                        compressVideo(destMp4Path, Variables.output_compressed_file);
+                                        Toast.makeText(Preview_Video_A.this, "Compression Ended", Toast.LENGTH_SHORT).show();
 
+                                    } catch (URISyntaxException e) {
+                                        e.printStackTrace();
+                                    }*/
                                     GotopostScreen();
 
 
@@ -305,6 +332,131 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
         }
     }
 
+    public void compressVideo(String sourcePath, String destinationPath) throws URISyntaxException {
+        String filePath = SiliCompressor.with(getApplicationContext()).compressVideo(sourcePath, destinationPath);
+        //Toast.makeText(Preview_Video_A.this, "filePath" + filePath, Toast.LENGTH_SHORT).show();
+
+        /*VideoCompressor.start(sourcePath, destinationPath, new CompressionListener() {
+            @Override
+            public void onStart() {
+                // Compression start
+            }
+
+            @Override
+            public void onSuccess() {
+                // On Compression success
+                GotopostScreen();
+            }
+
+            @Override
+            public void onFailure(String failureMessage) {
+                Log.d("resp", failureMessage);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+
+                            Functions.cancel_determinent_loader();
+
+                            Toast.makeText(Preview_Video_A.this, R.string.try_again, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(float v) {
+                // Update UI with progress value
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Functions.Show_loading_progress((int) (v));
+                        //progress.setText(progressPercent + "%");
+                        //progressBar.setProgress((int) progressPercent);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled() {
+                // On Cancelled
+            }
+        }, VideoQuality.MEDIUM, false, true);
+        */
+    }
+
+
+    public void setVideoOptimumValues(String srcMp4Path){
+
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(srcMp4Path);
+        String metaRotation = retriever.extractMetadata(METADATA_KEY_VIDEO_ROTATION);
+        int rotation = metaRotation == null ? 0 : Integer.parseInt(metaRotation);
+        int sourceWidth = 0;
+        int sourceHeight = 0;
+        if (rotation == 90 || rotation == 270) {
+            sourceWidth = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+            sourceHeight = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+        }else{
+            sourceWidth = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+            sourceHeight = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+        }
+
+        long sourceDuration = Long.parseLong(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        //int sourceWidth = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+        //int sourceHeight = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+        long sourceBitrate = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));
+        long sourceResolutionDimension = sourceWidth * sourceHeight;
+        long maxResolutionDimension = Variables.maxVideoWidth * Variables.maxVideoHeight;
+        //Toast.makeText(Preview_Video_A.this, "Source - " + (sourceWidth) + (sourceHeight) , Toast.LENGTH_SHORT).show();
+        if(sourceResolutionDimension <= maxResolutionDimension){
+            bestVideoWidth = sourceWidth;
+            bestVideoHeight = sourceHeight;
+            //Toast.makeText(Preview_Video_A.this, "Same - <= -" + (bestVideoHeight) + (Variables.maxVideoHeight) , Toast.LENGTH_SHORT).show();
+        }else{
+            if(sourceWidth >= Variables.maxVideoWidth && sourceHeight >= Variables.maxVideoHeight){
+                bestVideoWidth = Variables.maxVideoWidth;
+                bestVideoHeight = (sourceHeight * Variables.maxVideoWidth) / sourceWidth;
+                //Toast.makeText(Preview_Video_A.this, " " + (bestVideoHeight) + (Variables.maxVideoHeight) , Toast.LENGTH_SHORT).show();
+                if(bestVideoHeight > Variables.maxVideoHeight){
+                    bestVideoWidth = (sourceWidth * Variables.maxVideoHeight) / sourceHeight;
+                    bestVideoHeight = Variables.maxVideoHeight;
+                }
+            }else if(sourceWidth <= Variables.maxVideoWidth && sourceHeight <= Variables.maxVideoHeight){
+                bestVideoWidth = sourceWidth;
+                bestVideoHeight = sourceHeight;
+            }else if(sourceWidth <= Variables.maxVideoWidth || sourceHeight <= Variables.maxVideoHeight){
+                if(sourceWidth <= Variables.maxVideoWidth){
+                    bestVideoWidth = sourceWidth;
+                    bestVideoHeight = (sourceHeight * Variables.maxVideoWidth) / sourceWidth;
+                }else if(sourceHeight <= Variables.maxVideoHeight){
+                    bestVideoWidth = (sourceWidth * Variables.maxVideoHeight) / sourceHeight;
+                    bestVideoHeight = sourceHeight;
+                    //Toast.makeText(Preview_Video_A.this, " " + (bestVideoHeight) + (Variables.maxVideoHeight) , Toast.LENGTH_SHORT).show();
+                }else{
+                    bestVideoWidth = sourceWidth;
+                    bestVideoHeight = sourceHeight;
+                }
+            }else{
+                bestVideoWidth = sourceWidth;
+                bestVideoHeight = sourceHeight;
+            }
+        }
+        long maxBitrateForCurrentVideo = (long) (bestVideoWidth * bestVideoHeight * Variables.bitRateMultiplier);
+        if(sourceBitrate <= maxBitrateForCurrentVideo){
+            bestBitrate = sourceBitrate;
+        }else{
+            bestBitrate = maxBitrateForCurrentVideo;
+        }
+        if(bestBitrate != sourceBitrate || bestVideoWidth != sourceWidth || bestVideoHeight != sourceHeight){
+            compressionNeeded = true;
+        }
+        //Toast.makeText(Preview_Video_A.this, compressionNeeded + "1628541 " + (bestBitrate) + " - " + (sourceBitrate) + " - " + (maxBitrateForCurrentVideo) , Toast.LENGTH_SHORT).show();
+        retriever.release();
+
+    }
 
     public void GotopostScreen() {
         try {

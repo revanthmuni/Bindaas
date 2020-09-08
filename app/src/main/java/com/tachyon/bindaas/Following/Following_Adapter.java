@@ -142,7 +142,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
 
                 holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
-                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
 
             }
 
