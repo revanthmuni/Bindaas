@@ -35,6 +35,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class TabsView extends RootFragment {
 
     View view;
     Context context;
-    TextView notification_view,messages_view;
+    TextView notification_view, messages_view;
     FrameLayout frameLayout;
     public TabsView() {
         // Required empty public constructor
@@ -68,8 +69,8 @@ public class TabsView extends RootFragment {
             context = getContext();
 
             frameLayout = view.findViewById(R.id.tabs_container);
-            notification_view  = view.findViewById(R.id.textView3);
-            messages_view  = view.findViewById(R.id.textView4);
+            notification_view = view.findViewById(R.id.textView3);
+            messages_view = view.findViewById(R.id.textView4);
             loadNoficationTab();
             notification_view.setOnClickListener(view -> {
                 frameLayout.setVisibility(View.GONE);
@@ -86,7 +87,10 @@ public class TabsView extends RootFragment {
                 notification_view.setAlpha(0.5f);
                 loadMessageTab();
             });
-            view.findViewById(R.id.back_btn2).setOnClickListener(v -> getActivity().onBackPressed());
+            view.findViewById(R.id.back_btn2).setOnClickListener(v -> {
+                EventBus.getDefault().post("done");
+                getActivity().onBackPressed();
+            });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -99,7 +103,7 @@ public class TabsView extends RootFragment {
             MessagesTab fragment = new MessagesTab();
 //            Notification_F notification_F = new Notification_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-           // transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+            // transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
 //            transaction.addToBackStack(null);
             transaction.replace(R.id.tabs_container, fragment).commit();
         } catch (Exception e) {
