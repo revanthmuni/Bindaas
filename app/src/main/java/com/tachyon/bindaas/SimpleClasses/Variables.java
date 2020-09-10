@@ -118,7 +118,7 @@ public class Variables {
 
     //public static final String main_domain = "http://bindaasonline.com/";
     //public static final  String main_domain="http://funworld.sciflock.com/";
-    public static final  String main_domain="https://bindaasonline.com/";
+    public static final  String main_domain="http://bindaasonlinedev.com/";
 
     //public static final String base_url=main_domain+"API/funworld/";
     public static final String base_url = main_domain + "coreapi/";
