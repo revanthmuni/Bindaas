@@ -255,7 +255,7 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
                         listener.onItemClick(itemView, pos, item);
                     }
                 });
-                play_Btn.setOnClickListener(new View.OnClickListener() {
+               /* play_Btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         play_Btn.setVisibility(View.GONE);
@@ -271,7 +271,7 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
                         listener.onItemClick(itemView, pos, item);
                     }
                 });
-
+*/
                 fav_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

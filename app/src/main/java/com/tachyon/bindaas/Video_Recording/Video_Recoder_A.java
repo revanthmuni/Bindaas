@@ -926,12 +926,11 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (resultCode == RESULT_OK) {
-
                 if (requestCode == Sounds_list_Request_code) {
                     if (data != null) {
 
                         if (data.getStringExtra("isSelected").equals("yes")) {
-                            add_sound_txt.setText(data.getStringExtra("sound_name"));
+                            add_sound_txt.setText(data.getStringExtra("sound_name").equals("")?"Bindaas":data.getStringExtra("sound_name"));
                             Variables.Selected_sound_id = data.getStringExtra("sound_id");
                             PreparedAudio();
                         }

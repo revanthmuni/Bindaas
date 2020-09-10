@@ -363,7 +363,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         try {
             if (previous_view != null) {
                 previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+               // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
 
                 // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
@@ -377,7 +377,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     public void Show_loading_state() {
         try {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+           // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
@@ -390,10 +390,10 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+              //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+             //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
                 //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
             }
