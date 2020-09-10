@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import android.os.Handler;
 import android.util.SparseArray;
@@ -76,7 +77,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         return view;
     }
 
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -95,6 +95,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             pager.setAdapter(adapter);
             tabLayout.setupWithViewPager(pager);
             setupTabIcons();
+
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -304,6 +305,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             });
 
             OnHome_Click();
+
+
+
             if (MainMenuActivity.intent != null) {
 
                 if (MainMenuActivity.intent.hasExtra("action_type")) {

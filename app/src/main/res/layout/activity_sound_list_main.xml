@@ -31,32 +31,40 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             android:background="@color/white">
-            <RelativeLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/relativeLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageButton
+                    android:id="@+id/Goback"
                     android:layout_width="50dp"
                     android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_white_cross"
-                    android:id="@+id/Goback"
-                    android:tint="@color/black"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/transparent"
                     android:scaleType="fitStart"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/transparent"/>
+                    android:src="@drawable/ic_white_cross"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:text="Add Sound"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_centerInParent="true"
-                    android:textSize="15dp"/>
-            </RelativeLayout>
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/Goback"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/Goback" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
 
 
