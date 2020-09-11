@@ -17,7 +17,14 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
-        <activity android:name=".ExceptionDisplay"></activity>
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ExceptionDisplay" />
         <activity
             android:name=".Signup.SignUpActivity"
             android:screenOrientation="portrait"
@@ -26,11 +33,12 @@
             android:name=".AudioTrimming.AudioTrimmerActivity"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".Video_Recording.Trim_video_A"
-            android:theme="@style/black_status"/>
-        <activity android:name=".Video_Recording.Video_Recoder_Duet_A"
-            android:theme="@style/black_status"/>
-<!--        <activity android:name=".GallerySelectActivity"/>-->
+        <activity
+            android:name=".Video_Recording.Trim_video_A"
+            android:theme="@style/black_status" />
+        <activity
+            android:name=".Video_Recording.Video_Recoder_Duet_A"
+            android:theme="@style/black_status" /> <!-- <activity android:name=".GallerySelectActivity"/> -->
         <activity
             android:name="cat.ereza.customactivityoncrash.activity.DefaultErrorActivity"
             android:process=":error_activity"
@@ -64,10 +72,7 @@
             android:name=".Splash_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".Main_Menu.MainMenuActivity"

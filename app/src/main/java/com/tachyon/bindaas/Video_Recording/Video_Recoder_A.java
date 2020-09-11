@@ -164,7 +164,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
 
             // this is code hold to record the video
-       /* final Timer[] timer = {new Timer()};
+            /* final Timer[] timer = {new Timer()};
         final long[] press_time = {0};
        record_image.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -223,7 +223,15 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             LinearLayout bottomSheet = findViewById(R.id.bottom_sheet);
 
-            checkStorageAccessPermission();
+            //
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    checkStorageAccessPermission();
+                }
+            });
+            thread.start();
+
             RecyclerView recyclerView;
 
             search_text = findViewById(R.id.search_edit);

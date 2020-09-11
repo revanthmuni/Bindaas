@@ -59,6 +59,7 @@ public class Variables {
     public static final String insta_link = "insta_link";
     public static final String language = "language";
     public static final String anyone_can_message = "anyone_can_message";
+    public static final String is_first_time_launch = "is_first_time_launch";
 
     public static String user_id;
     public static String user_name;
