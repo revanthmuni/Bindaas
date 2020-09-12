@@ -223,14 +223,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
             LinearLayout bottomSheet = findViewById(R.id.bottom_sheet);
 
-            //
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    checkStorageAccessPermission();
-                }
-            });
-            thread.start();
+            new MyThread().execute();
 
             RecyclerView recyclerView;
 
@@ -306,6 +299,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
 
         }
 
+    }
+    class MyThread extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            checkStorageAccessPermission();
+            return null;
+        }
     }
 
     private void filter(CharSequence text) {
@@ -1324,7 +1325,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
             // This work only for android 4.4+
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 getWindow().getDecorView().setSystemUiVisibility(flags);
 
                 // Code below is to handle presses of Volume up or Volume down.
@@ -1354,7 +1355,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         try {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION

@@ -108,7 +108,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
 
         }
 
-        if(Variables.is_enable_duet && (item.allow_duet!=null && item.allow_duet.equalsIgnoreCase("1"))) {
+        if(Variables.is_enable_duet && (item.allow_duet!=null && item.allow_duet.equalsIgnoreCase("true"))) {
             view.findViewById(R.id.duet_layout).setVisibility(View.VISIBLE);
             view.findViewById(R.id.duet_layout).setOnClickListener(this);
         }
@@ -196,7 +196,7 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             i.setComponent(name);
 
-            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT, context.getResources().getString(R.string.save_video_message) + Variables.DOWNLOAD_VIDEO + video_id);
             intent.setComponent(name);

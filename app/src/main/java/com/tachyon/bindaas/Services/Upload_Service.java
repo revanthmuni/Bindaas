@@ -172,7 +172,7 @@ public class Upload_Service extends Service {
                 draft_file = intent.getStringExtra("draft_file");
                 description = intent.getStringExtra("desc");
                 privacy_type = intent.getStringExtra("privacy_type");
-                allow_comment = intent.getStringExtra("allow_comment");
+                allow_comment = intent.getStringExtra("allow_comments");
                 allow_duet = intent.getStringExtra("allow_duet");
                 category = intent.getStringExtra("cat");
 
