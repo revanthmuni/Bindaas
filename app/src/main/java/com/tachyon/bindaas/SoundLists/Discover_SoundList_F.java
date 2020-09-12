@@ -126,7 +126,9 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
                         Call_Api_For_Fav_sound(postion, item);
+
                     } else if (view.getId() == R.id.play_arrow) {
+
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
                             playaudio(view, item);
@@ -134,7 +136,6 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), R.string.play_pressed, Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();

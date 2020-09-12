@@ -68,7 +68,8 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
         holder.title.setText(item.catagory);
 
 
-        Sound_Items_Adapter adapter = new Sound_Items_Adapter(context, item.sound_list, new Sound_Items_Adapter.OnItemClickListener() {
+        Sound_Items_Adapter adapter = new Sound_Items_Adapter(context, item.sound_list,
+                new Sound_Items_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
@@ -121,7 +122,7 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
 
 
 class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.CustomViewHolder> {
-    public Context context;
+        public Context context;
 
     ArrayList<Sounds_GetSet> datalist;
 
@@ -176,8 +177,7 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
                 item.thum = "Null";
             }
 
-
-            if (item.thum != null && !item.thum.equals("")) {
+            if (item.thum != null && !item.thum.equals("")&&item.thum.contains(".jpg")) {
                 Log.d(Variables.tag, item.thum);
                 Uri uri = Uri.parse(item.thum);
                 holder.sound_image.setImageURI(uri);
