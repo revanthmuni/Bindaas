@@ -114,14 +114,9 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
 
             }catch (Exception e){
                 Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
-
             }
         }
-
-
     }
-
-
 }
 
 
@@ -225,12 +220,12 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
 
         public void bind(final int pos, final Sounds_GetSet item, final Sound_Items_Adapter.OnItemClickListener listener) {
             try {
-                itemView.setOnClickListener(new View.OnClickListener() {
+                /*itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // listener.onItemClick(v,pos,item);
                     }
-                });
+                });*/
 
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override

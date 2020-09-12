@@ -365,7 +365,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                 previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
                 // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -379,6 +379,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         try {
            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
+            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
             previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
