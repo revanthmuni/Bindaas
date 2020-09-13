@@ -184,8 +184,6 @@ public class Home_F extends RootFragment implements Player.EventListener,
         if (!res.equals("done")){
             Toast.makeText(context, res, Toast.LENGTH_SHORT).show();
             upload_video_layout.setVisibility(View.GONE);
-            currentPage = -1;
-            Call_Api_For_get_Allvideos();
         }
     }
 

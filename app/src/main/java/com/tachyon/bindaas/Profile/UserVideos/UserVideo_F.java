@@ -28,6 +28,9 @@ import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +74,12 @@ public class UserVideo_F extends Fragment {
             Call_Api_For_get_Allvideos();
         }
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoUploadService(String res) {
+        if (!res.equals("done")){
+            Call_Api_For_get_Allvideos();
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -134,6 +142,7 @@ public class UserVideo_F extends Fragment {
     public void onResume() {
         super.onResume();
         try {
+            EventBus.getDefault().register(this);
             if ((view != null && isVisibleToUser) && !is_api_run) {
                 Call_Api_For_get_Allvideos();
             } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
@@ -146,6 +155,16 @@ public class UserVideo_F extends Fragment {
         }
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            EventBus.getDefault().unregister(this);
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -251,6 +270,7 @@ public class UserVideo_F extends Fragment {
                         data_list.add(item);
                     }
 
+                   // Toast.makeText(context, ""+data_list.size(), Toast.LENGTH_SHORT).show();
                     //myvideo_count = data_list.size();
 
                 } else {

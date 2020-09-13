@@ -646,8 +646,6 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 swiperefresh.setRefreshing(false);
             }
         });
-
-
     }
 
     @Override

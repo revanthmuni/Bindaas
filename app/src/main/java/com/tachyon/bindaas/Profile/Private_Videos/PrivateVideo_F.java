@@ -24,10 +24,14 @@ import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +68,12 @@ public class PrivateVideo_F extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoUploadService(String res) {
+        if (!res.equals("done")) {
+            Call_Api_For_get_Allvideos();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,13 +126,28 @@ public class PrivateVideo_F extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            EventBus.getDefault().unregister(this);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        if ((view != null && isVisibleToUser) && !is_api_run) {
-            Call_Api_For_get_Allvideos();
-        } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
-            Variables.Reload_my_videos_inner = false;
-            Call_Api_For_get_Allvideos();
+        try {
+            EventBus.getDefault().register(this);
+            if ((view != null && isVisibleToUser) && !is_api_run) {
+                Call_Api_For_get_Allvideos();
+            } else if ((view != null && Variables.Reload_my_videos_inner) && !is_api_run) {
+                Variables.Reload_my_videos_inner = false;
+                Call_Api_For_get_Allvideos();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
     }
 
