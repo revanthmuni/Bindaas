@@ -7,6 +7,8 @@
     android:layout_height="wrap_content"
     android:background="#000"
     android:layout_marginBottom="50dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_video_recoder"
     ><!--tools:showIn="@layout/video_recorder"-->
 
     <RelativeLayout
