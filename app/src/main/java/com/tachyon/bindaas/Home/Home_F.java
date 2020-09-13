@@ -973,7 +973,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
 
     // when we swipe for another video this will relaese the privious player
-    SimpleExoPlayer privious_player;
+    public static SimpleExoPlayer privious_player;
 
     public void Release_Privious_Player() {
         if (privious_player != null) {
