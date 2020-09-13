@@ -102,11 +102,11 @@ public class Login_A extends AppCompatActivity {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             activity = this;
 
-            if (Build.VERSION.SDK_INT == 26) {
+            /*if (Build.VERSION.SDK_INT == 26) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-            }
+            }*/
 
             getWindow().setBackgroundDrawable(
                     new ColorDrawable(android.graphics.Color.TRANSPARENT));
