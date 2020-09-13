@@ -2,6 +2,7 @@ package com.tachyon.bindaas.Following;
 
 import android.content.Context;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,8 +59,8 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
         ImageView user_image;
         TextView user_name;
         TextView user_id;
-        TextView action_txt;
-        RelativeLayout mainlayout;
+        TextView action_txt, friend_action_txt;
+        ConstraintLayout mainlayout;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -71,6 +72,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 user_id = view.findViewById(R.id.user_id);
 
                 action_txt = view.findViewById(R.id.action_txt);
+                friend_action_txt = view.findViewById(R.id.friend_action_txt);
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
