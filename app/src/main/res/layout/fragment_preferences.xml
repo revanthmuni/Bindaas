@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Setting_F"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:clickable="true"
     tools:context="com.tachyon.bindaas.Settings.Setting_F">
 
@@ -341,6 +341,7 @@
                         android:src="@drawable/ic_next"
                         android:tint="@color/black" />
                 </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/selected_languages"

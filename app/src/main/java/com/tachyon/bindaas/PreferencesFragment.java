@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.tachyon.bindaas.Accounts.Request_Varification_F;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.tachyon.bindaas.Preferences.LanguageAdapter;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -34,10 +35,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import kotlin.reflect.jvm.internal.impl.util.Check;
 
 import static android.content.ContentValues.TAG;
 
@@ -51,9 +58,15 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     CheckBox telugu, tamil, hindi, english, malayalam, punjabi, marathi, bengali, gujarati;
     TextView selected_languages;
 
+    RecyclerView language_recyclerview;
     RadioGroup who_can_msg_me;
     RadioButton no_oneBtn,anyoneBtn,mutual_friendsBtn;
 
+    ConstraintLayout language_view;
+
+    LanguageAdapter adapter;
+
+    ArrayList<String> finalList = new ArrayList<>();
     public PreferencesFragment() {
         // Required empty public constructor
     }
@@ -67,10 +80,12 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         try {
             context = getContext();
 
+
             selected_languages = view.findViewById(R.id.selected_languages);
             language_layout = view.findViewById(R.id.linearLayout5);
             auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
             anyone_can_message = view.findViewById(R.id.any_one_can_msg);
+            //right_arrow = view.findViewById(R.id.right_arrow);
 
             who_can_msg_me = view.findViewById(R.id.who_can_msg_rbtn);
             no_oneBtn = view.findViewById(R.id.no_one_btn);
@@ -127,11 +142,24 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     openLanguageLayout();
                 }
             });
+
+           /* right_arrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (language_view.getVisibility() == View.VISIBLE){
+                        right_arrow.setImageResource(R.drawable.ic_down_arrow);
+                        language_view.setVisibility(View.GONE);
+                    }else{
+                        right_arrow.setImageResource(R.drawable.ic_up_arrow);
+                        language_view.setVisibility(View.VISIBLE);
+                    }
+                }
+            });*/
             auto_scrool_enabled.setOnCheckedChangeListener((compoundButton, b) -> {
                 SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
                 editor.putBoolean(Variables.auto_scroll_key, b);
                 editor.commit();
-                callApiForSavePreferences();
+                                callApiForSavePreferences();
                 //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
             });
             anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -155,21 +183,28 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
 
     private void openLanguageLayout() {
         try {
+            finalList.clear();
             View view = LayoutInflater.from(context).inflate(R.layout.language_layout, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Select Language");
             builder.setView(view);
-            tamil = view.findViewById(R.id.tamil);
-            telugu = view.findViewById(R.id.telugu);
-            hindi = view.findViewById(R.id.hindi);
-            english = view.findViewById(R.id.english);
+            language_recyclerview = view.findViewById(R.id.languages_recyclerview);
 
-            malayalam = view.findViewById(R.id.malayalam);
-            punjabi = view.findViewById(R.id.punjabi);
-            marathi = view.findViewById(R.id.marathi);
-            bengali = view.findViewById(R.id.bengali);
-            gujarati = view.findViewById(R.id.gujarati);
-            loadLanguages();
+            String[] lang = getResources().getStringArray(R.array.languages);
+            Log.d(TAG, "openLanguageLayout: "+lang.length);
+            adapter = new LanguageAdapter(lang, new LanguageAdapter.OnItemCheckListener() {
+                @Override
+                public void onItemCheck(String item, int position) {
+                    finalList.add(item);
+                }
+
+                @Override
+                public void onItemUncheck(String item, int position) {
+                    finalList.remove(item);
+                }
+            });
+            language_recyclerview.setLayoutManager(new GridLayoutManager(context,2));
+            language_recyclerview.setAdapter(adapter);
             builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -183,100 +218,27 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         }
     }
 
-    private void loadLanguages() {
-        try {
-            String languages = Variables.sharedPreferences.getString(Variables.language, "");
-            //telugu, tamil, hindi, english, malayalam, punjabi, marathi, bengali, gujarati;
-            if (languages.contains("Telugu")) {
-                telugu.setChecked(true);
-            }
-            if (languages.contains("Tamil")) {
-                tamil.setChecked(true);
-            }
-            if (languages.contains("Hindi")) {
-                hindi.setChecked(true);
-            }
-            if (languages.contains("English")) {
-                english.setChecked(true);
-            }
-            if (languages.contains("Malayalam")) {
-                malayalam.setChecked(true);
-            }
-            if (languages.contains("Punjabi")) {
-                punjabi.setChecked(true);
-            }
-            if (languages.contains("Marathi")) {
-                marathi.setChecked(true);
-            }
-            if (languages.contains("Bengali")) {
-                bengali.setChecked(true);
-            }
-            if (languages.contains("Gujarati")) {
-                gujarati.setChecked(true);
-            }/*
-            if (languages.equals("all")){
-                telugu.setChecked(true);
-                tamil.setChecked(true);
-                hindi.setChecked(true);
-                english.setChecked(true);
-                malayalam.setChecked(true);
-                punjabi.setChecked(true);
-                marathi.setChecked(true);
-                bengali.setChecked(true);
-                gujarati.setChecked(true);
-            }else {
 
-            }*/
-        } catch (Exception e) {
-            Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
-        }
-    }
 
     private void addCommaSeperatedString() {
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+
         try {
-            String cSValue = "";
-            if (telugu.isChecked()) {
-                cSValue = cSValue + telugu.getText().toString() + ",";
+            StringBuffer sb = new StringBuffer();
+            for(String i: finalList){
+                sb.append(i).append(",");
             }
-            if (tamil.isChecked()) {
-                cSValue = cSValue + tamil.getText().toString() + ",";
-            }
-            if (hindi.isChecked()) {
-                cSValue = cSValue + hindi.getText().toString() + ",";
-            }
-            if (english.isChecked()) {
-                cSValue = cSValue + english.getText().toString() + ",";
-            }
-            if (malayalam.isChecked()) {
-                cSValue = cSValue + malayalam.getText().toString() + ",";
-            }
-            if (punjabi.isChecked()) {
-                cSValue = cSValue + punjabi.getText().toString() + ",";
-            }
-            if (marathi.isChecked()) {
-                cSValue = cSValue + marathi.getText().toString() + ",";
-            }
-            if (bengali.isChecked()) {
-                cSValue = cSValue + bengali.getText().toString() + ",";
-            }
-            if (gujarati.isChecked()) {
-                cSValue = cSValue + gujarati.getText().toString() + ",";
-            }
-            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-            StringBuffer sb = new StringBuffer(cSValue);
             if (sb.toString().equals("") ) {
-                editor.putString(Variables.language, "all");
+                        editor.putString(Variables.language, "all");
                 Log.d(TAG, "addCommaSeperatedString: " + "all");
 //                Toast.makeText(context, "" + sb.toString(), Toast.LENGTH_SHORT).show();
             }else {
                 sb.deleteCharAt(sb.length() - 1);
                 Log.d(TAG, "addCommaSeperatedString: " + sb.toString());
-                editor.putString(Variables.language, sb.toString());
+                        editor.putString(Variables.language, sb.toString());
             }
-
             editor.commit();
-            //invoking the method
-
+            Toast.makeText(context, "Sved lan"+sb, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
         }
@@ -345,4 +307,6 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
 
         }
     }
+
+
 }
