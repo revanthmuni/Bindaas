@@ -80,6 +80,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     private TextView txtAudioRecordUpdate;
     private TextView txtAudioCrop;
     private TextView txtAudioTitle;
+    private String fileName;
 
     private boolean isAudioRecording = false;
     private long mRecordingLastUpdateTime;
@@ -512,8 +513,10 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
                     if (uri != null) {
                         File fil = new File(uri.toString());
                         String path = fil.getAbsolutePath();
-
+                        fileName = path.substring(path.lastIndexOf("/")+1);
+                        //fileName = real_path.substring(path.lastIndexOf("/")+1);
                         String real_path = new FileUtilsForAudio(this).getPath(uri);
+                        fileName = real_path.substring(real_path.lastIndexOf("/")+1,real_path.lastIndexOf("."));
                         Log.d("Audio_Path", "Intent results::::" + path);
                         Log.d("Audio_Path", "provider path::::" + real_path);
 
@@ -1254,7 +1257,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             Thread mSaveSoundFileThread = new Thread() {
                 public void run() {
                     // Try AAC first.
-                    String outPath = makeRingtoneFilename("Bindaas" + Calendar.getInstance().getTimeInMillis(), Utility.AUDIO_FORMAT);
+                    //String outPath = makeRingtoneFilename("Bindaas" + Calendar.getInstance().getTimeInMillis(), Utility.AUDIO_FORMAT);
+                    String outPath = makeRingtoneFilename(fileName, Utility.AUDIO_FORMAT);
                     if (outPath == null) {
                         Log.e(" >> ", "Unable to find unique filename");
                         return;
@@ -1369,6 +1373,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
         String filename = "";
         for (int i = 0; i < title.length(); i++) {
             if (Character.isLetterOrDigit(title.charAt(i))) {
+                filename += title.charAt(i);
+            }else if(Character.isSpaceChar(title.charAt(i))){
                 filename += title.charAt(i);
             }
         }
