@@ -123,6 +123,7 @@
         <activity
             android:name=".Video_Recording.Video_Recoder_A"
             android:screenOrientation="portrait"
+            android:theme="@style/black_status"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Video_Recording.Preview_Video_A"

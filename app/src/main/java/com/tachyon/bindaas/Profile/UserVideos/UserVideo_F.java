@@ -76,9 +76,7 @@ public class UserVideo_F extends Fragment {
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoUploadService(String res) {
-        if (!res.equals("done")){
-            Call_Api_For_get_Allvideos();
-        }
+        Call_Api_For_get_Allvideos();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

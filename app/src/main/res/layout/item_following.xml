@@ -51,7 +51,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
             android:text="Following"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/user_image"
@@ -74,7 +74,7 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/user_image"
             app:layout_constraintEnd_toStartOf="@+id/action_txt"
             app:layout_constraintTop_toTopOf="@+id/user_image" />

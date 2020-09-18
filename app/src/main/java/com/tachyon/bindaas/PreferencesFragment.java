@@ -31,6 +31,7 @@ import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.SimpleClasses.Webview_F;
 import com.tachyon.bindaas.helper.CommonUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     Context context;
     Switch auto_scrool_enabled;
     Switch anyone_can_message;
+    Switch show_preview_switch;
     LinearLayout language_layout;
     CheckBox telugu, tamil, hindi, english, malayalam, punjabi, marathi, bengali, gujarati;
     TextView selected_languages;
@@ -61,6 +63,8 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     RecyclerView language_recyclerview;
     RadioGroup who_can_msg_me;
     RadioButton no_oneBtn,anyoneBtn,mutual_friendsBtn;
+    RadioGroup who_can_tag_me;
+    RadioButton no_oneTagme,mutual_friendsTagme;
 
     ConstraintLayout language_view;
 
@@ -84,6 +88,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             selected_languages = view.findViewById(R.id.selected_languages);
             language_layout = view.findViewById(R.id.linearLayout5);
             auto_scrool_enabled = view.findViewById(R.id.auto_scroll_switch);
+            show_preview_switch = view.findViewById(R.id.show_preview_switch);
             anyone_can_message = view.findViewById(R.id.any_one_can_msg);
             //right_arrow = view.findViewById(R.id.right_arrow);
 
@@ -92,24 +97,11 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             anyoneBtn = view.findViewById(R.id.anyone_btn);
             mutual_friendsBtn = view.findViewById(R.id.m_friends_btn);
 
-            who_can_msg_me.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    switch (radioGroup.getCheckedRadioButtonId()){
-                        case R.id.no_one_btn:
-                            saveWhoCanMsgme("no_one");
-//                            Toast.makeText(context, "No one", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.m_friends_btn:
-                            saveWhoCanMsgme("mutual_friends");
-//                            Toast.makeText(context, "Mutual", Toast.LENGTH_SHORT).show();
-                            break;
-                        case R.id.anyone_btn:
-                            saveWhoCanMsgme("anyone");
-//                            Toast.makeText(context, "Anyone", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            who_can_tag_me = view.findViewById(R.id.who_can_tag_me);
+            no_oneTagme = view.findViewById(R.id.no_one_tag_me);
+            mutual_friendsTagme = view.findViewById(R.id.only_mutual_friends);
+
+
             view.findViewById(R.id.Goback).setOnClickListener(this);
             selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
             String languages = Variables.sharedPreferences.getString(Variables.language, "");
@@ -120,13 +112,14 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             }
 
             auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
+            show_preview_switch.setChecked(Variables.sharedPreferences.getBoolean(Variables.show_preview_key, false));
            // anyone_can_message.setChecked(Variables.sharedPreferences.getBoolean(Variables.anyone_can_message, false));
             String anyOnecan = Variables.sharedPreferences.getString(Variables.anyone_can_message, "anyone");
             switch (anyOnecan){
                 case "no_one":
                     no_oneBtn.setChecked(true);
                     break;
-                case "mutual_friends":
+                case "mutual_followers":
                     mutual_friendsBtn.setChecked(true);
                     break;
                 case "anyone":
@@ -134,6 +127,18 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     break;
                 default:
                     anyoneBtn.setChecked(true);
+                    break;
+            }
+            String whoCanTag = Variables.sharedPreferences.getString(Variables.who_can_tagme, "mutual_followers");
+            switch (whoCanTag){
+                case "no_one":
+                    no_oneTagme.setChecked(true);
+                    break;
+                case "mutual_followers":
+                    mutual_friendsTagme.setChecked(true);
+                    break;
+                default:
+                    no_oneTagme.setChecked(true);
                     break;
             }
             language_layout.setOnClickListener(new View.OnClickListener() {
@@ -159,19 +164,65 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
                 editor.putBoolean(Variables.auto_scroll_key, b);
                 editor.commit();
-                                callApiForSavePreferences();
+                callApiForSavePreferences();
                 //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
+            });
+            show_preview_switch.setOnCheckedChangeListener((compoundButton, b) -> {
+                SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+                editor.putBoolean(Variables.show_preview_key, b);
+                editor.commit();
+                callApiForSavePreferences();
+                EventBus.getDefault().post("done");
             });
             anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
 
                 // Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
             });
-
+            who_can_msg_me.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (radioGroup.getCheckedRadioButtonId()){
+                        case R.id.no_one_btn:
+                            saveWhoCanMsgme("no_one");
+//                            Toast.makeText(context, "No one", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.m_friends_btn:
+                            saveWhoCanMsgme("mutual_followers");
+//                            Toast.makeText(context, "Mutual", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.anyone_btn:
+                            saveWhoCanMsgme("anyone");
+//                            Toast.makeText(context, "Anyone", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            who_can_tag_me.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    switch (radioGroup.getCheckedRadioButtonId()){
+                        case R.id.no_one_tag_me:
+                            saveWhoCanTagme("no_one");
+//                            Toast.makeText(context, "No one", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.only_mutual_friends:
+                            saveWhoCanTagme("mutual_followers");
+//                            Toast.makeText(context, "Mutual", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
         } catch (Exception e) {
             Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
         }
 
         return view;
+    }
+
+    private void saveWhoCanTagme(String no_one) {
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+        editor.putString(Variables.who_can_tagme, no_one);
+        editor.commit();
+        callApiForSavePreferences();
     }
 
     private void saveWhoCanMsgme(String msg) {
@@ -244,18 +295,6 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         }
     }
 
-    private boolean isAllChecked() {
-        if (telugu.isChecked() && tamil.isChecked() && hindi.isChecked() && english.isChecked()
-                && malayalam.isChecked() && punjabi.isChecked() && marathi.isChecked() && bengali.isChecked()
-                && gujarati.isChecked()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /* user_id,first_name,last_name,gender,bio,username,
-    language,anyone_can_message,auto_scroll,fb_link,insta_link */
     public void callApiForSavePreferences() {
         /*user_id,language,anyone_can_message,auto_scroll*/
         try {
@@ -267,6 +306,8 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 parameters.put("language", Variables.sharedPreferences.getString(Variables.language, "all"));
                 parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message,"anyone"));
                 parameters.put("auto_scroll", "" + auto_scrool_enabled.isChecked());
+                parameters.put("show_video_preview", "" + show_preview_switch.isChecked());
+                parameters.put("who_can_tag_me", "" + Variables.sharedPreferences.getString(Variables.who_can_tagme,""));
 
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -23,6 +23,7 @@ import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.CustomViewHolder> {
@@ -100,8 +101,8 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
 
             holder.view_txt.setText(item.views);
             holder.view_txt.setText(Functions.GetSuffix(item.views));
-
-            if(Variables.is_show_gif) {
+            /*Variables.is_show_gif*/
+            if(Variables.sharedPreferences.getBoolean(Variables.show_preview_key,false)) {
                 Glide.with(context)
                         .asGif()
                         .load(item.gif)
@@ -115,8 +116,10 @@ public class MyVideos_Adapter extends RecyclerView.Adapter<MyVideos_Adapter.Cust
             }
             else {
                 if(item.thum!=null && !item.thum.equals("")) {
+                    Log.d(TAG, "onBindViewHolder: "+item.thum);
                     Uri uri = Uri.parse(item.thum);
-                    holder.thumb_image.setImageURI(uri);
+                    Glide.with(context).load(item.thum).into(holder.thumb_image);
+//                    holder.thumb_image.setImageURI(uri);
                 }
             }
 

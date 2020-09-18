@@ -37,7 +37,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.ViewHo
         String laList = Variables.sharedPreferences.getString(Variables.language,"");
         Log.d(TAG, "onBindViewHolder: "+list[position]);
         holder.checkBox.setText(list[position]);
-        if (laList.contains(holder.checkBox.getText().toString().toLowerCase())){
+        if (laList.contains(holder.checkBox.getText().toString())){
             holder.checkBox.setChecked(true);
             listener.onItemCheck(holder.checkBox.getText().toString(),position);
         }else{

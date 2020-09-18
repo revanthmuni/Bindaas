@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.tachyon.bindaas.Profile.Profile_F;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.API_CallBack;
@@ -34,6 +35,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -206,9 +208,9 @@ public class Following_F extends Fragment {
 
 
                         item.follow_status_button = follow_Status.optString("follow_status_button");
-                        if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
-                            item.follow_status_button="Friends";
-                        }
+//                        if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
+//                            item.follow_status_button="Friends";
+//                        }
 
                         if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
                             item.is_show_follow_unfollow_btn=false;
@@ -294,9 +296,9 @@ public class Following_F extends Fragment {
 
                         item.follow = follow_Status.optString("follow");
                         item.follow_status_button = follow_Status.optString("follow_status_button");
-                        if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
+                       /* if(item.follow.equalsIgnoreCase("1") && item.follow_status_button.equals("UnFollow")){
                             item.follow_status_button="Friends";
-                        }
+                        }*/
 
                         if(item.user_id.equalsIgnoreCase(Variables.sharedPreferences.getString(Variables.u_id,""))){
                             item.is_show_follow_unfollow_btn=false;
@@ -389,33 +391,53 @@ public class Following_F extends Fragment {
                         @Override
                         public void ArrayData(ArrayList arrayList) {
 
-
                         }
 
                         @Override
                         public void OnSuccess(String responce) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(responce);
+                                String code = jsonObject.optString("code");
+                                if (code.equals("200")) {
+                                    JSONArray msgArray = jsonObject.getJSONArray("msg");
+                                    for (int i = 0; i < msgArray.length(); i++) {
+                                        JSONObject profile_data = msgArray.optJSONObject(i);
 
-                            if (send_status.equals("1")) {
-                                item.follow = "1";
-                                item.follow_status_button="UnFollow";
-                                //commented this line ,when we clicked on others profile followers ,
-                                // click on any user who you are not following ,the button goes to Friends .which is wrong.
-/*
+                                        JSONObject follow_Status = profile_data.optJSONObject("follow_Status");
 
-                                if(following_or_fan.equalsIgnoreCase("fan")){
-                                    item.follow_status_button="Friends";
-                                }else
-*/
-                                datalist.remove(position);
-                                datalist.add(position, item);
-                            } else  {
-                                item.follow = "0";
-                                item.follow_status_button="Follow";
-                                datalist.remove(position);
-                                datalist.add(position, item);
+                                        String follow = follow_Status.optString("follow");
+                                        String follow_status_button = follow_Status.optString("follow_status_button");
+                                        Log.d("TTTT", "OnSuccess: " + follow);
+                                        Log.d("TTTT", "OnSuccess: " + follow_status_button);
+                                        item.follow = follow;
+                                        item.follow_status_button = follow_status_button;
+
+                                        datalist.remove(position);
+                                        datalist.add(position, item);
+
+                                        //datalist.add(item);
+                                        adapter.notifyItemInserted(i);
+                                    }
+
+                                    adapter.notifyDataSetChanged();
+
+                                    pbar.setVisibility(View.GONE);
+
+                                    if (datalist.isEmpty()) {
+                                        no_data_layout.setVisibility(View.VISIBLE);
+                                    } else
+                                        no_data_layout.setVisibility(View.GONE);
+
+                                } else {
+                                    Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
-                            adapter.notifyDataSetChanged();
+
+
 
                         }
 

@@ -125,6 +125,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
+                        StopPlaying();
                         Call_Api_For_Fav_sound(postion, item);
 
                     } else if (view.getId() == R.id.play_arrow) {
@@ -363,7 +364,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+              //  previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
@@ -381,7 +382,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -394,7 +395,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
             if (previous_view != null) {
               //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
              //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
                 //previous_view.findViewById(R.id.done).setVisibility(View.GONE);

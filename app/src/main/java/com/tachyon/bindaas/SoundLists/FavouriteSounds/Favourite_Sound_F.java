@@ -367,7 +367,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
                 // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
@@ -385,7 +385,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -398,7 +398,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             if (previous_view != null) {
                 //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
                 //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
                 //previous_view.findViewById(R.id.done).setVisibility(View.GONE);

@@ -54,6 +54,67 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
         return datalist != null ? datalist.size() : 0;
     }
 
+
+
+    @Override
+    public void onBindViewHolder(final Following_Adapter.CustomViewHolder holder, final int i) {
+        try {
+            holder.setIsRecyclable(false);
+
+            Following_Get_Set item = datalist.get(i);
+
+            holder.user_name.setText(item.first_name + " " + item.last_name);
+
+            if(item.profile_pic!=null && !item.profile_pic.equals("")) {
+                Picasso.with(context)
+                        .load(item.profile_pic)
+                        .placeholder(R.drawable.profile_image_placeholder)
+                        .into(holder.user_image);
+            }
+
+            holder.user_id.setText(item.username);
+            //Log.d("TTTT", "onBindViewHolder: "+item.is_show_follow_unfollow_btn);
+            holder.action_txt.setText(item.follow_status_button);
+
+           /* if(item.follow_status_button.equalsIgnoreCase("Follow")){
+                holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            }
+
+            else if(item.follow_status_button.equalsIgnoreCase("Unfollow")){
+                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
+
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
+
+            }*/
+
+            /*else if(item.follow_status_button.equalsIgnoreCase("Friends")){
+                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
+
+                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
+                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
+
+            }*/
+            Log.d("TTTT", "onBindViewHolder: follow:"+item.follow + " status:"+item.follow_status_button);
+            if (item.follow.equals("1") && item.follow_status_button.equalsIgnoreCase("UnFollow")){
+                holder.friend_action_txt.setVisibility(View.VISIBLE);
+            }else holder.friend_action_txt.setVisibility(View.GONE);
+            if(item.is_show_follow_unfollow_btn){
+                holder.action_txt.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.action_txt.setVisibility(View.GONE);
+            }
+
+            holder.bind(i, datalist.get(i), listener);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+
+    }
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
         ImageView user_image;
@@ -92,7 +153,7 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
                 action_txt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            listener.onItemClick(v, pos, item);
+                        listener.onItemClick(v, pos, item);
                     }
                 });
 
@@ -104,62 +165,4 @@ public class Following_Adapter extends RecyclerView.Adapter<Following_Adapter.Cu
 
 
     }
-
-    @Override
-    public void onBindViewHolder(final Following_Adapter.CustomViewHolder holder, final int i) {
-        try {
-            holder.setIsRecyclable(false);
-
-            Following_Get_Set item = datalist.get(i);
-
-            holder.user_name.setText(item.first_name + " " + item.last_name);
-
-            if(item.profile_pic!=null && !item.profile_pic.equals("")) {
-                Picasso.with(context)
-                        .load(item.profile_pic)
-                        .placeholder(R.drawable.profile_image_placeholder)
-                        .into(holder.user_image);
-            }
-
-            holder.user_id.setText(item.username);
-            Log.d("TTTT", "onBindViewHolder: "+item.is_show_follow_unfollow_btn);
-            holder.action_txt.setText(item.follow_status_button);
-
-            if(item.follow_status_button.equalsIgnoreCase("Follow")){
-                holder.action_txt.setBackgroundColor(ContextCompat.getColor(context, R.color.themecolor));
-                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
-                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
-
-            }
-
-            else if(item.follow_status_button.equalsIgnoreCase("Unfollow")){
-                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
-                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
-
-                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.white));
-
-            }
-
-            else if(item.follow_status_button.equalsIgnoreCase("Friends")){
-                holder.action_txt.setBackground(context.getResources().getDrawable(R.drawable.roundcorner_green_background));
-
-                holder.action_txt.setBackground(ContextCompat.getDrawable(context, R.drawable.d_gray_border));
-                holder.action_txt.setTextColor(ContextCompat.getColor(context, R.color.black));
-
-            }
-
-            if(item.is_show_follow_unfollow_btn){
-                holder.action_txt.setVisibility(View.VISIBLE);
-            }
-            else {
-                holder.action_txt.setVisibility(View.GONE);
-            }
-
-            holder.bind(i, datalist.get(i), listener);
-        } catch (Exception e) {
-            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-        }
-
-    }
-
 }

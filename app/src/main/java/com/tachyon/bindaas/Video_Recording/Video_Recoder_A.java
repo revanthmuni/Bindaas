@@ -123,6 +123,7 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
         try {
             Variables.Selected_sound_id = "null";
             Variables.recording_duration = Variables.max_recording_duration;
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
             cameraView = findViewById(R.id.camera);
@@ -316,14 +317,9 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     private void filter(CharSequence text) {
         ArrayList<File> temp = new ArrayList();
         for (File d : Constant.allMediaList) {
-            //or use .equal(text) with you want equal match
-            //use .toLowerCase() for better matches
-            //String s = d.getName();
-            /*
-            if(d.getName().contains(text)){
-                temp.add(d);
-            }*/
-            if (Pattern.compile(Pattern.quote(text.toString()), Pattern.CASE_INSENSITIVE).matcher(d.getName()).find()) {
+
+            if (Pattern.compile(Pattern.quote(text.toString()),
+                    Pattern.CASE_INSENSITIVE).matcher(d.getName()).find()) {
                 temp.add(d);
             }
         }

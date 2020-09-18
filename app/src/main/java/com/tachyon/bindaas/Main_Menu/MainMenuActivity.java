@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.tachyon.bindaas.Chat.Chat_Activity;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
@@ -28,7 +29,6 @@ public class MainMenuActivity extends AppCompatActivity {
     private MainMenuFragment mainMenuFragment;
     long mBackPressed;
 
-
     public static String token;
 
     public static Intent intent;
@@ -37,6 +37,14 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        Upload_Service mService = new Upload_Service();
+        if (Functions.isMyServiceRunning(this, mService.getClass())) {
+           // Toast.makeText(this, "service is running", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,Upload_Service.class);
+            stopService(intent);
+        }
+
         try {
             mainMenuActivity = this;
 
