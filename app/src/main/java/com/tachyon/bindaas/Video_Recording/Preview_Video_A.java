@@ -16,10 +16,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-//import com.abedelazizshe.lightcompressorlibrary.CompressionListener;
-//import com.abedelazizshe.lightcompressorlibrary.VideoCompressor;
-//import com.abedelazizshe.lightcompressorlibrary.VideoQuality;
-import com.daasuu.gpuv.composer.FillMode;
 import com.daasuu.gpuv.composer.GPUMp4Composer;
 import com.daasuu.gpuv.egl.filter.GlFilterGroup;
 import com.daasuu.gpuv.player.GPUPlayerView;

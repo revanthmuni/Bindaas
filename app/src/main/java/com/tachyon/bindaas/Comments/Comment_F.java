@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+import com.tachyon.bindaas.Home.Home_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
+import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.tachyon.bindaas.Profile.Profile_F;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.API_CallBack;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
+import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Data_Send;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
@@ -40,6 +47,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.tachyon.bindaas.Home.Home_F.privious_player;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,12 +136,18 @@ public class Comment_F extends RootFragment {
             adapter = new Comments_Adapter(context, data_list, new Comments_Adapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(final int postion, final Comment_Get_Set item, View view) {
-                    view.findViewById(R.id.side_menu).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                    switch (view.getId()){
+                        case R.id.username:
+                            openProfile(item,postion);
+                            break;
+                        case R.id.user_pic:
+                            openProfile(item,postion);
+                            break;
+                        case R.id.side_menu:
                             ShowCommentOption(item, postion);
-                        }
-                    });
+                            break;
+                    }
+
                 }
             });
 
@@ -171,6 +186,48 @@ public class Comment_F extends RootFragment {
         }
 
         return view;
+    }
+
+    private void openProfile(Comment_Get_Set item, int postion) {
+        if (privious_player != null) {
+            privious_player.setPlayWhenReady(false);
+        }
+        //Open profile_f
+        try {
+            if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
+                try {
+                    TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
+                    profile.select();
+                } catch (Exception e) {
+                    Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+                    Log.d("Exception:", "OpenProfile: " + e.getMessage());
+                }
+
+
+            } else {
+                Profile_F profile_f = new Profile_F(new Fragment_Callback() {
+                    @Override
+                    public void Responce(Bundle bundle) {
+                        //Call_Api_For_Singlevideos(currentPage);
+                    }
+                });
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+
+                transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+                Bundle args = new Bundle();
+                args.putString("user_id", item.user_id);
+                args.putString("user_name", item.first_name + " " + item.last_name);
+                args.putString("user_pic", item.profile_pic);
+                profile_f.setArguments(args);
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+            }
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 
     CharSequence[] options;

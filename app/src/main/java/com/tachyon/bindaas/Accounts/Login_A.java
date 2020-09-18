@@ -102,11 +102,11 @@ public class Login_A extends AppCompatActivity {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             activity = this;
 
-            if (Build.VERSION.SDK_INT == 26) {
+            /*if (Build.VERSION.SDK_INT == 26) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
-            }
+            }*/
 
             getWindow().setBackgroundDrawable(
                     new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -710,7 +710,9 @@ public class Login_A extends AppCompatActivity {
                 editor.putString(Variables.api_token, userdata.optString("tokon"));
                 editor.putString(Variables.language,userdata.optString("language"));
                 editor.putBoolean(Variables.auto_scroll_key, Boolean.parseBoolean(userdata.optString("auto_scroll")));
+                editor.putBoolean(Variables.show_preview_key, Boolean.parseBoolean(userdata.optString("show_video_preview")));
                 editor.putString(Variables.anyone_can_message, userdata.optString("anyone_can_message"));
+                editor.putString(Variables.who_can_tagme, userdata.optString("who_can_tag_me"));
                 editor.putString(Variables.fb_link,userdata.optString("fb_link"));
                 editor.putString(Variables.insta_link,userdata.optString("insta_link"));
                 editor.putString(Variables.bio,userdata.optString("bio"));

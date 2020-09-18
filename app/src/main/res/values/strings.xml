@@ -7,9 +7,15 @@
         <item>Cute</item>
         <item>Other</item>
     </array><array name="languages">
+        <item>Hindi</item>
+        <item>English</item>
         <item>Telugu</item>
         <item>Tamil</item>
-        <item>Hindi</item>
+        <item>Malayalam</item>
+        <item>Punjabi</item>
+        <item>Marathi</item>
+        <item>Bengali</item>
+        <item>Gujarati</item>
     </array>
 
 

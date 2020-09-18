@@ -109,8 +109,6 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-
-
                     Call_Api_For_get_allsound();
                 }
             });
@@ -127,7 +125,8 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     public void Set_adapter() {
         try {
-            adapter = new Favourite_Sound_Adapter(context, datalist, new Favourite_Sound_Adapter.OnItemClickListener() {
+            adapter = new Favourite_Sound_Adapter(context, datalist,
+                    new Favourite_Sound_Adapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
@@ -135,6 +134,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
+                       StopPlaying();
                         Call_Api_For_Fav_sound(postion, item.id);
                     } else if (view.getId() == R.id.play_arrow) {
                         if (thread != null && !thread.isAlive()) {
@@ -240,6 +240,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
                     item.sound_name = itemdata.optString("sound_name");
                     item.description = itemdata.optString("description");
+                    item.fav = itemdata.optString("fav");
                     item.section = itemdata.optString("section");
 
                     String thum_image = itemdata.optString("thum");
@@ -366,10 +367,11 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
+                // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -380,9 +382,10 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
 
     public void Show_loading_state() {
         try {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
+//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -393,11 +396,12 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+                //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
+                //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
             }
 
             running_sound_id = "none";

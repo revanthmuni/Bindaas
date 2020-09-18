@@ -34,9 +34,10 @@ class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapt
     public Favourite_Sound_Adapter.OnItemClickListener listener;
 
 
-    public Favourite_Sound_Adapter(Context context, ArrayList<Sounds_GetSet> arrayList, Favourite_Sound_Adapter.OnItemClickListener listener) {
+    public Favourite_Sound_Adapter(Context context, ArrayList<Sounds_GetSet> arrayList,
+                                   Favourite_Sound_Adapter.OnItemClickListener listener) {
         this.context = context;
-        datalist = arrayList;
+        this.datalist = arrayList;
         this.listener = listener;
     }
 
@@ -57,15 +58,16 @@ class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapt
 
     @Override
     public void onBindViewHolder(final Favourite_Sound_Adapter.CustomViewHolder holder, final int i) {
-        holder.setIsRecyclable(false);
+        //
 
-        Sounds_GetSet item = datalist.get(i);
+
         try {
-
+            holder.setIsRecyclable(false);
+            Sounds_GetSet item = datalist.get(i);
             holder.sound_name.setText(item.sound_name);
             holder.description_txt.setText(item.description);
 
-            if (item.thum != null && !item.thum.equals("")) {
+            if (item.thum != null && !item.thum.equals("")&&item.thum.contains(".jpg")) {
                 Log.d(Variables.tag, item.thum);
                 Uri uri = Uri.parse(item.thum);
                 holder.sound_image.setImageURI(uri);
@@ -112,12 +114,12 @@ class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapt
 
         public void bind(final int pos, final Sounds_GetSet item, final Favourite_Sound_Adapter.OnItemClickListener listener) {
             try {
-                itemView.setOnClickListener(new View.OnClickListener() {
+               /* itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //listener.onItemClick(v,pos,item);
                     }
-                });
+                });*/
 
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -138,10 +140,10 @@ class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapt
                     public void onClick(View v) {
                         pause_arrow.setVisibility(View.GONE);
                         play_arrow.setVisibility(View.VISIBLE);
-                        listener.onItemClick(itemView, pos, item);
+                        listener.onItemClick(v, pos, item);
                     }
                 });
-                play_Btn.setOnClickListener(new View.OnClickListener() {
+               /* play_Btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         play_Btn.setVisibility(View.GONE);
@@ -157,7 +159,7 @@ class Favourite_Sound_Adapter extends RecyclerView.Adapter<Favourite_Sound_Adapt
                         listener.onItemClick(itemView, pos, item);
                     }
                 });
-
+*/
                 fav_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

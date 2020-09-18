@@ -94,7 +94,7 @@ try{
     public void onBindViewHolder(final Notification_Adapter.CustomViewHolder holder, final int i) {
         try{
         holder.setIsRecyclable(false);
-    final Notification_Get_Set item=datalist.get(i);
+        final Notification_Get_Set item = datalist.get(i);
             holder.username.setText(item.username);
 
             if(item.profile_pic!=null && !item.profile_pic.equals("")) {
@@ -115,6 +115,10 @@ try{
             else if(item.type.equalsIgnoreCase("following_you")) {
                 holder.message.setText(item.first_name + " following you");
                 holder.watch_btn.setVisibility(View.GONE);
+            }
+            else if(item.type.equalsIgnoreCase("tagged")) {
+                holder.message.setText(item.first_name + " tagged you");
+                holder.watch_btn.setVisibility(View.VISIBLE);
             }
 
 

@@ -18,8 +18,12 @@ import android.provider.MediaStore;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,7 +33,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.tachyon.bindaas.Constant;
+import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.Services.ServiceCallback;
@@ -52,6 +59,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import static android.content.ContentValues.TAG;
 
 public class Post_Video_A extends AppCompatActivity implements ServiceCallback, View.OnClickListener {
 
@@ -70,11 +80,19 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     RecyclerView recyclerView;
     HashTagsAdapter adapter;
+
+    TextView finaltext;
+    EditText search_edit;
+    RecyclerView followers_actv_recycler;
     List<String> list = new ArrayList<>();
+    private GetFollowersAdapter actv_adapter;
+    private ArrayList<Home_Get_Set> followerList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_video);
+
         try {
             Intent intent = getIntent();
             if (intent != null) {
@@ -83,6 +101,34 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 // video_path = intent.getStringExtra("video_path");
             }
             video_path = Variables.output_filter_file;
+            finaltext = findViewById(R.id.finaltext);
+
+            search_edit = findViewById(R.id.search_edit);
+            search_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                    if (s.equals("")){
+                        followers_actv_recycler.setVisibility(View.GONE);
+                    }else{
+                        followers_actv_recycler.setVisibility(View.VISIBLE);
+
+                        filter(s);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+            followers_actv_recycler = findViewById(R.id.followers_actv);
+            followers_actv_recycler.setLayoutManager(new LinearLayoutManager(this));
+            followerList = new ArrayList<>();
 
             video_thumbnail = findViewById(R.id.video_thumbnail);
 
@@ -135,8 +181,82 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             }
 
             callApiForHashTags();
+            callApiForFollowersList();
 
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
+    }
+    private void filter(CharSequence text) {
+        ArrayList<Home_Get_Set> temp = new ArrayList();
+        for (Home_Get_Set d : followerList) {
+
+            if (Pattern.compile(Pattern.quote(text.toString()),
+                    Pattern.CASE_INSENSITIVE).matcher(d.first_name).find()) {
+                temp.add(d);
+            }
+        }
+        //update recyclerview
+        actv_adapter.updateList(temp);
+    }
+    private void callApiForFollowersList(){
+        try {
+            Functions.Show_loader(this, true, true);
+
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "save Prefernces : " + new Gson().toJson(parameters));
+            ApiRequest.Call_Api(this, Variables.GET_MUTUAL_FOLLOWERS, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    Log.d(TAG, "Responce: " + resp);
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        String code = jsonObject.optString("code");
+                        if (code.equals("200")) {
+                            JSONArray msgArray = jsonObject.getJSONArray("msg");
+                            for (int i=0;i<msgArray.length();i++){
+                                JSONObject index = msgArray.getJSONObject(i);
+                                Home_Get_Set model = new Home_Get_Set();
+                                model.username = index.optString("username");
+                                model.verified = index.optString("verified");
+                                model.first_name = index.optString("first_name");
+                                model.last_name = index.optString("last_name");
+                                model.profile_pic = index.optString("profile_pic");
+                                model.created_date = index.optString("created");
+                                followerList.add(model);
+                            }
+                            //Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
+                        }
+                        actv_adapter = new GetFollowersAdapter(Post_Video_A.this, followerList, new GetFollowersAdapter.OnItemClick() {
+                            @Override
+                            public void onClick(String id) {
+                                if (finaltext.getText().toString().trim().equals("")){
+                                    finaltext.setText(id);
+                                    search_edit.setText("");
+                                }else{
+                                    if (!finaltext.getText().toString().trim().contains(id)){
+                                        finaltext.setText(finaltext.getText().toString()+","+id);
+                                        search_edit.setText("");
+                                    }
+                                }
+
+                            }
+                        });
+                        followers_actv_recycler.setAdapter(actv_adapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
@@ -262,9 +382,12 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     // this will start the service for uploading the video into database
     public void Start_Service() {
+
         try {
             serviceCallback = this;
 
+            Toast.makeText(mService, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Start_Service: "+finaltext.getText().toString());
             Upload_Service mService = new Upload_Service(serviceCallback);
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
@@ -275,7 +398,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
                 mServiceIntent.putExtra("cat",category.getSelectedItem().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
-
+                //mServiceIntent.putExtra("tagged_users", finaltext.getText().toString());
+                /*tagged_users*/
                 if (comment_switch.isChecked())
                     mServiceIntent.putExtra("allow_comments", "true");
                 else

@@ -125,8 +125,11 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
+                        StopPlaying();
                         Call_Api_For_Fav_sound(postion, item);
+
                     } else if (view.getId() == R.id.play_arrow) {
+
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
                             playaudio(view, item);
@@ -134,7 +137,6 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), R.string.play_pressed, Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -362,10 +364,10 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+              //  previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+               // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
                 // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -377,9 +379,10 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     public void Show_loading_state() {
         try {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+           // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
+//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -390,10 +393,10 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+              //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+             //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
                 //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
             }

@@ -52,23 +52,23 @@ public class Comments_Adapter extends RecyclerView.Adapter<Comments_Adapter.Cust
 
     @Override
     public void onBindViewHolder(final Comments_Adapter.CustomViewHolder holder, final int i) {
-        try{
-        final Comment_Get_Set item = dataList.get(i);
+        try {
+            final Comment_Get_Set item = dataList.get(i);
 
 
-        holder.username.setText(item.first_name + " " + item.last_name);
+            holder.username.setText(item.first_name + " " + item.last_name);
 
-        Picasso.with(context).
-                load(item.profile_pic)
-                .resize(50, 50)
-                .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
-                .into(holder.user_pic);
-        holder.message.setText(item.comments);
+            Picasso.with(context).
+                    load(item.profile_pic)
+                    .resize(50, 50)
+                    .placeholder(context.getResources().getDrawable(R.drawable.profile_image_placeholder))
+                    .into(holder.user_pic);
+            holder.message.setText(item.comments);
 
 
-        holder.bind(i, item, listener);
-        }catch (Exception e){
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+            holder.bind(i, item, listener);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -83,25 +83,27 @@ public class Comments_Adapter extends RecyclerView.Adapter<Comments_Adapter.Cust
 
         public CustomViewHolder(View view) {
             super(view);
-            try{
-            username = view.findViewById(R.id.username);
-            user_pic = view.findViewById(R.id.user_pic);
-            message = view.findViewById(R.id.message);
-            menu = view.findViewById(R.id.side_menu);
-            }catch (Exception e){
-                Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+            try {
+                username = view.findViewById(R.id.username);
+                user_pic = view.findViewById(R.id.user_pic);
+                message = view.findViewById(R.id.message);
+                menu = view.findViewById(R.id.side_menu);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
             }
         }
 
         public void bind(final int postion, final Comment_Get_Set item, final Comments_Adapter.OnItemClickListener listener) {
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(postion, item, v);
                 }
             });
+            user_pic.setOnClickListener(view -> listener.onItemClick(postion, item, view));
+            username.setOnClickListener(view -> listener.onItemClick(postion, item, view));
 
         }
 
