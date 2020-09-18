@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+//import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import android.os.Handler;
 import android.util.SparseArray;
