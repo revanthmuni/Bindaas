@@ -84,11 +84,11 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     View view;
     Context context;
 
-    public TextView username, username2_txt, video_count_txt, tvUserNotifications,tvUserChat;
+    public TextView username, username2_txt, video_count_txt, tvUserNotifications, tvUserChat;
     public ImageView imageView;
     public TextView follow_count_txt, fans_count_txt, heart_count_txt, draft_count_txt, tvVideosCount, tvLikesCount, tvPrivateCount;
-    private String fb_link="";
-    private String inst_link="";
+    private String fb_link = "";
+    private String inst_link = "";
     String videosCount = "0", likesCount = "0";
 
     ImageView setting_btn;
@@ -108,13 +108,13 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     RelativeLayout tabs_main_layout;
 
     ConstraintLayout top_layout;
-    FrameLayout inbox_view,notification_view;
+    FrameLayout inbox_view, notification_view;
 
 
     public String pic_url;
 
 
-    private ImageView insta_view,fb_view,bio_view;
+    private ImageView insta_view, fb_view, bio_view;
     private TextView bio_textview;
 
     public LinearLayout create_popup_layout;
@@ -141,7 +141,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
             insta_view = view.findViewById(R.id.insta_image2);
             fb_view = view.findViewById(R.id.fb_image2);
-            bio_textview  = view.findViewById(R.id.bio_text2);
+            bio_textview = view.findViewById(R.id.bio_text2);
             bio_view = view.findViewById(R.id.bio_image2);
 
             fb_view.setOnClickListener(this);
@@ -184,8 +184,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                         int size = (int) snapshot.getChildrenCount();
                         Log.d("Firebase_Unread_count", "onDataChange: " + size);
                         if (size > 0) {
-                            tvUserChat.setText(""+size);
-                        }else{
+                            tvUserChat.setText("" + size);
+                        } else {
                             tvUserChat.setText("");
                         }
                     }
@@ -232,10 +232,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     break;
 
                 case R.id.insta_image2:
-                    Functions.openBrowser(context,inst_link);
+                    Functions.openBrowser(context, inst_link);
                     break;
                 case R.id.fb_image2:
-                    Functions.openBrowser(context,fb_link);
+                    Functions.openBrowser(context, fb_link);
                     break;
 
             }
@@ -303,10 +303,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     @Override
     public void onPause() {
         super.onPause();
-        try{
+        try {
             EventBus.getDefault().unregister(this);
-        }catch (Exception e){
-            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, "Profile_Tab", e.getMessage());
         }
     }
 
@@ -628,7 +628,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     //this will get the all videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-        Functions.Show_loader(context,false,false);
+        Functions.Show_loader(context, false, false);
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
@@ -675,22 +675,22 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 username2_txt.setText(user_info.optString("username"));
                 username.setText(user_info.optString("first_name") + " " + user_info.optString("last_name"));
 
-                 fb_link = user_info.optString("fb_link");
-                 inst_link = user_info.optString("insta_link");
+                fb_link = user_info.optString("fb_link");
+                inst_link = user_info.optString("insta_link");
                 String bio_text = user_info.optString("bio");
-                fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
-                insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
-                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
-                bio_textview.setText(bio_text.equals("")?"":bio_text);
-                bio_textview.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+                fb_view.setVisibility(fb_link.equals("") ? View.GONE : View.VISIBLE);
+                insta_view.setVisibility(inst_link.equals("") ? View.GONE : View.VISIBLE);
+                bio_view.setVisibility(bio_text.equals("") ? View.GONE : View.VISIBLE);
+                bio_textview.setText(bio_text.equals("") ? "" : bio_text);
+                bio_textview.setVisibility(bio_text.equals("") ? View.GONE : View.VISIBLE);
 
 //              bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
 
                 int has_new_notification = data.optInt("has_new_notification");
-                if (has_new_notification>0) {
+                if (has_new_notification > 0) {
                     Log.d("TAG", "Parse_data: " + has_new_notification);
-                    tvUserNotifications.setText(""+has_new_notification);
-                }else{
+                    tvUserNotifications.setText("" + has_new_notification);
+                } else {
                     tvUserNotifications.setText("");
                 }
                 pic_url = user_info.optString("profile_pic");
@@ -926,7 +926,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             editor.putString(Variables.u_name, "");
             editor.putString(Variables.u_pic, "");
             editor.putBoolean(Variables.islogin, false);
-            editor.putBoolean(Variables.auto_scroll_key,false);
+            editor.putBoolean(Variables.auto_scroll_key, false);
             editor.commit();
             getActivity().finish();
             startActivity(new Intent(getActivity(), MainMenuActivity.class));

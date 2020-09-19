@@ -386,7 +386,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         try {
             serviceCallback = this;
 
-            Toast.makeText(mService, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Start_Service: "+finaltext.getText().toString());
             Upload_Service mService = new Upload_Service(serviceCallback);
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {

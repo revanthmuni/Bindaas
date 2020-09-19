@@ -2,6 +2,7 @@ package com.tachyon.bindaas.Search;
 
 import android.content.Context;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
