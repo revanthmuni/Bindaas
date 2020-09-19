@@ -171,8 +171,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
                 editor.putBoolean(Variables.show_preview_key, b);
                 editor.commit();
-                callApiForSavePreferences();
-                EventBus.getDefault().post("done");
+                callApiForShowPreview();
             });
             anyone_can_message.setOnCheckedChangeListener((compoundButton, b) -> {
 
@@ -317,6 +316,45 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 @Override
                 public void Responce(String resp) {
                     Functions.cancel_loader();
+                    Log.d(TAG, "Responce: " + resp);
+                    String languages = Variables.sharedPreferences.getString(Variables.language, "");
+                    if (languages.equals("all")) {
+                        selected_languages.setText("No Language Selected");
+                    } else {
+                        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                    }
+                    //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+    public void callApiForShowPreview() {
+        /*user_id,language,anyone_can_message,auto_scroll*/
+        try {
+            Functions.Show_loader(context, true, true);
+
+            JSONObject parameters = new JSONObject();
+            try {
+                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                parameters.put("language", Variables.sharedPreferences.getString(Variables.language, "all"));
+                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message,"anyone"));
+                parameters.put("auto_scroll", "" + auto_scrool_enabled.isChecked());
+                parameters.put("show_video_preview", "" + show_preview_switch.isChecked());
+                parameters.put("who_can_tag_me", "" + Variables.sharedPreferences.getString(Variables.who_can_tagme,""));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "save Prefernces : " + new Gson().toJson(parameters));
+            ApiRequest.Call_Api(context, Variables.SAVE_PREFERENCES, parameters, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Functions.cancel_loader();
+                    EventBus.getDefault().post("done");
+
                     Log.d(TAG, "Responce: " + resp);
                     String languages = Variables.sharedPreferences.getString(Variables.language, "");
                     if (languages.equals("all")) {
