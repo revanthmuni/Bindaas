@@ -14,9 +14,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +57,6 @@
 
 
             </LinearLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hashtags"
                 android:layout_width="match_parent"
@@ -64,6 +65,7 @@
                 android:padding="15dp">
 
             </androidx.recyclerview.widget.RecyclerView>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,16 +90,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/close_finaltext"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:text="Tag your Friend:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/finaltext"
+                    app:layout_constraintStart_toEndOf="@+id/finaltext"
+                    app:layout_constraintTop_toTopOf="@+id/finaltext"
+                    app:srcCompat="@drawable/ic_close" />
 
                 <TextView
                     android:id="@+id/no_data_found_view"
@@ -113,20 +114,6 @@
                     app:layout_constraintStart_toStartOf="@+id/search_edit"
                     app:layout_constraintTop_toBottomOf="@+id/search_edit" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/followers_actv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:padding="10dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/search_edit"
-                    app:layout_constraintHorizontal_bias="0.04"
-                    app:layout_constraintStart_toStartOf="@+id/search_edit"
-                    app:layout_constraintTop_toBottomOf="@+id/search_edit"
-                    app:layout_constraintVertical_bias="0.0" />
-
                 <TextView
                     android:id="@+id/finaltext"
                     android:layout_width="0dp"
@@ -140,51 +127,31 @@
                     app:layout_constraintStart_toEndOf="@+id/textView11"
                     app:layout_constraintTop_toTopOf="@+id/textView11" />
 
-                <ImageView
-                    android:id="@+id/close_finaltext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/finaltext"
-                    app:layout_constraintStart_toEndOf="@+id/finaltext"
-                    app:layout_constraintTop_toTopOf="@+id/finaltext"
-                    app:srcCompat="@drawable/ic_close" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/d_bottom_gray_line">
-
-                <ImageView
-                    android:id="@+id/comment_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_comment"
-                    android:tint="@color/black" />
-
-                <Switch
-                    android:id="@+id/comment_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15dp"
-                    android:checked="true" />
-
-
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textView11"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/comment_img"
-                    android:text="Allow Comments" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="Tag your Friend:"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/followers_actv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/search_edit"
+                    app:layout_constraintHorizontal_bias="0.04"
+                    app:layout_constraintStart_toStartOf="@+id/search_edit"
+                    app:layout_constraintTop_toBottomOf="@+id/search_edit"
+                    app:layout_constraintVertical_bias="0.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout
                 android:id="@+id/duet_layout"
@@ -254,6 +221,7 @@
                     android:text="Category " />
             </RelativeLayout>
 
+
             <RelativeLayout
                 android:id="@+id/privacy_type_layout"
                 android:layout_width="match_parent"
@@ -299,7 +267,39 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@drawable/d_bottom_gray_line">
 
+                <ImageView
+                    android:id="@+id/comment_img"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_comment"
+                    android:tint="@color/black" />
+
+                <Switch
+                    android:id="@+id/comment_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:checked="true" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@+id/comment_img"
+                    android:text="Allow Comments" />
+
+            </RelativeLayout>
 
 
             <LinearLayout
@@ -370,6 +370,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
