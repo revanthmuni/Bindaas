@@ -276,7 +276,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             } else if (view == txtAudioCancel) {
                 Log.d(TAG, "onClick: cancel Recording");
-
+                handlePause();
                 finish();
             } else if (view == txtAudioRecordUpdate) {
                 Log.d(TAG, "onClick: txtAudioRecordUpdate Recording");
