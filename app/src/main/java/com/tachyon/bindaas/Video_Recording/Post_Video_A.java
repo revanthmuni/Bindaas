@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -89,6 +90,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     List<String> list = new ArrayList<>();
     private GetFollowersAdapter actv_adapter;
     private ArrayList<Home_Get_Set> followerList;
+    private String actual_Str="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +119,16 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             search_edit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                    if (s.toString().length() == 0) {
+                        Log.i("Ram = ", "Empty");
+                        Log.i("Ram = ", "");
+                        followers_actv_recycler.setVisibility(View.GONE);
+                        no_data_found_view.setVisibility(View.VISIBLE);
+                    }
                     if (s.equals("")){
                         followers_actv_recycler.setVisibility(View.GONE);
                         no_data_found_view.setVisibility(View.VISIBLE);
@@ -199,6 +206,11 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         }
     }
     private void filter(CharSequence text) {
+        if (text.toString().equals("")){
+            no_data_found_view.setVisibility(View.VISIBLE);
+            followers_actv_recycler.setVisibility(View.GONE);
+        }
+
         ArrayList<Home_Get_Set> temp = new ArrayList();
         for (Home_Get_Set d : followerList) {
 
@@ -211,10 +223,10 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         if (temp.size() == 0){
             no_data_found_view.setVisibility(View.VISIBLE);
             followers_actv_recycler.setVisibility(View.GONE);
-        }else{
+        }/*else{
             no_data_found_view.setVisibility(View.GONE);
             followers_actv_recycler.setVisibility(View.VISIBLE);
-        }
+        }*/
         actv_adapter.updateList(temp);
     }
     private void callApiForFollowersList(){
@@ -263,14 +275,21 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                         }*/
                         actv_adapter = new GetFollowersAdapter(Post_Video_A.this, followerList, new GetFollowersAdapter.OnItemClick() {
                             @Override
-                            public void onClick(String id) {
-                                if (finaltext.getText().toString().equals("")){
-                                    finaltext.setText(id);
-                                    finaltext.setVisibility(View.VISIBLE);
-                                    close_finaltext.setVisibility(View.VISIBLE);
+                            public void onClick(String username,String id) {
+                                if (!finaltext.getText().toString().contains(username)){
+                                    if (finaltext.getText().toString().equals("")){
+                                        actual_Str = id;
+                                        finaltext.setText(username);
+                                        finaltext.setVisibility(View.VISIBLE);
+                                        close_finaltext.setVisibility(View.VISIBLE);
+                                    }else{
+                                        actual_Str = actual_Str+","+id;
+                                        finaltext.setText(finaltext.getText().toString()+","+username);
+                                    }
                                 }else{
-                                    finaltext.setText(finaltext.getText().toString()+","+id);
+                                    Toast.makeText(Post_Video_A.this, username + " already added", Toast.LENGTH_SHORT).show();
                                 }
+
                                 //finaltext.setText(search_edit.getText().toString()+","+id);
                             }
                         });
@@ -421,7 +440,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
                 mServiceIntent.putExtra("cat",category.getSelectedItem().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
-                mServiceIntent.putExtra("tagged_users", finaltext.getText().toString());
+                mServiceIntent.putExtra("tagged_users", actual_Str);
+//                Toast.makeText(this, ""+actual_Str, Toast.LENGTH_SHORT).show();
                 /*tagged_users*/
                 if (comment_switch.isChecked())
                     mServiceIntent.putExtra("allow_comments", "true");

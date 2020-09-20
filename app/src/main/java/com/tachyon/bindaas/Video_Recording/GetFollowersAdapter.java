@@ -40,11 +40,12 @@ public class GetFollowersAdapter extends RecyclerView.Adapter<GetFollowersAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(list.get(position).first_name);
+        holder.textView.setText(list.get(position).username);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClick(list.get(position).user_id);
+                listener.onClick(list.get(position).username,
+                        list.get(position).user_id);
             }
         });
     }
@@ -59,7 +60,7 @@ public class GetFollowersAdapter extends RecyclerView.Adapter<GetFollowersAdapte
         notifyDataSetChanged();
     }
     public interface OnItemClick{
-        void onClick(String id);
+        void onClick(String username,String id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

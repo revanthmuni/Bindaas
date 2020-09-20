@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tachyon.bindaas.Inbox.Inbox_F;
 import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
@@ -79,14 +80,20 @@ public class Notification_F extends RootFragment implements View.OnClickListener
                 @Override
                 public void onItemClick(View view, int postion, Notification_Get_Set item) {
 
-                    switch (view.getId()) {
+                    if (view.getId() == R.id.watch_btn){
+                        OpenWatchVideo(item);
+                    }else{
+                        Open_Profile(item);
+                    }
+                    /*switch (view.getId()) {
                         case R.id.watch_btn:
                             OpenWatchVideo(item);
                             break;
+                        case R.id.itemView:
                         default:
                             Open_Profile(item);
                             break;
-                    }
+                    }*/
                 }
             }
             );
@@ -274,7 +281,9 @@ public class Notification_F extends RootFragment implements View.OnClickListener
     public void Open_Profile(Notification_Get_Set item) {
         try {
 
-            if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
+        Log.d("TAG::", "Open_Profile: "+Variables.sharedPreferences.getString(Variables.user_id, "0")+" ::"+item.user_id);
+
+            if (Variables.sharedPreferences.getString(Variables.user_id, "0").equals(item.user_id)) {
 
                 try {
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);

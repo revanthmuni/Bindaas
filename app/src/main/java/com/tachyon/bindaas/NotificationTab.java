@@ -278,6 +278,7 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
 
                 try {
+                    getActivity().onBackPressed();
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
                 } catch (Exception e) {
