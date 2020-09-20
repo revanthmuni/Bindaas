@@ -81,7 +81,9 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     RecyclerView recyclerView;
     HashTagsAdapter adapter;
 
+    TextView no_data_found_view;
     TextView finaltext;
+    ImageView close_finaltext;
     EditText search_edit;
     RecyclerView followers_actv_recycler;
     List<String> list = new ArrayList<>();
@@ -101,9 +103,17 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 // video_path = intent.getStringExtra("video_path");
             }
             video_path = Variables.output_filter_file;
-            finaltext = findViewById(R.id.finaltext);
-
             search_edit = findViewById(R.id.search_edit);
+            no_data_found_view  = findViewById(R.id.no_data_found_view);
+            finaltext = findViewById(R.id.finaltext);
+            close_finaltext = findViewById(R.id.close_finaltext);
+            close_finaltext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finaltext.setText("");
+                    close_finaltext.setVisibility(View.GONE);
+                }
+            });
             search_edit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,9 +124,9 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 public void onTextChanged(CharSequence s, int i, int i1, int i2) {
                     if (s.equals("")){
                         followers_actv_recycler.setVisibility(View.GONE);
+                        no_data_found_view.setVisibility(View.VISIBLE);
                     }else{
                         followers_actv_recycler.setVisibility(View.VISIBLE);
-
                         filter(s);
                     }
                 }
@@ -198,6 +208,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             }
         }
         //update recyclerview
+        if (temp.size() == 0){
+            no_data_found_view.setVisibility(View.VISIBLE);
+            followers_actv_recycler.setVisibility(View.GONE);
+        }else{
+            no_data_found_view.setVisibility(View.GONE);
+            followers_actv_recycler.setVisibility(View.VISIBLE);
+        }
         actv_adapter.updateList(temp);
     }
     private void callApiForFollowersList(){
@@ -225,6 +242,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                             for (int i=0;i<msgArray.length();i++){
                                 JSONObject index = msgArray.getJSONObject(i);
                                 Home_Get_Set model = new Home_Get_Set();
+                                model.user_id = index.optString("user_id");
                                 model.username = index.optString("username");
                                 model.verified = index.optString("verified");
                                 model.first_name = index.optString("first_name");
@@ -235,19 +253,25 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                             }
                             //Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
                         }
+                       /* for (int i=0;i<4;i++){
+                            Home_Get_Set model = new Home_Get_Set();
+                            model.user_id = "UserId"+i;
+                            model.username = "UserName"+i;
+                            model.first_name ="First Name"+i;
+                            model.last_name = "Last Name"+i;
+                            followerList.add(model);
+                        }*/
                         actv_adapter = new GetFollowersAdapter(Post_Video_A.this, followerList, new GetFollowersAdapter.OnItemClick() {
                             @Override
                             public void onClick(String id) {
-                                if (finaltext.getText().toString().trim().equals("")){
+                                if (finaltext.getText().toString().equals("")){
                                     finaltext.setText(id);
-                                    search_edit.setText("");
+                                    finaltext.setVisibility(View.VISIBLE);
+                                    close_finaltext.setVisibility(View.VISIBLE);
                                 }else{
-                                    if (!finaltext.getText().toString().trim().contains(id)){
-                                        finaltext.setText(finaltext.getText().toString()+","+id);
-                                        search_edit.setText("");
-                                    }
+                                    finaltext.setText(finaltext.getText().toString()+","+id);
                                 }
-
+                                //finaltext.setText(search_edit.getText().toString()+","+id);
                             }
                         });
                         followers_actv_recycler.setAdapter(actv_adapter);
@@ -387,7 +411,6 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             serviceCallback = this;
 
            // Toast.makeText(this, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Start_Service: "+finaltext.getText().toString());
             Upload_Service mService = new Upload_Service(serviceCallback);
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
@@ -398,7 +421,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
                 mServiceIntent.putExtra("cat",category.getSelectedItem().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
-                //mServiceIntent.putExtra("tagged_users", finaltext.getText().toString());
+                mServiceIntent.putExtra("tagged_users", finaltext.getText().toString());
                 /*tagged_users*/
                 if (comment_switch.isChecked())
                     mServiceIntent.putExtra("allow_comments", "true");
