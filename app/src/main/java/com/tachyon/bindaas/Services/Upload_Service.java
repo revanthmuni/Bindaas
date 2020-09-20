@@ -176,7 +176,7 @@ public class Upload_Service extends Service {
                 allow_comment = intent.getStringExtra("allow_comments");
                 allow_duet = intent.getStringExtra("allow_duet");
                 category = intent.getStringExtra("cat");
-                //tagged_users = intent.getStringExtra("tagged_users");
+                tagged_users = intent.getStringExtra("tagged_users");
 
                 new Thread(new Runnable() {
                     @Override
@@ -202,7 +202,7 @@ public class Upload_Service extends Service {
                             parameters.put("allow_comments",allow_comment);
                             parameters.put("allow_duet",allow_duet);
                             parameters.put("category",category);
-                           // parameters.put("tagged_users", tagged_users);
+                            parameters.put("tagged_users", tagged_users);
                             JSONObject vidoefiledata = new JSONObject();
                             vidoefiledata.put("file_data", video_base64);
                             parameters.put("videobase64", vidoefiledata);
