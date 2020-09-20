@@ -796,7 +796,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     // when we swipe for another video this will relaese the privious player
-    SimpleExoPlayer privious_player;
+    public static SimpleExoPlayer privious_player;
 
     public void Privious_Player() {
         try {
@@ -953,6 +953,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             Bundle args = new Bundle();
             args.putString("video_id", item.video_id);
             args.putString("user_id", item.user_id);
+            args.putString("flag","watch_videos");
             comment_f.setArguments(args);
             transaction.addToBackStack(null);
             transaction.replace(R.id.WatchVideo_F, comment_f).commit();

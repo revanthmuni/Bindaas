@@ -1030,6 +1030,7 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
         Bundle args = new Bundle();
         args.putString("video_id", item.video_id);
         args.putString("user_id", item.user_id);
+        args.putString("flag","home");
         comment_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, comment_f).commit();

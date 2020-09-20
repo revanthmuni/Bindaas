@@ -48,6 +48,9 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +76,12 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     public static String running_sound_id;
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoUploadService(String res) {
+        previous_url = "none";
+        StopPlaying();
+        Call_Api_For_get_allsound();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -337,8 +346,25 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         super.onStart();
         active = true;
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            EventBus.getDefault().unregister(this);
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            EventBus.getDefault().register(this);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-
+        }
+    }
     @Override
     public void onStop() {
         super.onStop();

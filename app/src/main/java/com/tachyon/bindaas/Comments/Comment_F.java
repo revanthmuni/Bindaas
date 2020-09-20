@@ -48,7 +48,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.tachyon.bindaas.Home.Home_F.privious_player;
+import static com.tachyon.bindaas.WatchVideos.WatchVideos_F.privious_player;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,6 +67,7 @@ public class Comment_F extends RootFragment {
 
     String video_id;
     String user_id;
+    String flag;
 
     EditText message_edit;
     ImageButton send_btn;
@@ -121,6 +123,7 @@ public class Comment_F extends RootFragment {
             if (bundle != null) {
                 video_id = bundle.getString("video_id");
                 user_id = bundle.getString("user_id");
+                flag = bundle.getString("flag");
             }
 
 
@@ -196,7 +199,11 @@ public class Comment_F extends RootFragment {
         try {
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
                 try {
-                    getActivity().onBackPressed();
+                    if (flag.equals("home")) {
+                        getActivity().onBackPressed();
+                    }else{
+                        getActivity().finish();
+                    }
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                     profile.select();
                 } catch (Exception e) {
@@ -222,7 +229,13 @@ public class Comment_F extends RootFragment {
                 args.putString("user_pic", item.profile_pic);
                 profile_f.setArguments(args);
                 transaction.addToBackStack(null);
-                transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+                if (flag.equals("home")) {
+                    transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+                }else{
+                    if (privious_player != null) privious_player.setPlayWhenReady(false);
+                    getActivity().onBackPressed();
+                    transaction.replace(R.id.WatchVideo_F, profile_f).commit();
+                }
             }
 
         } catch (Exception e) {

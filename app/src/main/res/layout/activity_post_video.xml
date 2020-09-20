@@ -9,12 +9,16 @@
     android:keepScreenOn="true"
     tools:context="com.tachyon.bindaas.Video_Recording.Post_Video_A">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_above="@+id/buttons_view"
+        android:layout_below="@+id/toolbar"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:weightSum="13"
+        app:layout_constraintBottom_toTopOf="@+id/buttons_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -22,358 +26,364 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/buttons_view"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:background="@drawable/d_bottom_gray_line"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/description_edit"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:background="@drawable/d_bottom_gray_line"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/transparent"
+                android:hint="Describe your video"
+                android:paddingStart="15dp"
+                android:textColor="@color/black" />
 
-                <EditText
-                    android:id="@+id/description_edit"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/transparent"
-                    android:hint="Describe your video"
-                    android:paddingStart="15dp"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:id="@+id/video_thumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_margin="15dp"
-                    android:layout_weight="2"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/image_placeholder" />
-
-
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/hashtags"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@drawable/border"
-                android:padding="15dp">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ImageView
+                android:id="@+id/video_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_margin="15dp"
+                android:layout_weight="2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/image_placeholder" />
 
-                <EditText
-                    android:id="@+id/search_edit"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_toEndOf="@+id/search"
-                    android:layout_weight="2"
-                    android:backgroundTint="@color/transparent"
-                    android:hint="Search"
-                    android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/darkgray"
-                    android:textSize="14dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-                <ImageView
-                    android:id="@+id/close_finaltext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/finaltext"
-                    app:layout_constraintStart_toEndOf="@+id/finaltext"
-                    app:layout_constraintTop_toTopOf="@+id/finaltext"
-                    app:srcCompat="@drawable/ic_close" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hashtags"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:background="@drawable/border"
+            android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/no_data_found_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/lightgraycolor"
-                    android:padding="35dp"
-                    android:text="No results Found"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/search_edit"
-                    app:layout_constraintHorizontal_bias="0.05"
-                    app:layout_constraintStart_toStartOf="@+id/search_edit"
-                    app:layout_constraintTop_toBottomOf="@+id/search_edit" />
+        </androidx.recyclerview.widget.RecyclerView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_toEndOf="@+id/search"
+                android:layout_weight="2"
+                android:backgroundTint="@color/transparent"
+                android:hint="Search"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkgray"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <ImageView
+                android:id="@+id/close_finaltext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/finaltextscroll"
+                app:layout_constraintStart_toEndOf="@+id/finaltextscroll"
+                app:layout_constraintTop_toTopOf="@+id/finaltextscroll"
+                app:srcCompat="@drawable/ic_close" />
+
+            <ScrollView
+                android:id="@+id/finaltextscroll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="50dp"
+
+                app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="@+id/textView11">
 
                 <TextView
                     android:id="@+id/finaltext"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="50dp"
-                    android:textStyle="italic"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView11"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/textView11"
-                    app:layout_constraintTop_toTopOf="@+id/textView11" />
+                    android:textStyle="italic" />
+            </ScrollView>
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:text="Tag your Friend:"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/no_data_found_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/lightgraycolor"
+                android:padding="35dp"
+                android:text="No results Found"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/search_edit"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="@+id/search_edit"
+                app:layout_constraintTop_toBottomOf="@+id/search_edit" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/followers_actv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:padding="10dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/search_edit"
-                    app:layout_constraintHorizontal_bias="0.04"
-                    app:layout_constraintStart_toStartOf="@+id/search_edit"
-                    app:layout_constraintTop_toBottomOf="@+id/search_edit"
-                    app:layout_constraintVertical_bias="0.0" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:text="Tag your Friend:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <RelativeLayout
-                android:id="@+id/duet_layout"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/d_bottom_gray_line">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/followers_actv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/search_edit"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="@+id/search_edit"
+                app:layout_constraintTop_toBottomOf="@+id/search_edit"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/duet_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_video"
-                    android:tint="@color/black" />
+        <RelativeLayout
+            android:id="@+id/duet_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/d_bottom_gray_line">
 
-                <Switch
-                    android:id="@+id/duet_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15dp"
-                    android:checked="true" />
+            <ImageView
+                android:id="@+id/duet_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_video"
+                android:tint="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/duet_img"
-                    android:text="Allow Duet" />
+            <Switch
+                android:id="@+id/duet_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:checked="true" />
 
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp">
-
-                <ImageView
-                    android:id="@+id/cat_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_category_24"
-                    android:tint="@color/black" />
-
-                <Spinner
-                    android:id="@+id/cat_spinner"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="5dp"
-                    android:entries="@array/categories"
-                    android:gravity="center" />
-
-                <TextView
-                    android:id="@+id/cat_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/cat_img"
-                    android:text="Category " />
-            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/duet_img"
+                android:text="Allow Duet" />
 
 
-            <RelativeLayout
-                android:id="@+id/privacy_type_layout"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/d_bottom_gray_line">
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/lock_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_lock"
-                    android:tint="@color/black" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/right_arrow"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/ic_next"
-                    android:tint="@color/black" />
+            <ImageView
+                android:id="@+id/cat_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_category_24"
+                android:tint="@color/black" />
 
+            <Spinner
+                android:id="@+id/cat_spinner"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:entries="@array/categories"
+                android:gravity="center" />
 
-                <TextView
-                    android:id="@+id/privcy_type_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="5dp"
-                    android:layout_toStartOf="@+id/right_arrow"
-                    android:text="Public" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/lock_img"
-                    android:text="Who can view this video" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@drawable/d_bottom_gray_line">
-
-                <ImageView
-                    android:id="@+id/comment_img"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/ic_comment"
-                    android:tint="@color/black" />
-
-                <Switch
-                    android:id="@+id/comment_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="15dp"
-                    android:checked="true" />
+            <TextView
+                android:id="@+id/cat_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/cat_img"
+                android:text="Category " />
+        </RelativeLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@+id/comment_img"
-                    android:text="Allow Comments" />
+        <RelativeLayout
+            android:id="@+id/privacy_type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/d_bottom_gray_line">
 
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/lock_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_lock"
+                android:tint="@color/black" />
+
+            <ImageView
+                android:id="@+id/right_arrow"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_next"
+                android:tint="@color/black" />
 
 
-            <LinearLayout
-                android:id="@+id/buttons_view"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/privcy_type_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/right_arrow"
+                android:text="Public" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/lock_img"
+                android:text="Who can view this video" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/d_bottom_gray_line">
+
+            <ImageView
+                android:id="@+id/comment_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_comment"
+                android:tint="@color/black" />
+
+            <Switch
+                android:id="@+id/comment_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:checked="true" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/comment_img"
+                android:text="Allow Comments" />
+
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/buttons_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/save_draft_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/d_gray_border"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_drafts" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-
-                <LinearLayout
-                    android:id="@+id/save_draft_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/d_gray_border"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="5dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_drafts" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:text="Draft"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/post_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/themecolor"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_upload" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Post Video"
-                        android:textColor="@color/white"
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:text="Draft"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
-    </ScrollView>
 
+        <LinearLayout
+            android:id="@+id/post_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@color/themecolor"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_upload" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Post Video"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"

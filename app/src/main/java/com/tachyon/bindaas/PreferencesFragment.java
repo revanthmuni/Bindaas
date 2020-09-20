@@ -164,7 +164,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                 SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
                 editor.putBoolean(Variables.auto_scroll_key, b);
                 editor.commit();
-                callApiForSavePreferences();
+                callApiForShowPreview();
                 //Toast.makeText(context, ""+b, Toast.LENGTH_SHORT).show();
             });
             show_preview_switch.setOnCheckedChangeListener((compoundButton, b) -> {

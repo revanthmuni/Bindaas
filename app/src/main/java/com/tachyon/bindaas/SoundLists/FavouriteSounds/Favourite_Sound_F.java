@@ -50,6 +50,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -486,6 +487,7 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
             ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    EventBus.getDefault().post("done");
                     Functions.cancel_loader();
                     datalist.remove(pos);
                     adapter.notifyItemRemoved(pos);
