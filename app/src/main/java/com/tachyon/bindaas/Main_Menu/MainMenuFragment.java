@@ -256,7 +256,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                         } else {
                             Intent intent = new Intent(getActivity(), Video_Recoder_A.class);
                             startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in_from_bottom, R.anim.out_to_top);
+                            getActivity().overridePendingTransition(R.anim.in_from_bottom_camera, R.anim.out_to_top);
                         }
                     }
 

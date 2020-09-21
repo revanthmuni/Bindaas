@@ -911,7 +911,7 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
                     public void run() {
                         mainlayout.removeView(iv);
                     }
-                }, 500);
+                }, 0);
 
 //                mainlayout.removeView(iv);
             }

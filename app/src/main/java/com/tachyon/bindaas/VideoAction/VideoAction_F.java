@@ -228,11 +228,15 @@ public class VideoAction_F extends BottomSheetDialogFragment implements View.OnC
                     break;
                 case R.id.duet_layout:
                     if(Functions.check_permissions(getActivity())) {
-                        Bundle duet_bundle = new Bundle();
-                        duet_bundle.putString("action", "duet");
-                        dismiss();
-                        if (fragment_callback != null)
-                            fragment_callback.Responce(duet_bundle);
+                        if(Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                            Bundle duet_bundle = new Bundle();
+                            duet_bundle.putString("action", "duet");
+                            dismiss();
+                            if (fragment_callback != null)
+                                fragment_callback.Responce(duet_bundle);
+                        } else {
+                            Toast.makeText(context, "Please Login into the app", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     break;
                 case R.id.copy_layout:

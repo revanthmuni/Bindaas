@@ -7,9 +7,9 @@
         android:fromYDelta="0%" android:toYDelta="0%"
         android:fromAlpha="0.1" android:toAlpha="0.1"
         android:duration="100" />
-    <alpha
+    <!--<alpha
         android:duration="100"
         android:fromAlpha="0.1"
         android:toAlpha="1.0" >
-    </alpha>
+    </alpha>-->
 </set>

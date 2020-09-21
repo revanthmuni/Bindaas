@@ -845,7 +845,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         public void run() {
                             mainlayout.removeView(iv);
                         }
-                    }, 500);
+                    }, 0);
                 }
 
                 @Override
