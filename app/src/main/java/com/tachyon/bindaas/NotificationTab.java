@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Inbox.Inbox_F;
 import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
@@ -179,6 +180,7 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
     }
 
     public void parse_data(String resp) {
+        Log.d("Test", "parse_data: "+resp);
         try {
             JSONObject jsonObject = new JSONObject(resp);
             String code = jsonObject.optString("code");
@@ -202,6 +204,7 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
                     item.effected_user_id = user_id_details.optString("effected_user_id");
 
                     item.type = data.optString("type");
+                    item.value = data.optString("value");
 
                     if (item.type.equalsIgnoreCase("comment_video") || item.type.equalsIgnoreCase("video_like")) {
 
@@ -261,9 +264,14 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
     }
 
     private void OpenWatchVideo(Notification_Get_Set item) {
+        Log.d("Test", "OpenWatchVideo: "+new Gson().toJson(item));
         try {
             Intent intent = new Intent(getActivity(), WatchVideos_F.class);
-            intent.putExtra("video_id", item.id);
+            if (item.type.equals("tagged")){
+                intent.putExtra("video_id", item.value);
+            }else{
+                intent.putExtra("video_id", item.id);
+            }
             startActivity(intent);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

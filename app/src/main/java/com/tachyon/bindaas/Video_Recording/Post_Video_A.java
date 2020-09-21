@@ -113,6 +113,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 @Override
                 public void onClick(View view) {
                     finaltext.setText("");
+                    actual_Str = "";
                     close_finaltext.setVisibility(View.GONE);
                 }
             });
@@ -209,6 +210,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         if (text.toString().equals("")){
             no_data_found_view.setVisibility(View.VISIBLE);
             followers_actv_recycler.setVisibility(View.GONE);
+        }{
+            no_data_found_view.setVisibility(View.GONE);
         }
 
         ArrayList<Home_Get_Set> temp = new ArrayList();
