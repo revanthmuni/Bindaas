@@ -17,7 +17,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"
         tools:replace="allowBackup,supportsRtl">
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".Splash_A">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,12 +68,12 @@
             android:name=".Home.ReportVideo.ReportVideo"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity
+        <!--<activity
             android:name=".Splash_A"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
 
-        </activity>
+        </activity>-->
         <activity
             android:name=".Main_Menu.MainMenuActivity"
             android:launchMode="singleTask"
