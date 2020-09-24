@@ -169,7 +169,7 @@ public class DraftVideos_A extends AppCompatActivity {
                 Log.d("resp", "" + item.video_duration_ms);
 
 
-                if (item.video_duration_ms > 5000) {
+                if (item.video_duration_ms > Variables.min_draft_duration) {
                     item.video_time = change_sec_to_time(item.video_duration_ms);
                     data_list.add(item);
                 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -76,6 +77,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -426,7 +429,16 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             String path = Variables.draft_app_folder;
             File directory = new File(path);
             File[] files = directory.listFiles();
-            draft_count_txt.setText("" + files.length);
+            int count = 0;
+            for(int i = 0; i<files.length;i++){
+                long duration = Functions.getfileduration(context, Uri.parse(files[i].getAbsolutePath()));
+                Log.d(TAG, "Show_draft_count: "+duration);
+                if (duration > Variables.min_draft_duration){
+                    count++;
+                }
+            }
+//            draft_count_txt.setText("" + files.length);
+            draft_count_txt.setText(""+count);
             if (files.length <= 0) {
                 view.findViewById(R.id.draft_btn).setVisibility(View.GONE);
             } else {

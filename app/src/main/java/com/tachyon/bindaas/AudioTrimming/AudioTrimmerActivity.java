@@ -251,6 +251,12 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        handlePause();
+    }
+
+    @Override
     public void onClick(View view) {
         try {
             if (view == txtAudioRecord) {

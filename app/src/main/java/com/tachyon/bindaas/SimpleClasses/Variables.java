@@ -33,6 +33,8 @@ public class Variables {
     public static int maxVideoWidth = 720;
     public static int maxVideoHeight = 1280;
     public static double bitRateMultiplier = 4;
+    public static int min_draft_duration = 5000;
+
 
     public static String output_frontcamera= app_folder + "output_frontcamera.mp4";
     public static String outputfile = app_folder + "output.mp4";

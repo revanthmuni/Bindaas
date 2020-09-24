@@ -231,6 +231,15 @@ public class Upload_Service extends Service {
 
                                             stopForeground(true);
                                             stopSelf();
+
+                                            if (draft_file != null){
+
+                                                File file_data = new File(draft_file);
+                                                if (file_data.exists()) {
+                                                    file_data.delete();
+                                                }
+                                            }
+
                                             EventBus.getDefault().post("Your Video is uploaded Successfully");
                                             if (Callback != null)
                                                 Callback.ShowResponce("Your Video is uploaded Successfully");
