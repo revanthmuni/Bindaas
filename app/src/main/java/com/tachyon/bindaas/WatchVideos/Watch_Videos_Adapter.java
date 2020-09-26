@@ -81,7 +81,26 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.sound_name.setSelected(true);
 
 
-            holder.desc_txt.setText(item.video_description);
+            //holder.desc_txt.setText(item.video_description);
+            if (holder.desc_txt.getLineCount()>2){
+                holder.desc_txt.setText(item.video_description);
+                holder.show_more.setVisibility(View.VISIBLE);
+            }else {
+                holder.desc_txt.setText(item.video_description);
+                holder.show_more.setVisibility(View.GONE);
+            }
+            holder.show_more.setOnClickListener(view -> {
+                if (holder.show_more.getText().equals("Show More")){
+                    holder.show_more.setText("Show Less");
+                    holder.desc_txt.setMaxLines(holder.desc_txt.getLineCount());
+                    holder.desc_txt.setText(item.video_description);
+                }else{
+                    holder.show_more.setText("Show More");
+                    holder.desc_txt.setMaxLines(2);
+                    holder.desc_txt.setText(item.video_description);
+
+                }
+            });
             Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
 
             Picasso.with(context).
@@ -160,13 +179,16 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
         LinearLayout like_layout, comment_layout, shared_layout, sound_image_layout, side_menu;
         ImageView like_image, comment_image;
-        TextView like_txt, desc_txt, comment_txt,view_txt;
+        TextView like_txt, comment_txt,view_txt;
 
-
+        TextView desc_txt;
+        TextView show_more;
+        ImageView tagged_users;
         public CustomViewHolder(View view) {
             super(view);
             try {
                 playerview = view.findViewById(R.id.playerview);
+                tagged_users = view.findViewById(R.id.tagged_users);
                 view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
@@ -179,12 +201,12 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                 like_txt = view.findViewById(R.id.like_txt);
                 side_menu = view.findViewById(R.id.side_menu);
 
-
                 comment_layout = view.findViewById(R.id.comment_layout);
                 comment_image = view.findViewById(R.id.comment_image);
                 comment_txt = view.findViewById(R.id.comment_txt);
 
                 desc_txt = view.findViewById(R.id.desc_txt);
+                show_more = view.findViewById(R.id.show_more);
 
                 sound_image_layout = view.findViewById(R.id.sound_image_layout);
                 shared_layout = view.findViewById(R.id.shared_layout);
@@ -251,6 +273,9 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                     public void onClick(View v) {
                         listener.onItemClick(postion, item, v);
                     }
+                });
+                tagged_users.setOnClickListener(view -> {
+                    listener.onItemClick(postion,item,view);
                 });
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

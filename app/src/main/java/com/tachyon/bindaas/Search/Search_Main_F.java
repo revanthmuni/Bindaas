@@ -34,7 +34,7 @@ public class Search_Main_F extends RootFragment {
     View view;
     Context context;
 
-    public static EditText search_edit;
+    public  EditText search_edit;
     TextView search_btn;
 
     public Search_Main_F() {
@@ -57,7 +57,7 @@ public class Search_Main_F extends RootFragment {
             imgr.showSoftInput(search_edit, 0);
             search_edit.requestFocus();
 
-            search_btn = view.findViewById(R.id.search_btn);
+            // search_btn = view.findViewById(R.id.search_btn);
             search_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

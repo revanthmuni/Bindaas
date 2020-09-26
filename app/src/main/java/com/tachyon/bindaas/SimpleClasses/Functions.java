@@ -632,7 +632,7 @@ public class Functions {
                             item.profile_pic = user_info.optString("profile_pic");
 
 
-                            item.video_id = itemdata.optString("id");
+                            item.video_id = itemdata.optString("video_id");
                             item.comments = itemdata.optString("comments");
                             item.created = itemdata.optString("created");
                             item.comment_id = itemdata.optString("comment_id");

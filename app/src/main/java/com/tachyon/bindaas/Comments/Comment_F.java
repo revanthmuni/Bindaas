@@ -3,6 +3,7 @@ package com.tachyon.bindaas.Comments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,10 +22,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.tachyon.bindaas.Home.Home_F;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
@@ -139,12 +142,12 @@ public class Comment_F extends RootFragment {
             adapter = new Comments_Adapter(context, data_list, new Comments_Adapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(final int postion, final Comment_Get_Set item, View view) {
-                    switch (view.getId()){
+                    switch (view.getId()) {
                         case R.id.username:
-                            openProfile(item,postion);
+                            openProfile(item, postion);
                             break;
                         case R.id.user_pic:
-                            openProfile(item,postion);
+                            openProfile(item, postion);
                             break;
                         case R.id.side_menu:
                             ShowCommentOption(item, postion);
@@ -201,7 +204,7 @@ public class Comment_F extends RootFragment {
                 try {
                     if (flag.equals("home")) {
                         getActivity().onBackPressed();
-                    }else{
+                    } else {
                         getActivity().finish();
                     }
                     TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
@@ -231,7 +234,7 @@ public class Comment_F extends RootFragment {
                 transaction.addToBackStack(null);
                 if (flag.equals("home")) {
                     transaction.replace(R.id.MainMenuFragment, profile_f).commit();
-                }else{
+                } else {
                     if (privious_player != null) privious_player.setPlayWhenReady(false);
                     getActivity().onBackPressed();
                     transaction.replace(R.id.WatchVideo_F, profile_f).commit();
@@ -253,7 +256,7 @@ public class Comment_F extends RootFragment {
             if (!home_get_set.user_id.equals(userId))
                 options = new CharSequence[]{"Flag Comment", "Cancel"};
             else
-                options = new CharSequence[]{"Delete Comment", "Cancel"};
+                options = new CharSequence[]{"Delete Comment", "Edit Comment", "Cancel"};
 
             androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.AlertDialogCustom);
 
@@ -278,6 +281,9 @@ public class Comment_F extends RootFragment {
                     } else if (options[item].equals("Delete Comment")) {
                         callDeleteCommentApi(userId, home_get_set, position);
                         dialog.dismiss();
+                    } else if (options[item].equals("Edit Comment")) {
+                        dialog.dismiss();
+                        editComment(home_get_set, position);
                     } else if (options[item].equals("Cancel")) {
 
                         dialog.dismiss();
@@ -291,9 +297,61 @@ public class Comment_F extends RootFragment {
             builder.show();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    private void editComment(Comment_Get_Set home_get_set, int position) {
+        try {
+            View view = LayoutInflater.from(context).inflate(R.layout.edit_comment, null);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+            dialog.setTitle("Edit Comment");
+            EditText comment = view.findViewById(R.id.comment_edit);
+            ImageView profile = view.findViewById(R.id.profile);
+            TextView name = view.findViewById(R.id.name);
+            Glide.with(context).load(home_get_set.profile_pic).into(profile);
+            comment.setText(home_get_set.comments);
+            name.setText(home_get_set.first_name + " " + home_get_set.last_name);
+            dialog.setView(view);
+            dialog.setPositiveButton("Update", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+                callEditCommentsApi(home_get_set, home_get_set.comment_id, comment.getText().toString(), home_get_set.video_id, home_get_set.user_id, position);
+            });
+
+            dialog.show();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());/**/
+        }
+    }
+
+    private void callEditCommentsApi(Comment_Get_Set item, String comment_id, String comment, String video_id, String user_id, int position) {
+        Log.d("TAG", "callEditCommentsApi: " + comment_id + " comment :" + comment
+                + " video id:" + video_id + " user id:" + user_id);
+        try {
+            JSONObject params = new JSONObject();
+            try {
+                params.put("comment_id", comment_id);
+                params.put("comment", comment);
+                params.put("video_id", item.video_id);
+                params.put("user_id", user_id);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Functions.Show_loader(context, false, false);
+            ApiRequest.Call_Api(getActivity(), Variables.EDIT_COMMENT, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Log.d("TAG", "edit comment Responce: " + resp);
+                    Functions.cancel_loader();
+                    data_list.remove(position);
+                    item.comments = comment;
+                    data_list.add(position, item);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
-
     }
 
     private void callDeleteCommentApi(String userId, final Comment_Get_Set item,
@@ -339,31 +397,31 @@ public class Comment_F extends RootFragment {
 
     // this funtion will get all the comments against post
     public void Get_All_Comments() {
-        try{
-        Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
-            @Override
-            public void ArrayData(ArrayList arrayList) {
-                ArrayList<Comment_Get_Set> arrayList1 = arrayList;
-                for (Comment_Get_Set item : arrayList1) {
-                    data_list.add(item);
+        try {
+            Functions.Call_Api_For_get_Comment(getActivity(), video_id, new API_CallBack() {
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+                    ArrayList<Comment_Get_Set> arrayList1 = arrayList;
+                    for (Comment_Get_Set item : arrayList1) {
+                        data_list.add(item);
+                    }
+                    comment_count_txt.setText(data_list.size() + " comments");
+                    adapter.notifyDataSetChanged();
                 }
-                comment_count_txt.setText(data_list.size() + " comments");
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void OnSuccess(String responce) {
+                @Override
+                public void OnSuccess(String responce) {
 
-            }
+                }
 
-            @Override
-            public void OnFail(String responce) {
+                @Override
+                public void OnFail(String responce) {
 
-            }
+                }
 
-        });
-        }catch (Exception e){
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
@@ -371,44 +429,44 @@ public class Comment_F extends RootFragment {
 
     // this function will call an api to upload your comment
     public void Send_Comments(String video_id, final String comment) {
-try{
-        Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
-            @Override
-            public void ArrayData(ArrayList arrayList) {
-                send_progress.setVisibility(View.GONE);
-                send_btn.setVisibility(View.VISIBLE);
+        try {
+            Functions.Call_Api_For_Send_Comment(getActivity(), video_id, comment, new API_CallBack() {
+                @Override
+                public void ArrayData(ArrayList arrayList) {
+                    send_progress.setVisibility(View.GONE);
+                    send_btn.setVisibility(View.VISIBLE);
 
-                ArrayList<Comment_Get_Set> arrayList1 = arrayList;
-                for (Comment_Get_Set item : arrayList1) {
-                    data_list.add(0, item);
-                    comment_count++;
+                    ArrayList<Comment_Get_Set> arrayList1 = arrayList;
+                    for (Comment_Get_Set item : arrayList1) {
+                        data_list.add(0, item);
+                        comment_count++;
 
-                    SendPushNotification(getActivity(), user_id, comment);
+                        SendPushNotification(getActivity(), user_id, comment);
 
-                    comment_count_txt.setText(comment_count + " comments");
+                        comment_count_txt.setText(comment_count + " comments");
 
-                    if (fragment_data_send != null)
-                        fragment_data_send.onDataSent("" + comment_count);
+                        if (fragment_data_send != null)
+                            fragment_data_send.onDataSent("" + comment_count);
+
+                    }
+                    adapter.notifyDataSetChanged();
 
                 }
-                adapter.notifyDataSetChanged();
 
-            }
+                @Override
+                public void OnSuccess(String responce) {
 
-            @Override
-            public void OnSuccess(String responce) {
+                }
 
-            }
+                @Override
+                public void OnFail(String responce) {
 
-            @Override
-            public void OnFail(String responce) {
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-            }
-        });
-}catch (Exception e){
-    Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
-
-}
+        }
 
     }
 

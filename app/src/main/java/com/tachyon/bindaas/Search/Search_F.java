@@ -37,7 +37,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.tachyon.bindaas.Search.Search_Main_F.search_edit;
+import static com.tachyon.bindaas.Discover.Discover_F.search_edit;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -272,7 +273,10 @@ public class Search_F extends RootFragment {
         try {
             if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(user_id)) {
 
-                TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(4);
+                getActivity().onBackPressed();
+                //getActivity().onBackPressed();
+
+                TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                 profile.select();
 
             } else {

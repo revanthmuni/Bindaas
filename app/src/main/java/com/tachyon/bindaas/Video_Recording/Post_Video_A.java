@@ -344,7 +344,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             adapter = new HashTagsAdapter(this, list, new HashTagsAdapter.ClickListener() {
                 @Override
                 public void onClick(String item, int postion) {
-                    if (description_edit.getText().toString().contains(("#"+item))){
+                    if (description_edit.getText().toString().contains(("#"+item+" "))){
                         Toast.makeText(Post_Video_A.this, "Already added.", Toast.LENGTH_SHORT).show();
                     }else description_edit.setText("#"+item+" "+description_edit.getText().toString());
                 }

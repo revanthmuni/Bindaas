@@ -174,5 +174,6 @@ public class Variables {
     public static final String HASH_TAGS = api_domain + "getHashTags";
     public static final String SAVE_PREFERENCES = api_domain + "getPreference";
     public static final String GET_MUTUAL_FOLLOWERS = api_domain + "getMutualFollowers";
+    public static final String EDIT_COMMENT = api_domain + "getEditComment";
 
 }

@@ -95,8 +95,27 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             }
             holder.sound_name.setSelected(true);
 
-            holder.desc_txt.setText(item.video_description);
+//            holder.desc_txt.setText(item.video_description);
             Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
+            if (holder.desc_txt.getLineCount()>2){
+                holder.desc_txt.setText(item.video_description);
+                holder.show_more.setVisibility(View.VISIBLE);
+            }else {
+                holder.desc_txt.setText(item.video_description);
+                holder.show_more.setVisibility(View.GONE);
+            }
+            holder.show_more.setOnClickListener(view -> {
+                if (holder.show_more.getText().equals("Show More")){
+                    holder.show_more.setText("Show Less");
+                    holder.desc_txt.setMaxLines(holder.desc_txt.getLineCount());
+                    holder.desc_txt.setText(item.video_description);
+                }else{
+                    holder.show_more.setText("Show More");
+                    holder.desc_txt.setMaxLines(2);
+                    holder.desc_txt.setText(item.video_description);
+
+                }
+            });
 
             Picasso.with(context).
                     load(item.profile_pic)
@@ -152,6 +171,13 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             } else {
                 holder.varified_btn.setVisibility(View.GONE);
             }
+
+            Log.d("TAG", "onBindViewHolder:follow status button: "+item.follow_status_button);
+            if (item.follow_status_button.equals("Follow")){
+                holder.add_follow.setVisibility(View.VISIBLE);
+            }else{
+                holder.add_follow.setVisibility(View.GONE);
+            }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -169,7 +195,9 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         TextView like_txt, comment_txt;
 
         VideoView videoView;
-
+        TextView show_more;
+        ImageView tag_users_layout;
+        ImageView add_follow;
         public CustomViewHolder(View view) {
             super(view);
             try {
@@ -183,7 +211,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 sound_image = view.findViewById(R.id.sound_image);
                 varified_btn = view.findViewById(R.id.varified_btn);
                 ivSearch = view.findViewById(R.id.ivSearch);
+                show_more = view.findViewById(R.id.show_more);
 
+                tag_users_layout = view.findViewById(R.id.tagged_users);
+                add_follow = view.findViewById(R.id.add_follow);
                 like_layout = view.findViewById(R.id.like_layout);
                 like_image = view.findViewById(R.id.like_image);
                 like_txt = view.findViewById(R.id.like_txt);
@@ -304,6 +335,13 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     public void onClick(View v) {
                         listener.onItemClick(postion, item, v);
                     }
+                });
+
+                tag_users_layout.setOnClickListener(view -> {
+                    listener.onItemClick(postion,item,view);
+                });
+                add_follow.setOnClickListener(view -> {
+                    listener.onItemClick(postion,item,view);
                 });
 
             } catch (Exception e) {
