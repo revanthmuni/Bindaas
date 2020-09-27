@@ -1,4 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:clickable="true"
+    android:id="@+id/Search_Main_F"
     tools:context="com.tachyon.bindaas.Discover.Discover_F">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,8 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/search"
                     android:backgroundTint="@color/transparent"
-                    android:clickable="false"
-                    android:focusable="false"
                     android:hint="Search"
                     android:padding="7dp"
                     android:textColor="@color/black"
@@ -59,7 +58,6 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_discovery_gray"
                     android:tint="@color/dimgray" />
-
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -92,7 +90,20 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <FrameLayout
+            android:id="@+id/search_frame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_layout">
+            <include layout="@layout/fragment_search_main"/>
+        </FrameLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

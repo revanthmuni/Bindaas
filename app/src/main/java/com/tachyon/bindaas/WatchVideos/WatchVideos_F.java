@@ -58,6 +58,7 @@ import com.tachyon.bindaas.SimpleClasses.Fragment_Data_Send;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Taged.Taged_Videos_F;
+import com.tachyon.bindaas.Taged.TaggedUsersList;
 import com.tachyon.bindaas.VideoAction.VideoAction_F;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
@@ -511,6 +512,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             }
 
                             break;
+                        case R.id.tagged_users:
+                            onPause();
+                            showTaggedUsers(item);
                     }
 
                 }
@@ -554,7 +558,18 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         }
     }
 
+    private void showTaggedUsers(Home_Get_Set item) {
+        TaggedUsersList fragment = new TaggedUsersList();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+        Bundle args = new Bundle();
+        args.putString("data", new Gson().toJson(item));
+        fragment.setArguments(args);
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.WatchVideo_F,fragment).commit();
 
+
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -759,7 +774,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             });
 
             TextView desc_txt = layout.findViewById(R.id.desc_txt);
-            HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+            HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor),
+                    new HashTagHelper.OnHashTagClickListener() {
                 @Override
                 public void onHashTagClicked(String hashTag) {
 

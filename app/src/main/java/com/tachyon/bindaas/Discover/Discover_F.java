@@ -10,24 +10,33 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.Search.Search_F;
 import com.tachyon.bindaas.Search.Search_Main_F;
+import com.tachyon.bindaas.Search.SoundList_F;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.SimpleClasses.ViewPagerAdapter;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
 import org.json.JSONArray;
@@ -45,8 +54,10 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     Context context;
 
     RecyclerView recyclerView;
-    EditText search_edit;
+    public static EditText search_edit;
 
+    FrameLayout search_frame;
+    TextView search_btn;
 
     SwipeRefreshLayout swiperefresh;
 
@@ -70,6 +81,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             datalist = new ArrayList<>();
 
 
+            search_frame = view.findViewById(R.id.search_frame);
             recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
@@ -96,9 +108,23 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String query = search_edit.getText().toString();
+                    if (s.toString().length() == 0) {
+                        swiperefresh.setVisibility(View.VISIBLE);
+                        search_frame.setVisibility(View.GONE);
+                    }else Set_tabs();/*
+                    if (!s.equals("")) Set_tabs();
+                    else {
+                        swiperefresh.setVisibility(View.VISIBLE);
+                        search_frame.setVisibility(View.GONE);
+                    }*/
+                   /* if (search_edit.getText().toString().length() > 0) {
+                        search_btn.setVisibility(View.VISIBLE);
+                    } else {
+                        search_btn.setVisibility(View.GONE);
+                    }*/
+                    /*String query = search_edit.getText().toString();
                     if (adapter != null)
-                        adapter.getFilter().filter(s);
+                        adapter.getFilter().filter(s);*/
 
                 }
 
@@ -123,7 +149,18 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             view.findViewById(R.id.search_edit).setOnClickListener(this);
 
             Call_Api_For_get_Allvideos();
-
+           /* search_edit.setFocusable(true);
+            UIUtil.showKeyboard(context, search_edit);*/
+            search_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        Perform_search();
+                        return true;
+                    }
+                    return false;
+                }
+            });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -276,10 +313,11 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
         try {
             switch (v.getId()) {
                 case R.id.search_layout:
-                    Open_search();
+                    //Open_search();
                     break;
                 case R.id.search_edit:
-                    Open_search();
+                    //Open_search();
+                    //Perform_search();
                     break;
 
             }
@@ -289,5 +327,53 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        String s = search_edit.getText().toString();
+        if (s.length() == 0){
+
+        }else{
+           // Toast.makeText(context, search_edit.getText().toString(), Toast.LENGTH_SHORT).show();
+            Perform_search();
+        }
+        /*if (search_edit.getText().toString().length() != 0){
+            search_frame.setVisibility(View.VISIBLE);
+            swiperefresh.setVisibility(View.GONE);
+            Set_tabs();
+        }*/
+    }
+
+    public void Perform_search() {
+        if (menu_pager != null) {
+            menu_pager.removeAllViews();
+        }
+        Set_tabs();
+    }
+
+    protected TabLayout tabLayout;
+    protected ViewPager menu_pager;
+    ViewPagerAdapter adapter1;
+
+    public void Set_tabs() {
+        try {
+            search_frame.setVisibility(View.VISIBLE);
+            swiperefresh.setVisibility(View.GONE);
+            adapter1 = new ViewPagerAdapter(getChildFragmentManager());
+            menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
+            menu_pager.setOffscreenPageLimit(3);
+            tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+
+            adapter1.addFrag(new Search_F("users"), "Users");
+            adapter1.addFrag(new Search_F("video"), "Videos");
+            adapter1.addFrag(new SoundList_F("sound"), "Sounds");
+
+            menu_pager.setAdapter(adapter1);
+            tabLayout.setupWithViewPager(menu_pager);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
 
 }

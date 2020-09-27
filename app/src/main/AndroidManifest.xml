@@ -49,7 +49,8 @@
             android:theme="@style/Base.Theme.AppCompat"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".Accounts.Request_Varification_F" />
-        <activity android:name=".SoundLists.VideoSound_A" />
+        <activity android:name=".SoundLists.VideoSound_A"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Video_Recording.DraftVideos.DraftVideos_A"
             android:screenOrientation="portrait"

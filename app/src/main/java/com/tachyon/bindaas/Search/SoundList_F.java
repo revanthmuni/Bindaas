@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.tachyon.bindaas.Discover.Discover_F;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Adapter_Click_Listener;
@@ -164,7 +165,7 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
         try {
             params.put("user_id",Variables.user_id);
             params.put("type", type);
-            params.put("keyword", Search_Main_F.search_edit.getText());
+            params.put("keyword", Discover_F.search_edit.getText());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -74,6 +74,7 @@ import com.tachyon.bindaas.SimpleClasses.Fragment_Data_Send;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Taged.Taged_Videos_F;
+import com.tachyon.bindaas.Taged.TaggedUsersList;
 import com.tachyon.bindaas.VideoAction.VideoAction_F;
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
@@ -464,6 +465,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
                         currentPage = -1;
                         Call_Api_For_get_Allvideos();
                         break;
+                    case R.id.tagged_users:
+                        onPause();
+                        showTaggedUsers(item);
                 }
 
             }
@@ -472,6 +476,19 @@ public class Home_F extends RootFragment implements Player.EventListener,
         adapter.setHasStableIds(true);
 
         recyclerView.setAdapter(adapter);
+
+    }
+
+    private void showTaggedUsers(Home_Get_Set item) {
+        TaggedUsersList fragment = new TaggedUsersList();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+        Bundle args = new Bundle();
+        args.putString("data", new Gson().toJson(item));
+        fragment.setArguments(args);
+        transaction.addToBackStack(null);
+        transaction.replace(R.id.MainMenuFragment,fragment).commit();
+
 
     }
 
@@ -523,6 +540,12 @@ public class Home_F extends RootFragment implements Player.EventListener,
                     item.user_id = itemdata.optString("user_id");
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
+
+                    /*
+                    JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                    item.follow = follow_status.optString("follow");
+                    item.follow_status_button = follow_status.optString("follow_status_button");
+*/
 
                     item.username = user_info.optString("username");
                     item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
@@ -724,7 +747,6 @@ public class Home_F extends RootFragment implements Player.EventListener,
         View layout = recyclerView.getRootView();
         final PlayerView playerView = layout.findViewById(R.id.playerview);
         playerView.setPlayer(player);
-
 
         player.setPlayWhenReady(is_visible_to_user);
         privious_player = player;
