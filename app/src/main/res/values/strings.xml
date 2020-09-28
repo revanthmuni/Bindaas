@@ -64,7 +64,7 @@
     <string name="refresh">Refresh</string>
     <string name="play_pressed">Play pressed</string>
     <string name="pause_pressed">Pause pressed</string>
-    <string name="audio_saved">Audio Saved</string>
+    <string name="audio_saved">Audio Saved in Bindaas/Saved Audio folder</string>
     <string name="this_msg_deleted_by">\"This message is deleted by \"</string>
     <string name="video_only_can_be">\"Video only can be a \"</string>
     <string name="discard_last_clip">Discard the last clip?</string>

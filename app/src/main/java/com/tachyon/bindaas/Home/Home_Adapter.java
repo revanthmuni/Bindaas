@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.squareup.picasso.Picasso;
+import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 
@@ -95,7 +96,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             }
             holder.sound_name.setSelected(true);
 
-//            holder.desc_txt.setText(item.video_description);
+//          holder.desc_txt.setText(item.video_description);
             Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
             if (holder.desc_txt.getLineCount()>2){
                 holder.desc_txt.setText(item.video_description);
@@ -172,11 +173,16 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 holder.varified_btn.setVisibility(View.GONE);
             }
 
-            Log.d("TAG", "onBindViewHolder:follow status button: "+item.follow_status_button);
-            if (item.follow_status_button.equals("Follow")){
-                holder.add_follow.setVisibility(View.VISIBLE);
-            }else{
+            if (!item.follow_status_button.equalsIgnoreCase("Follow") ||
+                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.user_id,""))){
                 holder.add_follow.setVisibility(View.GONE);
+            }else{
+                holder.add_follow.setVisibility(View.VISIBLE);
+            }
+            if (item.tagged_users.equals("[]")){
+                holder.tag_users_layout.setVisibility(View.GONE);
+            }else{
+                holder.tag_users_layout.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());

@@ -149,6 +149,18 @@
                         app:layout_constraintVertical_chainStyle="spread_inside"
                         fresco:layout_constraintLeft_toLeftOf="parent">
 
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/star_meter_layer_list"
+                            app:layout_constraintBottom_toBottomOf="@+id/rlProfileImage"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="@+id/textView12"
+                            app:layout_constraintTop_toTopOf="@+id/rlProfileImage"
+                            app:layout_constraintVertical_bias="0.0" />
+
                         <RelativeLayout
                             android:id="@+id/rlProfileImage"
                             android:layout_width="100dp"
@@ -175,6 +187,29 @@
                                 android:layout_height="100dp"
                                 android:src="@drawable/profile_image_placeholder" />
                         </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="43dp"
+                            android:layout_height="9dp"
+                            android:text="Star Meter :"
+                            android:textColor="@color/black"
+                            android:textSize="8sp"
+                            app:layout_constraintBottom_toTopOf="@+id/imageView4"
+                            app:layout_constraintEnd_toStartOf="@+id/textView15"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:text="10%"
+                            android:textColor="@color/black"
+                            android:textSize="8sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView12" />
 
                         <TextView
                             android:id="@+id/username2_txt"

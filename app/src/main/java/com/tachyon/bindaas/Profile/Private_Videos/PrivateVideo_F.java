@@ -242,7 +242,9 @@ public class PrivateVideo_F extends Fragment {
                         item.video_url = itemdata.optString("video");
                         item.thum = itemdata.optString("thum");
                         item.created_date = itemdata.optString("created");
-
+                        JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                        Log.d("TAG::>", "Parse_data: tagged users : "+tagged_users.toString());
+                        item.tagged_users = tagged_users.toString();
                         item.video_description = itemdata.optString("description");
 
 

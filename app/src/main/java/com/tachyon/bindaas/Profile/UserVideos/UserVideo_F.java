@@ -263,7 +263,9 @@ public class UserVideo_F extends Fragment {
                         item.created_date = itemdata.optString("created");
 
                         item.video_description = itemdata.optString("description");
-
+                        JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                        Log.d("TAG::>", "In UserF Parse_data: tagged users : "+tagged_users.toString());
+                        item.tagged_users = tagged_users.toString();
 
                         data_list.add(item);
                     }

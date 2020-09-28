@@ -164,6 +164,22 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.varified_btn.setVisibility(View.GONE);
         }*/
             holder.side_menu.setVisibility(View.VISIBLE);
+
+            //checking tagged users ?
+          /*  Log.d("TAG", "onBindViewHolder: tagged users:"+item.tagged_users);
+            if (item.tagged_users.equals("[]")){
+                holder.tag_users_layout.setVisibility(View.GONE);
+            }else{
+                holder.tag_users_layout.setVisibility(View.VISIBLE);
+            }*/
+
+            //checking follow status ?
+           /* if (item.follow_status_button.equalsIgnoreCase("Follow")){
+                holder.add_follow.setVisibility(View.VISIBLE);
+            }else{
+                holder.add_follow.setVisibility(View.GONE);
+            }*/
+
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -183,12 +199,15 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
         TextView desc_txt;
         TextView show_more;
-        ImageView tagged_users;
+        ImageView tag_users_layout;
+        ImageView add_follow;
+
         public CustomViewHolder(View view) {
             super(view);
             try {
+                add_follow = view.findViewById(R.id.add_follow);
                 playerview = view.findViewById(R.id.playerview);
-                tagged_users = view.findViewById(R.id.tagged_users);
+                tag_users_layout = view.findViewById(R.id.tagged_users);
                 view_txt = view.findViewById(R.id.view_txt);
                 username = view.findViewById(R.id.username);
                 user_pic = view.findViewById(R.id.user_pic);
@@ -274,7 +293,10 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                         listener.onItemClick(postion, item, v);
                     }
                 });
-                tagged_users.setOnClickListener(view -> {
+                tag_users_layout.setOnClickListener(view -> {
+                    listener.onItemClick(postion,item,view);
+                });
+                add_follow.setOnClickListener(view -> {
                     listener.onItemClick(postion,item,view);
                 });
             } catch (Exception e) {

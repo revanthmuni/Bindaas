@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.gson.Gson;
+import com.tachyon.bindaas.Comments.Comment_Get_Set;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SoundLists.VideoSound_A;
@@ -88,6 +89,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.tachyon.bindaas.Video_Recording.Video_Recoder_Duet_A;
 import com.volokh.danylo.hashtaghelper.HashTagHelper;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -515,6 +519,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         case R.id.tagged_users:
                             onPause();
                             showTaggedUsers(item);
+                        case R.id.add_follow:
+                            addToFollow(item,postion);
+                            break;
                     }
 
                 }
@@ -557,17 +564,86 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
         }
     }
+    private void addToFollow(Home_Get_Set item, int postion) {
+        try {
+            final String send_status;
 
+            if (item.follow_status_button.equals("UnFollow")
+                    ||item.follow_status_button.equals("Friends")) {
+                send_status = "0";
+            } else {
+                send_status = "1";
+            }
+
+            Functions.Call_Api_For_Follow_or_unFollow(this,
+                    Variables.sharedPreferences.getString(Variables.u_id, ""),
+                    item.user_id,
+                    send_status,
+                    new API_CallBack() {
+                        @Override
+                        public void ArrayData(ArrayList arrayList) {
+
+                        }
+
+                        @Override
+                        public void OnSuccess(String responce) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(responce);
+                                String code = jsonObject.optString("code");
+                                if (code.equals("200")) {
+                                    JSONArray msgArray = jsonObject.getJSONArray("msg");
+                                    for (int i = 0; i < msgArray.length(); i++) {
+                                        JSONObject profile_data = msgArray.optJSONObject(i);
+
+                                        JSONObject follow_Status = profile_data.optJSONObject("follow_Status");
+
+                                        String follow = follow_Status.optString("follow");
+                                        String follow_status_button = follow_Status.optString("follow_status_button");
+                                        Log.d("TTTT", "OnSuccess: " + follow);
+                                        Log.d("TTTT", "OnSuccess: " + follow_status_button);
+                                        item.follow = follow;
+                                        item.follow_status_button = follow_status_button;
+
+                                        data_list.remove(postion);
+                                        data_list.add(postion,item);
+                                        //datalist.add(item);
+                                        //adapter.notifyItemInserted(i);
+                                    }
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+
+                        }
+
+                        @Override
+                        public void OnFail(String responce) {
+
+                        }
+
+                    });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
     private void showTaggedUsers(Home_Get_Set item) {
-        TaggedUsersList fragment = new TaggedUsersList();
+       // Toast.makeText(context, ""+item.tagged_users, Toast.LENGTH_SHORT).show();
+        /*TaggedUsersList fragment = new TaggedUsersList();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
-        args.putString("data", new Gson().toJson(item));
+        args.putString("data", item.tagged_users);
         fragment.setArguments(args);
         transaction.addToBackStack(null);
-        transaction.replace(R.id.WatchVideo_F,fragment).commit();
-
+        transaction.replace(R.id.WatchVideo_F,fragment).commit();*/
 
     }
     @Override
@@ -909,11 +985,15 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                 @Override
                 public void OnSuccess(String responce) {
+
+                    EventBus.getDefault().post("done");
                     Log.d("Test Call_Api", "OnSuccess:Call_Api_For_like_video " + responce);
                 }
 
                 @Override
                 public void OnFail(String responce) {
+
+                    EventBus.getDefault().post("done");
                     Log.d("Test Call_Api", "OnFail:Call_Api_For_like_video " + responce);
 
                 }
