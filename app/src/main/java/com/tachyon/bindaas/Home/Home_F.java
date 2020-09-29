@@ -468,6 +468,10 @@ public class Home_F extends RootFragment implements Player.EventListener,
                     case R.id.tagged_users:
                         onPause();
                         showTaggedUsers(item);
+                        break;
+                    case R.id.add_follow:
+                        addToFollow(item,postion);
+                        break;
                 }
 
             }
@@ -479,12 +483,87 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
     }
 
+    private void addToFollow(Home_Get_Set item, int postion) {
+        try {
+            final String send_status;
+
+            if (item.follow_status_button.equals("UnFollow")
+                    ||item.follow_status_button.equals("Friends")) {
+                send_status = "0";
+            } else {
+                send_status = "1";
+            }
+
+            Functions.Call_Api_For_Follow_or_unFollow(getActivity(),
+                    Variables.sharedPreferences.getString(Variables.u_id, ""),
+                    item.user_id,
+                    send_status,
+                    new API_CallBack() {
+                        @Override
+                        public void ArrayData(ArrayList arrayList) {
+
+                        }
+
+                        @Override
+                        public void OnSuccess(String responce) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(responce);
+                                String code = jsonObject.optString("code");
+                                if (code.equals("200")) {
+                                    JSONArray msgArray = jsonObject.getJSONArray("msg");
+                                    for (int i = 0; i < msgArray.length(); i++) {
+                                        JSONObject profile_data = msgArray.optJSONObject(i);
+
+                                        JSONObject follow_Status = profile_data.optJSONObject("follow_Status");
+
+                                        String follow = follow_Status.optString("follow");
+                                        String follow_status_button = follow_Status.optString("follow_status_button");
+                                        Log.d("TTTT", "OnSuccess: " + follow);
+                                        Log.d("TTTT", "OnSuccess: " + follow_status_button);
+                                        item.follow = follow;
+                                        item.follow_status_button = follow_status_button;
+
+                                        data_list.remove(postion);
+                                        data_list.add(postion,item);
+                                        //datalist.add(item);
+                                       // adapter.notifyItemInserted(i);
+                                    }
+
+
+                                    adapter.notifyDataSetChanged();
+
+                                } else {
+                                    Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+
+                        }
+
+                        @Override
+                        public void OnFail(String responce) {
+
+                        }
+
+                    });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+
+
     private void showTaggedUsers(Home_Get_Set item) {
         TaggedUsersList fragment = new TaggedUsersList();
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
-        args.putString("data", new Gson().toJson(item));
+        args.putString("data", item.tagged_users);
         fragment.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment,fragment).commit();
@@ -541,11 +620,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
-                    /*
                     JSONObject follow_status = itemdata.optJSONObject("follow_Status");
                     item.follow = follow_status.optString("follow");
                     item.follow_status_button = follow_status.optString("follow_status_button");
-*/
 
                     item.username = user_info.optString("username");
                     item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
@@ -583,6 +660,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
                     item.thum = itemdata.optString("thum");
                     item.created_date = itemdata.optString("created");
 
+                    JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                    Log.d("TAG::>", "Parse_data: tagged users : "+tagged_users.toString());
+                    item.tagged_users = tagged_users.toString();
                     if (Variables.is_demo_app) {
                         if (i < 5)
                             temp_list.add(item);
@@ -693,6 +773,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
                     item.thum = itemdata.optString("thum");
                     item.created_date = itemdata.optString("created");
 
+                    JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                    Log.d("TAG::>", "Parse_data: tagged users : "+tagged_users.toString());
+                    item.tagged_users = tagged_users.toString();
                     data_list.remove(pos);
                     data_list.add(pos, item);
                     adapter.notifyDataSetChanged();

@@ -77,6 +77,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
@@ -122,6 +123,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public LinearLayout create_popup_layout;
     public int myvideo_count = 0;
+    ImageView star_meter;
+    TextView star_percentage;
 
     public Profile_Tab_F() {
 
@@ -135,6 +138,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         context = getContext();
 
         try {
+            star_meter = view.findViewById(R.id.imageView2);
+            star_percentage = view.findViewById(R.id.textView14);
             swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setProgressViewOffset(false, 0, 200);
 
@@ -640,6 +645,12 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     //this will get the all videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
+        final int min = 1;
+        final int max = 10;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
+        star_meter.setImageLevel(random);
+        star_percentage.setText(random*10+"%");
         Functions.Show_loader(context, false, false);
         JSONObject parameters = new JSONObject();
         try {

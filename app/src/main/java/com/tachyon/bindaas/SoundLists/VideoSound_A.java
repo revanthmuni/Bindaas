@@ -1,6 +1,9 @@
 package com.tachyon.bindaas.SoundLists;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,7 +18,10 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.util.Log;
 import com.tachyon.bindaas.Home.Home_Get_Set;
+import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.ApiRequest;
+import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.Video_Recording.Video_Recoder_A;
@@ -36,12 +42,19 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 
 public class VideoSound_A extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,13 +63,17 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     ImageView sound_image;
 
     File audio_file;
-
+    RecyclerView recyclerView ;
+    ArrayList<Home_Get_Set> dataList;
     private static final String TAG = "VideoSound_A";
-
+    MyVideos_Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_sound);
+
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
         Functions.make_directry(Variables.app_hidden_folder);
         Functions.make_directry(Variables.app_folder);
         Functions.make_directry(Variables.draft_app_folder);
@@ -95,13 +112,137 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
             Log.d(Variables.tag, item.sound_url_acc);
 
             Save_Audio();
+            dataList = new ArrayList<>();
+            adapter = new MyVideos_Adapter(this, dataList, new MyVideos_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int postion, Home_Get_Set item, View view) {
+                    OpenWatchVideo(postion,dataList);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+
+            loadVideosBySound(item.sound_id,item.user_id);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+        }
+    }
+
+    private void loadVideosBySound(String sound_id, String user_id) {
+        //         sound_id and user_id
+
+        try {
+            JSONObject params = new JSONObject();
+            try {
+                params.put("sound_id", sound_id);
+                params.put("user_id", user_id);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Functions.Show_loader(this, false, false);
+            ApiRequest.Call_Api(this, Variables.GET_VIDEOS_BY_SOUND, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    Parse_data(resp);
+                    android.util.Log.d("TAG", "Video Sound : " + resp);
+                    Functions.cancel_loader();
+                }
+            });
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
         }
+
+    }
+    public void Parse_data(String responce) {
+
+        //data_list = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(responce);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                //ArrayList<Home_Get_Set> temp_list = new ArrayList();
+                for (int i = 0; i < msgArray.length(); i++) {
+                    JSONObject itemdata = msgArray.optJSONObject(i);
+                    Home_Get_Set item = new Home_Get_Set();
+                    item.user_id = itemdata.optString("user_id");
+
+                    JSONObject user_info = itemdata.optJSONObject("user_info");
+
+                    JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                    item.follow = follow_status.optString("follow");
+                    item.follow_status_button = follow_status.optString("follow_status_button");
+
+                    item.username = user_info.optString("username");
+                    item.first_name = user_info.optString("first_name", this.getResources().getString(R.string.app_name));
+                    item.last_name = user_info.optString("last_name", "User");
+                    item.profile_pic = user_info.optString("profile_pic", "null");
+                    item.verified = user_info.optString("verified");
+
+                    JSONObject sound_data = itemdata.optJSONObject("sound");
+                    item.sound_id = sound_data.optString("id");
+                    item.sound_name = sound_data.optString("sound_name");
+                    item.sound_pic = sound_data.optString("thum");
+                    if (sound_data != null) {
+                        JSONObject audio_path = sound_data.optJSONObject("audio_path");
+                        item.sound_url_mp3 = audio_path.optString("mp3");
+                        item.sound_url_acc = audio_path.optString("aac");
+                    }
+
+
+                    JSONObject count = itemdata.optJSONObject("count");
+                    item.like_count = count.optString("like_count");
+                    item.video_comment_count = count.optString("video_comment_count");
+                    item.views = count.optString("view");
+                    item.privacy_type = itemdata.optString("privacy_type");
+                    item.allow_comments = itemdata.optString("allow_comments");
+                    item.allow_duet = itemdata.optString("allow_duet");
+                    item.video_id = itemdata.optString("id");
+                    item.views = itemdata.optString("view");
+                    item.liked = itemdata.optString("liked");
+                    item.video_url = itemdata.optString("video");
+                    itemdata.optString("video");
+
+
+                    item.video_description = itemdata.optString("description");
+
+                    item.thum = itemdata.optString("thum");
+                    item.created_date = itemdata.optString("created");
+
+                    JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                    android.util.Log.d("TAG::>", "Parse_data: tagged users : "+tagged_users.toString());
+                    item.tagged_users = tagged_users.toString();
+                    dataList.add(item);
+
+                }
+                adapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(this, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            }
+
+           /* if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+                autoScrollVideos();
+            }*/
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
+    private void OpenWatchVideo(int postion,ArrayList<Home_Get_Set> list) {
+        try {
+            Intent intent = new Intent(this, WatchVideos_F.class);
+            intent.putExtra("arraylist", list);
+            intent.putExtra("position", postion);
+            startActivity(intent);
+        } catch (Exception e) {
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
+        }
+
+    }
     @Override
     public void onClick(View v) {
         try {
@@ -111,13 +252,12 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
                     onBackPressed();
                     break;
                 case R.id.save_btn:
-
                     String dest = "Bindaas" + item.video_id + ".mp3";
                     if(audio_file!=null && audio_file.exists()) {
                         try {
                             Functions.copyFile(audio_file,
-                                    new File(Variables.app_folder +item.video_id+".acc"));
-                            Toast.makeText(this, R.string.audio_saved, Toast.LENGTH_SHORT).show();
+                                    new File(Variables.app_folder + "Saved Audio/" +item.video_id+".mp3"));
+                            Toast.makeText(this, R.string.audio_saved , Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

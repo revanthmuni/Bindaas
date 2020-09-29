@@ -93,7 +93,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     private TextView bio_textview;
     private String fb_link="";
     private String inst_link="";
-
+    ImageView star_meter;
+    TextView star_percentage;
     public Profile_F() {
     }
 
@@ -119,7 +120,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
             }
-            Log.d("USR_TST", "onCreateView: " + user_id);
+             Log.d("USR_TST", "onCreateView: " + user_id);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -196,6 +197,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public View init() {
         try {
+            star_meter = view.findViewById(R.id.imageView2);
+            star_percentage = view.findViewById(R.id.textView14);
+
             username = view.findViewById(R.id.username);
             username2_txt = view.findViewById(R.id.username2_txt);
             imageView = view.findViewById(R.id.user_image);

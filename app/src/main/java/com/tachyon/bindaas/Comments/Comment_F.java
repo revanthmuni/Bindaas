@@ -45,6 +45,7 @@ import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.helper.CommonUtils;
 import com.tachyon.bindaas.model.DefaultResponse;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -346,6 +347,7 @@ public class Comment_F extends RootFragment {
                     item.comments = comment;
                     data_list.add(position, item);
                     adapter.notifyDataSetChanged();
+                    EventBus.getDefault().post("done");
                 }
             });
         } catch (Exception e) {
@@ -368,6 +370,7 @@ public class Comment_F extends RootFragment {
             ApiRequest.Call_Api(getActivity(), Variables.DELETE_COMMENT, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    EventBus.getDefault().post(item);
                     Functions.cancel_loader();
                     DefaultResponse response = CommonUtils.parseDefaultResponse(resp);
                     if (response != null) {
@@ -449,6 +452,7 @@ public class Comment_F extends RootFragment {
                             fragment_data_send.onDataSent("" + comment_count);
 
                     }
+                    EventBus.getDefault().post("done");
                     adapter.notifyDataSetChanged();
 
                 }

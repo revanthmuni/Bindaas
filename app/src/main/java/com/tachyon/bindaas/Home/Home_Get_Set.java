@@ -13,4 +13,5 @@ public class Home_Get_Set implements Serializable {
 
     public String privacy_type,allow_comments,allow_duet,liked,like_count,video_comment_count,views;
 
+    public String tagged_users;
 }

@@ -182,6 +182,50 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
+                        <LinearLayout
+                            android:id="@+id/linearLayout13"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/edit_profile_btn">
+
+                            <ImageView
+                                android:id="@+id/bio_image2"
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_bio" />
+
+                            <ImageView
+                                android:id="@+id/fb_image2"
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="4dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_facebook" />
+
+                            <ImageView
+                                android:id="@+id/insta_image2"
+                                android:layout_width="0dp"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_weight="1"
+                                android:src="@drawable/ic_insta" />
+
+                            <TextView
+                                android:id="@+id/bio_text2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="7"
+                                android:maxLines="5"
+                                android:text="Hi i'm user"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+
                         <TextView
                             android:id="@+id/edit_profile_btn"
                             android:layout_width="wrap_content"
@@ -207,49 +251,6 @@
                             app:barrierDirection="bottom"
                             app:constraint_referenced_ids="userInformationLayout,clUserImageLayout"
                             tools:layout_editor_absoluteY="136dp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/edit_profile_btn">
-
-                            <ImageView
-                                android:id="@+id/bio_image2"
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="1"
-                                android:layout_marginLeft="16dp"
-                                android:src="@drawable/ic_bio" />
-
-                            <TextView
-                                android:id="@+id/bio_text2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="7"
-                                android:maxLines="5"
-                                android:text="Hi i'm user"
-                                android:textColor="@color/black" />
-
-                            <ImageView
-                                android:id="@+id/fb_image2"
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="1"
-                                android:layout_marginRight="4dp"
-                                android:src="@drawable/ic_facebook" />
-
-                            <ImageView
-                                android:id="@+id/insta_image2"
-                                android:layout_width="0dp"
-                                android:layout_height="30dp"
-                                android:layout_weight="1"
-                                android:layout_marginRight="16dp"
-                                android:src="@drawable/ic_insta" />
-                        </LinearLayout>
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -447,6 +448,30 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="43dp"
+                                android:layout_height="9dp"
+                                android:text="Star Meter :"
+                                android:textColor="@color/black"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                                app:layout_constraintEnd_toStartOf="@+id/textView14"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@drawable/star_meter_layer_list"
+                                app:layout_constraintBottom_toBottomOf="@+id/rlUserImage"
+                                app:layout_constraintEnd_toEndOf="@+id/textView14"
+                                app:layout_constraintStart_toStartOf="@+id/textView13"
+                                app:layout_constraintTop_toTopOf="@+id/rlUserImage"
+                                app:layout_constraintVertical_bias="0.0" />
+
                             <LinearLayout
                                 android:id="@+id/constraintLayout"
                                 android:layout_width="wrap_content"
@@ -537,11 +562,14 @@
                                 </FrameLayout>
                             </LinearLayout>
 
+
                             <RelativeLayout
                                 android:id="@+id/rlUserImage"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_width="107dp"
+                                android:layout_height="102dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginTop="16dp"
+                                app:layout_constraintHorizontal_bias="0.3"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -564,14 +592,11 @@
                                     android:src="@drawable/profile_image_placeholder" />
                             </RelativeLayout>
 
-
                             <TextView
                                 android:id="@+id/username2_txt"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
                                 android:ellipsize="end"
                                 android:gravity="center"
                                 android:maxLines="2"
@@ -579,8 +604,10 @@
                                 android:textColor="@color/black"
                                 android:textSize="15dp"
                                 android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/rlUserImage"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/rlUserImage"
                                 app:layout_constraintTop_toBottomOf="@id/rlUserImage" />
 
                             <androidx.cardview.widget.CardView
@@ -609,6 +636,17 @@
                                     android:textSize="15dp"
                                     android:textStyle="bold" />
                             </androidx.cardview.widget.CardView>
+
+                            <TextView
+                                android:id="@+id/textView14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="10%"
+                                android:textColor="@color/black"
+                                android:textSize="8sp"
+                                app:layout_constraintBottom_toTopOf="@+id/imageView2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
