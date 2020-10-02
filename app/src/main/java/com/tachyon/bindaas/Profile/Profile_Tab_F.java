@@ -123,13 +123,24 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public LinearLayout create_popup_layout;
     public int myvideo_count = 0;
-    ImageView star_meter;
+   // ImageView star_meter;
+
     TextView star_percentage;
+    LinearLayout uployout,downloayout;
 
     public Profile_Tab_F() {
 
     }
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onRefresh(String flag){
+//        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
+        try {
+            Call_Api_For_get_Allvideos();
 
+        }catch (Exception e){
+            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -138,8 +149,12 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         context = getContext();
 
         try {
-            star_meter = view.findViewById(R.id.imageView2);
+
+            //star_meter = view.findViewById(R.id.imageView2);
             star_percentage = view.findViewById(R.id.textView14);
+            uployout = view.findViewById(R.id.up_layout);
+            downloayout = view.findViewById(R.id.down_layout);
+
             swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setProgressViewOffset(false, 0, 200);
 
@@ -299,15 +314,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onRefresh(String flag){
-//        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
-        try {
-            Call_Api_For_get_Allvideos();
-        }catch (Exception e){
-            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
-        }
-    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -645,12 +652,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     //this will get the all videos data of user and then parse the data
     private void Call_Api_For_get_Allvideos() {
-        final int min = 1;
-        final int max = 10;
-        final int random = new Random().nextInt((max - min) + 1) + min;
-        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
-        star_meter.setImageLevel(random);
-        star_percentage.setText(random*10+"%");
+        Show_draft_count();
+
+        loadStartMeter();
+
         Functions.Show_loader(context, false, false);
         JSONObject parameters = new JSONObject();
         try {
@@ -669,6 +674,29 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                 swiperefresh.setRefreshing(false);
             }
         });
+    }
+
+    private void loadStartMeter() {
+        final int min = 1;
+        final int max = 10;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+        float value = (float)random;
+        float up_value = (float) (10-random);
+        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
+        // star_meter.setImageLevel(random);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                value
+        );
+        LinearLayout.LayoutParams paramup = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                up_value
+        );
+        downloayout.setLayoutParams(paramup);
+        uployout.setLayoutParams(param);
+        star_percentage.setText(value*10+"%");
     }
 
     @Override

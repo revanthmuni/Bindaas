@@ -55,6 +55,7 @@ public class DraftVideos_A extends AppCompatActivity {
     DraftVideos_Adapter adapter;
 
     ProgressBar pbar;
+    private String src_daft_path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class DraftVideos_A extends AppCompatActivity {
 
                         }
 
+                        src_daft_path = item.video_path;
                         if (item.video_duration_ms <= Variables.max_recording_duration) {
                             if (!Functions.isMyServiceRunning(DraftVideos_A.this, new Upload_Service().getClass())) {
                                 Chnage_Video_size(item.video_path, Variables.gallery_resize_video);
@@ -290,7 +292,8 @@ public class DraftVideos_A extends AppCompatActivity {
 
                     Intent intent = new Intent(DraftVideos_A.this, GallerySelectedVideo_A.class);
                     intent.putExtra("video_path", Variables.gallery_resize_video);
-                    intent.putExtra("draft_file", src_path);
+
+                    intent.putExtra("draft_file", src_daft_path);
                     startActivity(intent);
 
                 } else {

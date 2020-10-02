@@ -54,6 +54,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Random;
 
 // This is the profile screen which is show in 5 tab as well as it is also call
 // when we see the profile of other users
@@ -93,8 +94,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     private TextView bio_textview;
     private String fb_link="";
     private String inst_link="";
-    ImageView star_meter;
     TextView star_percentage;
+
+    LinearLayout uployout,downloayout;
     public Profile_F() {
     }
 
@@ -197,8 +199,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public View init() {
         try {
-            star_meter = view.findViewById(R.id.imageView2);
-            star_percentage = view.findViewById(R.id.textView14);
+            uployout = view.findViewById(R.id.up_layout);
+            downloayout = view.findViewById(R.id.down_layout);
+            star_percentage = view.findViewById(R.id.textView15);
 
             username = view.findViewById(R.id.username);
             username2_txt = view.findViewById(R.id.username2_txt);
@@ -236,6 +239,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             insta_view.setOnClickListener(this);
 
             setupTabIcons();
+
+            loadStartMeter();
 
             tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
             top_layout = view.findViewById(R.id.top_layout);
@@ -428,7 +433,28 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         }
 
     }
-
+    private void loadStartMeter() {
+        final int min = 1;
+        final int max = 10;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+        float value = (float)random;
+        float up_value = (float) (10-random);
+        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
+        // star_meter.setImageLevel(random);
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                value
+        );
+        LinearLayout.LayoutParams paramup = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                up_value
+        );
+        downloayout.setLayoutParams(paramup);
+        uployout.setLayoutParams(param);
+        star_percentage.setText(value*10+"%");
+    }
     boolean is_run_first_time = false;
 
     private void Call_Api_For_get_Allvideos() {

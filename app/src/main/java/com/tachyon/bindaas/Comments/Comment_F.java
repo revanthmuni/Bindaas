@@ -29,7 +29,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Home.Home_F;
+import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Home.ReportVideo.ReportVideo;
 import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
@@ -42,6 +44,7 @@ import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Data_Send;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 import com.tachyon.bindaas.helper.CommonUtils;
 import com.tachyon.bindaas.model.DefaultResponse;
 
@@ -80,6 +83,9 @@ public class Comment_F extends RootFragment {
     TextView comment_count_txt;
 
     FrameLayout comment_screen;
+    int main_position;
+
+    Home_Get_Set mainItems;
 
     public static int comment_count = 0;
 
@@ -128,6 +134,8 @@ public class Comment_F extends RootFragment {
                 video_id = bundle.getString("video_id");
                 user_id = bundle.getString("user_id");
                 flag = bundle.getString("flag");
+                main_position = bundle.getInt("position");
+                mainItems = new Gson().fromJson(bundle.getString("extras"),Home_Get_Set.class);
             }
 
 
@@ -377,6 +385,18 @@ public class Comment_F extends RootFragment {
                         Toast.makeText(context, response.getMsg(), Toast.LENGTH_SHORT).show();
                         data_list.remove(position);
                         adapter.notifyItemRemoved(position);
+
+                        if (flag.equals("home")) {
+                            Home_F.data_list.remove(main_position);
+                            mainItems.video_comment_count = String.valueOf(Integer.parseInt(mainItems.video_comment_count) - 1);
+                            Home_F.data_list.add(main_position, mainItems);
+                            Home_F.adapter.notifyDataSetChanged();
+                        }else{
+                            WatchVideos_F.data_list.remove(main_position);
+                            mainItems.video_comment_count = String.valueOf(Integer.parseInt(mainItems.video_comment_count) - 1);
+                            WatchVideos_F.data_list.add(main_position, mainItems);
+                            WatchVideos_F.adapter.notifyDataSetChanged();
+                        }
                     }
                 }
             });

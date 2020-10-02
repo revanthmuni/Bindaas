@@ -136,7 +136,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
 
     RecyclerView recyclerView;
-    ArrayList<Home_Get_Set> data_list;
+    public static ArrayList<Home_Get_Set> data_list;
     int currentPage = -1;
     LinearLayoutManager layoutManager;
 
@@ -159,6 +159,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
     ImageView uploading_thumb;
     ImageView uploading_icon;
     UploadingVideoBroadCast mReceiver;
+    public static SimpleExoPlayer privious_player;
 
     private class UploadingVideoBroadCast extends BroadcastReceiver {
 
@@ -382,7 +383,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
     }
 
     boolean is_add_show = false;
-    Home_Adapter adapter;
+    public static Home_Adapter adapter;
 
     public void Set_Adapter() {
         Log.d("JsonData:", "Set_Adapter: " + new Gson().toJson(data_list));
@@ -415,7 +416,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
                         break;
 
                     case R.id.comment_layout:
-                        OpenComment(item);
+                        OpenComment(item,postion);
                         break;
                     case R.id.shared_layout:
                         if (!is_add_show && (mInterstitialAd != null && mInterstitialAd.isLoaded())) {
@@ -1084,7 +1085,6 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
 
     // when we swipe for another video this will relaese the privious player
-    public static SimpleExoPlayer privious_player;
 
     public void Release_Privious_Player() {
         if (privious_player != null) {
@@ -1138,7 +1138,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
 
     // this will open the comment screen
-    private void OpenComment(Home_Get_Set item) {
+    private void OpenComment(Home_Get_Set item,int position) {
 
         int comment_counnt = Integer.parseInt(item.video_comment_count);
 
@@ -1151,6 +1151,8 @@ public class Home_F extends RootFragment implements Player.EventListener,
         args.putString("video_id", item.video_id);
         args.putString("user_id", item.user_id);
         args.putString("flag","home");
+        args.putInt("position",position);
+        args.putString("extras",new Gson().toJson(item));
         comment_f.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment, comment_f).commit();

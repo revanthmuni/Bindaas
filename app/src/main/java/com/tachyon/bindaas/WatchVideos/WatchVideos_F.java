@@ -111,12 +111,12 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     Context context;
 
     RecyclerView recyclerView;
-    ArrayList<Home_Get_Set> data_list;
+    public static ArrayList<Home_Get_Set> data_list;
     int position = 0;
     int currentPage = -1;
     LinearLayoutManager layoutManager;
 
-    Watch_Videos_Adapter adapter;
+    public static Watch_Videos_Adapter adapter;
 
     ProgressBar p_bar;
 
@@ -451,7 +451,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             break;
 
                         case R.id.comment_layout:
-                            OpenComment(item);
+                            OpenComment(item,postion);
                             break;
 
                         case R.id.shared_layout:
@@ -1038,7 +1038,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
 
     // this will open the comment screen
-    public void OpenComment(Home_Get_Set item) {
+    public void OpenComment(Home_Get_Set item,int position) {
         try {
             int comment_count = Integer.parseInt(item.video_comment_count);
             Fragment_Data_Send fragment_data_send = this;
@@ -1050,6 +1050,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             args.putString("video_id", item.video_id);
             args.putString("user_id", item.user_id);
             args.putString("flag","watch_videos");
+            args.putInt("position",position);
+            args.putString("extras",new Gson().toJson(item));
+
             comment_f.setArguments(args);
             transaction.addToBackStack(null);
             transaction.replace(R.id.WatchVideo_F, comment_f).commit();
