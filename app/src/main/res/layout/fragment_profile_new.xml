@@ -132,7 +132,7 @@
                             android:visibility="gone"
                             android:layout_weight="1"
                             android:layout_marginLeft="4dp"
-                            android:src="@drawable/insta_img"
+                            android:src="@drawable/ic_insta"
                           />
 
 

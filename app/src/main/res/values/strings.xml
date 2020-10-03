@@ -5,6 +5,11 @@
         <item>Trending</item>
         <item>Romance</item>
         <item>Cute</item>
+        <item>Educational</item>
+        <item>Challenge</item>
+        <item>VLog</item>
+        <item>How To</item>
+        <item>Gaming</item>
         <item>Other</item>
     </array><array name="languages">
         <item>Hindi</item>
@@ -46,6 +51,7 @@
     <string name="no_followers">"No Followers."</string>
     <string name="no_private_videos">There are no private videos</string>
     <string name="no_liked_videos">No liked videos yet!</string>
+    <string name="tag_page_header">Tagged People</string>
 
     <string name="no_user_videos">No videos are uploaded.</string>
     <string name="image_uploaded_successfully">Image Updated Successfully</string>
