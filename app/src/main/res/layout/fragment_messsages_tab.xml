@@ -37,7 +37,7 @@
                 android:layout_below="@+id/toolbar"
                 android:layout_marginTop="5dp"
                 android:background="@color/white"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/img_no_job"

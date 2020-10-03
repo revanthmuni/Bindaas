@@ -165,13 +165,23 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/forgot_pswd"
+                        android:textColor="@color/maincolor"
+                        app:layout_constraintBottom_toTopOf="@+id/btSignIn"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tilLoginPassword" />
+
+                    <TextView
                         android:id="@+id/loginTitleTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:textColor="@color/black"
                         android:textSize="17sp"
                         app:layout_constraintBottom_toTopOf="@+id/tilLoginEmail"
@@ -197,9 +207,10 @@
                         android:id="@+id/tilLoginEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:hint="Email Address"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
@@ -234,6 +245,78 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/forgot_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnForgot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/com_facebook_blue"
+                android:text="Send Reset Mail"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etForgotEmail2"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintWidth_percent=".4" />
+
+            <ImageView
+                android:id="@+id/ivBack3"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_back"
+                android:tint="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/loginTitleTxt3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="left"
+                android:text="Forgot Password"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBack3"
+                app:layout_constraintTop_toTopOf="@+id/ivBack3" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etForgotEmail2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Email Address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivBack3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editForgotEmail2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

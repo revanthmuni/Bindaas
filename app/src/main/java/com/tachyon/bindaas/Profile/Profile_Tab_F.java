@@ -654,7 +654,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
     private void Call_Api_For_get_Allvideos() {
         Show_draft_count();
 
-        loadStartMeter();
+        //loadStartMeter();
 
         Functions.Show_loader(context, false, false);
         JSONObject parameters = new JSONObject();
@@ -682,7 +682,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         final int random = new Random().nextInt((max - min) + 1) + min;
         float value = (float)random;
         float up_value = (float) (10-random);
-        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
         // star_meter.setImageLevel(random);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

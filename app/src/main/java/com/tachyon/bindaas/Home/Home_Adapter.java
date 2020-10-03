@@ -29,6 +29,9 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
     private Home_Adapter.OnItemClickListener listener;
     private ArrayList<Home_Get_Set> dataList;
 
+    public void setDataList(ArrayList<Home_Get_Set> dataList) {
+        this.dataList = dataList;
+    }
 
     // meker the onitemclick listener interface and this interface is impliment in Chatinbox activity
     // for to do action when user click on item
@@ -36,7 +39,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         void onItemClick(int positon, Home_Get_Set item, View view);
     }
 
-    public interface VideoDurationListner{
+    public interface VideoDurationListner {
         void onLoadDuration(long mills);
     }
 
@@ -44,7 +47,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         this.context = context;
         this.dataList = dataList;
         this.listener = listener;
-       // this.videoDurationListner = videoDurationListner;
+        // this.videoDurationListner = videoDurationListner;
 
     }
 
@@ -75,6 +78,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             holder.username.setText(item.username);
 
 
+            Log.d("Home_F", "onBindViewHolder: "+item.follow_status_button);
            /* MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             if (Build.VERSION.SDK_INT >= 14) {
                 retriever.setDataSource(item.video_url, new HashMap<String, String>());
@@ -98,23 +102,22 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
 //          holder.desc_txt.setText(item.video_description);
             Log.d("VideoDEC", "onBindViewHolder: " + item.video_description);
-            if (holder.desc_txt.getLineCount()>2){
+            if (holder.desc_txt.getLineCount() > 2) {
                 holder.desc_txt.setText(item.video_description);
                 holder.show_more.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.desc_txt.setText(item.video_description);
                 holder.show_more.setVisibility(View.GONE);
             }
             holder.show_more.setOnClickListener(view -> {
-                if (holder.show_more.getText().equals("Show More")){
+                if (holder.show_more.getText().equals("Show More")) {
                     holder.show_more.setText("Show Less");
                     holder.desc_txt.setMaxLines(holder.desc_txt.getLineCount());
                     holder.desc_txt.setText(item.video_description);
-                }else{
+                } else {
                     holder.show_more.setText("Show More");
                     holder.desc_txt.setMaxLines(2);
                     holder.desc_txt.setText(item.video_description);
-
                 }
             });
 
@@ -131,7 +134,6 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
             } else if (item.sound_pic.equals(""))
                 item.sound_pic = "Null";
-
 
             /*Picasso.with(context).
                     load(item.sound_pic).centerCrop()
@@ -150,7 +152,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
             } else {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }
-            Log.d("TAG", "onBindViewHolder:views count "+item.views);
+            Log.d("TAG", "onBindViewHolder:views count " + item.views);
             holder.view_txt.setText(item.views);
             if (item.allow_comments != null && item.allow_comments.equalsIgnoreCase("false"))
                 holder.comment_layout.setVisibility(View.GONE);
@@ -173,15 +175,16 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 holder.varified_btn.setVisibility(View.GONE);
             }
 
+
             if (!item.follow_status_button.equalsIgnoreCase("Follow") ||
-                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.user_id,""))){
+                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.user_id, ""))) {
                 holder.add_follow.setVisibility(View.GONE);
-            }else{
+            } else {
                 holder.add_follow.setVisibility(View.VISIBLE);
             }
-            if (item.tagged_users.equals("[]")){
+            if (item.tagged_users.equals("[]")) {
                 holder.tag_users_layout.setVisibility(View.GONE);
-            }else{
+            } else {
                 holder.tag_users_layout.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -204,6 +207,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         TextView show_more;
         ImageView tag_users_layout;
         ImageView add_follow;
+
         public CustomViewHolder(View view) {
             super(view);
             try {
@@ -344,10 +348,10 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                 });
 
                 tag_users_layout.setOnClickListener(view -> {
-                    listener.onItemClick(postion,item,view);
+                    listener.onItemClick(postion, item, view);
                 });
                 add_follow.setOnClickListener(view -> {
-                    listener.onItemClick(postion,item,view);
+                    listener.onItemClick(postion, item, view);
                 });
 
             } catch (Exception e) {

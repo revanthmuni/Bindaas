@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Base64;
@@ -27,6 +28,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +98,12 @@ public class Login_A extends AppCompatActivity {
     TextInputEditText etLoginEmail, etLoginPassword;
     String email, password;
 
+    ImageView ivBack3;
+    TextInputEditText editForgotEmail2;
+    Button btnForgot;
+    TextView forgot_password_textview;
+    ConstraintLayout forgot_pswd_layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +136,27 @@ public class Login_A extends AppCompatActivity {
 
             sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
             initViews();
+
+            forgot_password_textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    forgot_pswd_layout.setVisibility(View.VISIBLE);
+                    clLoginLayout.setVisibility(View.GONE);
+                }
+            });
+            ivBack3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    forgot_pswd_layout.setVisibility(View.GONE);
+                    clLoginLayout.setVisibility(View.VISIBLE);
+                }
+            });
+            btnForgot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendResetMail();
+                }
+            });
 
             findViewById(R.id.facebook_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -238,6 +268,27 @@ public class Login_A extends AppCompatActivity {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
         }
 
+    }
+
+    private void sendResetMail() {
+        if (!TextUtils.isEmpty(editForgotEmail2.getText().toString())) {
+            Functions.Show_loader(this,false,true);
+            FirebaseAuth.getInstance().sendPasswordResetEmail(editForgotEmail2.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Functions.cancel_loader();
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Email sent.");
+                                Toast.makeText(activity, "Password reset mail sent", Toast.LENGTH_SHORT).show();
+                                forgot_pswd_layout.setVisibility(View.GONE);
+                                clLoginLayout.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+        }else {
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void callLoginApiWithFirebase(String email, String password) {
@@ -357,6 +408,12 @@ public class Login_A extends AppCompatActivity {
             tilLoginPassword = findViewById(R.id.tilLoginPassword);
             etLoginEmail = findViewById(R.id.etLoginEmail);
             etLoginPassword = findViewById(R.id.etLoginPassword);
+
+            btnForgot = findViewById(R.id.btnForgot);
+            ivBack3 = findViewById(R.id.ivBack3);
+            editForgotEmail2 = findViewById(R.id.editForgotEmail2);
+            forgot_pswd_layout = findViewById(R.id.forgot_layout);
+            forgot_password_textview = findViewById(R.id.textView16);
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
 
@@ -727,9 +784,14 @@ public class Login_A extends AppCompatActivity {
                 Variables.Reload_my_likes_inner = true;
                 Variables.Reload_my_notification = true;
                 top_view.setVisibility(View.GONE);
-                finish();
-                startActivity(new Intent(this, MainMenuActivity.class));
+                //finish();
+
                 Toast.makeText(this, R.string.login_successful, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,MainMenuActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
+                //startActivity(new Intent(this, MainMenuActivity.class));
 
 
             } else {

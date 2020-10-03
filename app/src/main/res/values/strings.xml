@@ -70,5 +70,6 @@
     <string name="discard_last_clip">Discard the last clip?</string>
     <string name="delete">DELETE</string>
     <string name="cancel">CANCEL</string>
+    <string name="forgot_pswd"><u>Forgot Password?</u></string>
 
 </resources>
