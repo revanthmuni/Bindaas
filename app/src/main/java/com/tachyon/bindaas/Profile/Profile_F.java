@@ -240,7 +240,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
             setupTabIcons();
 
-            loadStartMeter();
+           // loadStartMeter();
 
             tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
             top_layout = view.findViewById(R.id.top_layout);

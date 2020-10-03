@@ -133,7 +133,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
     View view;
     Context context;
-
+    private static final String TAG = "Home_F";
 
     RecyclerView recyclerView;
     public static ArrayList<Home_Get_Set> data_list;
@@ -471,7 +471,12 @@ public class Home_F extends RootFragment implements Player.EventListener,
                         showTaggedUsers(item);
                         break;
                     case R.id.add_follow:
-                        addToFollow(item,postion);
+                        if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                            addToFollow(item,postion);
+                        }else{
+                            Toast.makeText(context, "Please Login to Follow", Toast.LENGTH_SHORT).show();
+                           // Open_Login();
+                        }
                         break;
                 }
 
@@ -524,14 +529,14 @@ public class Home_F extends RootFragment implements Player.EventListener,
                                         item.follow = follow;
                                         item.follow_status_button = follow_status_button;
 
-                                        data_list.remove(postion);
-                                        data_list.add(postion,item);
+                                        //hasUserVideosInList(item,follow,follow_status_button);
+                                        Functions.refreshAdapter(item.user_id,postion,follow,follow_status_button);
                                         //datalist.add(item);
                                        // adapter.notifyItemInserted(i);
                                     }
 
 
-                                    adapter.notifyDataSetChanged();
+//                                    adapter.notifyDataSetChanged();
 
                                 } else {
                                     Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();

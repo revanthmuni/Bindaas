@@ -41,6 +41,9 @@ import com.downloader.Progress;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Comments.Comment_Get_Set;
 import com.tachyon.bindaas.Constant;
+import com.tachyon.bindaas.Home.Home_Adapter;
+import com.tachyon.bindaas.Home.Home_F;
+import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.R;
 import com.gmail.samehadar.iosdialog.CamomileSpinner;
 import com.googlecode.mp4parser.authoring.Track;
@@ -67,6 +70,7 @@ import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.tachyon.bindaas.Home.Home_F.adapter;
 
 public class Functions {
 
@@ -139,7 +143,7 @@ public class Functions {
                         }
                     }).show();
         } catch (Exception e) {
-            Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -202,31 +206,62 @@ public class Functions {
     }
 
     public static void Show_loader(Context context, boolean outside_touch, boolean cancleable) {
-        dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.item_dialog_loading_view);
-        dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.d_round_white_background));
+        try {
+            dialog = new Dialog(context);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.item_dialog_loading_view);
+            dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.d_round_white_background));
 
 
-        CamomileSpinner loader = dialog.findViewById(R.id.loader);
-        loader.start();
+            CamomileSpinner loader = dialog.findViewById(R.id.loader);
+            loader.start();
 
 
-        if (!outside_touch)
-            dialog.setCanceledOnTouchOutside(false);
+            if (!outside_touch)
+                dialog.setCanceledOnTouchOutside(false);
 
-        if (!cancleable)
-            dialog.setCancelable(false);
+            if (!cancleable)
+                dialog.setCancelable(false);
 
-        dialog.show();
-    }
-
-    public static void cancel_loader() {
-        if (dialog != null) {
-            dialog.cancel();
+            dialog.show();
+        } catch (Exception e) {
+            Log.d("Crash Exections:", "" + e.getMessage());
         }
     }
 
+    public static void cancel_loader() {
+        try {
+            if (dialog != null) {
+                dialog.cancel();
+            }
+        } catch (Exception e) {
+            Log.d("Crash Exections:", "" + e.getMessage());
+        }
+    }
+
+    public static void refreshAdapter(String item, int position, String follow,
+                                      String follow_status_btn){
+        Log.d(TAG, "hasUserVideosInList: follow status:"+follow + "btn:"+follow_status_btn);
+        Log.d(TAG, "hasUserVideosInList: total records:"+Home_F.data_list.size());
+        ArrayList<Home_Get_Set> tempList = new ArrayList<>();
+
+        for (int i = 0;i< Home_F.data_list.size();i++){
+            if (Home_F.data_list.get(i).user_id.equals(item)){
+                Log.d(TAG, "matched hasUserVideosInList: position"+i);
+                Home_Get_Set data = Home_F.data_list.get(i);
+
+                data.follow = follow;
+                data.follow_status_button = follow_status_btn;
+                Log.d(TAG, "hasUserVideosInList: follow status:"+data.follow + "btn:"+data.follow_status_button);
+
+                tempList.add(data);
+            }else{
+                tempList.add(Home_F.data_list.get(i));
+            }
+        }
+        adapter.setDataList(tempList);
+        adapter.notifyDataSetChanged();
+    }
 
     public static float dpToPx(final Context context, final float dp) {
         return dp * context.getResources().getDisplayMetrics().density;
@@ -976,18 +1011,18 @@ public class Functions {
             }
         }
     }
-    public static void load_Directory_Files(File directory){
+
+    public static void load_Directory_Files(File directory) {
         File[] fileList = directory.listFiles();
-        if(fileList != null && fileList.length > 0){
-            for (int i=0; i<fileList.length; i++){
-                if(fileList[i].isDirectory()){
+        if (fileList != null && fileList.length > 0) {
+            for (int i = 0; i < fileList.length; i++) {
+                if (fileList[i].isDirectory()) {
                     load_Directory_Files(fileList[i]);
-                }
-                else {
+                } else {
                     String name = fileList[i].getName().toLowerCase();
-                    for (String extension: Constant.videoExtensions){
+                    for (String extension : Constant.videoExtensions) {
                         //check the type of file
-                        if(name.endsWith(extension)){
+                        if (name.endsWith(extension)) {
                             Constant.allMediaList.add(fileList[i]);
                             //when we found file
                             break;
@@ -997,14 +1032,15 @@ public class Functions {
             }
         }
     }
-    public static void openBrowser(Context context,String url) {
-        Log.d("URL->", "openBrowser: "+url);
+
+    public static void openBrowser(Context context, String url) {
+        Log.d("URL->", "openBrowser: " + url);
         try {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             context.startActivity(i);
-        }catch (Exception e){
-            Functions.showLogMessage(context,"OpenBrowser",e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, "OpenBrowser", e.getMessage());
         }
     }
 
