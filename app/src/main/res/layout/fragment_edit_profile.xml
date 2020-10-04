@@ -249,8 +249,8 @@
                       android:padding="10dp"
                       android:elevation="0.5dp"
                       android:textStyle="italic"
-                      android:background="@color/lightgraycolor"
-                      android:textColor="@color/dimgray"
+                      android:background="@drawable/roundcorner_green_background_v1"
+                      android:textColor="@color/white"
                       />
 
 
@@ -307,8 +307,8 @@
                     android:padding="10dp"
                     android:elevation="0.5dp"
                     android:textStyle="italic"
-                    android:background="@color/lightgraycolor"
-                    android:textColor="@color/dimgray"/>
+                    android:background="@drawable/roundcorner_green_background_v1"
+                    android:textColor="@color/white"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -327,6 +327,16 @@
                     android:textColor="@color/dimgray"
                     android:backgroundTint="@color/transparent"/>
             </LinearLayout>
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Social Profiles"
+                  android:textSize="16dp"
+                  android:padding="10dp"
+                  android:elevation="0.5dp"
+                  android:textStyle="italic"
+                  android:background="@drawable/roundcorner_green_background_v1"
+                  android:textColor="@color/white"/>
 
               <androidx.constraintlayout.widget.ConstraintLayout
                   android:id="@+id/linearLayout8"
@@ -394,7 +404,7 @@
                       android:id="@+id/imageView3"
                       android:layout_width="30dp"
                       android:layout_height="30dp"
-                      android:src="@drawable/insta_img"
+                      android:src="@drawable/ic_insta"
                       app:layout_constraintBottom_toBottomOf="parent"
                       app:layout_constraintStart_toStartOf="parent"
                       app:layout_constraintTop_toTopOf="parent" />
