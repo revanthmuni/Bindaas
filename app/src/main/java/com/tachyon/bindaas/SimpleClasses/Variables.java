@@ -121,7 +121,7 @@ public class Variables {
 
 
 
-    //public static final String main_domain = "http://bindaasonline.com/";
+    //public static final String main_domain = "https://bindaasonline.com/";
     //public static final  String main_domain="http://funworld.sciflock.com/";
     public static final  String main_domain="http://bindaasonlinedev.com/";
 

@@ -160,7 +160,6 @@
                             android:background="@drawable/star_meter_bg"
                             android:orientation="vertical"
                             android:padding="1dp"
-                            android:visibility="gone"
                             android:weightSum="10"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/rlProfileImage"
@@ -214,7 +213,6 @@
 
                         <TextView
                             android:id="@+id/textView12"
-                            android:visibility="gone"
                             android:layout_width="43dp"
                             android:layout_height="9dp"
                             android:layout_marginStart="16dp"
@@ -227,7 +225,6 @@
 
                         <TextView
                             android:id="@+id/textView15"
-                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="10%"

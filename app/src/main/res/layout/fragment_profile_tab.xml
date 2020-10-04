@@ -199,6 +199,15 @@
                                 android:layout_weight="1"
                                 android:src="@drawable/ic_bio" />
 
+                            <TextView
+                                android:id="@+id/bio_text2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="7"
+                                android:maxLines="5"
+                                android:text="Hi i'm user"
+                                android:textColor="@color/black" />
                             <ImageView
                                 android:id="@+id/fb_image2"
                                 android:layout_width="0dp"
@@ -215,15 +224,6 @@
                                 android:layout_weight="1"
                                 android:src="@drawable/ic_insta" />
 
-                            <TextView
-                                android:id="@+id/bio_text2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="7"
-                                android:maxLines="5"
-                                android:text="Hi i'm user"
-                                android:textColor="@color/black" />
                         </LinearLayout>
 
                         <TextView
@@ -450,7 +450,6 @@
 
                             <TextView
                                 android:id="@+id/textView13"
-                                android:visibility="gone"
                                 android:layout_width="43dp"
                                 android:layout_height="9dp"
                                 android:layout_marginStart="16dp"
@@ -474,7 +473,6 @@
                                 app:layout_constraintVertical_bias="0.0" />-->
                             <LinearLayout
                                 android:id="@+id/linearLayout15"
-                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="0dp"
                                 android:layout_gravity="center"
@@ -674,7 +672,6 @@
 
                             <TextView
                                 android:id="@+id/textView14"
-                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10%"

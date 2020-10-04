@@ -288,7 +288,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                         editor.putString(Variables.language, sb.toString());
             }
             editor.commit();
-            Toast.makeText(context, "Sved lan"+sb, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Saved language(s): "+sb, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Functions.showLogMessage(context, "Preferences Fragment", e.getMessage());
         }
