@@ -160,7 +160,6 @@
                             android:background="@drawable/star_meter_bg"
                             android:orientation="vertical"
                             android:padding="1dp"
-                            android:visibility="gone"
                             android:weightSum="10"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/rlProfileImage"
@@ -221,13 +220,11 @@
                             android:text="Star Meter :"
                             android:textColor="@color/black"
                             android:textSize="8sp"
-                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/textView15"
-                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="10%"

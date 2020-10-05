@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -26,6 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
@@ -44,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,13 +58,13 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     View view;
     Context context;
 
-    RecyclerView recyclerView;
+//    RecyclerView recyclerView;
     public static EditText search_edit;
 
     FrameLayout search_frame;
     TextView search_btn;
 
-    SwipeRefreshLayout swiperefresh;
+//    SwipeRefreshLayout swiperefresh;
 
     public Discover_F() {
         // Required empty public constructor
@@ -69,6 +74,12 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
     Discover_Adapter adapter;
 
+    SliderView imageSlider;
+    TabLayout mainTabLayout;
+    ViewPager mainViewPager;
+    List<EventItems> eventlist;
+    EventSliderAdapter eventAdapter;
+    NestedScrollView initial_layout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,10 +93,16 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
 
             search_frame = view.findViewById(R.id.search_frame);
-            recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
+            initial_layout = view.findViewById(R.id.nest_scrollview);
+            imageSlider = view.findViewById(R.id.imageSlider);
+            mainTabLayout = view.findViewById(R.id.tabLayout2);
+            mainViewPager = view.findViewById(R.id.main_viewpager);
+
+            initial_layout.setFillViewport (true);
+           /* recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setHasFixedSize(true);
+            recyclerView.setHasFixedSize(true);*/
 
             adapter = new Discover_Adapter(context, datalist, new Discover_Adapter.OnItemClickListener() {
                 @Override
@@ -96,8 +113,26 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                 }
             });
 
-            recyclerView.setAdapter(adapter);
+            eventlist = new ArrayList<>();
 
+            loadEventBanners();
+
+            //Image Slider Code
+            eventAdapter = new EventSliderAdapter(context,eventlist);
+            imageSlider.setSliderAdapter(eventAdapter);
+            imageSlider.startAutoCycle();
+            imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
+            imageSlider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+            //   recyclerView.setAdapter(adapter);
+
+            //Tabs - Trending,Tops and Categories
+            mainViewPagerAdapter = new EventStatePagerAdapter(getChildFragmentManager());
+            mainViewPager.setOffscreenPageLimit(3);
+            mainViewPagerAdapter.addFrag(new TrendingFragment(), "Trendings");
+            mainViewPagerAdapter.addFrag(new TopsFragment(), "Tops");
+            mainViewPagerAdapter.addFrag(new CategoryFragment(), "Categories");
+            mainViewPager.setAdapter(mainViewPagerAdapter);
+            mainTabLayout.setupWithViewPager(mainViewPager);
 
             search_edit = view.findViewById(R.id.search_edit);
             search_edit.addTextChangedListener(new TextWatcher() {
@@ -109,8 +144,9 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (s.toString().length() == 0) {
-                        swiperefresh.setVisibility(View.VISIBLE);
+                        //swiperefresh.setVisibility(View.VISIBLE);
                         search_frame.setVisibility(View.GONE);
+                        initial_layout.setVisibility(View.VISIBLE);
                     }else Set_tabs();/*
                     if (!s.equals("")) Set_tabs();
                     else {
@@ -126,6 +162,8 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                     if (adapter != null)
                         adapter.getFilter().filter(s);*/
 
+                    // tag,follow on watch videos
+
                 }
 
                 @Override
@@ -135,7 +173,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             });
 
 
-            swiperefresh = view.findViewById(R.id.swiperefresh);
+           /* swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setColorSchemeResources(R.color.black);
             swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
@@ -143,7 +181,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
                     Call_Api_For_get_Allvideos();
                 }
-            });
+            });*/
 
             view.findViewById(R.id.search_layout).setOnClickListener(this);
             view.findViewById(R.id.search_edit).setOnClickListener(this);
@@ -188,7 +226,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                 @Override
                 public void Responce(String resp) {
                     Parse_data(resp);
-                    swiperefresh.setRefreshing(false);
+                    //swiperefresh.setRefreshing(false);
                 }
             });
         } catch (Exception e) {
@@ -292,7 +330,6 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             startActivity(intent);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
@@ -323,25 +360,27 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
     @Override
     public void onResume() {
-        super.onResume();
-        String s = search_edit.getText().toString();
-        if (s.length() == 0){
+        super.onResume();try {
+            String s = search_edit.getText().toString();
+            if (s.length() == 0) {
 
-        }else{
-           // Toast.makeText(context, search_edit.getText().toString(), Toast.LENGTH_SHORT).show();
-            Perform_search();
-        }
+            } else {
+                // Toast.makeText(context, search_edit.getText().toString(), Toast.LENGTH_SHORT).show();
+                Perform_search();
+            }
         /*if (search_edit.getText().toString().length() != 0){
             search_frame.setVisibility(View.VISIBLE);
             swiperefresh.setVisibility(View.GONE);
             Set_tabs();
         }*/
+        }catch (Exception e){
+
+        }
     }
 
     public void Perform_search() {
@@ -354,11 +393,13 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     protected TabLayout tabLayout;
     protected ViewPager menu_pager;
     ViewPagerAdapter adapter1;
+    EventStatePagerAdapter mainViewPagerAdapter;
 
     public void Set_tabs() {
         try {
             search_frame.setVisibility(View.VISIBLE);
-            swiperefresh.setVisibility(View.GONE);
+            initial_layout.setVisibility(View.GONE);
+           // swiperefresh.setVisibility(View.GONE);
             adapter1 = new ViewPagerAdapter(getChildFragmentManager());
             menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
             menu_pager.setOffscreenPageLimit(3);
@@ -374,6 +415,59 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
+    }
+    private void loadEventBanners() {
+        try {
+            Functions.Show_loader(context, true, true);
+            JSONObject params = new JSONObject();
+            try {
+                params.put("user_id", "");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ApiRequest.Call_Api(context, Variables.GET_EVENT_BANNERS, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(resp);
+                        String code = jsonObject.optString("code");
+                        if (code.equals("200")) {
+                            JSONArray msgArray = jsonObject.getJSONArray("msg");
+                            for (int d = 0; d < msgArray.length(); d++) {
+                                JSONObject index = msgArray.optJSONObject(d);
+                                EventItems items = new EventItems();
+                                items.setId(index.optString("id"));
+                                items.setEvent_name(index.optString("event_name"));
+                                items.setShort_description(index.optString("short_description"));
+                                items.setStart_date(index.optString("start_date"));
+                                items.setEnd_date(index.optString("end_date"));
+                                items.setActive(index.optString("active"));
+                                items.setSound_image(index.optString("sound_image"));
+                                items.setDiscover_image(index.optString("discover_image"));
+                                items.setCreated(index.optString("created"));
+                                if (index.optString("active").equals("true")){
+                                    eventlist.add(items);
+                                }
+                            }
+                            eventAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    android.util.Log.d("TAG", "Event data: " + resp);
+                    Functions.cancel_loader();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+
     }
 
 }
