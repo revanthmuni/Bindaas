@@ -193,18 +193,18 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
+                    android:id="@+id/save_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:id="@+id/save_btn"
-                    android:background="@drawable/d_round_gray25"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/d_round_gray25"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -217,23 +217,23 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Save"
                         android:layout_marginStart="10dp"
+                        android:text="Save"
                         android:textColor="@color/white"
                         android:textSize="20dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
 
                 <LinearLayout
+                    android:id="@+id/create_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:background="@drawable/d_round_red25"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
-                    android:id="@+id/create_btn"
+                    android:layout_weight="1"
+                    android:background="@drawable/d_round_red25"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -246,11 +246,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Create"
                         android:layout_marginStart="10dp"
+                        android:text="Create"
                         android:textColor="@color/white"
                         android:textSize="20dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
