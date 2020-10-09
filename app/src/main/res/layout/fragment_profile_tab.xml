@@ -456,7 +456,6 @@
                                 android:text="Star Meter :"
                                 android:textColor="@color/black"
                                 android:textSize="8sp"
-                                android:visibility="gone"
                                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -481,7 +480,6 @@
                                 android:background="@drawable/star_meter_bg"
                                 android:orientation="vertical"
                                 android:padding="1dp"
-                                android:visibility="gone"
                                 android:weightSum="10"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/rlUserImage"
@@ -692,6 +690,17 @@
 
 
         </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

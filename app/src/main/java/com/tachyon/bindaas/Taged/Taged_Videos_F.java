@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -89,7 +90,7 @@ public class Taged_Videos_F extends RootFragment {
             tag_title_txt = view.findViewById(R.id.tag_title_txt);
 
             tag_txt_view.setText(tag_txt);
-            tag_title_txt.setText(tag_txt);
+            //tag_title_txt.setText(tag_txt);
 
             recyclerView = view.findViewById(R.id.recylerview);
             scrollView = view.findViewById(R.id.scrollview);
@@ -117,7 +118,7 @@ public class Taged_Videos_F extends RootFragment {
                         public void onGlobalLayout() {
 
                             // TODO Auto-generated method stub
-                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) recylerview_main_layout.getLayoutParams();
+                            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) recylerview_main_layout.getLayoutParams();
                             params.height = (int) (recylerview_main_layout.getMeasuredHeight() + height);
                             recylerview_main_layout.setLayoutParams(params);
                             recylerview_main_layout.getViewTreeObserver().removeGlobalOnLayoutListener(

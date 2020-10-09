@@ -176,5 +176,6 @@ public class Variables {
     public static final String GET_MUTUAL_FOLLOWERS = api_domain + "getMutualFollowers";
     public static final String EDIT_COMMENT = api_domain + "getEditComment";
     public static final String GET_VIDEOS_BY_SOUND = api_domain + "getVideosBySound";
+    public static final String GET_EVENT_BANNERS = api_domain + "getActiveEvents";
 
 }

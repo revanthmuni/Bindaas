@@ -11,7 +11,8 @@
         <item>How To</item>
         <item>Gaming</item>
         <item>Other</item>
-    </array><array name="languages">
+    </array>
+    <array name="languages">
         <item>Hindi</item>
         <item>English</item>
         <item>Telugu</item>
@@ -77,5 +78,8 @@
     <string name="delete">DELETE</string>
     <string name="cancel">CANCEL</string>
     <string name="forgot_pswd"><u>Forgot Password?</u></string>
+    <string name="tab_1">Trendings</string>
+    <string name="tab_2">Tops</string>
+    <string name="tab_3">Categories</string>
 
 </resources>

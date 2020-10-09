@@ -219,7 +219,6 @@
                             android:text="Star Meter :"
                             android:textColor="@color/black"
                             android:textSize="8sp"
-                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
