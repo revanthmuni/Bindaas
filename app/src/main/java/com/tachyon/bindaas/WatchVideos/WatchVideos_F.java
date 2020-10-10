@@ -1049,6 +1049,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     // this will open the comment screen
     public void OpenComment(Home_Get_Set item,int position) {
         try {
+            if (privious_player!=null){
+                privious_player.setPlayWhenReady(false);
+            }
+
             int comment_count = Integer.parseInt(item.video_comment_count);
             Fragment_Data_Send fragment_data_send = this;
 

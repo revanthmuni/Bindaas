@@ -114,7 +114,15 @@ public class Comment_F extends RootFragment {
             comment_screen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (flag.equals("home")){
+                        if (Home_F.privious_player!=null){
+                            Home_F.privious_player.setPlayWhenReady(true);
+                        }
+                    }else{
+                        if (WatchVideos_F.privious_player!=null){
+                            WatchVideos_F.privious_player.setPlayWhenReady(true);
+                        }
+                    }
                     getActivity().onBackPressed();
 
                 }
@@ -123,7 +131,15 @@ public class Comment_F extends RootFragment {
             view.findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (flag.equals("home")){
+                        if (Home_F.privious_player!=null){
+                            Home_F.privious_player.setPlayWhenReady(true);
+                        }
+                    }else{
+                        if (WatchVideos_F.privious_player!=null){
+                            WatchVideos_F.privious_player.setPlayWhenReady(true);
+                        }
+                    }
                     getActivity().onBackPressed();
                 }
             });

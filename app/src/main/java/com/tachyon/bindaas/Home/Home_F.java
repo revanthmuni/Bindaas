@@ -1144,6 +1144,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
     // this will open the comment screen
     private void OpenComment(Home_Get_Set item,int position) {
+        if (privious_player!=null){
+            privious_player.setPlayWhenReady(false);
+        }
 
         int comment_counnt = Integer.parseInt(item.video_comment_count);
 
