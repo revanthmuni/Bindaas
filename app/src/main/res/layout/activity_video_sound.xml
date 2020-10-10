@@ -155,7 +155,7 @@
                         android:layout_marginEnd="6dp"
                         android:text="Description"
                         android:textColor="@color/dimgray"
-                        android:textSize="14dp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </ScrollView>
 

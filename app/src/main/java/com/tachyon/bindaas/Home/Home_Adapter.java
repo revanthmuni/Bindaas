@@ -177,7 +177,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
 
             if (!item.follow_status_button.equalsIgnoreCase("Follow") ||
-                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.user_id, ""))) {
+                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id, ""))) {
                 holder.add_follow.setVisibility(View.GONE);
             } else {
                 holder.add_follow.setVisibility(View.VISIBLE);

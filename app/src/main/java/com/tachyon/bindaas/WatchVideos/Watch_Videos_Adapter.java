@@ -1,5 +1,6 @@
 package com.tachyon.bindaas.WatchVideos;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,9 +19,12 @@ import com.tachyon.bindaas.R;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.squareup.picasso.Picasso;
+import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 import java.util.logging.Handler;
+
+import static android.content.ContentValues.TAG;
 
 public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adapter.CustomViewHolder> {
 
@@ -67,6 +71,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
             // holder.setVideoData(item);
             holder.bind(i, item, listener);
+
+            Log.d("USR_ID::CHECK:", "onBindViewHolder: in Adapter:"+item.user_id);
+            Log.d("USR_ID::CHECK:", "onBindViewHolder: REal user:"+
+                    Variables.sharedPreferences.getString(Variables.u_id,""));
+
 
             Log.d("username_check", "onBindViewHolder: before"+item.username);
             holder.username.setText(item.username);
@@ -118,7 +127,6 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             } else if (item.sound_pic.equals(""))
                 item.sound_pic = "Null";
 
-
             /*Picasso.with(context).
                     load(item.sound_pic).centerCrop()
                     .placeholder(context.getResources().getDrawable(R.drawable.ic_round_music))
@@ -130,13 +138,11 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .into(holder.sound_image);*/
 
-
            /* if (item.liked.equals("1")) {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
             } else {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like));
             }*/
-
 
             Log.d("TAG", "onBindViewHolder: " + item.like_count + "::" + item.username + "::" + new Gson().toJson(item));
             if (item.like_count.equals("0")) {
@@ -166,19 +172,23 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.side_menu.setVisibility(View.VISIBLE);
 
             //checking tagged users ?
-          /*  Log.d("TAG", "onBindViewHolder: tagged users:"+item.tagged_users);
+            Log.d("TAG", "onBindViewHolder: tagged users:"+item.tagged_users);
             if (item.tagged_users.equals("[]")){
                 holder.tag_users_layout.setVisibility(View.GONE);
             }else{
                 holder.tag_users_layout.setVisibility(View.VISIBLE);
-            }*/
+            }
 
-            //checking follow status ?
-           /* if (item.follow_status_button.equalsIgnoreCase("Follow")){
-                holder.add_follow.setVisibility(View.VISIBLE);
-            }else{
+            Log.d(TAG, "onBindViewHolder: user_id check:"+
+                    item.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")));
+            if (dataList.get(i).follow_status_button.equalsIgnoreCase("UnFollow") ||
+                dataList.get(i).user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,""))){
                 holder.add_follow.setVisibility(View.GONE);
-            }*/
+            }else{
+                holder.add_follow.setVisibility(View.VISIBLE);
+            }
+            Log.d(TAG, "onBindViewHolder: follow status:"+item.follow_status_button);
+
 
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -251,6 +261,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
 
                         Log.d("USR_TST", "onClick: " + item.user_id);
                         listener.onItemClick(postion, item, v);
+
                     }
                 });
 
@@ -265,11 +276,9 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                 like_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         listener.onItemClick(postion, item, v);
                     }
                 });
-
 
                 comment_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -282,7 +291,6 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                 shared_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         listener.onItemClick(postion, item, v);
                     }
                 });
@@ -293,21 +301,18 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
                         listener.onItemClick(postion, item, v);
                     }
                 });
-                tag_users_layout.setOnClickListener(view -> {
-                    listener.onItemClick(postion,item,view);
+
+                tag_users_layout.setOnClickListener(view1 -> {
+                    listener.onItemClick(postion,item,view1);
                 });
+
                 add_follow.setOnClickListener(view -> {
                     listener.onItemClick(postion,item,view);
                 });
+
             } catch (Exception e) {
                 Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
             }
-
         }
-
-
     }
-
-
 }

@@ -228,7 +228,10 @@ public class UserVideo_F extends Fragment {
                         JSONObject itemdata = user_videos.optJSONObject(i);
 
                         Home_Get_Set item = new Home_Get_Set();
-                        item.user_id = user_info.optString("user_id");
+                        item.user_id = itemdata.optString("user_id");
+                        Log.d("USR_ID::CHECK:", "Parse_data: in UserFragment:"+itemdata.optString("user_id"));
+
+//                        JSONObject user_info1 = itemdata.optJSONObject("user_info");
 
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");

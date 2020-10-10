@@ -163,6 +163,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                 } else if (appLinkData == null) {
                     data_list = (ArrayList<Home_Get_Set>) bundle.getSerializableExtra("arraylist");
                     position = bundle.getIntExtra("position", 0);
+                    Log.d("USR_ID::CHECK:", "onCreate: in Watch_Fragment:"+data_list.get(position).user_id);
                     Set_Adapter();
                 } else {
                     link = appLinkData.toString();
@@ -277,6 +278,10 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         item.profile_pic = user_info.optString("profile_pic", "null");
                         item.verified = user_info.optString("verified");
 
+                        JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                        item.follow = follow_status.optString("follow");
+                        item.follow_status_button = follow_status.optString("follow_status_button");
+
                         JSONObject sound_data = itemdata.optJSONObject("sound");
                         item.sound_id = Objects.requireNonNull(sound_data).optString("id");
                         item.sound_name = sound_data.optString("sound_name");
@@ -373,6 +378,11 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     item.profile_pic = user_info.optString("profile_pic", "null");
                     item.verified = user_info.optString("verified");
 
+                    JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                    item.follow = follow_status.optString("follow");
+                    item.follow_status_button = follow_status.optString("follow_status_button");
+                   // Toast.makeText(context, ""+follow_status.optString("follow_status_button"), Toast.LENGTH_SHORT).show();
+
                     JSONObject sound_data = itemdata.optJSONObject("sound");
                     item.sound_id = sound_data.optString("id");
                     item.sound_name = sound_data.optString("sound_name");
@@ -402,9 +412,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                     data_list.remove(pos);
                     data_list.add(pos, item);
-                    adapter.notifyDataSetChanged();
                 }
-
+                adapter.notifyDataSetChanged();
 
             } else {
                 Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();

@@ -83,13 +83,11 @@ public class Variables {
     public static boolean Reload_my_likes_inner = false;
     public static boolean Reload_my_notification = false;
 
-
     public static final String gif_firstpart = "https://media.giphy.com/media/";
     public static final String gif_secondpart = "/100w.gif";
 
     public static final String gif_firstpart_chat = "https://media.giphy.com/media/";
     public static final String gif_secondpart_chat = "/200w.gif";
-
 
     public static final SimpleDateFormat df =
             new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ", Locale.ENGLISH);
@@ -114,12 +112,9 @@ public class Variables {
     public final static int permission_Recording_audio = 790;
     public final static int Pick_video_from_gallery = 791;
 
-
     public static String gif_api_key1 = "giphy_api_key_here";
 
     //public static final String privacy_policy="https://www.privacypolicygenerator.info/live.php?";
-
-
 
     //public static final String main_domain = "http://bindaasonline.com/";
     //public static final  String main_domain="http://funworld.sciflock.com/";
@@ -133,7 +128,6 @@ public class Variables {
 
     public static final String privacy_policy = main_domain + "privacypolicy.php";
     public static final String termsOfUse = main_domain + "tnc.php";
-
 
     public static final String SignUp = api_domain + "signup";
     public static final String uploadVideo = api_domain + "uploadVideo";
@@ -177,5 +171,6 @@ public class Variables {
     public static final String EDIT_COMMENT = api_domain + "getEditComment";
     public static final String GET_VIDEOS_BY_SOUND = api_domain + "getVideosBySound";
     public static final String GET_EVENT_BANNERS = api_domain + "getActiveEvents";
+    public static final String GET_TRENDING_VIDEOS = api_domain + "getTrendingVideos";
 
 }

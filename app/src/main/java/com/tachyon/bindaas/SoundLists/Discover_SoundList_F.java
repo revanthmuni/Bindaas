@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
@@ -47,6 +49,10 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundCategoryFragment;
+import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundLanguageFragment;
+import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundEventsFragment;
+import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundTrendingFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -56,12 +62,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
 public class Discover_SoundList_F extends RootFragment implements Player.EventListener {
 
-    RecyclerView listview;
+//    RecyclerView listview;
     Sounds_Adapter adapter;
     ArrayList<Sound_catagory_Get_Set> datalist;
 
@@ -71,8 +78,12 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     View view;
     Context context;
 
-    SwipeRefreshLayout swiperefresh;
+   /* SwipeRefreshLayout swiperefresh;
     ProgressBar pbar;
+*/
+    private RecyclerView mainMenuRecycler;
+    SoundMainMenuAdapter mainMenuAdapter;
+    FrameLayout main_menu_view;
 
     public static String running_sound_id;
 
@@ -80,41 +91,84 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void onVideoUploadService(String res) {
         previous_url = "none";
         StopPlaying();
-        Call_Api_For_get_allsound();
+        //Call_Api_For_get_allsound();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.activity_sound_list, container, false);
+        view = inflater.inflate(R.layout.activity_discovery_sound_list, container, false);
         context = getContext();
         try {
             running_sound_id = "none";
 
 
             PRDownloader.initialize(context);
-            pbar = view.findViewById(R.id.pbar);
+           // pbar = view.findViewById(R.id.pbar);
 
             datalist = new ArrayList<>();
 
+
+            /*//Recyclerview old
             listview = view.findViewById(R.id.listview);
             listview.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             listview.setNestedScrollingEnabled(false);
             listview.setHasFixedSize(true);
-            listview.getLayoutManager().setMeasurementCacheEnabled(false);
+            listview.getLayoutManager().setMeasurementCacheEnabled(false);*/
 
-            swiperefresh = view.findViewById(R.id.swiperefresh);
+            mainMenuRecycler = view.findViewById(R.id.main_Recycler);
+            main_menu_view = view.findViewById(R.id.main_menu_view);
+
+            mainMenuRecycler.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false));
+
+            List<String> list = new ArrayList<>();
+            list.add("Languages");
+            list.add("Events");
+            list.add("Trending");
+            list.add("Categories");
+
+            SoundLanguageFragment soundLanguageFragment = new SoundLanguageFragment();
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.add(R.id.main_menu_view,soundLanguageFragment);
+            transaction.commit();
+            mainMenuAdapter = new SoundMainMenuAdapter(context, list, new SoundMainMenuAdapter.OnItemClick() {
+                @Override
+                public void onClick(int position) {
+                    Fragment fragment = new SoundLanguageFragment();
+                    switch (position){
+                        case 0:
+                            fragment = new SoundLanguageFragment();
+                            break;
+                        case 1:
+                            fragment = new SoundEventsFragment();
+                            break;
+                        case 2:
+                            fragment = new SoundTrendingFragment();
+                            break;
+                        case 3:
+                            fragment = new SoundCategoryFragment();
+                    }
+                    FragmentManager manager = getFragmentManager();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    transaction.replace(R.id.main_menu_view,fragment);
+                    transaction.commit();
+                }
+            });
+            mainMenuRecycler.setAdapter(mainMenuAdapter);
+
+           /* swiperefresh = view.findViewById(R.id.swiperefresh);
             swiperefresh.setColorSchemeResources(R.color.black);
             swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     previous_url = "none";
                     StopPlaying();
-                    Call_Api_For_get_allsound();
+                    //Call_Api_For_get_allsound();
                 }
-            });
+            });*/
 
-            Call_Api_For_get_allsound();
+            //Call_Api_For_get_allsound();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -168,7 +222,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                 }
             });
 
-            listview.setAdapter(adapter);
+            //listview.setAdapter(adapter);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -192,9 +246,9 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         ApiRequest.Call_Api(context, Variables.allSounds, parameters, new Callback() {
             @Override
             public void Responce(String resp) {
-                swiperefresh.setRefreshing(false);
-                pbar.setVisibility(View.GONE);
-                Parse_data(resp);
+               /* swiperefresh.setRefreshing(false);
+                pbar.setVisibility(View.GONE);*/
+                //Parse_data(resp);
             }
         });
 
@@ -258,7 +312,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                 }
 
 
-                Set_adapter();
+                //Set_adapter();
 
 
             } else {

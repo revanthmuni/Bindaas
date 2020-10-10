@@ -600,16 +600,15 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
                         @Override
                         public void OnSuccess(String responce) {
-
                             if (send_status.equals("1")) {
                                 follow_unfollow_btn.setText("Unfollow");
                                 follow_status = "1";
-
+                                Functions.refreshAdapter(user_id,0,"1","UnFollow");
                             } else if (send_status.equals("0")) {
                                 follow_unfollow_btn.setText("Follow");
                                 follow_status = "0";
+                                Functions.refreshAdapter(user_id,0,"0"," Follow");
                             }
-
                             Call_Api_For_get_Allvideos();
                         }
 
