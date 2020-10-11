@@ -498,7 +498,7 @@ public class Functions {
     // just one time and whenever we need it we will call it
 
     public static void Call_Api_For_like_video(final Activity activity,
-                                               String video_id, String action,
+                                               String video_id, String action,String video_user_id,
                                                final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
@@ -506,6 +506,7 @@ public class Functions {
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("video_id", video_id);
             parameters.put("action", action);
+            parameters.put("video_user_id",video_user_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }

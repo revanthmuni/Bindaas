@@ -223,6 +223,10 @@ public class PrivateVideo_F extends Fragment {
                         item.video_comment_count = count.optString("video_comment_count");
                         item.views = count.optString("view");
 
+                        JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                        item.follow_status_button = follow_status.optString("follow_status_button");
+                        item.follow = follow_status.optString("follow");
+
                         JSONObject sound_data = itemdata.optJSONObject("sound");
                         item.sound_id = sound_data.optString("id");
                         item.sound_name = sound_data.optString("sound_name");
@@ -246,7 +250,6 @@ public class PrivateVideo_F extends Fragment {
                         Log.d("TAG::>", "Parse_data: tagged users : "+tagged_users.toString());
                         item.tagged_users = tagged_users.toString();
                         item.video_description = itemdata.optString("description");
-
 
                         data_list.add(item);
                     }

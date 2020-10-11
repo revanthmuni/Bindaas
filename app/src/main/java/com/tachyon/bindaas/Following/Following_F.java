@@ -412,6 +412,8 @@ public class Following_F extends Fragment {
                                         item.follow = follow;
                                         item.follow_status_button = follow_status_button;
 
+                                        Functions.refreshAdapter(item.user_id,position,follow,follow_status_button);
+
                                         datalist.remove(position);
                                         datalist.add(position, item);
 

@@ -419,6 +419,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
                         OpenComment(item,postion);
                         break;
                     case R.id.shared_layout:
+                        if (privious_player!=null){
+                            privious_player.setPlayWhenReady(false);
+                        }
                         if (!is_add_show && (mInterstitialAd != null && mInterstitialAd.isLoaded())) {
                             mInterstitialAd.show();
                             is_add_show = true;
@@ -570,6 +573,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
         args.putString("data", item.tagged_users);
+        args.putString("flag","home");
         fragment.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment,fragment).commit();
@@ -1121,7 +1125,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
         data_list.add(position, home_get_set);
         adapter.notifyDataSetChanged();
 
-        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, new API_CallBack() {
+        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, home_get_set.user_id,new API_CallBack() {
 
             @Override
             public void ArrayData(ArrayList arrayList) {
@@ -1144,6 +1148,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
     // this will open the comment screen
     private void OpenComment(Home_Get_Set item,int position) {
+        if (privious_player!=null){
+            privious_player.setPlayWhenReady(false);
+        }
 
         int comment_counnt = Integer.parseInt(item.video_comment_count);
 
