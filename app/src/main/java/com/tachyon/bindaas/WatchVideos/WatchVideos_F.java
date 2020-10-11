@@ -474,7 +474,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             break;
 
                         case R.id.shared_layout:
-
+                            if (privious_player != null) {
+                                privious_player.setPlayWhenReady(false);
+                            }
                             final VideoAction_F fragment = new VideoAction_F(item.video_id, new Fragment_Callback() {
                                 @Override
                                 public void Responce(Bundle bundle) {

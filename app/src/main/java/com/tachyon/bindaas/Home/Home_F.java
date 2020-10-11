@@ -419,6 +419,9 @@ public class Home_F extends RootFragment implements Player.EventListener,
                         OpenComment(item,postion);
                         break;
                     case R.id.shared_layout:
+                        if (privious_player!=null){
+                            privious_player.setPlayWhenReady(false);
+                        }
                         if (!is_add_show && (mInterstitialAd != null && mInterstitialAd.isLoaded())) {
                             mInterstitialAd.show();
                             is_add_show = true;
