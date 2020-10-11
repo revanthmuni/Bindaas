@@ -42,6 +42,7 @@ public class TaggedUsersList extends RootFragment {
     RecyclerView recyclerView;
     ImageButton goBack;
     String data = "";
+    String flag = "";
 
     public TaggedUsersList() {
         // Required empty public constructor
@@ -62,6 +63,7 @@ public class TaggedUsersList extends RootFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             data = bundle.getString("data");
+            flag = bundle.getString("flag");
             Log.d("TaggedUsers", "onCreateView: " + data);
         }
 
@@ -150,7 +152,13 @@ public class TaggedUsersList extends RootFragment {
                     args.putString("user_pic", item.profile_pic);
                     profile_f.setArguments(args);
                     transaction.addToBackStack(null);
-                    transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+                    if (flag.equals("home")) {
+                        transaction.replace(R.id.MainMenuFragment, profile_f).commit();
+                    }else{
+                        getActivity().onBackPressed();
+                        transaction.replace(R.id.WatchVideo_F, profile_f).commit();
+                    }
+
                 }
 
             } catch (Exception e) {

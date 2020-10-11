@@ -172,14 +172,14 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             holder.side_menu.setVisibility(View.VISIBLE);
 
             //checking tagged users ?
-            Log.d("TAG", "onBindViewHolder: tagged users:"+item.tagged_users);
+            Log.d("Follow_check", "onBindViewHolder: tagged users:"+item.tagged_users);
             if (item.tagged_users.equals("[]")){
                 holder.tag_users_layout.setVisibility(View.GONE);
             }else{
                 holder.tag_users_layout.setVisibility(View.VISIBLE);
             }
 
-            Log.d(TAG, "onBindViewHolder: user_id check:"+
+            Log.d("Follow_check", "onBindViewHolder: user_id check:"+
                     item.user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,"")));
             if (dataList.get(i).follow_status_button.equalsIgnoreCase("UnFollow") ||
                 dataList.get(i).user_id.equals(Variables.sharedPreferences.getString(Variables.u_id,""))){
@@ -187,7 +187,7 @@ public class Watch_Videos_Adapter extends RecyclerView.Adapter<Watch_Videos_Adap
             }else{
                 holder.add_follow.setVisibility(View.VISIBLE);
             }
-            Log.d(TAG, "onBindViewHolder: follow status:"+item.follow_status_button);
+            Log.d("Follow_check", "onBindViewHolder: follow status:"+item.follow_status_button);
 
 
         } catch (Exception e) {

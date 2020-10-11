@@ -233,6 +233,10 @@ public class UserVideo_F extends Fragment {
 
 //                        JSONObject user_info1 = itemdata.optJSONObject("user_info");
 
+                        JSONObject follow_status = itemdata.optJSONObject("follow_Status");
+                        item.follow_status_button = follow_status.optString("follow_status_button");
+                        item.follow = follow_status.optString("follow");
+
                         item.first_name = user_info.optString("first_name");
                         item.last_name = user_info.optString("last_name");
                         item.profile_pic = user_info.optString("profile_pic");

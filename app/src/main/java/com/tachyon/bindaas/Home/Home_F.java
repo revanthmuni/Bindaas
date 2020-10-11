@@ -570,6 +570,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
         args.putString("data", item.tagged_users);
+        args.putString("flag","home");
         fragment.setArguments(args);
         transaction.addToBackStack(null);
         transaction.replace(R.id.MainMenuFragment,fragment).commit();

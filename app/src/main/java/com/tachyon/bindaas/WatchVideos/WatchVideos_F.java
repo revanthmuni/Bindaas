@@ -282,6 +282,11 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         item.follow = follow_status.optString("follow");
                         item.follow_status_button = follow_status.optString("follow_status_button");
 
+                        item.video_description = itemdata.optString("description");
+                        JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                        Log.d("TAG::>", "In UserF Parse_data: tagged users : "+tagged_users.toString());
+                        item.tagged_users = tagged_users.toString();
+
                         JSONObject sound_data = itemdata.optJSONObject("sound");
                         item.sound_id = Objects.requireNonNull(sound_data).optString("id");
                         item.sound_name = sound_data.optString("sound_name");
@@ -382,6 +387,11 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                     item.follow = follow_status.optString("follow");
                     item.follow_status_button = follow_status.optString("follow_status_button");
                     // Toast.makeText(context, ""+follow_status.optString("follow_status_button"), Toast.LENGTH_SHORT).show();
+
+                    item.video_description = itemdata.optString("description");
+                    JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
+                    Log.d("TAG::>", "In UserF Parse_data: tagged users : "+tagged_users.toString());
+                    item.tagged_users = tagged_users.toString();
 
                     JSONObject sound_data = itemdata.optJSONObject("sound");
                     item.sound_id = sound_data.optString("id");
@@ -615,6 +625,9 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                                         data_list.remove(postion);
                                         data_list.add(postion, item);
+
+                                        Functions.refreshAdapter(item.user_id,postion    ,follow,follow_status_button);
+                                        //Functions.refreshWatchVideosAdapter(item.user_id,postion    ,follow,follow_status_button);
                                         //datalist.add(item);
                                         //adapter.notifyItemInserted(i);
                                     }
@@ -626,9 +639,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-
-
 
                         }
 
@@ -645,15 +655,15 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     }
 
     private void showTaggedUsers(Home_Get_Set item) {
-        // Toast.makeText(context, ""+item.tagged_users, Toast.LENGTH_SHORT).show();
-        /*TaggedUsersList fragment = new TaggedUsersList();
+        TaggedUsersList fragment = new TaggedUsersList();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
         Bundle args = new Bundle();
         args.putString("data", item.tagged_users);
+        args.putString("flag","watch_videos");
         fragment.setArguments(args);
         transaction.addToBackStack(null);
-        transaction.replace(R.id.WatchVideo_F,fragment).commit();*/
+        transaction.replace(R.id.WatchVideo_F,fragment).commit();
 
     }
     @Override
