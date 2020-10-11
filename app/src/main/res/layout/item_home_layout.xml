@@ -225,11 +225,11 @@
                     <ImageView
                         android:id="@+id/add_follow"
                         android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_height="17dp"
                         android:layout_gravity="center|end"
-                        android:src="@drawable/ic_plus"
                         android:layout_marginRight="0dp"
-                        android:visibility="visible" />
+                        android:src="@drawable/ic_plus"
+                        android:visibility="gone" />
 
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
