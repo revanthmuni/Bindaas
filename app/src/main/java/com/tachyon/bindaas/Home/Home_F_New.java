@@ -996,7 +996,7 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
         data_list.add(position, home_get_set);
         adapter.notifyDataSetChanged();
 
-        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action, new API_CallBack() {
+        Functions.Call_Api_For_like_video(getActivity(), home_get_set.video_id, action,home_get_set.user_id,new API_CallBack() {
 
             @Override
             public void ArrayData(ArrayList arrayList) {

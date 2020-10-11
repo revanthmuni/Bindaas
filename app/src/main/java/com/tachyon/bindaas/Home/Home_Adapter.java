@@ -23,6 +23,8 @@ import com.tachyon.bindaas.SimpleClasses.Variables;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHolder> {
 
     public Context context;
@@ -146,7 +148,8 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .into(holder.sound_image);*/
 
-
+            //Toast.makeText(context, ""+item.user_id, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onBindViewHolder: userId:"+item.user_id+" video id:"+item.video_id);
             if (item.liked.equals("1")) {
                 holder.like_image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_like_fill));
             } else {
