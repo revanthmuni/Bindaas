@@ -371,7 +371,7 @@ public class Comment_F extends RootFragment {
                     item.comments = comment;
                     data_list.add(position, item);
                     adapter.notifyDataSetChanged();
-                    EventBus.getDefault().post("done");
+                   // EventBus.getDefault().post("done");
                 }
             });
         } catch (Exception e) {
@@ -488,7 +488,7 @@ public class Comment_F extends RootFragment {
                             fragment_data_send.onDataSent("" + comment_count);
 
                     }
-                    EventBus.getDefault().post("done");
+                   // EventBus.getDefault().post("done");
                     adapter.notifyDataSetChanged();
 
                 }
