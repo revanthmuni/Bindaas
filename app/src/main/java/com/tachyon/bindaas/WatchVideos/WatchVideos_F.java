@@ -540,7 +540,13 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             onPause();
                             showTaggedUsers(item);
                         case R.id.add_follow:
-                            addToFollow(item, postion);
+                            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                                addToFollow(item,postion);
+                            }else{
+                                Toast.makeText(context, "Please Login to Follow", Toast.LENGTH_SHORT).show();
+                                // Open_Login();
+                            }
+                            //addToFollow(item, postion);
                             break;
                     }
 
