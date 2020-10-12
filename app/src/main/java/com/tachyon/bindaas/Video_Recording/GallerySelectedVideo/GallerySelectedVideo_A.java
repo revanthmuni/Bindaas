@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -57,11 +58,13 @@ import java.util.List;
 
 import static com.tachyon.bindaas.Video_Recording.Video_Recoder_A.Sounds_list_Request_code;
 
-public class GallerySelectedVideo_A extends AppCompatActivity implements View.OnClickListener, Player.EventListener {
+public class GallerySelectedVideo_A extends AppCompatActivity implements
+        View.OnClickListener, Player.EventListener {
 
     String path;
     TextView add_sound_txt;
     String draft_file;
+    boolean is_user_stop_video = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +119,62 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements View.On
             playerView.setPlayer(video_player);
 
             playerView.setOnTouchListener(new View.OnTouchListener() {
+                private GestureDetector gestureDetector = new GestureDetector(GallerySelectedVideo_A.this, new GestureDetector.SimpleOnGestureListener() {
+
+                    private static final int SWIPE_THRESHOLD = 0;
+                    private static final int SWIPE_VELOCITY_THRESHOLD = 0;
+
+                    @Override
+                    public boolean onDown(MotionEvent e) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        super.onSingleTapUp(e);
+                        if (!video_player.getPlayWhenReady()) {
+                            is_user_stop_video = false;
+                            video_player.setPlayWhenReady(true);
+
+                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+
+                            autoScrollVideos();
+                        }*/
+                        } else {
+                            is_user_stop_video = true;
+
+                            video_player.setPlayWhenReady(false);
+
+                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
+                            Toast.makeText(context, "timer stopped", Toast.LENGTH_SHORT).show();
+                            timer.cancel();
+                        }*/
+                        }
+
+
+                        return true;
+                    }
+
+                    @Override
+                    public void onLongPress(MotionEvent e) {
+                        super.onLongPress(e);
+
+                    }
+
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+
+                        return super.onDoubleTap(e);
+
+                    }
+                });
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    gestureDetector.onTouchEvent(event);
                     return true;
                 }
             });
-
 
             video_player.setPlayWhenReady(true);
         } catch (Exception e) {
