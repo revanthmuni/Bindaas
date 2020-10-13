@@ -2,6 +2,7 @@ package com.tachyon.bindaas.WatchVideos;
 
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -141,10 +144,14 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.fragment_watchvideo);
         context = this;
+
         try {
+
             if (Variables.sharedPreferences == null) {
                 Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, Context.MODE_PRIVATE);
             }
@@ -540,7 +547,13 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             onPause();
                             showTaggedUsers(item);
                         case R.id.add_follow:
-                            addToFollow(item, postion);
+                            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
+                                addToFollow(item,postion);
+                            }else{
+                                Toast.makeText(context, "Please Login to Follow", Toast.LENGTH_SHORT).show();
+                                // Open_Login();
+                            }
+                            //caddToFollow(item, postion);
                             break;
                     }
 
