@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Discover.Models.TopUsers;
@@ -41,6 +42,7 @@ public class TopsFragment extends Fragment {
     TopsAdapter topsAdapter;
     List<Users> topsList;
     private static final String TAG = "TopsFragment";
+    ShimmerFrameLayout shimmer_layout;
     public TopsFragment() {
         // Required empty public constructor
     }
@@ -54,6 +56,8 @@ public class TopsFragment extends Fragment {
 
         context = getContext();
         topsRecyclerview = view.findViewById(R.id.topsRecyclerview);
+        shimmer_layout = view.findViewById(R.id.shimmer_view_container);
+        shimmer_layout.startShimmer();
         final GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
         topsRecyclerview.setLayoutManager(layoutManager);
 //        loadDummyTops();
@@ -122,6 +126,7 @@ public class TopsFragment extends Fragment {
         }*/
     }
     public void loadTopUsers(){
+        shimmer_layout.setVisibility(View.VISIBLE);
         try {
             JSONObject params = new JSONObject();
             try {
@@ -133,7 +138,8 @@ public class TopsFragment extends Fragment {
             ApiRequest.Call_Api(context, Variables.GET_TOP_USERS, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
-
+                    shimmer_layout.stopShimmer();
+                    shimmer_layout.setVisibility(View.GONE);
                     parseTopUsers(resp);
                 }
             });

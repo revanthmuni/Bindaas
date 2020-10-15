@@ -399,7 +399,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
         try {
             search_frame.setVisibility(View.VISIBLE);
             initial_layout.setVisibility(View.GONE);
-           // swiperefresh.setVisibility(View.GONE);
+          //swiperefresh.setVisibility(View.GONE);
             adapter1 = new ViewPagerAdapter(getChildFragmentManager());
             menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
             menu_pager.setOffscreenPageLimit(3);
@@ -418,7 +418,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     }
     private void loadEventBanners() {
         try {
-            Functions.Show_loader(context, true, true);
+            //Functions.Show_loader(context, true, true);
             JSONObject params = new JSONObject();
             try {
                 params.put("user_id", "");
@@ -460,7 +460,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                     android.util.Log.d("TAG", "Event data: " + resp);
-                    Functions.cancel_loader();
+                  //  Functions.cancel_loader();
                 }
             });
         } catch (Exception e) {

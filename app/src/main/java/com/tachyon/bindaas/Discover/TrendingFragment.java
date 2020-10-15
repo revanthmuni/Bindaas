@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Home.Home_Get_Set;
 import com.tachyon.bindaas.Profile.MyVideos_Adapter;
@@ -35,6 +36,7 @@ public class TrendingFragment extends Fragment {
     RecyclerView trendingRecyclerview;
     MyVideos_Adapter adapter;
     ArrayList<Home_Get_Set> data_list;
+    ShimmerFrameLayout shimmer_view_container;
 
     public TrendingFragment() {
         // Required empty public constructor
@@ -49,6 +51,7 @@ public class TrendingFragment extends Fragment {
         Log.d("FragmentCheck", "onCreateView: its trendig");
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         trendingRecyclerview = view.findViewById(R.id.trendingRecyclerview);
+        shimmer_view_container = view.findViewById(R.id.shimmer_view_container);
         final GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         trendingRecyclerview.setLayoutManager(layoutManager);
         trendingRecyclerview.setHasFixedSize(true);
@@ -120,6 +123,8 @@ public class TrendingFragment extends Fragment {
     }
 
     private void loadTrendigVideos() {
+        shimmer_view_container.setVisibility(View.VISIBLE);
+        shimmer_view_container.startShimmer();
         try {
             JSONObject params = new JSONObject();
             try {
@@ -128,13 +133,14 @@ public class TrendingFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        ApiRequest.Call_Api(context, Variables.GET_TRENDING_VIDEOS, params, new Callback() {
-            @Override
-            public void Responce(String resp) {
-
-                parseTrendingVideosData(resp);
-            }
-        });
+            ApiRequest.Call_Api(context, Variables.GET_TRENDING_VIDEOS, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    shimmer_view_container.setVisibility(View.GONE);
+                    shimmer_view_container.stopShimmer();
+                    parseTrendingVideosData(resp);
+                }
+            });
         } catch (Exception e) {
             Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
 
@@ -194,7 +200,7 @@ public class TrendingFragment extends Fragment {
                     item.created_date = itemdata.optString("created");
 
                     JSONArray tagged_users = itemdata.optJSONArray("tagged_users");
-                    Log.d("TAG::>", "Parse_data: trending video users : "+tagged_users.toString());
+                    Log.d("TAG::>", "Parse_data: trending video users : " + tagged_users.toString());
                     item.tagged_users = tagged_users.toString();
                     data_list.add(item);
 
