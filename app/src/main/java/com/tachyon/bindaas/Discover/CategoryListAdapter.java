@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.tachyon.bindaas.Discover.Models.Category;
 import com.tachyon.bindaas.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -17,12 +20,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
-    List<String> catList;
+    ArrayList<Category> catList;
     Context context;
     OnCategoryClick listener;
     int row_index = 0;
 
-    public CategoryListAdapter(List<String> catList, Context context, OnCategoryClick listener) {
+    public CategoryListAdapter(ArrayList<Category> catList, Context context, OnCategoryClick listener) {
         this.catList = catList;
         this.context = context;
         this.listener = listener;
@@ -47,7 +50,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.background.setBackgroundColor(Color.parseColor("#ffffff"));
             holder.cat_textview.setTextColor(Color.parseColor("#000000"));
         }
-        holder.cat_textview.setText(catList.get(position));
+        holder.cat_textview.setText(catList.get(position).getSection_name());
         holder.cat_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +68,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView cat_textview;
-        CardView background;
+        LinearLayout background;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

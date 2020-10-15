@@ -11,23 +11,23 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="3"
         app:cardBackgroundColor="@color/white"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:elevation="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categoryListRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:padding="8dp" />
+            android:layout_height="wrap_content"
+            />
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryDetailsRecycler"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="7"
         android:padding="8dp" />
 </LinearLayout>
