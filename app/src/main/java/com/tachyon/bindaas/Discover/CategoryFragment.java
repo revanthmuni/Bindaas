@@ -190,7 +190,7 @@ public class CategoryFragment extends Fragment {
         categoryDetailsRecycler.setAdapter(adapter);
     }
     private void OpenWatchVideo(ArrayList<Home_Get_Set> list, int postion) {
-        Toast.makeText(context, "it will open the videos page", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "it will open the videos page", Toast.LENGTH_SHORT).show();
         try {
             Intent intent = new Intent(getActivity(), WatchVideos_F.class);
             intent.putExtra("arraylist",list);
