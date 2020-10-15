@@ -62,6 +62,8 @@ public class CategoryFragment extends Fragment {
 
         categoryListRecycler = view.findViewById(R.id.categoryListRecycler);
         categoryListRecycler.setLayoutManager(new LinearLayoutManager(context));
+        categoryListRecycler.setHasFixedSize(true);
+
       //  loadDummyCatList();
        // loadDummyData();
         loadDiscoverySection();
