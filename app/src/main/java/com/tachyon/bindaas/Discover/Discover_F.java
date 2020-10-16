@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +81,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     List<EventItems> eventlist;
     EventSliderAdapter eventAdapter;
     NestedScrollView initial_layout;
+    View main_layout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
             datalist = new ArrayList<>();
 
+            main_layout = view.findViewById(R.id.main_layout);
             search_frame = view.findViewById(R.id.search_frame);
             initial_layout = view.findViewById(R.id.nest_scrollview);
             imageSlider = view.findViewById(R.id.imageSlider);
@@ -144,7 +147,8 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                     if (s.toString().length() == 0) {
                         //swiperefresh.setVisibility(View.VISIBLE);
                         search_frame.setVisibility(View.GONE);
-                        initial_layout.setVisibility(View.VISIBLE);
+//                        initial_layout.setVisibility(View.VISIBLE);
+                        main_layout.setVisibility(View.VISIBLE);
                     }else Set_tabs();/*
                     if (!s.equals("")) Set_tabs();
                     else {
@@ -396,7 +400,8 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     public void Set_tabs() {
         try {
             search_frame.setVisibility(View.VISIBLE);
-            initial_layout.setVisibility(View.GONE);
+//            initial_layout.setVisibility(View.GONE);
+            main_layout.setVisibility(View.GONE);
           //swiperefresh.setVisibility(View.GONE);
             adapter1 = new ViewPagerAdapter(getChildFragmentManager());
             menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
