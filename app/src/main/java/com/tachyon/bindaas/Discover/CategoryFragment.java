@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -47,6 +48,8 @@ public class CategoryFragment extends Fragment {
     MyVideos_Adapter adapter;
     private static final String TAG = "CategoryFragment";
 
+    TextView nodata;
+
     public CategoryFragment() {
 
     }
@@ -60,6 +63,7 @@ public class CategoryFragment extends Fragment {
         this.context = getActivity();
         View view = inflater.inflate(R.layout.fragment_category, container, false);
 
+        nodata = view.findViewById(R.id.nodata);
         categoryListRecycler = view.findViewById(R.id.categoryListRecycler);
         categoryListRecycler.setLayoutManager(new LinearLayoutManager(context));
         categoryListRecycler.setHasFixedSize(true);
@@ -179,15 +183,22 @@ public class CategoryFragment extends Fragment {
     }
 
     private void openDetails(ArrayList<Home_Get_Set> list) {
-       // Collections.shuffle(data_list);
-        adapter = new MyVideos_Adapter(context, list, new MyVideos_Adapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int postion, Home_Get_Set item, View view) {
-                //Toast.makeText(context, "sze "+list.size(), Toast.LENGTH_SHORT).show();
-                OpenWatchVideo(list,postion);
-            }
-        });
-        categoryDetailsRecycler.setAdapter(adapter);
+        if (list.size()>0) {
+            // Collections.shuffle(data_list);
+            nodata.setVisibility(View.GONE);
+            categoryDetailsRecycler.setVisibility(View.VISIBLE);
+            adapter = new MyVideos_Adapter(context, list, new MyVideos_Adapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int postion, Home_Get_Set item, View view) {
+                    //Toast.makeText(context, "sze "+list.size(), Toast.LENGTH_SHORT).show();
+                    OpenWatchVideo(list, postion);
+                }
+            });
+            categoryDetailsRecycler.setAdapter(adapter);
+        }else{
+            nodata.setVisibility(View.VISIBLE);
+            categoryDetailsRecycler.setVisibility(View.GONE);
+        }
     }
     private void OpenWatchVideo(ArrayList<Home_Get_Set> list, int postion) {
 //        Toast.makeText(context, "it will open the videos page", Toast.LENGTH_SHORT).show();
