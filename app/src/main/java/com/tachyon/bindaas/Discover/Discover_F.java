@@ -76,7 +76,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
     SliderView imageSlider;
     TabLayout mainTabLayout;
-    ViewPager mainViewPager;
+    WrapContentHeightViewPager mainViewPager;
     List<EventItems> eventlist;
     EventSliderAdapter eventAdapter;
     NestedScrollView initial_layout;
@@ -88,9 +88,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
         try {
             context = getContext();
 
-
             datalist = new ArrayList<>();
-
 
             search_frame = view.findViewById(R.id.search_frame);
             initial_layout = view.findViewById(R.id.nest_scrollview);
