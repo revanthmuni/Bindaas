@@ -89,7 +89,7 @@ public class Search_F extends RootFragment {
 
         JSONObject params = new JSONObject();
         try {
-            params.put("user_id",Variables.user_id);
+            params.put("user_id", Variables.user_id);
             params.put("type", type);
             params.put("keyword", search_edit.getText().toString());
         } catch (JSONException e) {
@@ -149,7 +149,7 @@ public class Search_F extends RootFragment {
                     view.findViewById(R.id.no_data_image).setVisibility(View.VISIBLE);
                 } else
                     view.findViewById(R.id.no_data_image).setVisibility(View.GONE);
-                LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 Users_Adapter adapter = new Users_Adapter(context, data_list, new Adapter_Click_Listener() {
                     @Override
@@ -189,7 +189,7 @@ public class Search_F extends RootFragment {
 
                     JSONObject user_info = itemdata.optJSONObject("user_info");
 
-                    item.username=user_info.optString("username");
+                    item.username = user_info.optString("username");
                     item.first_name = user_info.optString("first_name", context.getResources().getString(R.string.app_name));
                     item.last_name = user_info.optString("last_name", "User");
                     item.profile_pic = user_info.optString("profile_pic", "null");
@@ -227,7 +227,7 @@ public class Search_F extends RootFragment {
                 } else
                     view.findViewById(R.id.no_data_image).setVisibility(View.GONE);
 
-                GridLayoutManager linearLayoutManager=new GridLayoutManager(context,2);
+                GridLayoutManager linearLayoutManager = new GridLayoutManager(context, 2);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 VideosList_Adapter adapter = new VideosList_Adapter(context, data_list, new Adapter_Click_Listener() {
                     @Override
