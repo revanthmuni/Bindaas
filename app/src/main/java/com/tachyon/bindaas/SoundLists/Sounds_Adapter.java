@@ -167,10 +167,10 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
             holder.sound_name.setText(item.sound_name);
             holder.description_txt.setText(item.description);
 
-            if (item.fav.equals("1"))
+            /*if (item.fav.equals("1"))
                 holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
             else
-                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_un_favourite));
+                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_un_favourite));*/
 
 
             if (item.thum.equals("")) {
@@ -196,7 +196,7 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
         ImageButton play_arrow, pause_arrow;
         ImageButton play_Btn, pause_Btn;
         TextView sound_name, description_txt;
-        SimpleDraweeView sound_image;
+        ImageView sound_image;
 
         public CustomViewHolder(View view) {
             super(view);

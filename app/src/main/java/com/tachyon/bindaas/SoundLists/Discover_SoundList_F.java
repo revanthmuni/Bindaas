@@ -146,7 +146,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         case 2:
                             fragment = new SoundTrendingFragment();
                             break;
-                        case 3:
+                        default:
                             fragment = new SoundCategoryFragment();
                     }
                     FragmentManager manager = getFragmentManager();
