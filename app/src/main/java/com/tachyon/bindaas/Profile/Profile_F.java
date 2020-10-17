@@ -536,10 +536,11 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     follow_unfollow_btn.setText(follow_Status.optString("follow_status_button"));
                     follow_status = follow_Status.optString("follow");
 
-                   // Toast.makeText(context, ""+anyone_can_message, Toast.LENGTH_SHORT).show();
-                    setting_btn.setVisibility(anyone_can_message.equals("anyone")?View.VISIBLE:View.GONE);
-                    setting_btn.setVisibility(follow_Status.optString("follow_status_button").equalsIgnoreCase("UnFollow")
-                            &&follow_Status.optString("follow").equals("1")?View.VISIBLE:View.GONE);
+//                    Toast.makeText(context, ""+anyone_can_message, Toast.LENGTH_SHORT).show();
+
+                    setting_btn.setVisibility(anyone_can_message.equals("anyone")||anyone_can_message.equals("mutual_followers")?View.VISIBLE:View.GONE);
+                   /* setting_btn.setVisibility(follow_Status.optString("follow_status_button").equalsIgnoreCase("UnFollow")
+                            &&follow_Status.optString("follow").equals("1")?View.VISIBLE:View.GONE);*/
                 }
 
                 JSONArray user_videos = data.getJSONArray("user_videos");
