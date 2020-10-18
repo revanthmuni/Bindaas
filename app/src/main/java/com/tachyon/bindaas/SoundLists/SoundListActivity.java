@@ -75,7 +75,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         sounds_recycler = findViewById(R.id.sounds_recycler);
         Goback = findViewById(R.id.Goback);
         title = findViewById(R.id.title);
-
+        Goback.setOnClickListener(view -> finish());
 
         this.context = SoundListActivity.this;
 
@@ -93,7 +93,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             JSONObject params = new JSONObject();
             try {
                 //params.put("user_id", "");
-                params.put("sound_section_id", section_id);
+                if (title.equals("Language Sounds")) {
+                    params.put("language", section_id);
+                } else
+                    params.put("sound_section_id", section_id);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -112,7 +115,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     }
     public void parseTrendingSounds(String responce) {
 
-        Log.d(TAG, "parseTrendingSounds: full data:"+responce);
+        Log.d(TAG, "parseTrendingSounds: full data:" + responce);
         datalist = new ArrayList<>();
 
         try {
@@ -162,7 +165,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                     Sound_catagory_Get_Set sound_catagory_get_set = new Sound_catagory_Get_Set();
                     sound_catagory_get_set.catagory = object.optString("section_name");
                     sound_catagory_get_set.sound_list = sound_list;
-                    Log.d(TAG, "parseTrendingSounds: "+new Gson().toJson(sound_list));
+                    Log.d(TAG, "parseTrendingSounds: " + new Gson().toJson(sound_list));
                     datalist.add(sound_catagory_get_set);
 
                 }

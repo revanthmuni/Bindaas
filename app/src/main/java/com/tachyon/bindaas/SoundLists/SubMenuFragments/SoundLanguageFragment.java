@@ -1,7 +1,9 @@
 package com.tachyon.bindaas.SoundLists.SubMenuFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SoundLists.Adapters.SoundLanguageAdapter;
+import com.tachyon.bindaas.SoundLists.SoundListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class SoundLanguageFragment extends RootFragment {
     private RecyclerView language_recycler;
     SoundLanguageAdapter adapter;
     Context context;
+    private static final String TAG = "SoundLanguageFragment";
 
     public SoundLanguageFragment() {
     }
@@ -41,9 +45,21 @@ public class SoundLanguageFragment extends RootFragment {
         lang_list.add("Kannada");
         lang_list.add("Malayalam");
 
-        adapter = new SoundLanguageAdapter(context,lang_list);
+        adapter = new SoundLanguageAdapter(context, lang_list, new SoundLanguageAdapter.OnItemClick() {
+            @Override
+            public void onClick(int position, String language) {
+                openSoundsList(position,language);
+            }
+        });
         language_recycler.setAdapter(adapter);
 
         return view;
+    }
+    private void openSoundsList(int position, String section_id) {
+        Log.d(TAG, "openSoundsList: "+section_id);
+        Intent intent = new Intent(context, SoundListActivity.class);
+        intent.putExtra("section_id",section_id);
+        intent.putExtra("title","Language Sounds");
+        startActivity(intent);
     }
 }

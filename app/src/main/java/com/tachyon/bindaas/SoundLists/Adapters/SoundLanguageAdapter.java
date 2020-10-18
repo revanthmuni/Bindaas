@@ -19,8 +19,14 @@ public class SoundLanguageAdapter extends RecyclerView.Adapter<SoundLanguageAdap
 
     Context context;
     List<String> langList;
+    OnItemClick listener;
 
-    public SoundLanguageAdapter(Context context, List<String> langList) {
+    public interface OnItemClick {
+        void onClick(int position, String language);
+    }
+
+    public SoundLanguageAdapter(Context context, List<String> langList, OnItemClick listener) {
+        this.listener = listener;
         this.context = context;
         this.langList = langList;
     }
@@ -28,12 +34,18 @@ public class SoundLanguageAdapter extends RecyclerView.Adapter<SoundLanguageAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.sound_language_row,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.sound_language_row, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.lang_name.setText(langList.get(position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(position,langList.get(position));
+            }
+        });
     }
 
     @Override
