@@ -1,6 +1,7 @@
 package com.tachyon.bindaas.SoundLists.SubMenuFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,12 +15,14 @@ import com.google.gson.Gson;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.SoundLists.SoundListActivity;
 import com.tachyon.bindaas.SoundLists.Sounds_GetSet;
 
 import java.net.ContentHandler;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder> {
@@ -45,10 +48,23 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
+            holder.view_more_layout.setVisibility(View.VISIBLE);
+            holder.section_name.setText("Section Name");
+            holder.play_view.setPadding(8,8,8,8);
+//            holder.section_name.setText(list.get(position).section.equals("")?"Section Bindaas":list.get(position).section);
+            holder.view_more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, SoundListActivity.class);
+                    intent.putExtra("section_id",list.get(position).id);
+                    intent.putExtra("title","Trending Sounds");
+                    context.startActivity(intent);
+                }
+            });
             holder.setIsRecyclable(false);
             Sounds_GetSet item = list.get(position);
             holder.sound_name.setText(item.sound_name);
-            holder.description_txt.setText(item.description);
+           // holder.description_txt.setText(item.description);
 
             if (item.thum != null && !item.thum.equals("")&&item.thum.contains(".jpg")) {
                 Log.d(Variables.tag, item.thum);
@@ -78,10 +94,19 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
         SimpleDraweeView sound_image;
         ImageButton play_arrow, pause_arrow;
         ImageButton play_Btn, pause_Btn;
+        ConstraintLayout view_more_layout;
+        TextView view_more,section_name;
+        ConstraintLayout play_view;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             try {
+
+                view_more = view.findViewById(R.id.view_more);
+                section_name = view.findViewById(R.id.section_name);
+                view_more_layout = view.findViewById(R.id.view_more_layout);
+                play_view = view.findViewById(R.id.play_view);
+
                 done = view.findViewById(R.id.done);
                 fav_btn = view.findViewById(R.id.fav_btn);
 
