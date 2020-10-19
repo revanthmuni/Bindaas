@@ -67,12 +67,10 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
 
         holder.title.setText(item.catagory);
 
-
         Sound_Items_Adapter adapter = new Sound_Items_Adapter(context, item.sound_list,
                 new Sound_Items_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
-
                 listener.onItemClick(view, postion, item);
             }
         });
@@ -96,7 +94,6 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
         snapHelper.attachToRecyclerView(holder.recyclerView);
         }catch (Exception e){
             Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
-
         }
 
     }
@@ -161,16 +158,15 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
 
             Sounds_GetSet item = datalist.get(i);
 
-
             holder.bind(i, datalist.get(i), listener);
 
             holder.sound_name.setText(item.sound_name);
             holder.description_txt.setText(item.description);
 
-            /*if (item.fav.equals("1"))
+            if (item.fav.equals("1"))
                 holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
             else
-                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_un_favourite));*/
+                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_un_favourite));
 
 
             if (item.thum.equals("")) {

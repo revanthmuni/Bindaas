@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SoundLists.Models.LanguageModel;
 
 import java.util.List;
 
@@ -18,14 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SoundLanguageAdapter extends RecyclerView.Adapter<SoundLanguageAdapter.ViewHolder> {
 
     Context context;
-    List<String> langList;
+    List<LanguageModel> langList;
     OnItemClick listener;
 
     public interface OnItemClick {
         void onClick(int position, String language);
     }
 
-    public SoundLanguageAdapter(Context context, List<String> langList, OnItemClick listener) {
+    public SoundLanguageAdapter(Context context, List<LanguageModel> langList, OnItemClick listener) {
         this.listener = listener;
         this.context = context;
         this.langList = langList;
@@ -39,11 +41,14 @@ public class SoundLanguageAdapter extends RecyclerView.Adapter<SoundLanguageAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.lang_name.setText(langList.get(position));
+        holder.lang_name.setText(langList.get(position).getSection_name());
+        if (langList.get(position).getSection_image()!=null){
+            Glide.with(context).load(langList.get(position).getSection_image()).into(holder.lang_image);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClick(position,langList.get(position));
+                listener.onClick(position,langList.get(position).getSection_name());
             }
         });
     }

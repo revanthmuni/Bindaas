@@ -176,5 +176,7 @@ public class Variables {
     public static final String GET_TRENDING_SOUNDS = api_domain + "getTrendingSounds";
     public static final String GET_CATEGORIES_AND_VIDEOS = api_domain + "getVideosByDiscoverySection";
     public static final String GET_SOUND_BY_DISCOVERY_SECTION = api_domain + "getSoundByDiscoverySection";
+    public static final String GET_SOUND_LANGUAGES = api_domain + "getAllLanguages";
+    public static final String GET_SOUND_CATEGORIES = api_domain + "getAllSoundSections";
 
 }

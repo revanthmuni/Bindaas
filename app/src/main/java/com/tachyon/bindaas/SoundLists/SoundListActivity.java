@@ -52,10 +52,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     String section_id;
     String title_text;
     Context context;
-    ArrayList<Sound_catagory_Get_Set> datalist;
+    ArrayList<Sounds_GetSet> datalist;
     private static final String TAG = "SoundListActivity";
 
-    Sounds_Adapter adapter;
+    SoundsAdapter adapter;
     View previous_view;
     Thread thread;
     SimpleExoPlayer player;
@@ -93,6 +93,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             JSONObject params = new JSONObject();
             try {
                 //params.put("user_id", "");
+                params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
                 if (title.equals("Language Sounds")) {
                     params.put("language", section_id);
                 } else
@@ -116,7 +117,6 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     public void parseTrendingSounds(String responce) {
 
         Log.d(TAG, "parseTrendingSounds: full data:" + responce);
-        datalist = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(responce);
@@ -124,7 +124,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             if (code.equals("200")) {
 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-
+                datalist = new ArrayList<>();
                 for (int i = msgArray.length() - 1; i >= 0; i--) {
                     JSONObject object = msgArray.getJSONObject(i);
 
@@ -132,41 +132,36 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
                     JSONArray section_array = object.optJSONArray("sounds_of_section");
 
-                    ArrayList<Sounds_GetSet> sound_list = new ArrayList<>();
+                    if (!section_array.toString().equals("[]")) {
 
-                    for (int j = 0; j < section_array.length(); j++) {
-                        JSONObject itemdata = section_array.optJSONObject(j);
+                        for (int j = 0; j < section_array.length(); j++) {
+                            JSONObject itemdata = section_array.optJSONObject(j);
 
-                        Sounds_GetSet item = new Sounds_GetSet();
+                            Sounds_GetSet item = new Sounds_GetSet();
 
-                        item.id = itemdata.optString("id");
+                            item.id = itemdata.optString("id");
 
-                        JSONObject audio_path = itemdata.optJSONObject("audio_path");
-                        item.acc_path = audio_path.optString("aac");
-                        item.mp3_path = audio_path.optString("mp3");
+                            JSONObject audio_path = itemdata.optJSONObject("audio_path");
+                            item.acc_path = audio_path.optString("aac");
+                            item.mp3_path = audio_path.optString("mp3");
 
 
-                        item.sound_name = itemdata.optString("sound_name");
-                        item.description = itemdata.optString("description");
-                        item.section = itemdata.optString("section");
-                        String thum_image = itemdata.optString("thum");
+                            item.sound_name = itemdata.optString("sound_name");
+                            item.description = itemdata.optString("description");
+                            item.section = itemdata.optString("section");
+                            String thum_image = itemdata.optString("thum");
 
-                        if (thum_image != null && thum_image.contains("http"))
-                            item.thum = itemdata.optString("thum");
-                        else
-                            item.thum = Variables.base_url + itemdata.optString("thum");
+                            if (thum_image != null && thum_image.contains("http"))
+                                item.thum = itemdata.optString("thum");
+                            else
+                                item.thum = Variables.base_url + itemdata.optString("thum");
 
-                        item.date_created = itemdata.optString("created");
-                        //item.fav = itemdata.optString("fav");
+                            item.date_created = itemdata.optString("created");
+                            item.fav = itemdata.optString("fav");
 
-                        sound_list.add(item);
+                            datalist.add(item);
+                        }
                     }
-
-                    Sound_catagory_Get_Set sound_catagory_get_set = new Sound_catagory_Get_Set();
-                    sound_catagory_get_set.catagory = object.optString("section_name");
-                    sound_catagory_get_set.sound_list = sound_list;
-                    Log.d(TAG, "parseTrendingSounds: " + new Gson().toJson(sound_list));
-                    datalist.add(sound_catagory_get_set);
 
                 }
 
@@ -185,7 +180,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     }
     public void Set_adapter() {
         try {
-            adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
+            /*adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
@@ -207,6 +202,45 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                             StopPlaying();
                             playaudio(view, item);
                         }
+                    } else if (view.getId() == R.id.pause_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(context, R.string.pause_pressed, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    }
+
+                }
+            });*/
+            adapter = new SoundsAdapter(context, datalist,"sound_list", new SoundsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    if (view.getId() == R.id.done) {
+                        StopPlaying();
+                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                    } else if (view.getId() == R.id.fav_btn) {
+                        StopPlaying();
+                        Call_Api_For_Fav_sound(postion, item.id);
+                    } else if (view.getId() == R.id.play_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                        Toast.makeText(context, R.string.play_pressed, Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();

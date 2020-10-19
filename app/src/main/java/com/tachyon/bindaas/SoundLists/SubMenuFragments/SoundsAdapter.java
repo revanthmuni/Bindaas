@@ -30,15 +30,19 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     ArrayList<Sounds_GetSet> list;
     OnItemClickListener listene;
     private static final String TAG = "SoundsAdapter";
+    String flag;
 
-    public SoundsAdapter(Context context, ArrayList<Sounds_GetSet> list,OnItemClickListener listener) {
+    public SoundsAdapter(Context context, ArrayList<Sounds_GetSet> list,String flag,OnItemClickListener listener) {
         this.context = context;
         this.list = list;
         this.listene = listener;
+        this.flag = flag;
     }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int postion, Sounds_GetSet item);
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +52,10 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            holder.view_more_layout.setVisibility(View.VISIBLE);
+            if (flag.equals("sound_list")){
+                holder.view_more_layout.setVisibility(View.GONE);
+            }else
+                holder.view_more_layout.setVisibility(View.VISIBLE);
             holder.section_name.setText("Section Name");
             holder.play_view.setPadding(8,8,8,8);
 //            holder.section_name.setText(list.get(position).section.equals("")?"Section Bindaas":list.get(position).section);
@@ -72,9 +79,12 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
                 holder.sound_image.setImageURI(uri);
             }
             Log.d(TAG, "onBindViewHolder: "+new Gson().toJson(item ));
-            holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
+//            holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
             holder.bind(position, list.get(position), listene);
-
+            if (item.fav.equals("1"))
+                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
+            else
+                holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_un_favourite));
 
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -85,6 +95,10 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -141,17 +155,15 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
                 play_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        play_arrow.setVisibility(View.GONE);
-                        pause_arrow.setVisibility(View.VISIBLE);
+
                         listener.onItemClick(itemView, pos, item);
                     }
                 });
                 pause_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pause_arrow.setVisibility(View.GONE);
-                        play_arrow.setVisibility(View.VISIBLE);
-                        listener.onItemClick(v, pos, item);
+
+                        listener.onItemClick(itemView, pos, item);
                     }
                 });
                /* play_Btn.setOnClickListener(new View.OnClickListener() {
