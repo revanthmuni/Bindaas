@@ -85,7 +85,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         sounds_recycler.setNestedScrollingEnabled(false);
         loadTrendingSounds();
-        Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
     }
 
     private void loadTrendingSounds() {

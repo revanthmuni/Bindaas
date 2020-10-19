@@ -84,7 +84,7 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
         Bundle bundle = getArguments();
         if (bundle != null) {
             section_id = bundle.getString("section_id");
-            Toast.makeText(context, "" + section_id, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, "" + section_id, Toast.LENGTH_SHORT).show();
         }
         loadCategoriesData();
 
