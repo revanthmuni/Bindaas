@@ -1,4 +1,8 @@
-package com.tachyon.bindaas.SoundLists.SubMenuFragments;
+package com.tachyon.bindaas.SoundLists;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,9 +10,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.downloader.Error;
@@ -29,13 +33,13 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
-import com.tachyon.bindaas.SoundLists.Sounds_GetSet;
+import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundsAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -44,21 +48,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static android.app.Activity.RESULT_OK;
-
-public class SoundCategoryFragment extends RootFragment implements Player.EventListener {
-
-
-    Context context;
-    SoundsAdapter adapter;
-
-    RecyclerView category_recycler;
+public class SoundListActivity extends AppCompatActivity implements Player.EventListener {
     String section_id;
+    String title_text;
+    Context context;
     ArrayList<Sounds_GetSet> datalist;
+    private static final String TAG = "SoundListActivity";
 
+    SoundsAdapter adapter;
     View previous_view;
     Thread thread;
     SimpleExoPlayer player;
@@ -66,45 +63,49 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     DownloadRequest prDownloader;
     public static String running_sound_id;
     static boolean active = false;
-    private static final String TAG = "SoundCategoryFragment";
-
-    public SoundCategoryFragment() {
-    }
+    RecyclerView sounds_recycler;
+    ImageButton Goback;
+    TextView title;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sound_category, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sound_list2);
 
-        this.context = getContext();
-        category_recycler = view.findViewById(R.id.category_recycler);
-        category_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        category_recycler.setNestedScrollingEnabled(false);
+        sounds_recycler = findViewById(R.id.sounds_recycler);
+        Goback = findViewById(R.id.Goback);
+        title = findViewById(R.id.title);
+        Goback.setOnClickListener(view -> finish());
 
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            section_id = bundle.getString("section_id");
-           // Toast.makeText(context, "" + section_id, Toast.LENGTH_SHORT).show();
-        }
-        loadCategoriesData();
+        this.context = SoundListActivity.this;
 
-        return view;
+        section_id = getIntent().getStringExtra("section_id");
+        title_text = getIntent().getStringExtra("title");
+        title.setText(title_text);
+        sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        sounds_recycler.setNestedScrollingEnabled(false);
+        loadTrendingSounds();
+       // Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
     }
 
-    private void loadCategoriesData() {
+    private void loadTrendingSounds() {
         try {
             JSONObject params = new JSONObject();
             try {
                 //params.put("user_id", "");
-                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-                params.put("sound_section_id", section_id);
+                params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
+                if (title.equals("Language Sounds")) {
+                    params.put("language", section_id);
+                } else
+                    params.put("sound_section_id", section_id);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            ApiRequest.Call_Api(context, Variables.GET_SOUND_BY_DISCOVERY_SECTION, params, new Callback() {
+            ApiRequest.Call_Api(this, Variables.GET_SOUND_BY_DISCOVERY_SECTION, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
                     parseTrendingSounds(resp);
                 }
             });
@@ -113,7 +114,6 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
 
         }
     }
-
     public void parseTrendingSounds(String responce) {
 
         Log.d(TAG, "parseTrendingSounds: full data:" + responce);
@@ -178,7 +178,6 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
         }
 
     }
-
     public void Set_adapter() {
         try {
             /*adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
@@ -224,7 +223,7 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
 
                 }
             });*/
-            adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
+            adapter = new SoundsAdapter(context, datalist,"sound_list", new SoundsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
                     if (view.getId() == R.id.done) {
@@ -264,14 +263,13 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
                 }
             });
 
-            category_recycler.setAdapter(adapter);
+            sounds_recycler.setAdapter(adapter);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
 
     }
-
     public void playaudio(View view, final Sounds_GetSet item) {
         try {
             previous_view = view;
@@ -472,9 +470,9 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
                     output.putExtra("isSelected", "yes");
                     output.putExtra("sound_name", sound_name);
                     output.putExtra("sound_id", id);
-                    getActivity().setResult(RESULT_OK, output);
-                    getActivity().finish();
-                    getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                    setResult(RESULT_OK, output);
+                    finish();
+                    overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
                 }
 
                 @Override

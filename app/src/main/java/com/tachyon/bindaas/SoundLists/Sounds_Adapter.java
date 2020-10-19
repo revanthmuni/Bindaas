@@ -67,12 +67,10 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
 
         holder.title.setText(item.catagory);
 
-
         Sound_Items_Adapter adapter = new Sound_Items_Adapter(context, item.sound_list,
                 new Sound_Items_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
-
                 listener.onItemClick(view, postion, item);
             }
         });
@@ -96,7 +94,6 @@ public class Sounds_Adapter extends RecyclerView.Adapter<Sounds_Adapter.CustomVi
         snapHelper.attachToRecyclerView(holder.recyclerView);
         }catch (Exception e){
             Functions.showLogMessage(context,context.getClass().getSimpleName(),e.getMessage());
-
         }
 
     }
@@ -161,7 +158,6 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
 
             Sounds_GetSet item = datalist.get(i);
 
-
             holder.bind(i, datalist.get(i), listener);
 
             holder.sound_name.setText(item.sound_name);
@@ -196,7 +192,7 @@ class Sound_Items_Adapter extends RecyclerView.Adapter<Sound_Items_Adapter.Custo
         ImageButton play_arrow, pause_arrow;
         ImageButton play_Btn, pause_Btn;
         TextView sound_name, description_txt;
-        SimpleDraweeView sound_image;
+        ImageView sound_image;
 
         public CustomViewHolder(View view) {
             super(view);

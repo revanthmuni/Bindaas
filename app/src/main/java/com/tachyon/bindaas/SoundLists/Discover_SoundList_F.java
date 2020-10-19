@@ -49,6 +49,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.tachyon.bindaas.SoundLists.Models.SoundCategoryModel;
 import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundCategoryFragment;
 import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundLanguageFragment;
 import com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundEventsFragment;
@@ -68,7 +69,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class Discover_SoundList_F extends RootFragment implements Player.EventListener {
 
-//    RecyclerView listview;
+    //    RecyclerView listview;
     Sounds_Adapter adapter;
     ArrayList<Sound_catagory_Get_Set> datalist;
 
@@ -78,13 +79,13 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     View view;
     Context context;
 
-   /* SwipeRefreshLayout swiperefresh;
-    ProgressBar pbar;
-*/
+    /* SwipeRefreshLayout swiperefresh;
+     ProgressBar pbar;
+ */
     private RecyclerView mainMenuRecycler;
     SoundMainMenuAdapter mainMenuAdapter;
     FrameLayout main_menu_view;
-
+    List<SoundCategoryModel> list_categories;
     public static String running_sound_id;
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -93,6 +94,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         StopPlaying();
         //Call_Api_For_get_allsound();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
 
             PRDownloader.initialize(context);
-           // pbar = view.findViewById(R.id.pbar);
+            // pbar = view.findViewById(R.id.pbar);
 
             datalist = new ArrayList<>();
 
@@ -119,24 +121,25 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
             mainMenuRecycler = view.findViewById(R.id.main_Recycler);
             main_menu_view = view.findViewById(R.id.main_menu_view);
 
-            mainMenuRecycler.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false));
+            mainMenuRecycler.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
-            List<String> list = new ArrayList<>();
-            list.add("Languages");
-            list.add("Events");
-            list.add("Trending");
-            list.add("Categories");
+            list_categories = new ArrayList<>();
+            list_categories.add(new SoundCategoryModel("0","Languages"));
+            list_categories.add(new SoundCategoryModel("1","Events"));
+            list_categories.add(new SoundCategoryModel("2","Trendings"));
+
+            loadMoreCategories();
 
             SoundLanguageFragment soundLanguageFragment = new SoundLanguageFragment();
             FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            transaction.add(R.id.main_menu_view,soundLanguageFragment);
+            transaction.add(R.id.main_menu_view, soundLanguageFragment);
             transaction.commit();
-            mainMenuAdapter = new SoundMainMenuAdapter(context, list, new SoundMainMenuAdapter.OnItemClick() {
+            mainMenuAdapter = new SoundMainMenuAdapter(context, list_categories, new SoundMainMenuAdapter.OnItemClick() {
                 @Override
                 public void onClick(int position) {
                     Fragment fragment = new SoundLanguageFragment();
-                    switch (position){
+                    switch (position) {
                         case 0:
                             fragment = new SoundLanguageFragment();
                             break;
@@ -146,12 +149,15 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
                         case 2:
                             fragment = new SoundTrendingFragment();
                             break;
-                        case 3:
+                        default:
                             fragment = new SoundCategoryFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("section_id",list_categories.get(position).getId());
+                            fragment.setArguments(bundle);
                     }
                     FragmentManager manager = getFragmentManager();
                     FragmentTransaction transaction = manager.beginTransaction();
-                    transaction.replace(R.id.main_menu_view,fragment);
+                    transaction.replace(R.id.main_menu_view, fragment);
                     transaction.commit();
                 }
             });
@@ -171,9 +177,59 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
             //Call_Api_For_get_allsound();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
         return view;
+    }
+
+    private void loadMoreCategories() {
+        try {
+            JSONObject params = new JSONObject();
+            try {
+                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ApiRequest.Call_Api(context, Variables.GET_SOUND_CATEGORIES, params, new Callback() {
+                @Override
+                public void Responce(String resp) {
+                    parseMoreCategories(resp);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
+
+    private void parseMoreCategories(String resp) {
+        try {
+            JSONObject jsonObject = new JSONObject(resp);
+            String code = jsonObject.optString("code");
+            if (code.equals("200")) {
+
+                JSONArray msgArray = jsonObject.getJSONArray("msg");
+                for (int i=0;i<msgArray.length();i++){
+                    JSONObject index = msgArray.getJSONObject(i);
+                    String section_id = index.getString("id");
+                    String section_name = index.getString("section_name");
+                    list_categories.add(new SoundCategoryModel(section_id,section_name));
+                }
+
+                mainMenuAdapter.setMenuList(list_categories);
+                mainMenuAdapter.notifyDataSetChanged();
+                //Set_adapter();
+
+//                list_categories.add();
+
+            } else {
+                Toast.makeText(context, "" + jsonObject.optString("msg"), Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
     }
 
     public void Set_adapter() {
@@ -400,15 +456,17 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
         super.onStart();
         active = true;
     }
+
     @Override
     public void onPause() {
         super.onPause();
         try {
             EventBus.getDefault().unregister(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -419,6 +477,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
         }
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -444,8 +503,8 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-              //  previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-               // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
+                //  previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
+                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
                 // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
@@ -459,7 +518,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
 
     public void Show_loading_state() {
         try {
-           // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
+            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
 //            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
@@ -473,10 +532,10 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-              //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
+                //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
 //                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-             //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
+                //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
                 //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
             }
@@ -489,6 +548,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     }
 
     ProgressDialog progressDialog;
+
     public void Down_load_mp3(final String id, final String sound_name, String url) {
         try {
             progressDialog = new ProgressDialog(context);

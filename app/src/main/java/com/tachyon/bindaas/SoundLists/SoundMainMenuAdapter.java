@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SoundLists.Models.SoundCategoryModel;
 
 import java.util.List;
 
@@ -17,15 +18,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class SoundMainMenuAdapter extends RecyclerView.Adapter<SoundMainMenuAdapter.ViewHolder> {
     Context context;
-    List<String> menuList;
+    List<SoundCategoryModel> menuList;
     OnItemClick listener;
     int row_index = 0;
-    public SoundMainMenuAdapter(Context context, List<String> menuList,OnItemClick listener) {
+
+
+
+    public SoundMainMenuAdapter(Context context, List<SoundCategoryModel> menuList, OnItemClick listener) {
         this.context = context;
         this.menuList = menuList;
         this.listener = listener;
     }
-
+    public void setMenuList(List<SoundCategoryModel> menuList) {
+        this.menuList = menuList;
+    }
     public interface OnItemClick{
         void onClick(int position);
     }
@@ -44,7 +50,7 @@ public class SoundMainMenuAdapter extends RecyclerView.Adapter<SoundMainMenuAdap
             holder.background_text.setBackgroundColor(Color.parseColor("#ffffff"));
             holder.main_menu_text.setTextColor(Color.parseColor("#000000"));
         }
-        holder.main_menu_text.setText(menuList.get(position));
+        holder.main_menu_text.setText(menuList.get(position).getSection_name());
         holder.itemView.setOnClickListener(view -> {
             row_index=position;
             notifyDataSetChanged();

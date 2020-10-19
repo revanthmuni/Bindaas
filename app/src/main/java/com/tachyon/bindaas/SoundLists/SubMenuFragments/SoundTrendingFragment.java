@@ -20,6 +20,7 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -63,6 +64,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
     DownloadRequest prDownloader;
     public static String running_sound_id;
     static boolean active = false;
+    ShimmerFrameLayout shimmer_layout;
 
     public SoundTrendingFragment() {
     }
@@ -73,6 +75,8 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         View view = inflater.inflate(R.layout.fragment_sound_trending, container, false);
         this.context = getContext();
+        shimmer_layout = view.findViewById(R.id.shimmer_layout);
+        shimmer_layout.startShimmer();
         trending_sound_recycler = view.findViewById(R.id.trending_sound_recycler);
         trending_sound_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         trending_sound_recycler.setNestedScrollingEnabled(false);
@@ -85,7 +89,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         try {
             JSONObject params = new JSONObject();
             try {
-                params.put("user_id", "");
+                params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -93,7 +97,9 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
             ApiRequest.Call_Api(context, Variables.GET_TRENDING_SOUNDS, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                    shimmer_layout.stopShimmer();
+                    shimmer_layout.setVisibility(View.GONE);
+                    //Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
                     parseTrendingSounds(resp);
                 }
             });
@@ -217,7 +223,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
     }
 
     private void setAdapter() {
-        adapter = new SoundsAdapter(context, datalist, new SoundsAdapter.OnItemClickListener() {
+        adapter = new SoundsAdapter(context, datalist,"sound_trending", new SoundsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
                 if (view.getId() == R.id.done) {
