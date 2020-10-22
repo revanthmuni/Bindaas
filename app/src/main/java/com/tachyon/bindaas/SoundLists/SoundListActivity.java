@@ -94,10 +94,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             try {
                 //params.put("user_id", "");
                 params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
-                if (title.equals("Language Sounds")) {
+                /* if (title.equals("Language Sounds")) {
                     params.put("language", section_id);
-                } else
-                    params.put("sound_section_id", section_id);
+                } else*/
+                params.put("sound_section_id", section_id);
 
             } catch (JSONException e) {
                 e.printStackTrace();
