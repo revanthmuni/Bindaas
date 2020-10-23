@@ -236,7 +236,7 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
                         StopPlaying();
-                        Call_Api_For_Fav_sound(postion, item.id);
+                        Call_Api_For_Fav_sound(postion, item);
                     } else if (view.getId() == R.id.play_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -313,13 +313,16 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
         }
     }
 
-    private void Call_Api_For_Fav_sound(final int pos, String video_id) {
+    private void Call_Api_For_Fav_sound(final int pos, Sounds_GetSet item) {
         try {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("sound_id", video_id);
-                parameters.put("fav", "0");
+                parameters.put("sound_id", item.id);
+                if (item.fav.equals("0")){
+                    parameters.put("fav", "1");
+                }else
+                    parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -328,10 +331,14 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    EventBus.getDefault().post("done");
                     Functions.cancel_loader();
-                    /*datalist.remove(pos);
-                    adapter.notifyItemRemoved(pos);*/
+
+                    if (item.fav.equals("1"))
+                        item.fav = "0";
+                    else
+                        item.fav = "1";
+                    datalist.remove(pos);
+                    datalist.add(pos,item);
                     adapter.notifyDataSetChanged();
                 }
             });

@@ -196,13 +196,17 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
-    private void Call_Api_For_Fav_sound(final int pos, String video_id) {
+    private void Call_Api_For_Fav_sound(final int pos, Sounds_GetSet item) {
         try {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("sound_id", video_id);
-                parameters.put("fav", "0");
+                parameters.put("sound_id", item.id);
+                Log.d(TAG, "Call_Api_For_Fav_sound: "+item.fav);
+                if (item.fav.equals("0")){
+                    parameters.put("fav", "1");
+                }else
+                    parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -213,8 +217,13 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                 public void Responce(String resp) {
                     EventBus.getDefault().post("done");
                     Functions.cancel_loader();
-                    /*datalist.remove(pos);
-                    adapter.notifyItemRemoved(pos);*/
+
+                    if (item.fav.equals("1"))
+                        item.fav = "0";
+                    else
+                        item.fav = "1";
+                    datalist.remove(pos);
+                    datalist.add(pos,item);
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -240,7 +249,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                 } else if (view.getId() == R.id.fav_btn) {
                     Log.d(TAG, "onItemClick: fav clicked");
                     StopPlaying();
-                    Call_Api_For_Fav_sound(postion, item.id);
+                    Call_Api_For_Fav_sound(postion, item);
                 } else if (view.getId() == R.id.play_arrow) {
                     Log.d(TAG, "onItemClick: play clicked");
                     if (thread != null && !thread.isAlive()) {
