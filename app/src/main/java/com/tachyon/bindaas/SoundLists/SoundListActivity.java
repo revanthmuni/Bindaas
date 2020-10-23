@@ -85,7 +85,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         sounds_recycler.setNestedScrollingEnabled(false);
         loadTrendingSounds();
-       // Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
     }
 
     private void loadTrendingSounds() {
@@ -93,11 +93,11 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             JSONObject params = new JSONObject();
             try {
                 //params.put("user_id", "");
-                params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
-                /* if (title.equals("Language Sounds")) {
+                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+                if (title.equals("Language Sounds")) {
                     params.put("language", section_id);
-                } else*/
-                params.put("sound_section_id", section_id);
+                } else
+                    params.put("sound_section_id", section_id);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -223,7 +223,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
                 }
             });*/
-            adapter = new SoundsAdapter(context, datalist,"sound_list", new SoundsAdapter.OnItemClickListener() {
+            adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
                     if (view.getId() == R.id.done) {

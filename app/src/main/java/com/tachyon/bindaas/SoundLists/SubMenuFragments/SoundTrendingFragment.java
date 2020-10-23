@@ -158,6 +158,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         }
     }
     public void playaudio(View view, final Sounds_GetSet item) {
+        Log.d(TAG, "playaudio: ");
         try {
             previous_view = view;
 
@@ -251,10 +252,13 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                     }
                     Toast.makeText(getContext(), R.string.pause_pressed, Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.d(TAG, "on itemview click ");
                     if (thread != null && !thread.isAlive()) {
+                        Log.d(TAG, "onItemClick: if");
                         StopPlaying();
                         playaudio(view, item);
                     } else if (thread == null) {
+                        Log.d(TAG, "onItemClick: else");
                         StopPlaying();
                         playaudio(view, item);
                     }
@@ -265,6 +269,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         trending_sound_recycler.setAdapter(adapter);
     }
     public void StopPlaying() {
+        Log.d(TAG, "StopPlaying: ");
         try {
             if (player != null) {
                 player.setPlayWhenReady(false);
@@ -338,6 +343,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
 
     public void show_Stop_state() {
+        Log.d(TAG, "show_Stop_state:");
         try {
             if (previous_view != null) {
                 //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);

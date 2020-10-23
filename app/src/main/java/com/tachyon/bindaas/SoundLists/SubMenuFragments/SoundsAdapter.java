@@ -96,10 +96,7 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     public int getItemCount() {
         return list != null ? list.size() : 0;
     }
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageButton done;
