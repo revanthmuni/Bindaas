@@ -55,6 +55,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundsAdapter.mCurrentPlayingPosition;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -72,6 +74,7 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
     DownloadRequest prDownloader;
 
     public static String running_sound_id;
+    private int adapter_position;
 
     public SoundList_F(String type) {
         this.type = type;
@@ -100,6 +103,8 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
                 @Override
                 public void onItemClick(View view, int pos, Object object) {
 
+                    previous_view = view;
+                    adapter_position = pos;
                     Sounds_GetSet item = (Sounds_GetSet) object;
 
                     if (view.getId() == R.id.done) {
@@ -116,7 +121,6 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), "Play pressed", Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -125,7 +129,6 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(getContext(), "Pause pressed", Toast.LENGTH_SHORT).show();
                     } else {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -369,10 +372,10 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-               // previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-
+                previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
+                mCurrentPlayingPosition = adapter_position;
+                adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -383,9 +386,10 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
 
     public void Show_loading_state() {
         try {
-            previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-            //previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
+            mCurrentPlayingPosition = adapter_position;
+            adapter.notifyDataSetChanged();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -396,11 +400,10 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-                previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-               // previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
+                mCurrentPlayingPosition = -1;
+                adapter.notifyDataSetChanged();
             }
 
             running_sound_id = "none";

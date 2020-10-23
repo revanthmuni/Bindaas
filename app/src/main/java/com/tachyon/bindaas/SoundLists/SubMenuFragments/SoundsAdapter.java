@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -31,8 +32,9 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     OnItemClickListener listene;
     private static final String TAG = "SoundsAdapter";
     String flag;
+   public static int mCurrentPlayingPosition = -1; // if -1 nothing is playing
 
-    public SoundsAdapter(Context context, ArrayList<Sounds_GetSet> list,String flag,OnItemClickListener listener) {
+    public SoundsAdapter(Context context, ArrayList<Sounds_GetSet> list, String flag, OnItemClickListener listener) {
         this.context = context;
         this.list = list;
         this.listene = listener;
@@ -46,39 +48,48 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_sound_layout,parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_sound_layout, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
-            if (flag.equals("sound_list")){
+            if (mCurrentPlayingPosition == position) {
+                // display stop icon
+                holder.play_arrow.setVisibility(View.GONE);
+                holder.pause_arrow.setVisibility(View.VISIBLE);
+            } else {
+                holder.play_arrow.setVisibility(View.VISIBLE);
+                holder.pause_arrow.setVisibility(View.GONE);
+                // display play icon
+            }
+            if (flag.equals("sound_list")) {
                 holder.view_more_layout.setVisibility(View.GONE);
-            }else
+            } else
                 holder.view_more_layout.setVisibility(View.VISIBLE);
             holder.section_name.setText("Section Name");
-            holder.play_view.setPadding(8,8,8,8);
+            holder.play_view.setPadding(8, 8, 8, 8);
 //            holder.section_name.setText(list.get(position).section.equals("")?"Section Bindaas":list.get(position).section);
             holder.view_more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, SoundListActivity.class);
-                    intent.putExtra("section_id",list.get(position).id);
-                    intent.putExtra("title","Trending Sounds");
+                    intent.putExtra("section_id", list.get(position).id);
+                    intent.putExtra("title", "Trending Sounds");
                     context.startActivity(intent);
                 }
             });
             holder.setIsRecyclable(false);
             Sounds_GetSet item = list.get(position);
             holder.sound_name.setText(item.sound_name);
-           // holder.description_txt.setText(item.description);
+            // holder.description_txt.setText(item.description);
 
-            if (item.thum != null && !item.thum.equals("")&&item.thum.contains(".jpg")) {
+            if (item.thum != null && !item.thum.equals("") && item.thum.contains(".jpg")) {
                 Log.d(Variables.tag, item.thum);
                 Uri uri = Uri.parse(item.thum);
                 holder.sound_image.setImageURI(uri);
             }
-            Log.d(TAG, "onBindViewHolder: "+new Gson().toJson(item ));
+            Log.d(TAG, "onBindViewHolder: " + new Gson().toJson(item));
 //            holder.fav_btn.setImageDrawable(context.getDrawable(R.drawable.ic_my_favourite));
             holder.bind(position, list.get(position), listene);
             if (item.fav.equals("1"))
@@ -102,11 +113,11 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
         ImageButton done;
         ImageButton fav_btn;
         TextView sound_name, description_txt;
-        SimpleDraweeView sound_image;
+        ImageView sound_image;
         ImageButton play_arrow, pause_arrow;
         ImageButton play_Btn, pause_Btn;
         ConstraintLayout view_more_layout;
-        TextView view_more,section_name;
+        TextView view_more, section_name;
         ConstraintLayout play_view;
 
         public ViewHolder(@NonNull View view) {
@@ -152,15 +163,26 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
                 play_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mCurrentPlayingPosition = getAdapterPosition();
 
-                        listener.onItemClick(itemView, pos, item);
+                        if (play_arrow.getVisibility() == View.VISIBLE) {
+                            play_arrow.setVisibility(View.GONE);
+                            pause_arrow.setVisibility(View.VISIBLE);
+                            listener.onItemClick(itemView, pos, item);
+                        }
+                        notifyDataSetChanged();
                     }
                 });
                 pause_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        listener.onItemClick(itemView, pos, item);
+                        if (pause_arrow.getVisibility() == View.VISIBLE){
+                            mCurrentPlayingPosition = -1;
+                            pause_arrow.setVisibility(View.GONE);
+                            play_arrow.setVisibility(View.VISIBLE);
+                            listener.onItemClick(itemView, pos, item);
+                        }
+                        notifyDataSetChanged();
                     }
                 });
                /* play_Btn.setOnClickListener(new View.OnClickListener() {

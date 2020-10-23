@@ -48,6 +48,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundsAdapter.mCurrentPlayingPosition;
+
 public class SoundListActivity extends AppCompatActivity implements Player.EventListener {
     String section_id;
     String title_text;
@@ -66,6 +68,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     RecyclerView sounds_recycler;
     ImageButton Goback;
     TextView title;
+    private int adapter_position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,6 +229,8 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    adapter_position = postion;
+                    previous_view = view;
                     if (view.getId() == R.id.done) {
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
@@ -240,7 +245,6 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(context, R.string.play_pressed, Toast.LENGTH_SHORT).show();
                     } else if (view.getId() == R.id.pause_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -249,7 +253,6 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                             StopPlaying();
                             playaudio(view, item);
                         }
-                        Toast.makeText(context, R.string.pause_pressed, Toast.LENGTH_SHORT).show();
                     } else {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -384,11 +387,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
+                mCurrentPlayingPosition = adapter_position;
+                adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -399,10 +401,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
     public void Show_loading_state() {
         try {
-            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            mCurrentPlayingPosition = adapter_position;
+            adapter.notifyDataSetChanged();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -411,14 +413,13 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
 
     public void show_Stop_state() {
+        Log.d(TAG, "show_Stop_state:");
         try {
             if (previous_view != null) {
-                //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
-                //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
+                mCurrentPlayingPosition = -1;
+                adapter.notifyDataSetChanged();
             }
 
             running_sound_id = "none";

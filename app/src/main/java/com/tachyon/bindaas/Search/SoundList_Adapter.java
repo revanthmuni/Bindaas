@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ class SoundList_Adapter extends RecyclerView.Adapter<SoundList_Adapter.CustomVie
 
     ArrayList<Object> datalist;
     Adapter_Click_Listener adapter_click_listener;
+    public static int mCurrentPlayingPosition = -1; // if -1 nothing is playing
 
     public SoundList_Adapter(Context context, ArrayList<Object> arrayList, Adapter_Click_Listener listener) {
         this.context = context;
@@ -55,7 +57,15 @@ class SoundList_Adapter extends RecyclerView.Adapter<SoundList_Adapter.CustomVie
         Sounds_GetSet item = (Sounds_GetSet) datalist.get(i);
 
         try {
-
+            if (mCurrentPlayingPosition == i) {
+                // display stop icon
+                holder.play_arrow.setVisibility(View.GONE);
+                holder.pause_arrow.setVisibility(View.VISIBLE);
+            } else {
+                holder.play_arrow.setVisibility(View.VISIBLE);
+                holder.pause_arrow.setVisibility(View.GONE);
+                // display play icon
+            }
             holder.sound_name.setText(item.sound_name);
             holder.description_txt.setText(item.description);
 
@@ -89,7 +99,7 @@ class SoundList_Adapter extends RecyclerView.Adapter<SoundList_Adapter.CustomVie
         ImageButton play_Btn, pause_Btn;
 
         TextView sound_name, description_txt;
-        SimpleDraweeView sound_image;
+        ImageView sound_image;
 
         public CustomViewHolder(View view) {
             super(view);
@@ -130,17 +140,26 @@ class SoundList_Adapter extends RecyclerView.Adapter<SoundList_Adapter.CustomVie
                 play_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        play_arrow.setVisibility(View.GONE);
-                        pause_arrow.setVisibility(View.VISIBLE);
-                        listener.onItemClick(itemView, pos, item);
+                        mCurrentPlayingPosition = getAdapterPosition();
+
+                        if (play_arrow.getVisibility() == View.VISIBLE) {
+                            play_arrow.setVisibility(View.GONE);
+                            pause_arrow.setVisibility(View.VISIBLE);
+                            listener.onItemClick(itemView, pos, item);
+                        }
+                        notifyDataSetChanged();
                     }
                 });
                 pause_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pause_arrow.setVisibility(View.GONE);
-                        play_arrow.setVisibility(View.VISIBLE);
-                        listener.onItemClick(itemView, pos, item);
+                        if (pause_arrow.getVisibility() == View.VISIBLE){
+                            mCurrentPlayingPosition = -1;
+                            pause_arrow.setVisibility(View.GONE);
+                            play_arrow.setVisibility(View.VISIBLE);
+                            listener.onItemClick(itemView, pos, item);
+                        }
+                        notifyDataSetChanged();
                     }
                 });
                 play_Btn.setOnClickListener(new View.OnClickListener() {
