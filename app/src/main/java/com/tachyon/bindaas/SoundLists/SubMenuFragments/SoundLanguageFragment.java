@@ -29,8 +29,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.app.Activity.RESULT_OK;
+import static com.tachyon.bindaas.Video_Recording.Video_Recoder_A.Sounds_list_Request_code;
 
 public class SoundLanguageFragment extends RootFragment {
 
@@ -122,10 +126,40 @@ public class SoundLanguageFragment extends RootFragment {
     }
 
     private void openSoundsList(int position, String section_id) {
-        Log.d(TAG, "openSoundsList: " + section_id);
+
         Intent intent = new Intent(context, SoundListActivity.class);
-        intent.putExtra("section_id", section_id);
-        intent.putExtra("title", "Language Sounds");
-        startActivity(intent);
+
+        intent.putExtra("section_id",section_id);
+        intent.putExtra("title","Event Sounds");
+        startActivityForResult(intent, Sounds_list_Request_code);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == Sounds_list_Request_code) {
+                    if (data != null) {
+
+                        if (data.getStringExtra("isSelected").equals("yes")) {
+                            Intent output = new Intent();
+                            output.putExtra("isSelected", "yes");
+                            output.putExtra("sound_name", data.getStringExtra("sound_name"));
+                            output.putExtra("sound_id", data.getStringExtra("sound_id"));
+                            getActivity().setResult(RESULT_OK, output);
+                            getActivity().finish();
+                            getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                        }
+
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+
+        }
     }
 }

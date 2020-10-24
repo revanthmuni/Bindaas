@@ -70,15 +70,7 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
             holder.section_name.setText("Section Name");
             holder.play_view.setPadding(8, 8, 8, 8);
 //            holder.section_name.setText(list.get(position).section.equals("")?"Section Bindaas":list.get(position).section);
-            holder.view_more.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, SoundListActivity.class);
-                    intent.putExtra("section_id", list.get(position).id);
-                    intent.putExtra("title", "Trending Sounds");
-                    context.startActivity(intent);
-                }
-            });
+
             holder.setIsRecyclable(false);
             Sounds_GetSet item = list.get(position);
             holder.sound_name.setText(item.sound_name);
@@ -206,6 +198,12 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
                     @Override
                     public void onClick(View v) {
                         listener.onItemClick(v, pos, item);
+                    }
+                });
+                view_more.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onItemClick(view, pos, item);
                     }
                 });
             } catch (Exception e) {

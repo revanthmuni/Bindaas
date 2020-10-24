@@ -24,6 +24,7 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -69,6 +70,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     ImageButton Goback;
     TextView title;
     private int adapter_position;
+    ShimmerFrameLayout shimmer_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         setContentView(R.layout.activity_sound_list2);
 
         sounds_recycler = findViewById(R.id.sounds_recycler);
+        shimmer_layout = findViewById(R.id.shimmer_layout);
+        shimmer_layout.startShimmer();
         Goback = findViewById(R.id.Goback);
         title = findViewById(R.id.title);
         Goback.setOnClickListener(view -> finish());
@@ -92,13 +96,14 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     }
 
     private void loadTrendingSounds() {
+
         try {
             JSONObject params = new JSONObject();
             try {
                 //params.put("user_id", "");
                 params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
-                if (title.equals("Language Sounds")) {
-                    params.put("language", section_id);
+                if (title_text.equals("Trending Sounds")) {
+                    params.put("section_id", section_id);
                 } else
                     params.put("sound_section_id", section_id);
 
@@ -108,7 +113,8 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             ApiRequest.Call_Api(this, Variables.GET_SOUND_BY_DISCOVERY_SECTION, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+                    shimmer_layout.stopShimmer();
+                    shimmer_layout.setVisibility(View.GONE);
                     parseTrendingSounds(resp);
                 }
             });

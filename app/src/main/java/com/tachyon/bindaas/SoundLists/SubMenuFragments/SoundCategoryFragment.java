@@ -20,6 +20,7 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -69,7 +70,7 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     static boolean active = false;
     private static final String TAG = "SoundCategoryFragment";
     private int adapter_position;
-
+    ShimmerFrameLayout shimmer_layout;
     public SoundCategoryFragment() {
     }
 
@@ -80,6 +81,8 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
 
         this.context = getContext();
         category_recycler = view.findViewById(R.id.category_recycler);
+        shimmer_layout = view.findViewById(R.id.shimmer_layout);
+        shimmer_layout.startShimmer();
         category_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         category_recycler.setNestedScrollingEnabled(false);
 
@@ -107,6 +110,8 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             ApiRequest.Call_Api(context, Variables.GET_SOUND_BY_DISCOVERY_SECTION, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    shimmer_layout.stopShimmer();
+                    shimmer_layout.setVisibility(View.GONE);
                     parseTrendingSounds(resp);
                 }
             });
