@@ -244,7 +244,6 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
                 previous_view = view;
                 adapter_position = postion;
-                Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
                 if (view.getId() == R.id.done) {
                     Log.d(TAG, "onItemClick: done clicked");
                     StopPlaying();
