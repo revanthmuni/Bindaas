@@ -6,20 +6,18 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
-    android:elevation="8dp"
     android:layout_margin="6dp"
     app:cardBackgroundColor="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        >
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/main_menu_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Menu Text"
+            android:padding="10dp"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

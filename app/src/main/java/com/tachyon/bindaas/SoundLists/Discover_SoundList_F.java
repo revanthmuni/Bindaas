@@ -122,6 +122,7 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
             main_menu_view = view.findViewById(R.id.main_menu_view);
 
             mainMenuRecycler.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+            mainMenuRecycler.setHasFixedSize(true);
 
             list_categories = new ArrayList<>();
             list_categories.add(new SoundCategoryModel("0","Languages"));

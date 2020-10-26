@@ -44,10 +44,10 @@ public class SoundMainMenuAdapter extends RecyclerView.Adapter<SoundMainMenuAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (row_index == position){
-            holder.background_text.setBackgroundColor(Color.parseColor("#567845"));
+            holder.background_text.setCardBackgroundColor(Color.parseColor("#567845"));
             holder.main_menu_text.setTextColor(Color.parseColor("#ffffff"));
         }else{
-            holder.background_text.setBackgroundColor(Color.parseColor("#ffffff"));
+            holder.background_text.setCardBackgroundColor(Color.parseColor("#ffffff"));
             holder.main_menu_text.setTextColor(Color.parseColor("#000000"));
         }
         holder.main_menu_text.setText(menuList.get(position).getSection_name());

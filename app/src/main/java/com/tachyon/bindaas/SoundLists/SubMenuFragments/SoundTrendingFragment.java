@@ -36,6 +36,7 @@ import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.SoundLists.SoundListActivity;
 import com.tachyon.bindaas.SoundLists.Sounds_GetSet;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,10 +46,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.app.Activity.RESULT_OK;
+import static com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundsAdapter.mCurrentPlayingPosition;
+import static com.tachyon.bindaas.Video_Recording.Video_Recoder_A.Sounds_list_Request_code;
 
 public class SoundTrendingFragment extends RootFragment implements Player.EventListener {
     Context context;
@@ -65,6 +69,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
     public static String running_sound_id;
     static boolean active = false;
     ShimmerFrameLayout shimmer_layout;
+    private int adapter_position;
 
     public SoundTrendingFragment() {
     }
@@ -158,6 +163,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         }
     }
     public void playaudio(View view, final Sounds_GetSet item) {
+        Log.d(TAG, "playaudio: ");
         try {
             previous_view = view;
 
@@ -193,13 +199,17 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
-    private void Call_Api_For_Fav_sound(final int pos, String video_id) {
+    private void Call_Api_For_Fav_sound(final int pos, Sounds_GetSet item) {
         try {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("sound_id", video_id);
-                parameters.put("fav", "0");
+                parameters.put("sound_id", item.id);
+                Log.d(TAG, "Call_Api_For_Fav_sound: "+item.fav);
+                if (item.fav.equals("0")){
+                    parameters.put("fav", "1");
+                }else
+                    parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -210,8 +220,13 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                 public void Responce(String resp) {
                     EventBus.getDefault().post("done");
                     Functions.cancel_loader();
-                    /*datalist.remove(pos);
-                    adapter.notifyItemRemoved(pos);*/
+
+                    if (item.fav.equals("1"))
+                        item.fav = "0";
+                    else
+                        item.fav = "1";
+                    datalist.remove(pos);
+                    datalist.add(pos,item);
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -223,16 +238,22 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
     }
 
     private void setAdapter() {
-        adapter = new SoundsAdapter(context, datalist,"sound_trending", new SoundsAdapter.OnItemClickListener() {
+        adapter = new SoundsAdapter(context, datalist,"sound_trending",
+                new SoundsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                previous_view = view;
+                adapter_position = postion;
                 if (view.getId() == R.id.done) {
+                    Log.d(TAG, "onItemClick: done clicked");
                     StopPlaying();
                     Down_load_mp3(item.id, item.sound_name, item.acc_path);
                 } else if (view.getId() == R.id.fav_btn) {
+                    Log.d(TAG, "onItemClick: fav clicked");
                     StopPlaying();
-                    Call_Api_For_Fav_sound(postion, item.id);
+                    Call_Api_For_Fav_sound(postion, item);
                 } else if (view.getId() == R.id.play_arrow) {
+                    Log.d(TAG, "onItemClick: play clicked");
                     if (thread != null && !thread.isAlive()) {
                         StopPlaying();
                         playaudio(view, item);
@@ -240,8 +261,8 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                         StopPlaying();
                         playaudio(view, item);
                     }
-                    Toast.makeText(getContext(), R.string.play_pressed, Toast.LENGTH_SHORT).show();
                 } else if (view.getId() == R.id.pause_arrow) {
+                    Log.d(TAG, "onItemClick: pause clicked");
                     if (thread != null && !thread.isAlive()) {
                         StopPlaying();
                         playaudio(view, item);
@@ -249,12 +270,17 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                         StopPlaying();
                         playaudio(view, item);
                     }
-                    Toast.makeText(getContext(), R.string.pause_pressed, Toast.LENGTH_SHORT).show();
-                } else {
+                }else if (view.getId() == R.id.view_more){
+                    openSoundsList(postion, item.id);
+                }
+                else {
+                    Log.d(TAG, "on itemview click ");
                     if (thread != null && !thread.isAlive()) {
+                        Log.d(TAG, "onItemClick: if");
                         StopPlaying();
                         playaudio(view, item);
                     } else if (thread == null) {
+                        Log.d(TAG, "onItemClick: else");
                         StopPlaying();
                         playaudio(view, item);
                     }
@@ -265,6 +291,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         trending_sound_recycler.setAdapter(adapter);
     }
     public void StopPlaying() {
+        Log.d(TAG, "StopPlaying: ");
         try {
             if (player != null) {
                 player.setPlayWhenReady(false);
@@ -278,7 +305,6 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
-
 
     @Override
     public void onStart() {
@@ -307,15 +333,13 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         }
     }
 
-
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
+                mCurrentPlayingPosition = adapter_position;
+                adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -323,29 +347,26 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         }
     }
 
-
     public void Show_loading_state() {
         try {
-            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            mCurrentPlayingPosition = adapter_position;
+            adapter.notifyDataSetChanged();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
     }
 
-
     public void show_Stop_state() {
+        Log.d(TAG, "show_Stop_state:");
         try {
             if (previous_view != null) {
-                //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
-                //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
+                mCurrentPlayingPosition = -1;
+                adapter.notifyDataSetChanged();
             }
 
             running_sound_id = "none";
@@ -426,5 +447,41 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
+    private void openSoundsList(int position, String section_id) {
 
+        Intent intent = new Intent(context, SoundListActivity.class);
+
+        intent.putExtra("section_id",section_id);
+        intent.putExtra("title","Trending Sounds");
+        startActivityForResult(intent, Sounds_list_Request_code);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == Sounds_list_Request_code) {
+                    if (data != null) {
+
+                        if (data.getStringExtra("isSelected").equals("yes")) {
+                            Intent output = new Intent();
+                            output.putExtra("isSelected", "yes");
+                            output.putExtra("sound_name", data.getStringExtra("sound_name"));
+                            output.putExtra("sound_id", data.getStringExtra("sound_id"));
+                            getActivity().setResult(RESULT_OK, output);
+                            getActivity().finish();
+                            getActivity().overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                        }
+
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+
+        }
+    }
 }

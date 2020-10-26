@@ -48,7 +48,7 @@ public class SoundLanguageAdapter extends RecyclerView.Adapter<SoundLanguageAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onClick(position,langList.get(position).getSection_name());
+                listener.onClick(position,langList.get(position).getId());
             }
         });
     }

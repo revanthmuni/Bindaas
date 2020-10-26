@@ -20,6 +20,7 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -48,6 +49,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.app.Activity.RESULT_OK;
+import static com.tachyon.bindaas.SoundLists.SubMenuFragments.SoundsAdapter.mCurrentPlayingPosition;
 
 public class SoundCategoryFragment extends RootFragment implements Player.EventListener {
 
@@ -67,7 +69,8 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     public static String running_sound_id;
     static boolean active = false;
     private static final String TAG = "SoundCategoryFragment";
-
+    private int adapter_position;
+    ShimmerFrameLayout shimmer_layout;
     public SoundCategoryFragment() {
     }
 
@@ -78,6 +81,8 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
 
         this.context = getContext();
         category_recycler = view.findViewById(R.id.category_recycler);
+        shimmer_layout = view.findViewById(R.id.shimmer_layout);
+        shimmer_layout.startShimmer();
         category_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         category_recycler.setNestedScrollingEnabled(false);
 
@@ -105,6 +110,8 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             ApiRequest.Call_Api(context, Variables.GET_SOUND_BY_DISCOVERY_SECTION, params, new Callback() {
                 @Override
                 public void Responce(String resp) {
+                    shimmer_layout.stopShimmer();
+                    shimmer_layout.setVisibility(View.GONE);
                     parseTrendingSounds(resp);
                 }
             });
@@ -227,12 +234,14 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    previous_view = view;
+                    adapter_position = postion;
                     if (view.getId() == R.id.done) {
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
                         StopPlaying();
-                        Call_Api_For_Fav_sound(postion, item.id);
+                        Call_Api_For_Fav_sound(postion, item);
                     } else if (view.getId() == R.id.play_arrow) {
                         if (thread != null && !thread.isAlive()) {
                             StopPlaying();
@@ -309,13 +318,16 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
         }
     }
 
-    private void Call_Api_For_Fav_sound(final int pos, String video_id) {
+    private void Call_Api_For_Fav_sound(final int pos, Sounds_GetSet item) {
         try {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("sound_id", video_id);
-                parameters.put("fav", "0");
+                parameters.put("sound_id", item.id);
+                if (item.fav.equals("0")){
+                    parameters.put("fav", "1");
+                }else
+                    parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -324,10 +336,14 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             ApiRequest.Call_Api(context, Variables.favSound, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    EventBus.getDefault().post("done");
                     Functions.cancel_loader();
-                    /*datalist.remove(pos);
-                    adapter.notifyItemRemoved(pos);*/
+
+                    if (item.fav.equals("1"))
+                        item.fav = "0";
+                    else
+                        item.fav = "1";
+                    datalist.remove(pos);
+                    datalist.add(pos,item);
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -386,11 +402,10 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     public void Show_Run_State() {
         try {
             if (previous_view != null) {
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.pause_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
-                // previous_view.findViewById(R.id.done).setVisibility(View.VISIBLE);
+                mCurrentPlayingPosition = adapter_position;
+                adapter.notifyDataSetChanged();
             }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
@@ -401,10 +416,10 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
 
     public void Show_loading_state() {
         try {
-            // previous_view.findViewById(R.id.play_btn).setVisibility(View.GONE);
             previous_view.findViewById(R.id.play_arrow).setVisibility(View.GONE);
             previous_view.findViewById(R.id.pause_arrow).setVisibility(View.VISIBLE);
-//            previous_view.findViewById(R.id.loading_progress).setVisibility(View.VISIBLE);
+            mCurrentPlayingPosition = adapter_position;
+            adapter.notifyDataSetChanged();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -415,12 +430,11 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     public void show_Stop_state() {
         try {
             if (previous_view != null) {
-                //  previous_view.findViewById(R.id.play_btn).setVisibility(View.VISIBLE);
                 previous_view.findViewById(R.id.play_arrow).setVisibility(View.VISIBLE);
-//                previous_view.findViewById(R.id.loading_progress).setVisibility(View.GONE);
-                //   previous_view.findViewById(R.id.pause_btn).setVisibility(View.GONE);
                 previous_view.findViewById(R.id.pause_arrow).setVisibility(View.GONE);
-                //previous_view.findViewById(R.id.done).setVisibility(View.GONE);
+                mCurrentPlayingPosition = -1;
+                adapter.notifyDataSetChanged();
+
             }
 
             running_sound_id = "none";
