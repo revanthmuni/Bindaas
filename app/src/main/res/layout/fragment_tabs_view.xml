@@ -72,33 +72,49 @@
 
         <LinearLayout
             android:id="@+id/linearLayout6"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
             android:background="@color/white"
             android:orientation="horizontal"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <TextView
-                android:id="@+id/textView3"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                ads:cardCornerRadius="10dp"
                 android:layout_weight="1"
+                android:layout_margin="2dp"
+                ads:cardBackgroundColor="@color/white"
+                ads:cardElevation="4dp">
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:background="@color/themecolor"
                 android:gravity="center"
                 android:text="Notifications"
                 android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/textView4"
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                ads:cardCornerRadius="10dp"
+                ads:cardBackgroundColor="@color/white"
                 android:layout_weight="1"
+                android:layout_margin="2dp"
+                ads:cardElevation="4dp">
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+
                 android:alpha="0.5"
                 android:gravity="center"
                 android:text="Messages"
                 android:textColor="@color/black" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <FrameLayout
