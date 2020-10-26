@@ -73,7 +73,7 @@ public class SoundEventsFragment extends RootFragment {
         try {
             JSONObject params = new JSONObject();
             try {
-                params.put("user_id", "");
+                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id,""));
 
             } catch (JSONException e) {
                 e.printStackTrace();
