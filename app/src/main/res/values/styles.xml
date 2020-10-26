@@ -62,7 +62,7 @@
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-
+        <item name="android:windowBackground">@drawable/rounded_background_white</item>
     </style>
 
 
