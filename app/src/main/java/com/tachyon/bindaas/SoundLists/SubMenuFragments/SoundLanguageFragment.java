@@ -53,15 +53,18 @@ public class SoundLanguageFragment extends RootFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sound_language, container, false);
 
-        this.context = getContext();
-        language_recycler = view.findViewById(R.id.language_recycler);
-        shimmer_layout = view.findViewById(R.id.shimmer_layout);
+        try {
+            this.context = getContext();
+            language_recycler = view.findViewById(R.id.language_recycler);
+            shimmer_layout = view.findViewById(R.id.shimmer_layout);
 
-        shimmer_layout.startShimmer();
-        language_recycler.setLayoutManager(new GridLayoutManager(context, 2));
-        lang_list = new ArrayList<>();
-        loadLanguages();
-
+            shimmer_layout.startShimmer();
+            language_recycler.setLayoutManager(new GridLayoutManager(context, 2));
+            lang_list = new ArrayList<>();
+            loadLanguages();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         return view;
     }
 
@@ -96,7 +99,7 @@ public class SoundLanguageFragment extends RootFragment {
             if (code.equals("200")) {
 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
-                for (int i = 0;i<msgArray.length();i++){
+                for (int i = 0; i < msgArray.length(); i++) {
                     JSONObject index = msgArray.getJSONObject(i);
                     LanguageModel model = new LanguageModel();
                     model.setId(index.optString("id"));
@@ -116,23 +119,29 @@ public class SoundLanguageFragment extends RootFragment {
     }
 
     private void setAdapter() {
-        adapter = new SoundLanguageAdapter(context, lang_list, new SoundLanguageAdapter.OnItemClick() {
-            @Override
-            public void onClick(int position, String language) {
-                openSoundsList(position, language);
-            }
-        });
-        language_recycler.setAdapter(adapter);
+        try {
+            adapter = new SoundLanguageAdapter(context, lang_list, new SoundLanguageAdapter.OnItemClick() {
+                @Override
+                public void onClick(int position, String language) {
+                    openSoundsList(position, language);
+                }
+            });
+            language_recycler.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     private void openSoundsList(int position, String section_id) {
+        try {
+            Intent intent = new Intent(context, SoundListActivity.class);
 
-        Intent intent = new Intent(context, SoundListActivity.class);
-
-        intent.putExtra("section_id",section_id);
-        intent.putExtra("title","Event Sounds");
-        startActivityForResult(intent, Sounds_list_Request_code);
-
+            intent.putExtra("section_id", section_id);
+            intent.putExtra("title", "Event Sounds");
+            startActivityForResult(intent, Sounds_list_Request_code);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override

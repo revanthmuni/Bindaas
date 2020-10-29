@@ -59,7 +59,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     View view;
     Context context;
 
-//    RecyclerView recyclerView;
+    //    RecyclerView recyclerView;
     public static EditText search_edit;
 
     FrameLayout search_frame;
@@ -82,6 +82,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     EventSliderAdapter eventAdapter;
     NestedScrollView initial_layout;
     View main_layout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -99,7 +100,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             mainTabLayout = view.findViewById(R.id.tabLayout2);
             mainViewPager = view.findViewById(R.id.main_viewpager);
 
-            initial_layout.setFillViewport (true);
+            initial_layout.setFillViewport(true);
            /* recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
             final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
@@ -119,7 +120,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             loadEventBanners();
 
             //Image Slider Code
-            eventAdapter = new EventSliderAdapter(context,eventlist);
+            eventAdapter = new EventSliderAdapter(context, eventlist);
             imageSlider.setSliderAdapter(eventAdapter);
             imageSlider.startAutoCycle();
             imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM);
@@ -149,7 +150,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                         search_frame.setVisibility(View.GONE);
 //                        initial_layout.setVisibility(View.VISIBLE);
                         main_layout.setVisibility(View.VISIBLE);
-                    }else Set_tabs();/*
+                    } else Set_tabs();/*
                     if (!s.equals("")) Set_tabs();
                     else {
                         swiperefresh.setVisibility(View.VISIBLE);
@@ -367,7 +368,8 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
-        super.onResume();try {
+        super.onResume();
+        try {
             String s = search_edit.getText().toString();
             if (s.length() == 0) {
 
@@ -380,8 +382,8 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             swiperefresh.setVisibility(View.GONE);
             Set_tabs();
         }*/
-        }catch (Exception e){
-
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -402,7 +404,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
             search_frame.setVisibility(View.VISIBLE);
 //            initial_layout.setVisibility(View.GONE);
             main_layout.setVisibility(View.GONE);
-          //swiperefresh.setVisibility(View.GONE);
+            //swiperefresh.setVisibility(View.GONE);
             adapter1 = new ViewPagerAdapter(getChildFragmentManager());
             menu_pager = (ViewPager) view.findViewById(R.id.viewpager);
             menu_pager.setOffscreenPageLimit(3);
@@ -449,7 +451,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                                 items.setSound_image(index.optString("sound_image"));
                                 items.setDiscover_image(index.optString("discover_image"));
                                 items.setCreated(index.optString("created"));
-                                if (index.optString("active").equals("true")){
+                                if (index.optString("active").equals("true")) {
                                     eventlist.add(items);
                                 }
                             }
@@ -463,7 +465,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                     android.util.Log.d("TAG", "Event data: " + resp);
-                  //  Functions.cancel_loader();
+                    //  Functions.cancel_loader();
                 }
             });
         } catch (Exception e) {

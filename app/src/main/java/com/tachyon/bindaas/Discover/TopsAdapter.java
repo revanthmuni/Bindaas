@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tachyon.bindaas.Discover.Models.Users;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.List;
 
@@ -25,15 +26,16 @@ public class TopsAdapter extends RecyclerView.Adapter<TopsAdapter.ViewHolder> {
         this.topsList = topsList;
     }
 
-    public TopsAdapter(Context context, List<Users> topsList,OnProfileClick listener) {
+    public TopsAdapter(Context context, List<Users> topsList, OnProfileClick listener) {
         this.context = context;
         this.topsList = topsList;
         this.listener = listener;
     }
 
-    public interface OnProfileClick{
-        void onClick(int position,Users users);
+    public interface OnProfileClick {
+        void onClick(int position, Users users);
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,19 +44,23 @@ public class TopsAdapter extends RecyclerView.Adapter<TopsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-         Glide.with(context).load(topsList.get(position).getProfilePic()).placeholder(R.drawable.image_placeholder).into(holder.profilePic);
-         holder.views.setText(String.format("%s views", topsList.get(position).getTotalViews()));
-         holder.likes.setText(String.format("%s likes", topsList.get(position).getTotalLikes()));
-         holder.video_uploads.setText(String.format("%s videos Uploaded", topsList.get(position).getTotalVideoUploads()));
-         holder.user_score.setText(String.format("User Score :%s", topsList.get(position).getTotalUserScore()));
+        try {
+            Glide.with(context).load(topsList.get(position).getProfilePic()).placeholder(R.drawable.image_placeholder).into(holder.profilePic);
+            holder.views.setText(String.format("%s views", topsList.get(position).getTotalViews()));
+            holder.likes.setText(String.format("%s likes", topsList.get(position).getTotalLikes()));
+            holder.video_uploads.setText(String.format("%s videos Uploaded", topsList.get(position).getTotalVideoUploads()));
+            holder.user_score.setText(String.format("User Score :%s", topsList.get(position).getTotalUserScore()));
 
-        holder.userName.setText(topsList.get(position).getFirstName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(position,topsList.get(position));
-            }
-        });
+            holder.userName.setText(topsList.get(position).getFirstName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClick(position, topsList.get(position));
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
@@ -65,17 +71,20 @@ public class TopsAdapter extends RecyclerView.Adapter<TopsAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         CircleImageView profilePic;
-        TextView userName, likes, views , video_uploads , user_score;
+        TextView userName, likes, views, video_uploads, user_score;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            profilePic = itemView.findViewById(R.id.profile_pic);
-            likes = itemView.findViewById(R.id.likes);
-            views = itemView.findViewById(R.id.views);
-            video_uploads = itemView.findViewById(R.id.video_uploads);
-            userName = itemView.findViewById(R.id.user_id);
-            user_score = itemView.findViewById(R.id.user_score);
-
+            try {
+                profilePic = itemView.findViewById(R.id.profile_pic);
+                likes = itemView.findViewById(R.id.likes);
+                views = itemView.findViewById(R.id.views);
+                video_uploads = itemView.findViewById(R.id.video_uploads);
+                userName = itemView.findViewById(R.id.user_id);
+                user_score = itemView.findViewById(R.id.user_score);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+            }
         }
     }
 }

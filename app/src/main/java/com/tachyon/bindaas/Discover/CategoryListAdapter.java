@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.tachyon.bindaas.Discover.Models.Category;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,22 +44,26 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (row_index == position) {
-            holder.background.setBackgroundColor(Color.parseColor("#567845"));
-            holder.cat_textview.setTextColor(Color.parseColor("#ffffff"));
-        } else {
-            holder.background.setBackgroundColor(Color.parseColor("#ffffff"));
-            holder.cat_textview.setTextColor(Color.parseColor("#000000"));
-        }
-        holder.cat_textview.setText(catList.get(position).getSection_name());
-        holder.cat_textview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                row_index = position;
-                notifyDataSetChanged();
-                listener.gotoDetails(position);
+        try {
+            if (row_index == position) {
+                holder.background.setBackgroundColor(Color.parseColor("#567845"));
+                holder.cat_textview.setTextColor(Color.parseColor("#ffffff"));
+            } else {
+                holder.background.setBackgroundColor(Color.parseColor("#ffffff"));
+                holder.cat_textview.setTextColor(Color.parseColor("#000000"));
             }
-        });
+            holder.cat_textview.setText(catList.get(position).getSection_name());
+            holder.cat_textview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    row_index = position;
+                    notifyDataSetChanged();
+                    listener.gotoDetails(position);
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
@@ -72,8 +77,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cat_textview = itemView.findViewById(R.id.cat_text);
-            background = itemView.findViewById(R.id.background);
+            try {
+                cat_textview = itemView.findViewById(R.id.cat_text);
+                background = itemView.findViewById(R.id.background);
+            } catch (Exception e) {
+                Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+            }
         }
     }
 }

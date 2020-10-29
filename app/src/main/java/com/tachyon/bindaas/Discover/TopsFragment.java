@@ -43,6 +43,7 @@ public class TopsFragment extends Fragment {
     List<Users> topsList;
     private static final String TAG = "TopsFragment";
     ShimmerFrameLayout shimmer_layout;
+
     public TopsFragment() {
         // Required empty public constructor
     }
@@ -53,25 +54,28 @@ public class TopsFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("FragmentCheck", "onCreateView: its trendig");
         View view = inflater.inflate(R.layout.fragment_tops, container, false);
-
-        context = getContext();
-        topsRecyclerview = view.findViewById(R.id.topsRecyclerview);
-        shimmer_layout = view.findViewById(R.id.shimmer_view_container);
-        shimmer_layout.startShimmer();
-        final GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
-        topsRecyclerview.setLayoutManager(layoutManager);
+        try {
+            context = getContext();
+            topsRecyclerview = view.findViewById(R.id.topsRecyclerview);
+            shimmer_layout = view.findViewById(R.id.shimmer_view_container);
+            shimmer_layout.startShimmer();
+            final GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+            topsRecyclerview.setLayoutManager(layoutManager);
 //        loadDummyTops();
-        topsList = new ArrayList<>();
+            topsList = new ArrayList<>();
 
-        loadTopUsers();
-        topsAdapter = new TopsAdapter(context, topsList, new TopsAdapter.OnProfileClick() {
-            @Override
-            public void onClick(int position, Users users) {
-                openProfile(position,users);
-            }
-        });
+            loadTopUsers();
+            topsAdapter = new TopsAdapter(context, topsList, new TopsAdapter.OnProfileClick() {
+                @Override
+                public void onClick(int position, Users users) {
+                    openProfile(position, users);
+                }
+            });
 
-        topsRecyclerview.setAdapter(topsAdapter);
+            topsRecyclerview.setAdapter(topsAdapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         return view;
     }
 
@@ -113,19 +117,7 @@ public class TopsFragment extends Fragment {
         }
     }
 
-    private void loadDummyTops() {
-
-       /* for (int i = 0;i<10;i++){
-            TopsItems items = new TopsItems();
-            items.setUser_name("User Name@"+i);
-            items.setProfile_pic("");
-            items.setLine_1("this is line "+i);
-            items.setLine_2("this is line no "+i);
-            items.setLine_3("this is line number "+i);
-            topsList.add(items);
-        }*/
-    }
-    public void loadTopUsers(){
+    public void loadTopUsers() {
         shimmer_layout.setVisibility(View.VISIBLE);
         try {
             JSONObject params = new JSONObject();
@@ -150,15 +142,15 @@ public class TopsFragment extends Fragment {
     }
 
     private void parseTopUsers(String resp) {
-        TopUsers users = new Gson().fromJson(resp,TopUsers.class);
-        if (users.getCode().equals("200")){
+        TopUsers users = new Gson().fromJson(resp, TopUsers.class);
+        if (users.getCode().equals("200")) {
             //Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
             topsAdapter.setTopsList(users.getMsg());
             topsAdapter.notifyDataSetChanged();
-        }else{
-           // Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+        } else {
+            // Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
         }
 
-        Log.d(TAG, "parseTopUsers: "+resp);
+        Log.d(TAG, "parseTopUsers: " + resp);
     }
 }

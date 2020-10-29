@@ -79,14 +79,18 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sound_trending, container, false);
-        this.context = getContext();
-        shimmer_layout = view.findViewById(R.id.shimmer_layout);
-        shimmer_layout.startShimmer();
-        trending_sound_recycler = view.findViewById(R.id.trending_sound_recycler);
-        trending_sound_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        trending_sound_recycler.setNestedScrollingEnabled(false);
-        loadTrendingSounds();
-        //adapter = new SoundsAdapter(context,list);
+        try {
+            this.context = getContext();
+            shimmer_layout = view.findViewById(R.id.shimmer_layout);
+            shimmer_layout.startShimmer();
+            trending_sound_recycler = view.findViewById(R.id.trending_sound_recycler);
+            trending_sound_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            trending_sound_recycler.setNestedScrollingEnabled(false);
+            loadTrendingSounds();
+            //adapter = new SoundsAdapter(context,list);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         return view;
     }
 
@@ -94,7 +98,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
         try {
             JSONObject params = new JSONObject();
             try {
-                params.put("user_id",Variables.sharedPreferences.getString(Variables.u_id,""));
+                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -116,7 +120,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
     private void parseTrendingSounds(String resp) {
         datalist = new ArrayList<>();
-        Log.d(TAG, "parseTrendingSounds: "+resp);
+        Log.d(TAG, "parseTrendingSounds: " + resp);
         try {
             JSONObject jsonObject = new JSONObject(resp);
             String code = jsonObject.optString("code");
@@ -162,6 +166,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
             e.printStackTrace();
         }
     }
+
     public void playaudio(View view, final Sounds_GetSet item) {
         Log.d(TAG, "playaudio: ");
         try {
@@ -199,16 +204,17 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
+
     private void Call_Api_For_Fav_sound(final int pos, Sounds_GetSet item) {
         try {
             JSONObject parameters = new JSONObject();
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
                 parameters.put("sound_id", item.id);
-                Log.d(TAG, "Call_Api_For_Fav_sound: "+item.fav);
-                if (item.fav.equals("0")){
+                Log.d(TAG, "Call_Api_For_Fav_sound: " + item.fav);
+                if (item.fav.equals("0")) {
                     parameters.put("fav", "1");
-                }else
+                } else
                     parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -226,7 +232,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                     else
                         item.fav = "1";
                     datalist.remove(pos);
-                    datalist.add(pos,item);
+                    datalist.add(pos, item);
                     adapter.notifyDataSetChanged();
                 }
             });
@@ -238,58 +244,62 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
     }
 
     private void setAdapter() {
-        adapter = new SoundsAdapter(context, datalist,"sound_trending",
-                new SoundsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion, Sounds_GetSet item) {
-                previous_view = view;
-                adapter_position = postion;
-                if (view.getId() == R.id.done) {
-                    Log.d(TAG, "onItemClick: done clicked");
-                    StopPlaying();
-                    Down_load_mp3(item.id, item.sound_name, item.acc_path);
-                } else if (view.getId() == R.id.fav_btn) {
-                    Log.d(TAG, "onItemClick: fav clicked");
-                    StopPlaying();
-                    Call_Api_For_Fav_sound(postion, item);
-                } else if (view.getId() == R.id.play_arrow) {
-                    Log.d(TAG, "onItemClick: play clicked");
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                } else if (view.getId() == R.id.pause_arrow) {
-                    Log.d(TAG, "onItemClick: pause clicked");
-                    if (thread != null && !thread.isAlive()) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                }else if (view.getId() == R.id.view_more){
-                    openSoundsList(postion, item.id);
-                }
-                else {
-                    Log.d(TAG, "on itemview click ");
-                    if (thread != null && !thread.isAlive()) {
-                        Log.d(TAG, "onItemClick: if");
-                        StopPlaying();
-                        playaudio(view, item);
-                    } else if (thread == null) {
-                        Log.d(TAG, "onItemClick: else");
-                        StopPlaying();
-                        playaudio(view, item);
-                    }
-                }
+        try {
+            adapter = new SoundsAdapter(context, datalist, "sound_trending",
+                    new SoundsAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                            previous_view = view;
+                            adapter_position = postion;
+                            if (view.getId() == R.id.done) {
+                                Log.d(TAG, "onItemClick: done clicked");
+                                StopPlaying();
+                                Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                            } else if (view.getId() == R.id.fav_btn) {
+                                Log.d(TAG, "onItemClick: fav clicked");
+                                StopPlaying();
+                                Call_Api_For_Fav_sound(postion, item);
+                            } else if (view.getId() == R.id.play_arrow) {
+                                Log.d(TAG, "onItemClick: play clicked");
+                                if (thread != null && !thread.isAlive()) {
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                } else if (thread == null) {
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                }
+                            } else if (view.getId() == R.id.pause_arrow) {
+                                Log.d(TAG, "onItemClick: pause clicked");
+                                if (thread != null && !thread.isAlive()) {
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                } else if (thread == null) {
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                }
+                            } else if (view.getId() == R.id.view_more) {
+                                openSoundsList(postion, item.id);
+                            } else {
+                                Log.d(TAG, "on itemview click ");
+                                if (thread != null && !thread.isAlive()) {
+                                    Log.d(TAG, "onItemClick: if");
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                } else if (thread == null) {
+                                    Log.d(TAG, "onItemClick: else");
+                                    StopPlaying();
+                                    playaudio(view, item);
+                                }
+                            }
 
-            }
-        });
-        trending_sound_recycler.setAdapter(adapter);
+                        }
+                    });
+            trending_sound_recycler.setAdapter(adapter);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
+
     public void StopPlaying() {
         Log.d(TAG, "StopPlaying: ");
         try {
@@ -375,6 +385,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
+
     public void Down_load_mp3(final String id, final String sound_name, String url) {
         try {
             final ProgressDialog progressDialog = new ProgressDialog(context);
@@ -432,6 +443,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
+
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         try {
@@ -447,14 +459,17 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
 
         }
     }
+
     private void openSoundsList(int position, String section_id) {
+        try {
+            Intent intent = new Intent(context, SoundListActivity.class);
 
-        Intent intent = new Intent(context, SoundListActivity.class);
-
-        intent.putExtra("section_id",section_id);
-        intent.putExtra("title","Trending Sounds");
-        startActivityForResult(intent, Sounds_list_Request_code);
-
+            intent.putExtra("section_id", section_id);
+            intent.putExtra("title", "Trending Sounds");
+            startActivityForResult(intent, Sounds_list_Request_code);
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
