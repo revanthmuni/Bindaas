@@ -21,9 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/colorPrimary"
+            app:contentScrim="@color/themecolor"
             app:expandedTitleMarginEnd="6dp"
             app:expandedTitleMarginStart="6dp"
+
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
