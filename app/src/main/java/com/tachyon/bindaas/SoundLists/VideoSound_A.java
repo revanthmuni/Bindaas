@@ -70,7 +70,13 @@ public class VideoSound_A extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_sound);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_video_sound);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
 
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this,3));

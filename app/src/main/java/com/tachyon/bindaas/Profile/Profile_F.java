@@ -111,7 +111,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.fragment_profile, container, false);
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         context = getContext();
         try {
             getActivity();
@@ -314,7 +319,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             ImageView imageView2 = view2.findViewById(R.id.image);
             imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
             tvLikesCount = view2.findViewById(R.id.tvCount);
-            tvLikesCount.setTextColor(getResources().getColor(R.color.black));
+            //tvLikesCount.setTextColor(getResources().getColor(R.color.textColor));
             tabLayout.getTabAt(1).setCustomView(view2);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -78,6 +78,11 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         View view = inflater.inflate(R.layout.fragment_sound_category, container, false);
         try {
             this.context = getContext();

@@ -108,6 +108,7 @@ public class Login_A extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            setTheme(Functions.getSavedTheme());
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             activity = this;
 
@@ -774,6 +775,7 @@ public class Login_A extends AppCompatActivity {
                 editor.putString(Variables.insta_link,userdata.optString("insta_link"));
                 editor.putString(Variables.bio,userdata.optString("bio"));
                 editor.putString(Variables.gender,userdata.optString("gender"));
+                editor.putString(Variables.themes_key,userdata.optString("theme"));
 
                 editor.putBoolean(Variables.islogin, true);
                 editor.commit();

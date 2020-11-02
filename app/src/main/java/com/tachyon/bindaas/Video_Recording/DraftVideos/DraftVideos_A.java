@@ -60,7 +60,13 @@ public class DraftVideos_A extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery_videos);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_gallery_videos);
+
+        }catch (Exception e) {
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
 
         try {
             pbar = findViewById(R.id.pbar);

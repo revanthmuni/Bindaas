@@ -75,7 +75,13 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sound_list2);
+        try {
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_sound_list2);
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         try {
             sounds_recycler = findViewById(R.id.sounds_recycler);
             shimmer_layout = findViewById(R.id.shimmer_layout);

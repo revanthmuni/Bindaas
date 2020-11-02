@@ -57,7 +57,7 @@
                         app:sliderIndicatorOrientation="horizontal"
                         app:sliderIndicatorPadding="3dp"
                         app:sliderIndicatorRadius="2dp"
-                        app:sliderIndicatorSelectedColor="@color/maincolor"
+                        app:sliderIndicatorSelectedColor="@color/colorAccent"
                         app:sliderIndicatorUnselectedColor="#FFF"
                         app:sliderScrollTimeInSec="3"
                         app:sliderStartAutoCycle="true" />
@@ -86,7 +86,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2"
             app:layout_scrollFlags="snap"
-            app:tabIndicatorColor="@color/maincolor"
+            app:tabIndicatorColor="@color/colorAccent"
             app:tabMode="fixed"
             app:tabTextColor="@color/themecolor">
 

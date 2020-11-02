@@ -11,14 +11,14 @@
         android:id="@+id/relativeLayout6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?textOppsiteColor"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
 
                 <TextView
@@ -51,7 +51,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="Hash Tag"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
@@ -112,7 +112,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="HashTag"
-                            android:textColor="@color/black"
+                            android:textColor="?textColor"
                             android:textSize="18dp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="@+id/imageView4"

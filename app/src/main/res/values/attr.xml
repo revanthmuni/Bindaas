@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="themePrimary" format="reference" />
+    <attr name="themePrimaryDark" format="reference" />
+    <attr name="themeAccent" format="reference" />
+    <attr name="textColor" format="reference"/>
+    <attr name="textOppsiteColor" format="reference"/>
+    <attr name="tintColor" format="reference"/>
+    <attr name="textLightColor" format="reference"/>
+    <attr name="layoutBackgroundColor" format="reference"/>
+    <attr name="toolbarBackgroundColor" format="reference"/>
+    <attr name="dimGray" format="reference"/>
+    <attr name="shimmerColor" format="reference"/>
+
+</resources>

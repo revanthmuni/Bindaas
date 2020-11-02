@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="?textOppsiteColor"
     tools:context="com.tachyon.bindaas.Home.Home_F">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -41,7 +41,7 @@
                     android:textSize="17dp"
                     android:textStyle="bold"
                     android:padding="15dp"
-                    android:shadowColor="@color/black"
+                    android:shadowColor="?textColor"
                     android:shadowDx="1"
                     android:shadowDy="1"
                     android:ellipsize="end"
@@ -56,12 +56,12 @@
                     android:textSize="17dp"
                     android:padding="15dp"
                     android:textStyle="bold"
-                    android:shadowColor="@color/black"
+                    android:shadowColor="?textColor"
                     android:shadowDx="1"
                     android:shadowDy="1"
                     android:ellipsize="end"
                     android:shadowRadius="3"
-                    android:textColor="@color/white"/>
+                    android:textColor="?textOppsiteColor"/>
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="90dp"
@@ -78,7 +78,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/black"
+                    android:background="?textColor"
                     android:alpha="0.6"/>
                 <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/uploading_icon"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:indeterminateOnly="true"
-                android:indeterminateTint="@color/white"
+                android:indeterminateTint="?textOppsiteColor"
                 android:secondaryProgress="@android:integer/config_shortAnimTime"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -33,7 +33,7 @@
                 app:resize_mode="fit"
                 app:played_color="@color/themecolor"
                 app:unplayed_color="#333333"
-                app:scrubber_color="@color/maincolor"
+                app:scrubber_color="@color/colorAccent"
                 app:scrubber_disabled_size="0dp"
                 app:scrubber_drawable="@color/themecolor"
                 app:show_timeout="0"

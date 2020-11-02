@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tachyon.bindaas.SoundLists.SoundList_Main_A">
 
@@ -30,7 +30,7 @@
             android:layout_weight="1"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:background="@color/white">
+            android:background="?textOppsiteColor">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/relativeLayout3"
@@ -45,7 +45,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_white_cross"
-                    android:tint="@color/black"
+                    android:tint="?textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:text="Add Sound"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="15dp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/Goback"
@@ -91,14 +91,14 @@
                 android:layout_height="40dp"
                 app:tabMode="fixed"
                 app:tabTextColor="@color/dark_gray"
-                app:tabSelectedTextColor="@color/black"
+                app:tabSelectedTextColor="?textColor"
                 app:tabGravity="fill"
                 app:tabPaddingStart="0dp"
                 app:tabPaddingEnd="0dp"
                 android:background="@drawable/d_bottom_gray_line"
                 app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:layout_marginLeft="-1dp"
-                app:tabIndicatorColor="@color/black"/>
+                app:tabIndicatorColor="?textColor"/>
 
             <com.tachyon.bindaas.Main_Menu.Custom_ViewPager
                 android:layout_width="match_parent"

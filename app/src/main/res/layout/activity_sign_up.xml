@@ -4,15 +4,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?layoutBackgroundColor">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/signUpToolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:background="?toolbarBackgroundColor"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="50dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:background="@color/transparent"
+                android:scaleType="fitStart"
+                android:src="@drawable/ic_back"
+                android:tint="?tintColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Sign Up"
+                android:textColor="?textColor"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back_btn"
+                app:layout_constraintStart_toEndOf="@+id/back_btn"
+                app:layout_constraintTop_toTopOf="@+id/back_btn" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:id="@+id/action_divider"
@@ -54,13 +91,11 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpPassword"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Password"
-                android:textColorHint="#61000000"
-                app:hintTextColor="@color/colorPrimary"
+                android:textColorHint="?textLightColor"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilSignUpEmail"
@@ -71,19 +106,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
+                    android:textColor="?textColor"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpRetypePassword"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Re-type Password"
-                android:textColorHint="#61000000"
-                app:hintTextColor="@color/colorPrimary"
+                android:textColorHint="?textLightColor"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilSignUpPassword"
@@ -94,19 +128,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
+                    android:textColor="?textColor"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpFirstName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="First Name"
-                android:textColorHint="#61000000"
-                app:hintTextColor="@color/colorPrimary"
+                android:textColorHint="?textLightColor"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilSignUpRetypePassword">
@@ -115,6 +148,7 @@
                     android:id="@+id/etSignUpFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="?textColor"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -122,13 +156,11 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpLastName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Last Name"
-                android:textColorHint="#61000000"
-                app:hintTextColor="@color/colorPrimary"
+                android:textColorHint="?textLightColor"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilSignUpFirstName">
@@ -137,6 +169,7 @@
                     android:id="@+id/etSignUpLastName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="?textColor"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -144,14 +177,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSignUpEmail"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Email Address"
-                android:textColorHint="#61000000"
+                android:textColorHint="?textLightColor"
                 app:hintEnabled="true"
-                app:hintTextColor="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -161,6 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textEmailAddress"
+                    android:textColor="?textColor"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>

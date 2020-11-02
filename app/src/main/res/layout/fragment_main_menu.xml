@@ -5,7 +5,7 @@
     android:id="@+id/MainMenuFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="?textOppsiteColor"
     android:fitsSystemWindows="true"
     tools:context="com.tachyon.bindaas.Main_Menu.MainMenuActivity">
 
@@ -34,9 +34,9 @@
             app:tabMode="fixed"
             app:tabPaddingEnd="0dp"
             app:tabPaddingStart="0dp"
-            app:tabSelectedTextColor="@color/black"
+            app:tabSelectedTextColor="?textColor"
             app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Small"
-            app:tabTextColor="@color/dimgray" />
+            app:tabTextColor="?dimGray" />
 
         <!--  <ImageView
               android:layout_width="match_parent"

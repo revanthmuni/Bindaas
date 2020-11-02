@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:clickable="true"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,7 +21,7 @@
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
             android:visibility="gone"
-            android:background="@color/white">
+            android:background="?textOppsiteColor">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +37,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="?textColor"/>
 
 
                 <ImageButton
@@ -97,7 +97,7 @@
                     android:id="@+id/no_data_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:background="?layoutBackgroundColor"
                     android:visibility="gone">
 
                     <ImageView
@@ -117,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Whoops!"
-                        android:textColor="@color/dimgray"
+                        android:textColor="?dimGray"
                         android:textSize="22sp"
                         ads:layout_constraintEnd_toEndOf="@+id/img_no_job"
                         ads:layout_constraintStart_toStartOf="@+id/img_no_job"
@@ -130,7 +130,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="@string/no_notifications"
-                        android:textColor="@color/dimgray"
+                        android:textColor="?dimGray"
                         android:textSize="14sp"
                         ads:layout_constraintEnd_toEndOf="@+id/whoops"
                         ads:layout_constraintStart_toStartOf="@+id/whoops"

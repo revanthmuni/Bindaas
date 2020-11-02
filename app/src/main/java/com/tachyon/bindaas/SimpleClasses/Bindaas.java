@@ -23,7 +23,6 @@ public class Bindaas extends Application {
             FirebaseApp.initializeApp(this);
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 

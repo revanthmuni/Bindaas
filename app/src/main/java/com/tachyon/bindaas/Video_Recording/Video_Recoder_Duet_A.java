@@ -88,7 +88,12 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_recoder_duet);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_video_recoder_duet);
+        }catch (Exception e){
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
 
         cameraView = findViewById(R.id.camera);
         camera_options=findViewById(R.id.camera_options);

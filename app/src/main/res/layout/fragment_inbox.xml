@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:id="@+id/Inbox_F"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context="com.tachyon.bindaas.Inbox.Inbox_F">
@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="24dp">
+        >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:background="@color/white">
+            android:background="?textOppsiteColor">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitStart"
                     android:id="@+id/back_btn"
-                    android:tint="@color/black"
+                    android:tint="?textColor"
                     android:background="@color/transparent"/>
 
                 <TextView
@@ -53,7 +53,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"
                     android:text="Inbox"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -93,7 +93,7 @@
                 android:layout_below="@+id/img_no_job"
                 android:layout_centerHorizontal="true"
                 android:text="Whoops!"
-                android:textColor="@color/dimgray"
+                android:textColor="?dimGray"
                 android:id="@+id/whoops"
                 android:textSize="22sp"/>
 
@@ -103,7 +103,7 @@
                 android:layout_below="@+id/whoops"
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center"
-                android:textColor="@color/dimgray"
+                android:textColor="?dimGray"
                 android:layout_marginLeft="55dp"
                 android:layout_marginRight="55dp"
                 android:text="@string/no_messages"

@@ -60,7 +60,11 @@ public class CategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.d("FragmentCheck", "onCreateView: its trendig");
 
-
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         this.context = getActivity();
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         try {

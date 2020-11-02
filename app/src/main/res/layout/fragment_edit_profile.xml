@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:fitsSystemWindows="true"
-    android:paddingTop="24dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.tachyon.bindaas.Profile.Edit_Profile_F">
 
@@ -14,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,7 +22,7 @@
             android:layout_weight="1"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:background="@color/white">
+            android:background="?textOppsiteColor">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +36,7 @@
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitStart"
                     android:id="@+id/Goback"
-                    android:tint="@color/black"
+                    android:tint="?textColor"
                     android:src="@drawable/ic_back"
                     android:layout_centerVertical="true"/>
 
@@ -49,7 +48,7 @@
                     android:textStyle="bold"
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/black"/>
+                    android:textColor="?textColor"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,7 +130,7 @@
                       android:layout_centerVertical="true"
                       android:id="@+id/username_edit"
                       android:textColorHint="@color/graycolor"
-                      android:textColor="@color/black"
+                      android:textColor="?textColor"
                       android:layout_marginStart="25dp"
                       android:backgroundTint="@color/transparent"/>
 
@@ -177,7 +176,7 @@
                           android:textColorHint="@color/graycolor"
                           android:layout_toRightOf="@+id/profile_icon"
                           android:layout_marginLeft="10dp"
-                          android:textColor="@color/black"
+                          android:textColor="?textColor"
                           android:backgroundTint="@color/transparent"/>
 
                       <LinearLayout
@@ -217,7 +216,7 @@
                           android:textColorHint="@color/graycolor"
                           android:layout_toRightOf="@+id/profile_icon2"
                           android:layout_marginLeft="10dp"
-                          android:textColor="@color/black"
+                          android:textColor="?textColor"
                           android:backgroundTint="@color/transparent"/>
 
                       <LinearLayout
@@ -269,7 +268,7 @@
                           android:id="@+id/male_btn"
                           android:layout_weight="1"
                           android:theme="@style/RadioButton"
-                          android:textColor="@color/black"/>
+                          android:textColor="?textColor"/>
                       <RadioButton
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
@@ -278,7 +277,7 @@
                           android:layout_weight="1"
                           android:id="@+id/female_btn"
                           android:theme="@style/RadioButton"
-                          android:textColor="@color/black"/>
+                          android:textColor="?textColor"/>
                       <RadioButton
                           android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
@@ -287,7 +286,7 @@
                           android:textSize="15dp"
                           android:id="@+id/others_btn"
                           android:theme="@style/RadioButton"
-                          android:textColor="@color/black"/>
+                          android:textColor="?textColor"/>
                   </RadioGroup>
 
               </LinearLayout>
@@ -308,7 +307,7 @@
                     android:elevation="0.5dp"
                     android:textStyle="italic"
                     android:background="@drawable/roundcorner_green_background_v1"
-                    android:textColor="@color/white"/>
+                    android:textColor="?textOppsiteColor"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -324,7 +323,7 @@
                     android:nextFocusForward="@+id/jobtitle_edit"
                     android:id="@+id/user_bio_edit"
                     android:textColorHint="@color/gainsboro"
-                    android:textColor="@color/dimgray"
+                    android:textColor="?dimGray"
                     android:backgroundTint="@color/transparent"/>
             </LinearLayout>
               <TextView
@@ -336,7 +335,7 @@
                   android:elevation="0.5dp"
                   android:textStyle="italic"
                   android:background="@drawable/roundcorner_green_background_v1"
-                  android:textColor="@color/white"/>
+                  android:textColor="?textOppsiteColor"/>
 
               <androidx.constraintlayout.widget.ConstraintLayout
                   android:id="@+id/linearLayout8"
@@ -352,7 +351,7 @@
                       android:layout_marginEnd="8dp"
                       android:backgroundTint="@color/transparent"
                       android:hint="username"
-                      android:textColor="@color/black"
+                      android:textColor="?textColor"
                       android:textColorHint="@color/graycolor"
                       app:layout_constraintBottom_toBottomOf="parent"
                       app:layout_constraintEnd_toEndOf="parent"
@@ -375,7 +374,7 @@
                       android:layout_marginStart="8dp"
                       android:gravity="center"
                       android:text="https://www.facebook.com/"
-                      android:textColor="@color/dimgray"
+                      android:textColor="?dimGray"
                       app:layout_constraintBottom_toBottomOf="@+id/imageView"
                       app:layout_constraintStart_toEndOf="@+id/imageView"
                       app:layout_constraintTop_toTopOf="@+id/imageView" />
@@ -393,7 +392,7 @@
                       android:layout_height="wrap_content"
                       android:layout_marginEnd="8dp"
                       android:hint="username"
-                      android:textColor="@color/black"
+                      android:textColor="?textColor"
                       android:textColorHint="@color/graycolor"
                       app:layout_constraintBottom_toBottomOf="parent"
                       app:layout_constraintEnd_toEndOf="parent"
@@ -416,7 +415,7 @@
                       android:layout_marginStart="8dp"
                       android:gravity="center"
                       android:text="https://www.instagram.com/"
-                      android:textColor="@color/dimgray"
+                      android:textColor="?dimGray"
                       app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                       app:layout_constraintStart_toEndOf="@+id/imageView3"
                       app:layout_constraintTop_toTopOf="@+id/imageView3" />

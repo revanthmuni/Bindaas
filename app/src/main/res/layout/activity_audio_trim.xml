@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGrayAlpha"
+    android:background="?textLightColor"
     android:orientation="vertical">
 
     <LinearLayout
@@ -14,14 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6"
-        android:background="#fff"
+        android:background="?layoutBackgroundColor"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/themecolor"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/d_bottom_gray_line">
 
             <TextView
                 android:id="@+id/txtAudioUpload"
@@ -30,7 +30,7 @@
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:text="Select"
-                android:textColor="@color/colorBlack"
+                android:textColor="?textColor"
                 android:textSize="16sp"
                 android:visibility="invisible" />
 
@@ -42,7 +42,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="10dp"
                 android:text="Cancel"
-                android:textColor="@color/colorBlack"
+                android:textColor="?textColor"
                 android:textSize="16sp" />
 
         </RelativeLayout>
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="00:01:00"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?textColor"
                     android:textSize="16sp"
                     android:visibility="invisible" />
             </LinearLayout>
@@ -91,7 +91,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="Edit Audio"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="?textColor"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -130,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="00.00"
-                            android:textColor="@color/colorTextGray"
+                            android:textColor="?textLightColor"
                             android:textSize="12sp" />
 
                         <com.tachyon.bindaas.AudioTrimming.customAudioViews.MarkerView
@@ -147,7 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="00.01"
-                            android:textColor="@color/colorTextGray"
+                            android:textColor="?textLightColor"
                             android:textSize="12sp" />
 
                     </RelativeLayout>
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:text="00:01:00"
-                        android:textColor="@color/colorBlack"
+                        android:textColor="?textColor"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -179,7 +179,7 @@
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:text="Reset"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="?textColor"
                             android:textSize="12sp"
                             android:visibility="gone" />
 
@@ -189,7 +189,7 @@
                             android:layout_alignParentRight="true"
                             android:padding="5dp"
                             android:text="Done"
-                            android:textColor="@color/colorBlack"
+                            android:textColor="?textColor"
                             android:textSize="12sp"
                             android:visibility="gone" />
                     </RelativeLayout>
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
-                        android:background="@color/colorBlue"
+                        android:background="@drawable/d_bottom_gray_line"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:padding="5dp">

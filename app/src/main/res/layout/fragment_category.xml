@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:orientation="horizontal"
     android:weightSum="10"
     tools:context=".Discover.CategoryFragment">
@@ -15,7 +15,7 @@
         android:layout_weight="3"
         android:elevation="8dp"
         android:padding="8dp"
-        app:cardBackgroundColor="@color/white">
+        app:cardBackgroundColor="?cardBackgroundColor">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/categoryListRecycler"
@@ -45,11 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@color/gray"
+            android:background="?textLightColor"
             android:gravity="center"
             android:padding="35dp"
             android:text="No Data"
-            android:textColor="@color/black"
+            android:textColor="?textColor"
             app:layout_constraintBottom_toBottomOf="@+id/categoryDetailsRecycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

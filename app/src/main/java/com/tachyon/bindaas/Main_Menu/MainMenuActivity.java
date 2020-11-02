@@ -36,7 +36,14 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        try{
+           setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_main_menu);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        }
+
 
         Upload_Service mService = new Upload_Service();
         if (Functions.isMyServiceRunning(this, mService.getClass())) {

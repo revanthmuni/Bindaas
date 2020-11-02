@@ -42,13 +42,18 @@ public class ReportVideo extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_flag_video);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.dialog_flag_video);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
+        }
         try {
             init();
             setListeners();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 

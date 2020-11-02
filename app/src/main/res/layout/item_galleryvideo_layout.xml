@@ -41,7 +41,7 @@
             android:shadowDy="2"
             android:shadowRadius="3"
             android:layout_alignParentRight="true"
-            android:textColor="@color/white"/>
+            android:textColor="?textOppsiteColor"/>
 
     </RelativeLayout>
 

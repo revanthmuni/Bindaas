@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:background="@color/white"
+        android:background="?layoutBackgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +44,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="15dp"
-                        android:background="@color/gainsboro" />
+                        android:background="?shimmerColor" />
 
 
                     <LinearLayout
@@ -66,7 +66,7 @@
 
                                 android:layout_width="150dp"
                                 android:layout_height="wrap_content"
-                                android:background="@color/gainsboro"
+                                android:background="?shimmerColor"
                                 android:ellipsize="end"
                                 android:maxLines="1"
 
@@ -80,7 +80,7 @@
                                 android:layout_marginTop="5dp"
                                 android:ellipsize="end"
                                 android:maxLines="2"
-                                android:background="@color/gainsboro"
+                                android:background="?shimmerColor"
                                 android:textSize="14dp"
                                 android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
                             android:layout_height="32dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="20dp"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:scaleType="fitCenter"
                             android:visibility="visible" />
 
@@ -101,7 +101,7 @@
                             android:layout_height="32dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginTop="20dp"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:scaleType="fitCenter" />
 
                         <ImageButton
@@ -110,7 +110,7 @@
                             android:layout_height="32dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="8dp"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             />
                     </LinearLayout>
 
@@ -132,7 +132,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/gainsboro" />
+                    android:background="?shimmerColor" />
 
 
                 <LinearLayout
@@ -154,7 +154,7 @@
 
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:ellipsize="end"
                             android:maxLines="1"
 
@@ -168,7 +168,7 @@
                             android:layout_marginTop="5dp"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:textSize="14dp"
                             android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter"
                         android:visibility="visible" />
 
@@ -189,7 +189,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter" />
 
                     <ImageButton
@@ -198,7 +198,7 @@
                         android:layout_height="32dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         />
                 </LinearLayout>
 
@@ -220,7 +220,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/gainsboro" />
+                    android:background="?shimmerColor" />
 
 
                 <LinearLayout
@@ -242,7 +242,7 @@
 
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:ellipsize="end"
                             android:maxLines="1"
 
@@ -256,7 +256,7 @@
                             android:layout_marginTop="5dp"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:textSize="14dp"
                             android:textStyle="bold" />
 
@@ -267,7 +267,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter"
                         android:visibility="visible" />
 
@@ -277,7 +277,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter" />
 
                     <ImageButton
@@ -286,7 +286,7 @@
                         android:layout_height="32dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         />
                 </LinearLayout>
 
@@ -308,7 +308,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@color/gainsboro" />
+                    android:background="?shimmerColor" />
 
 
                 <LinearLayout
@@ -330,7 +330,7 @@
 
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:ellipsize="end"
                             android:maxLines="1"
 
@@ -344,7 +344,7 @@
                             android:layout_marginTop="5dp"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:background="@color/gainsboro"
+                            android:background="?shimmerColor"
                             android:textSize="14dp"
                             android:textStyle="bold" />
 
@@ -355,7 +355,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter"
                         android:visibility="visible" />
 
@@ -365,7 +365,7 @@
                         android:layout_height="32dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginTop="20dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         android:scaleType="fitCenter" />
 
                     <ImageButton
@@ -374,7 +374,7 @@
                         android:layout_height="32dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="8dp"
-                        android:background="@color/gainsboro"
+                        android:background="?shimmerColor"
                         />
                 </LinearLayout>
 

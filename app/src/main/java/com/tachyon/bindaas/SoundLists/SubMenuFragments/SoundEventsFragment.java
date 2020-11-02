@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,11 @@ public class SoundEventsFragment extends RootFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         View view = inflater.inflate(R.layout.fragment_sound_tops, container, false);
         this.context = getContext();
         try {

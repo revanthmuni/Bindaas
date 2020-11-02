@@ -970,7 +970,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
         playerView.setClipToOutline(true);
         TextView desc_txt = layout.findViewById(R.id.desc_txt);
-        HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+        HashTagHelper.Creator.create(context.getResources().getColor(R.color.colorAccent), new HashTagHelper.OnHashTagClickListener() {
             @Override
             public void onHashTagClicked(String hashTag) {
                 onPause();

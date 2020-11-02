@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,16 +60,23 @@ public class SignUpActivity extends AppCompatActivity {
     String firstName, LastName, email, password, retypePassword;
 
     SharedPreferences sharedPreferences;
-
+    ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_sign_up);
+        }catch (Exception e){
+            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        }
+
+
         try {
             activity = this;
             mAuth = FirebaseAuth.getInstance();
-            initialiseToolbar();
+            //initialiseToolbar();
             initViews();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
@@ -92,7 +100,13 @@ public class SignUpActivity extends AppCompatActivity {
         etLastName = findViewById(R.id.etSignUpLastName);
 
         btSignUp = findViewById(R.id.btSignUp);
-
+        backBtn = findViewById(R.id.back_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         btSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -359,22 +373,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-
-    private void initialiseToolbar() {
-        try {
-            Toolbar toolbar = (Toolbar) findViewById(R.id.signUpToolbar);
-            //setting the title
-            toolbar.setTitle("Sign Up");
-            //placing toolbar in place of actionbar
-            setSupportActionBar(toolbar);
-
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (Exception e) {
-            Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
+    android:background="?layoutBackgroundColor"
     tools:context="com.tachyon.bindaas.Video_Recording.Post_Video_A">
 
     <ScrollView
@@ -42,9 +43,10 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:backgroundTint="@color/transparent"
+                    android:textColorHint="?textLightColor"
                     android:hint="Describe your video"
                     android:paddingStart="15dp"
-                    android:textColor="@color/black" />
+                    android:textColor="?textColor" />
 
                 <ImageView
                     android:id="@+id/video_thumbnail"
@@ -55,9 +57,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/image_placeholder" />
 
-
             </LinearLayout>
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hashtags"
@@ -84,8 +84,8 @@
                     android:backgroundTint="@color/transparent"
                     android:hint="Search"
                     android:padding="8dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/darkgray"
+                    android:textColor="?textColor"
+                    android:textColorHint="?textLightColor"
                     android:textSize="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,6 +135,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_weight="1"
+                    android:textColor="?textColor"
                     android:text="Tag your Friend:"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -168,7 +169,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:src="@drawable/ic_video"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <Switch
                     android:id="@+id/duet_switch"
@@ -184,6 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
+                    android:textColor="?textColor"
                     android:layout_toEndOf="@+id/duet_img"
                     android:text="Allow Duet" />
 
@@ -192,7 +194,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp">
+                android:layout_height="35dp"
+                android:background="@drawable/d_bottom_gray_line">
 
                 <ImageView
                     android:id="@+id/cat_img"
@@ -201,7 +204,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:src="@drawable/ic_category_24"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <Spinner
                     android:id="@+id/cat_spinner"
@@ -210,8 +213,12 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
+                    app:backgroundTint="?textColor"
+                    android:theme="@style/spinnerTheme"
                     android:entries="@array/categories"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:popupBackground="?textColor"
+                    />
 
                 <TextView
                     android:id="@+id/cat_text"
@@ -219,6 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
+                    android:textColor="?textColor"
                     android:layout_toEndOf="@+id/cat_img"
                     android:text="Category " />
             </RelativeLayout>
@@ -236,7 +244,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:src="@drawable/ic_lock"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <ImageView
                     android:id="@+id/right_arrow"
@@ -246,7 +254,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="15dp"
                     android:src="@drawable/ic_next"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
 
                 <TextView
@@ -255,6 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
+                    android:textColor="?textColor"
                     android:layout_toStartOf="@+id/right_arrow"
                     android:text="Public" />
 
@@ -263,6 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
+                    android:textColor="?textColor"
                     android:layout_toEndOf="@+id/lock_img"
                     android:text="Who can view this video" />
 
@@ -280,7 +290,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
                     android:src="@drawable/ic_comment"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <Switch
                     android:id="@+id/comment_switch"
@@ -297,6 +307,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
+                    android:textColor="?textColor"
                     android:layout_toEndOf="@+id/comment_img"
                     android:text="Allow Comments" />
 
@@ -314,6 +325,7 @@
         android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         android:weightSum="2"
+        android:background="?layoutBackgroundColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -325,7 +337,7 @@
             android:layout_weight="1"
             app:cardCornerRadius="10dp"
             android:layout_marginEnd="5dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="?layoutBackgroundColor"
             >
         <LinearLayout
             android:id="@+id/save_draft_btn"
@@ -346,7 +358,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:text="Draft"
-                android:textColor="@color/black"
+                android:textColor="@color/textColor"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -383,7 +395,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_weight="1"
-        android:background="@color/white"
+        android:background="?toolbarBackgroundColor"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -405,7 +417,7 @@
                 android:background="@color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_back"
-                android:tint="@color/black" />
+                android:tint="?tintColor" />
 
 
             <TextView
@@ -416,7 +428,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="Post"
-                android:textColor="@color/black"
+                android:textColor="?textColor"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 

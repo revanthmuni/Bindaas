@@ -19,7 +19,7 @@
         app:resize_mode="fit"
         app:played_color="@color/themecolor"
         app:unplayed_color="#333333"
-        app:scrubber_color="@color/maincolor"
+        app:scrubber_color="@color/colorAccent"
         app:scrubber_disabled_size="0dp"
         app:scrubber_drawable="@color/themecolor"
         app:show_timeout="0"
@@ -50,7 +50,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_music"
-                android:tint="@color/white"
+                android:tint="?tintColor"
                 android:scaleType="fitCenter"/>
 
             <TextView
@@ -61,7 +61,7 @@
                 android:textStyle="bold"
                 android:padding="5dp"
                 android:id="@+id/add_sound_txt"
-                android:textColor="@color/white"/>
+                android:textColor="?textOppsiteColor"/>
         </LinearLayout>
 
         <TextView
@@ -79,7 +79,7 @@
             android:paddingRight="20dp"
             android:paddingBottom="10dp"
             android:text="Next"
-            android:textColor="@color/white"
+            android:textColor="?textOppsiteColor"
             android:textSize="15dp"
             android:textStyle="bold" />
 

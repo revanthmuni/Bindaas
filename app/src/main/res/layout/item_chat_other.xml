@@ -11,7 +11,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:textSize="12sp"
-        android:textColor="@color/darkgray"
+        android:textColor="?textLightColor"
         android:visibility="gone"
         android:id="@+id/datetxt"/>
     <TextView
@@ -22,7 +22,7 @@
         android:id="@+id/msgtxt"
         android:textSize="15dp"
         android:background="@drawable/d_other_msg_background"
-        android:textColor="@color/black"
+        android:textColor="?textColor"
         android:paddingLeft="20dp"
         android:paddingRight="15dp"
         android:paddingTop="10dp"
@@ -41,6 +41,6 @@
         android:layout_below="@+id/msgtxt"
         android:textSize="10dp"
         android:id="@+id/message_seen"
-        android:textColor="@color/darkgray"
+        android:textColor="?textLightColor"
         android:layout_marginLeft="10dp"/>
 </RelativeLayout>

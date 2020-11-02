@@ -53,6 +53,12 @@ public class TopsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d("FragmentCheck", "onCreateView: its trendig");
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+
+        }
         View view = inflater.inflate(R.layout.fragment_tops, container, false);
         try {
             context = getContext();

@@ -15,7 +15,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="?layoutBackgroundColor">
 
             <LinearLayout
                 android:id="@+id/create_popup_layout"
@@ -35,7 +35,7 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="Tap + to create\n your first short video"
-                    android:textColor="@color/white"
+                    android:textColor="?textColor"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="@color/white"
+                android:background="?toolbarBackgroundColor"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp">
 
@@ -80,7 +80,7 @@
                             android:layout_alignRight="@+id/myImageView1"
                             android:layout_alignBottom="@+id/myImageView1"
                             android:layout_gravity="right"
-                            android:textColor="#000000"
+                            android:textColor="?textColor"
                             android:textStyle="bold" />
                     </FrameLayout>
 
@@ -119,7 +119,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:text="UserName"
-                        android:textColor="@color/black"
+                        android:textColor="?textColor"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -168,8 +168,8 @@
                                 app:tabMode="fixed"
                                 app:tabPaddingEnd="0dp"
                                 app:tabPaddingStart="0dp"
-                                app:tabSelectedTextColor="@color/black"
-                                app:tabTextColor="@color/dimgray" />
+                                app:tabSelectedTextColor="?textColor"
+                                app:tabTextColor="?dimGray" />
                         </androidx.viewpager.widget.ViewPager>
 
                     </RelativeLayout>
@@ -223,7 +223,7 @@
                                 android:layout_weight="7"
                                 android:maxLines="5"
                                 android:text="Hi i'm user"
-                                android:textColor="@color/black" />
+                                android:textColor="?textColor" />
                         </LinearLayout>
 
                         <TextView
@@ -236,7 +236,7 @@
                             android:paddingRight="20dp"
                             android:paddingBottom="10dp"
                             android:text=""
-                            android:textColor="@color/white"
+                            android:textColor="?textColor"
                             android:textSize="15dp"
                             android:textStyle="bold"
                             android:visibility="gone"
@@ -292,7 +292,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="2dp"
                                         android:text="0"
-                                        android:textColor="@color/black"
+                                        android:textColor="?textColor"
                                         android:textSize="18dp"
                                         android:textStyle="bold" />
 
@@ -305,7 +305,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="5dp"
                                         android:text="Following"
-                                        android:textColor="@color/darkgray"
+                                        android:textColor="@color/colorTextGray"
                                         android:textSize="13dp"
                                         android:textStyle="bold" />
                                 </LinearLayout>
@@ -331,7 +331,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="2dp"
                                         android:text="0"
-                                        android:textColor="@color/black"
+                                        android:textColor="?textColor"
                                         android:textSize="18dp"
                                         android:textStyle="bold" />
 
@@ -344,7 +344,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="5dp"
                                         android:text="Followers"
-                                        android:textColor="@color/darkgray"
+                                        android:textColor="?textLightColor"
                                         android:textSize="13dp"
                                         android:textStyle="bold" />
                                 </LinearLayout>
@@ -377,7 +377,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="2dp"
                                         android:text="0"
-                                        android:textColor="@color/black"
+                                        android:textColor="?textColor"
                                         android:textSize="18dp"
                                         android:textStyle="bold" />
 
@@ -390,7 +390,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="5dp"
                                         android:text="Likes"
-                                        android:textColor="@color/darkgray"
+                                        android:textColor="?textLightColor"
                                         android:textSize="13dp"
                                         android:textStyle="bold" />
 
@@ -416,7 +416,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="2dp"
                                         android:text="0"
-                                        android:textColor="@color/black"
+                                        android:textColor="?textColor"
                                         android:textSize="18dp"
                                         android:textStyle="bold" />
 
@@ -429,7 +429,7 @@
                                         android:paddingRight="15dp"
                                         android:paddingBottom="5dp"
                                         android:text="Draft"
-                                        android:textColor="@color/darkgray"
+                                        android:textColor="?textLightColor"
                                         android:textSize="13dp"
                                         android:textStyle="bold" />
 
@@ -455,7 +455,7 @@
                                 android:layout_height="9dp"
                                 android:layout_marginStart="16dp"
                                 android:text="Star Meter :"
-                                android:textColor="@color/black"
+                                android:textColor="?textColor"
                                 android:textSize="8sp"
                                 app:layout_constraintBottom_toTopOf="@+id/imageView2"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -493,7 +493,7 @@
                                     android:layout_width="25dp"
                                     android:layout_height="0dp"
                                     android:layout_weight="9"
-                                    android:background="@color/white"
+                                    android:background="?layoutBackgroundColor"
                                     android:orientation="vertical"
                                     android:padding="5dp" />
 
@@ -592,7 +592,7 @@
                                         android:layout_margin="1dp"
                                         android:gravity="center"
                                         android:text="(1)"
-                                        android:textColor="#000000" />
+                                        android:textColor="?textColor" />
                                 </FrameLayout>
                             </LinearLayout>
 
@@ -634,7 +634,7 @@
                                 android:gravity="center"
                                 android:maxLines="2"
                                 android:text="UserName"
-                                android:textColor="@color/black"
+                                android:textColor="?textColor"
                                 android:textSize="15dp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -665,7 +665,7 @@
                                     android:paddingRight="20dp"
                                     android:paddingBottom="5dp"
                                     android:text="0 Video"
-                                    android:textColor="@color/dimgray"
+                                    android:textColor="?textColor"
                                     android:textSize="15dp"
                                     android:textStyle="bold" />
                             </androidx.cardview.widget.CardView>
@@ -675,7 +675,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10%"
-                                android:textColor="@color/black"
+                                android:textColor="?textColor"
                                 android:textSize="8sp"
                                 android:visibility="gone"
                                 app:layout_constraintBottom_toTopOf="@+id/imageView2"

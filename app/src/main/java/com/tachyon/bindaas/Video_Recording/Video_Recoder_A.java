@@ -118,8 +118,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Hide_navigation();
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_video_recoder);
+        }catch (Exception e){
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
 
-        setContentView(R.layout.activity_video_recoder);
+
         try {
             Variables.Selected_sound_id = "null";
             Variables.recording_duration = Variables.max_recording_duration;

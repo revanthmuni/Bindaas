@@ -31,7 +31,7 @@
                 android:id="@+id/Goback"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_white_cross"
-                android:tint="@color/black"
+                android:tint="?textColor"
                 android:padding="5dp"
                 android:layout_margin="5dp"
                 />
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15dp"
                     android:id="@+id/comment_count"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:layout_centerInParent="true"/>
 
             </RelativeLayout>
@@ -70,7 +70,7 @@
                     android:textSize="14dp"
                     android:id="@+id/message_edit"
                     android:textColorHint="@color/darkgray"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:layout_toLeftOf="@+id/send_btn_layout"
                     android:backgroundTint="@color/transparent"/>
 

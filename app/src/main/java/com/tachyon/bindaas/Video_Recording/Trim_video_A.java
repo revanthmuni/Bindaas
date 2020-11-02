@@ -26,7 +26,12 @@ public class Trim_video_A extends AppCompatActivity implements OnTrimVideoListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trim_video);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_trim_video);
+        }catch (Exception e){
+            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        }
 
         Intent extraIntent = getIntent();
         String path = "";

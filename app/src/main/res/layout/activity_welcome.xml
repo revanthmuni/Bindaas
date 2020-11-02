@@ -29,7 +29,7 @@
         android:layout_height="1dp"
         android:alpha=".5"
         android:layout_above="@id/layoutDots"
-        android:background="@android:color/black" />
+        android:background="?layoutBackgroundColor" />
 
     <TextView
         android:id="@+id/btn_next"
@@ -41,7 +41,7 @@
         android:layout_alignParentRight="true"
         android:background="?android:attr/selectableItemBackground"
         android:text="Next"
-        android:textColor="@android:color/black" />
+        android:textColor="?textColor" />
 
     <TextView
         android:id="@+id/btn_skip"
@@ -53,6 +53,6 @@
         android:padding="12dp"
         android:background="@android:color/transparent"
         android:text="Skip"
-        android:textColor="@android:color/black" />
+        android:textColor="?textColor" />
 
 </RelativeLayout>

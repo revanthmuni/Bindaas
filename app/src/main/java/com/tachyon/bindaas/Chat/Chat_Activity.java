@@ -160,7 +160,14 @@ public class Chat_Activity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.activity_chat, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.activity_chat, container, false);
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
         try {
             context = getContext();
 
