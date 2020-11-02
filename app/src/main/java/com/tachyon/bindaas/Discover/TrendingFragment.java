@@ -46,6 +46,11 @@ public class TrendingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         this.context = getContext();
         // Inflate the layout for this fragment
         Log.d("FragmentCheck", "onCreateView: its trendig");
