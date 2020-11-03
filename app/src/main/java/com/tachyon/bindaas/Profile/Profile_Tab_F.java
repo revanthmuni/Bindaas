@@ -15,8 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tachyon.bindaas.Inbox.Inbox_F;
-import com.tachyon.bindaas.Notifications.Notification_F;
-import com.tachyon.bindaas.PreferencesFragment;
+import com.tachyon.bindaas.Preferences.PreferencesFragment;
 import com.tachyon.bindaas.Profile.Private_Videos.PrivateVideo_F;
 import com.tachyon.bindaas.Settings.Setting_F;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -34,7 +33,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import android.telecom.Call;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
@@ -54,7 +52,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tachyon.bindaas.Following.Following_F;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
@@ -123,29 +120,38 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
     public LinearLayout create_popup_layout;
     public int myvideo_count = 0;
-   // ImageView star_meter;
+    // ImageView star_meter;
 
     TextView star_percentage;
-    LinearLayout uployout,downloayout;
+    LinearLayout uployout, downloayout;
 
     public Profile_Tab_F() {
 
     }
+
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onRefresh(String flag){
+    public void onRefresh(String flag) {
 //        Toast.makeText(context, flag, Toast.LENGTH_SHORT).show();
         try {
             Call_Api_For_get_Allvideos();
 
-        }catch (Exception e){
-            Functions.showLogMessage(context,"Profile_Tab",e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, "Profile_Tab", e.getMessage());
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
+        try {
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.fragment_profile_tab, container, false);
+
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+
+        }
         context = getContext();
 
         try {
@@ -169,6 +175,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
             fb_view.setOnClickListener(this);
             insta_view.setOnClickListener(this);
+
 
             view.findViewById(R.id.refresh).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -442,15 +449,15 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             File directory = new File(path);
             File[] files = directory.listFiles();
             int count = 0;
-            for(int i = 0; i<files.length;i++){
+            for (int i = 0; i < files.length; i++) {
                 long duration = Functions.getfileduration(context, Uri.parse(files[i].getAbsolutePath()));
-                Log.d(TAG, "Show_draft_count: "+duration);
-                if (duration > Variables.min_draft_duration){
+                Log.d(TAG, "Show_draft_count: " + duration);
+                if (duration > Variables.min_draft_duration) {
                     count++;
                 }
             }
 //            draft_count_txt.setText("" + files.length);
-            draft_count_txt.setText(""+count);
+            draft_count_txt.setText("" + count);
             if (files.length <= 0) {
                 view.findViewById(R.id.draft_btn).setVisibility(View.GONE);
             } else {
@@ -494,14 +501,14 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             ImageView imageView2 = view2.findViewById(R.id.image);
             imageView2.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
             tvLikesCount = view2.findViewById(R.id.tvCount);
-            tvLikesCount.setTextColor(getResources().getColor(R.color.black));
+           // tvLikesCount.setTextColor(getResources().getColor(R.color.textColor));
             tabLayout.getTabAt(1).setCustomView(view2);
 
             View view3 = LayoutInflater.from(context).inflate(R.layout.item_tabs_profile_menu, null);
             ImageView imageView3 = view3.findViewById(R.id.image);
             imageView3.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_gray));
             tvPrivateCount = view3.findViewById(R.id.tvCount);
-            tvPrivateCount.setTextColor(getResources().getColor(R.color.black));
+            //tvPrivateCount.setTextColor(getResources().getColor(R.color.textColor));
             tabLayout.getTabAt(2).setCustomView(view3);
 
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -548,16 +555,16 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     switch (tab.getPosition()) {
                         case 0:
 //                        count.setText("(" + videosCount + ")");
-                            count.setTextColor(getResources().getColor(R.color.black));
+                            count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
                             break;
                         case 1:
 //                        count.setText("(" + likesCount + ")");
-                            count.setTextColor(getResources().getColor(R.color.black));
+                            count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
                             break;
                         case 2:
-                            count.setTextColor(getResources().getColor(R.color.black));
+                            count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_gray));
                             break;
                     }
@@ -680,8 +687,8 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         final int min = 1;
         final int max = 10;
         final int random = new Random().nextInt((max - min) + 1) + min;
-        float value = (float)random;
-        float up_value = (float) (10-random);
+        float value = (float) random;
+        float up_value = (float) (10 - random);
 //        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
         // star_meter.setImageLevel(random);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -696,7 +703,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         );
         downloayout.setLayoutParams(paramup);
         uployout.setLayoutParams(param);
-        star_percentage.setText(value*10+"%");
+        star_percentage.setText(value * 10 + "%");
     }
 
     @Override
@@ -978,6 +985,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
             editor.putString(Variables.u_pic, "");
             editor.putBoolean(Variables.islogin, false);
             editor.putBoolean(Variables.auto_scroll_key, false);
+            editor.putString(Variables.themes_key,"");
             editor.commit();
             getActivity().finish();
             startActivity(new Intent(getActivity(), MainMenuActivity.class));

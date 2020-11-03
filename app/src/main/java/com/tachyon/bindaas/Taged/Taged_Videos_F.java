@@ -72,7 +72,13 @@ public class Taged_Videos_F extends RootFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_taged_videos, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.fragment_taged_videos, container, false);
+
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         context = getContext();
         try {
             if (Variables.sharedPreferences == null) {

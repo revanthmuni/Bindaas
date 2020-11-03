@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:clickable="true"
     tools:context=".Search.Search_Main_F">
 
@@ -43,7 +43,7 @@
             app:tabPaddingStart="10dp"
             app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextAppearance="@style/tab_text"
-            app:tabTextColor="@color/dark_gray" />
+            app:tabTextColor="?textColor" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

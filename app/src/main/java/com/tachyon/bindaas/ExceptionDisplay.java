@@ -16,6 +16,7 @@ public class ExceptionDisplay extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_exception_display);
         TextView exception_text = (TextView) findViewById(R.id.exception_text);
         Button btnBack = (Button) findViewById(R.id.btnBack);

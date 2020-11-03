@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="?layoutBackgroundColor"
        >
 
         <androidx.appcompat.widget.Toolbar
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?toolbarBackgroundColor"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp">
 
@@ -38,7 +38,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
 
                 <TextView
@@ -48,8 +48,8 @@
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="UserName"
-                    android:textColor="@color/black"
+                    android:text=""
+                    android:textColor="?textColor"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
@@ -116,7 +116,7 @@
                             android:visibility="gone"
                             android:layout_gravity="center"
                             android:text="Hi i'm user"
-                            android:textColor="@color/black"/>
+                            android:textColor="?textColor"/>
                         <ImageView
                             android:id="@+id/fb_image"
                             android:layout_width="0dp"
@@ -171,7 +171,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="0dp"
                                 android:layout_weight="9"
-                                android:background="@color/white"
+                                android:background="?textOppsiteColor"
                                 android:orientation="vertical"
                                 android:padding="5dp" />
 
@@ -217,7 +217,7 @@
                             android:layout_height="9dp"
                             android:layout_marginStart="16dp"
                             android:text="Star Meter :"
-                            android:textColor="@color/black"
+                            android:textColor="?textColor"
                             android:textSize="8sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -227,7 +227,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="10%"
-                            android:textColor="@color/black"
+                            android:textColor="?textColor"
                             android:textSize="8sp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/textView12"
@@ -242,8 +242,8 @@
                             android:ellipsize="end"
                             android:gravity="center"
                             android:maxLines="2"
-                            android:text="UserName"
-                            android:textColor="@color/black"
+                            android:text=""
+                            android:textColor="?textColor"
                             android:textSize="15dp"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="@+id/rlProfileImage"
@@ -272,7 +272,7 @@
                                 android:paddingRight="20dp"
                                 android:paddingBottom="5dp"
                                 android:text="0 Video"
-                                android:textColor="@color/dimgray"
+                                android:textColor="?dimGray"
                                 android:textSize="15dp"
                                 android:textStyle="bold" />
                         </androidx.cardview.widget.CardView>
@@ -314,7 +314,7 @@
                                     android:paddingRight="15dp"
                                     android:paddingBottom="2dp"
                                     android:text="0"
-                                    android:textColor="@color/black"
+                                    android:textColor="?textColor"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -350,7 +350,7 @@
                                     android:paddingRight="15dp"
                                     android:paddingBottom="2dp"
                                     android:text="0"
-                                    android:textColor="@color/black"
+                                    android:textColor="?textColor"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -389,7 +389,7 @@
                                 android:paddingRight="15dp"
                                 android:paddingBottom="2dp"
                                 android:text="0"
-                                android:textColor="@color/black"
+                                android:textColor="?textColor"
                                 android:textSize="18dp"
                                 android:textStyle="bold" />
 
@@ -429,7 +429,7 @@
                         android:paddingTop="10dp"
                         android:paddingRight="20dp"
                         android:paddingBottom="10dp"
-                        android:textColor="@color/white"
+                        android:textColor="?textOppsiteColor"
                         android:textSize="15dp"
                         android:textStyle="bold"
                         android:visibility="gone"
@@ -468,7 +468,7 @@
                         app:tabMode="fixed"
                         app:tabPaddingEnd="0dp"
                         app:tabPaddingStart="0dp"
-                        app:tabSelectedTextColor="@color/black"
+                        app:tabSelectedTextColor="?textColor"
                         app:tabTextColor="@color/redcolor" />
 
                     <androidx.viewpager.widget.ViewPager

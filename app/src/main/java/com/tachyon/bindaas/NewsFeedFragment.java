@@ -50,6 +50,13 @@ public class NewsFeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(getContext(), getContext().getClass().getSimpleName(), e.getMessage());
+        }
+
+
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
         view.findViewById(R.id.back_btn).setOnClickListener(view1 -> getActivity().onBackPressed());
         news_feed_viewpager = view.findViewById(R.id.news_feed_viewpager);

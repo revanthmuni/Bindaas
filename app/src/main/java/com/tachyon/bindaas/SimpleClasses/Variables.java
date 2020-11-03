@@ -10,6 +10,8 @@ public class Variables {
 
 
     public static final String device = "android";
+    public static final String BLACK_THEME = "Black";
+    public static final String WHITE_THEME = "White";
 
     public static int screen_width;
     public static int screen_height;
@@ -61,6 +63,7 @@ public class Variables {
     public static final String uploading_video_thumb="uploading_video_thumb";
     public static final String auto_scroll_key = "auto_scroll_key";
     public static final String show_preview_key = "show_preview_key";
+    public static final String themes_key = "themes_key";
     public static final String bio = "bio_key";
     public static final String fb_link = "fb_link";
     public static final String insta_link = "insta_link";

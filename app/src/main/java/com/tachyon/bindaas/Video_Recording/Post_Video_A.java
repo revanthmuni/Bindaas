@@ -72,7 +72,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     ServiceCallback serviceCallback;
     EditText description_edit;
 
-    String draft_file,duet_video_id;
+    String draft_file, duet_video_id;
 
     TextView privcy_type_txt;
     Switch comment_switch, duet_switch;
@@ -90,23 +90,28 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     List<String> list = new ArrayList<>();
     private GetFollowersAdapter actv_adapter;
     private ArrayList<Home_Get_Set> followerList;
-    private String actual_Str="";
+    private String actual_Str = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_video);
+        try {
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_post_video);
 
+        } catch (Exception e) {
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
         try {
             Intent intent = getIntent();
             if (intent != null) {
                 draft_file = intent.getStringExtra("draft_file");
-                duet_video_id=intent.getStringExtra("duet_video_id");
+                duet_video_id = intent.getStringExtra("duet_video_id");
                 // video_path = intent.getStringExtra("video_path");
             }
             video_path = Variables.output_filter_file;
             search_edit = findViewById(R.id.search_edit);
-            no_data_found_view  = findViewById(R.id.no_data_found_view);
+            no_data_found_view = findViewById(R.id.no_data_found_view);
             finaltext = findViewById(R.id.finaltext);
             close_finaltext = findViewById(R.id.close_finaltext);
             close_finaltext.setOnClickListener(new View.OnClickListener() {
@@ -130,10 +135,10 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                         followers_actv_recycler.setVisibility(View.GONE);
                         no_data_found_view.setVisibility(View.VISIBLE);
                     }
-                    if (s.equals("")){
+                    if (s.equals("")) {
                         followers_actv_recycler.setVisibility(View.GONE);
                         no_data_found_view.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         followers_actv_recycler.setVisibility(View.VISIBLE);
                         filter(s);
                     }
@@ -157,18 +162,17 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             bmThumbnail = ThumbnailUtils.createVideoThumbnail(video_path,
                     MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
 
-            if(bmThumbnail != null && duet_video_id!=null){
+            if (bmThumbnail != null && duet_video_id != null) {
                 Bitmap duet_video_bitmap = null;
-                if(duet_video_id!=null){
-                    duet_video_bitmap= ThumbnailUtils.createVideoThumbnail(Variables.app_folder+duet_video_id+".mp4",
+                if (duet_video_id != null) {
+                    duet_video_bitmap = ThumbnailUtils.createVideoThumbnail(Variables.app_folder + duet_video_id + ".mp4",
                             MediaStore.Video.Thumbnails.FULL_SCREEN_KIND);
                 }
-                Bitmap combined=combineImages(bmThumbnail,duet_video_bitmap);
+                Bitmap combined = combineImages(bmThumbnail, duet_video_bitmap);
                 video_thumbnail.setImageBitmap(combined);
-                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb,Functions.Bitmap_to_base64(this,combined)).commit();
+                Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb, Functions.Bitmap_to_base64(this, combined)).commit();
 
-            }
-            else if(bmThumbnail != null){
+            } else if (bmThumbnail != null) {
                 video_thumbnail.setImageBitmap(bmThumbnail);
                 Variables.sharedPreferences.edit().putString(Variables.uploading_video_thumb, Functions.Bitmap_to_base64(this, bmThumbnail)).commit();
             }
@@ -178,19 +182,17 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             comment_switch = findViewById(R.id.comment_switch);
             duet_switch = findViewById(R.id.duet_switch);
             recyclerView = findViewById(R.id.hashtags);
-            recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
             findViewById(R.id.Goback).setOnClickListener(this);
 
             findViewById(R.id.privacy_type_layout).setOnClickListener(this);
             findViewById(R.id.post_btn).setOnClickListener(this);
             findViewById(R.id.save_draft_btn).setOnClickListener(this);
 
-            if(duet_video_id!=null){
+            if (duet_video_id != null) {
                 findViewById(R.id.duet_layout).setVisibility(View.GONE);
                 duet_switch.setChecked(false);
-            }
-
-            else if(Variables.is_enable_duet)
+            } else if (Variables.is_enable_duet)
                 findViewById(R.id.duet_layout).setVisibility(View.VISIBLE);
 
             else {
@@ -206,11 +208,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
         }
     }
+
     private void filter(CharSequence text) {
-        if (text.toString().equals("")){
+        if (text.toString().equals("")) {
             no_data_found_view.setVisibility(View.VISIBLE);
             followers_actv_recycler.setVisibility(View.GONE);
-        }{
+        }
+        {
             no_data_found_view.setVisibility(View.GONE);
         }
 
@@ -223,7 +227,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             }
         }
         //update recyclerview
-        if (temp.size() == 0){
+        if (temp.size() == 0) {
             no_data_found_view.setVisibility(View.VISIBLE);
             followers_actv_recycler.setVisibility(View.GONE);
         }/*else{
@@ -232,7 +236,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         }*/
         actv_adapter.updateList(temp);
     }
-    private void callApiForFollowersList(){
+
+    private void callApiForFollowersList() {
         try {
             Functions.Show_loader(this, true, true);
 
@@ -254,7 +259,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                         String code = jsonObject.optString("code");
                         if (code.equals("200")) {
                             JSONArray msgArray = jsonObject.getJSONArray("msg");
-                            for (int i=0;i<msgArray.length();i++){
+                            for (int i = 0; i < msgArray.length(); i++) {
                                 JSONObject index = msgArray.getJSONObject(i);
                                 Home_Get_Set model = new Home_Get_Set();
                                 model.user_id = index.optString("user_id");
@@ -278,18 +283,18 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                         }*/
                         actv_adapter = new GetFollowersAdapter(Post_Video_A.this, followerList, new GetFollowersAdapter.OnItemClick() {
                             @Override
-                            public void onClick(String username,String id) {
-                                if (!finaltext.getText().toString().contains(username)){
-                                    if (finaltext.getText().toString().equals("")){
+                            public void onClick(String username, String id) {
+                                if (!finaltext.getText().toString().contains(username)) {
+                                    if (finaltext.getText().toString().equals("")) {
                                         actual_Str = id;
                                         finaltext.setText(username);
                                         finaltext.setVisibility(View.VISIBLE);
                                         close_finaltext.setVisibility(View.VISIBLE);
-                                    }else{
-                                        actual_Str = actual_Str+","+id;
-                                        finaltext.setText(finaltext.getText().toString()+","+username);
+                                    } else {
+                                        actual_Str = actual_Str + "," + id;
+                                        finaltext.setText(finaltext.getText().toString() + "," + username);
                                     }
-                                }else{
+                                } else {
                                     Toast.makeText(Post_Video_A.this, username + " already added", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -323,7 +328,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                     parseData(resp);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -336,7 +341,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
                 JSONArray msgArray = jsonObject.getJSONArray("msg");
                 JSONObject object = msgArray.getJSONObject(0);
                 JSONArray array = object.getJSONArray("hashtags");
-                for (int i=0;i<array.length();i++){
+                for (int i = 0; i < array.length(); i++) {
                     list.add(array.getString(i));
                 }
                 //Toast.makeText(getApplicationContext(), ""+list.size(), Toast.LENGTH_SHORT).show();
@@ -344,9 +349,10 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             adapter = new HashTagsAdapter(this, list, new HashTagsAdapter.ClickListener() {
                 @Override
                 public void onClick(String item, int postion) {
-                    if (description_edit.getText().toString().contains(("#"+item+" "))){
+                    if (description_edit.getText().toString().contains(("#" + item + " "))) {
                         Toast.makeText(Post_Video_A.this, "Already added.", Toast.LENGTH_SHORT).show();
-                    }else description_edit.setText("#"+item+" "+description_edit.getText().toString());
+                    } else
+                        description_edit.setText("#" + item + " " + description_edit.getText().toString());
                 }
             });
             recyclerView.setAdapter(adapter);
@@ -360,7 +366,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
         int width, height = 0;
 
-        if(c.getWidth() > s.getWidth()) {
+        if (c.getWidth() > s.getWidth()) {
             width = c.getWidth() + s.getWidth();
             height = c.getHeight();
         } else {
@@ -432,16 +438,16 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
         try {
             serviceCallback = this;
 
-           // Toast.makeText(this, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, ""+finaltext.getText().toString(), Toast.LENGTH_SHORT).show();
             Upload_Service mService = new Upload_Service(serviceCallback);
             if (!Functions.isMyServiceRunning(this, mService.getClass())) {
                 Intent mServiceIntent = new Intent(this.getApplicationContext(), mService.getClass());
                 mServiceIntent.setAction("startservice");
                 mServiceIntent.putExtra("draft_file", draft_file);
-                mServiceIntent.putExtra("duet_video_id",duet_video_id);
+                mServiceIntent.putExtra("duet_video_id", duet_video_id);
                 mServiceIntent.putExtra("uri", "" + video_path);
                 mServiceIntent.putExtra("desc", "" + description_edit.getText().toString());
-                mServiceIntent.putExtra("cat",category.getSelectedItem().toString());
+                mServiceIntent.putExtra("cat", category.getSelectedItem().toString());
                 mServiceIntent.putExtra("privacy_type", privcy_type_txt.getText().toString());
                 mServiceIntent.putExtra("tagged_users", actual_Str);
 //                Toast.makeText(this, ""+actual_Str, Toast.LENGTH_SHORT).show();
@@ -530,7 +536,7 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
 
     @Override
     protected void onDestroy() {
-        if(bmThumbnail!=null){
+        if (bmThumbnail != null) {
             bmThumbnail.recycle();
         }
         super.onDestroy();

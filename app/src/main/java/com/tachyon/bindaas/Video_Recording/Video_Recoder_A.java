@@ -118,8 +118,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Hide_navigation();
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_video_recoder);
+        }catch (Exception e){
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
 
-        setContentView(R.layout.activity_video_recoder);
+
         try {
             Variables.Selected_sound_id = "null";
             Variables.recording_duration = Variables.max_recording_duration;
@@ -1238,16 +1244,16 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     public void onBackPressed() {
 
         try {
-            new AlertDialog.Builder(this)
-                    .setTitle("Alert")
-                    .setMessage("Are you Sure? if you Go back you can't undo this action")
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+            dialog.setTitle("Alert");
+            dialog.setMessage("Are you Sure? if you Go back you can't undo this action");
+            dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    })
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    });
+            dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -1258,7 +1264,8 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                             overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
 
                         }
-                    }).show();
+                    });
+            dialog.show();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
             Log.e("Exception:", "" + e.getMessage());

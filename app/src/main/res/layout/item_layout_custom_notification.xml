@@ -5,7 +5,7 @@
     android:id="@+id/mainlayout"
     android:gravity="bottom"
     android:paddingTop="24dp"
-    android:background="@color/maincolor">
+    android:background="@color/colorAccent">
 
 
     <RelativeLayout

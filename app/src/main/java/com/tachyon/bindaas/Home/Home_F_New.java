@@ -181,7 +181,13 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_home_new, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.fragment_home_new, container, false);
+
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         context = getContext();
 
         p_bar = view.findViewById(R.id.p_bar);
@@ -839,7 +845,7 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
 
         playerView.setClipToOutline(true);
         TextView desc_txt = layout.findViewById(R.id.desc_txt);
-        HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+        HashTagHelper.Creator.create(context.getResources().getColor(R.color.colorAccent), new HashTagHelper.OnHashTagClickListener() {
             @Override
             public void onHashTagClicked(String hashTag) {
                 onPause();

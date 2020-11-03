@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     tools:context=".Search.SoundList_F">
 
     <RelativeLayout
@@ -32,7 +32,7 @@
                     <LinearLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@color/gainsboro"/>
+                        android:background="?shimmerColor"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -43,13 +43,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_marginTop="30dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -66,7 +66,7 @@
                     <LinearLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@color/gainsboro"/>
+                        android:background="?shimmerColor"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -77,13 +77,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_marginTop="30dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -100,7 +100,7 @@
                     <LinearLayout
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@color/gainsboro"/>
+                        android:background="?shimmerColor"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -110,13 +110,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_marginTop="30dp"
-                            android:background="@color/gainsboro"/>
+                            android:background="?shimmerColor"/>
                     </LinearLayout>
 
                 </LinearLayout>

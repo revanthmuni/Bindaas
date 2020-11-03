@@ -70,7 +70,13 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Hide_navigation();
-        setContentView(R.layout.activity_gallery_selected_video);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_gallery_selected_video);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        }
         try {
             Intent intent = getIntent();
             if (intent != null) {

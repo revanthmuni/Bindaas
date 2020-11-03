@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class EventSliderAdapter extends SliderViewAdapter<EventSliderAdapter.Sli
     private Context context;
     private List<EventItems> mSliderItems = new ArrayList<>();
 
-    public EventSliderAdapter(Context context,List<EventItems> listItems) {
+    public EventSliderAdapter(Context context, List<EventItems> listItems) {
         this.context = context;
         this.mSliderItems = listItems;
     }
@@ -33,22 +34,25 @@ public class EventSliderAdapter extends SliderViewAdapter<EventSliderAdapter.Sli
 
     @Override
     public void onBindViewHolder(SliderAdapterVH viewHolder, final int position) {
+        try {
+            EventItems sliderItem = mSliderItems.get(position);
 
-        EventItems sliderItem = mSliderItems.get(position);
+            viewHolder.eventTitle.setText(sliderItem.getEvent_name());
+            viewHolder.eventDescription.setText(sliderItem.getShort_description());
+            Glide.with(viewHolder.itemView)
+                    .load(sliderItem.getDiscover_image())
+                    .fitCenter()
+                    .into(viewHolder.eventImage);
 
-        viewHolder.eventTitle.setText(sliderItem.getEvent_name());
-        viewHolder.eventDescription.setText(sliderItem.getShort_description());
-        Glide.with(viewHolder.itemView)
-                .load(sliderItem.getDiscover_image())
-                .fitCenter()
-                .into(viewHolder.eventImage);
-
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
@@ -61,14 +65,18 @@ public class EventSliderAdapter extends SliderViewAdapter<EventSliderAdapter.Sli
 
         View itemView;
         ImageView eventImage;
-        TextView eventTitle,eventDescription;
+        TextView eventTitle, eventDescription;
 
         public SliderAdapterVH(View itemView) {
             super(itemView);
-            eventImage = itemView.findViewById(R.id.eventImage);
-            eventTitle = itemView.findViewById(R.id.event_title);
-            eventDescription = itemView.findViewById(R.id.eventDescription);
-            this.itemView = itemView;
+            try {
+                eventImage = itemView.findViewById(R.id.eventImage);
+                eventTitle = itemView.findViewById(R.id.event_title);
+                eventDescription = itemView.findViewById(R.id.eventDescription);
+                this.itemView = itemView;
+            } catch (Exception e) {
+                Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+            }
         }
     }
 }

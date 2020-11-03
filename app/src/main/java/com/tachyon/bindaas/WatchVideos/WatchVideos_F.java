@@ -146,10 +146,14 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        setContentView(R.layout.fragment_watchvideo);
         context = this;
+        try{
+          setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.fragment_watchvideo);
 
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         try {
 
             if (Variables.sharedPreferences == null) {
@@ -885,7 +889,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
             });
 
             TextView desc_txt = layout.findViewById(R.id.desc_txt);
-            HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor),
+            HashTagHelper.Creator.create(context.getResources().getColor(R.color.colorAccent),
                     new HashTagHelper.OnHashTagClickListener() {
                         @Override
                         public void onHashTagClicked(String hashTag) {

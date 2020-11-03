@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:clickable="true"
     tools:context="com.tachyon.bindaas.Notifications.Notification_F">
 
@@ -12,14 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?toolbarBackgroundColor"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toTopOf="parent"
@@ -41,7 +41,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
                 <ImageButton
                     android:id="@+id/inbox_btn"
@@ -63,7 +63,7 @@
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"
                     android:text="Alerts"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -72,33 +72,49 @@
 
         <LinearLayout
             android:id="@+id/linearLayout6"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:background="?textOppsiteColor"
             android:orientation="horizontal"
             ads:layout_constraintEnd_toEndOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-            <TextView
-                android:id="@+id/textView3"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                ads:cardCornerRadius="10dp"
                 android:layout_weight="1"
+                android:layout_margin="2dp"
+                ads:cardBackgroundColor="?textOppsiteColor"
+                ads:cardElevation="4dp">
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:background="@color/themecolor"
                 android:gravity="center"
                 android:text="Notifications"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/textView4"
+                android:textColor="?textColor" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                ads:cardCornerRadius="10dp"
+                ads:cardBackgroundColor="?textOppsiteColor"
                 android:layout_weight="1"
+                android:layout_margin="2dp"
+                ads:cardElevation="4dp">
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+
                 android:alpha="0.5"
                 android:gravity="center"
                 android:text="Messages"
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
         <FrameLayout

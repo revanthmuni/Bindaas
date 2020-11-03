@@ -28,7 +28,7 @@
             android:padding="5dp"
             android:textSize="12sp"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/darkgray"
+            android:textColor="?textLightColor"
             android:visibility="gone"
             android:id="@+id/datetxt"/>
 
@@ -64,7 +64,7 @@
                     android:layout_height="32dp"
                     android:id="@+id/play_btn"
                     android:scaleType="fitXY"
-                    android:tint="@color/black"
+                    android:tint="?tintColor"
                     android:clickable="false"
                     android:src="@drawable/ic_play_icon"
                     android:background="@color/transparent"/>
@@ -89,7 +89,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:id="@+id/total_time"/>
 
             </RelativeLayout>

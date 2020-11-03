@@ -61,6 +61,12 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         try {
@@ -472,7 +478,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         pager.setLayoutParams(params);*/
         tabLayout.setBackground(getResources().getDrawable(R.drawable.d_top_white_line));
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(context, R.color.black));
+            getActivity().getWindow().setNavigationBarColor(ContextCompat.getColor(context, R.color.textColor));
         }
     }
 

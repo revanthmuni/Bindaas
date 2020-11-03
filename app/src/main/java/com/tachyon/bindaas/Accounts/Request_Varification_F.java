@@ -65,6 +65,7 @@ public class Request_Varification_F extends RootFragment implements View.OnClick
                              Bundle savedInstanceState) {
         try {
 
+            getActivity().setTheme(Functions.getSavedTheme());
             // Inflate the layout for this fragment
             view = inflater.inflate(R.layout.activity_request_varification, container, false);
             context = getContext();

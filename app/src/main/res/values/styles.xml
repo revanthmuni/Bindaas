@@ -6,7 +6,44 @@
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="textColor">?textColor</item>
+        <item name="textLightColor">?textLightColor</item>
+        <item name="textOppsiteColor">?textOppsiteColor</item>
+        <item name="tintColor">?tintColor</item>
+        <item name="dimGray">?dimGray</item>
+        <item name="shimmerColor">?shimmerColor</item>
+        <item name="layoutBackgroundColor">?layoutBackgroundColor</item>
+        <item name="toolbarBackgroundColor">?toolbarBackgroundColor</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
+    </style>
+
+    <!--CUSTOM THEMES HERE!-->
+    <style name="BlackTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/blackPrimaryColor</item>
+        <item name="colorPrimaryDark">@color/blackPrimaryDarkColor</item>
+        <item name="colorAccent">@color/themecolor</item>
+        <item name="textColor">@color/blackPrimaryTextColor</item>
+        <item name="textLightColor">@color/colorTextGray</item>
+        <item name="textOppsiteColor">@color/whitePrimaryTextColor</item>
+        <item name="tintColor">@color/blackTintColor</item>
+        <item name="layoutBackgroundColor">@color/blackPrimaryColor</item>
+        <item name="toolbarBackgroundColor">@color/blackPrimaryColor</item>
+        <item name="dimGray">@color/colorTextGray</item>
+        <item name="shimmerColor">@color/lightblack</item>
+    </style>
+
+    <style name="WhiteTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/whitePrimaryColor</item>
+        <item name="colorPrimaryDark">@color/whitePrimaryDarkColor</item>
+        <item name="colorAccent">@color/themecolor</item>
+        <item name="textColor">@color/whitePrimaryTextColor</item>
+        <item name="textLightColor">@color/colorTextGray</item>
+        <item name="textOppsiteColor">@color/whitePrimaryColor</item>
+        <item name="layoutBackgroundColor">@color/whitePrimaryColor</item>
+        <item name="toolbarBackgroundColor">@color/whitePrimaryColor</item>
+        <item name="tintColor">@color/whiteTintColor</item>
+        <item name="dimGray">@color/dimgray</item>
+        <item name="shimmerColor">@color/gainsboro</item>
     </style>
 
 
@@ -24,7 +61,9 @@
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="spinnerTheme">
+        <item name="android:textColor">?textColor</item>
+    </style>
     <style name="black_status" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
@@ -62,7 +101,7 @@
     </style>
 
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-
+        <item name="android:windowBackground">@drawable/rounded_background_white</item>
     </style>
 
 
@@ -84,7 +123,7 @@
 
 
     <style name="RadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/app_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/graycolor</item>
         <item name="colorControlNormal">@color/graycolor</item>
     </style>
@@ -105,7 +144,10 @@
     <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/colorAccent</item>
     </style>
-
+    <style name="AlertDialogCustomTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">?textColor</item>
+        <item name="android:background">?layoutBackgroundColor</item>
+    </style>
     <style name="TextLabel" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Hint color and label color in FALSE state -->
         <!-- Label color in TRUE state and bar color FALSE and TRUE State -->

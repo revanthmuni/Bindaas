@@ -71,28 +71,36 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
     private static final String TAG = "SoundCategoryFragment";
     private int adapter_position;
     ShimmerFrameLayout shimmer_layout;
+
     public SoundCategoryFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sound_category, container, false);
-
-        this.context = getContext();
-        category_recycler = view.findViewById(R.id.category_recycler);
-        shimmer_layout = view.findViewById(R.id.shimmer_layout);
-        shimmer_layout.startShimmer();
-        category_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        category_recycler.setNestedScrollingEnabled(false);
-
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            section_id = bundle.getString("section_id");
-           // Toast.makeText(context, "" + section_id, Toast.LENGTH_SHORT).show();
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
-        loadCategoriesData();
+        View view = inflater.inflate(R.layout.fragment_sound_category, container, false);
+        try {
+            this.context = getContext();
+            category_recycler = view.findViewById(R.id.category_recycler);
+            shimmer_layout = view.findViewById(R.id.shimmer_layout);
+            shimmer_layout.startShimmer();
+            category_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            category_recycler.setNestedScrollingEnabled(false);
 
+            Bundle bundle = getArguments();
+            if (bundle != null) {
+                section_id = bundle.getString("section_id");
+                // Toast.makeText(context, "" + section_id, Toast.LENGTH_SHORT).show();
+            }
+            loadCategoriesData();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         return view;
     }
 
@@ -324,9 +332,9 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
             try {
                 parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
                 parameters.put("sound_id", item.id);
-                if (item.fav.equals("0")){
+                if (item.fav.equals("0")) {
                     parameters.put("fav", "1");
-                }else
+                } else
                     parameters.put("fav", "0");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -343,7 +351,7 @@ public class SoundCategoryFragment extends RootFragment implements Player.EventL
                     else
                         item.fav = "1";
                     datalist.remove(pos);
-                    datalist.add(pos,item);
+                    datalist.add(pos, item);
                     adapter.notifyDataSetChanged();
                 }
             });

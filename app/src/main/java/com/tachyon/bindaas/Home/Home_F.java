@@ -35,6 +35,7 @@ import com.tachyon.bindaas.SimpleClasses.Bindaas;
 import com.tachyon.bindaas.SoundLists.VideoSound_A;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -969,7 +970,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
         playerView.setClipToOutline(true);
         TextView desc_txt = layout.findViewById(R.id.desc_txt);
-        HashTagHelper.Creator.create(context.getResources().getColor(R.color.maincolor), new HashTagHelper.OnHashTagClickListener() {
+        HashTagHelper.Creator.create(context.getResources().getColor(R.color.colorAccent), new HashTagHelper.OnHashTagClickListener() {
             @Override
             public void onHashTagClicked(String hashTag) {
                 onPause();
@@ -1311,7 +1312,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
             else
                 options = new String[]{"Save Video", "Flag Video", "Cancel"};
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
 
             builder.setTitle(null);
 

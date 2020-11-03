@@ -22,7 +22,7 @@
     android:id="@+id/msgtxt"
      android:textSize="15dp"
     android:background="@drawable/d_my_msg_background"
-    android:textColor="@color/white"
+    android:textColor="?textColor"
     android:paddingLeft="10dp"
     android:paddingRight="20dp"
      android:paddingTop="10dp"
@@ -41,7 +41,7 @@
         android:textSize="10dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/message_seen"
-        android:textColor="@color/darkgray"
+        android:textColor="?textLightColor"
         android:layout_marginRight="10dp"/>
 
 </RelativeLayout>

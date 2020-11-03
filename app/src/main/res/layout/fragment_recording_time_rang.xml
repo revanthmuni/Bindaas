@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp"
-            android:background="@color/white">
+            android:background="?layoutBackgroundColor">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     android:layout_height="wrap_content"
                     android:text="30s"
                     android:id="@+id/range_txt"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:layout_alignParentEnd="true"/>
 
             </RelativeLayout>

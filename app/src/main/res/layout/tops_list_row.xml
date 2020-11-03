@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:elevation="4dp"
         android:layout_margin="2dp"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="?layoutBackgroundColor"
         app:cardCornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="234 views"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="10sp" />
 
                 <TextView
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="333 likes"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="10sp" />
 
                 <TextView
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="45 Video uploads"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="10sp" />
 
                 <TextView
@@ -62,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="User Score :54"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -73,7 +73,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginBottom="4dp"
                 android:text="UserId@123"
-                android:textColor="@color/black"
+                android:textColor="?textColor"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/profile_pic"

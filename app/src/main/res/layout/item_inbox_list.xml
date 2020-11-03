@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:id="@+id/mainlayout"
-    android:background="@android:color/white">
+    android:background="?layoutBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                     android:textSize="15dp"
                     android:id="@+id/username"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:layout_marginLeft="10dp" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                     android:maxLines="2"
                     android:text="Your Message"
 
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="13dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

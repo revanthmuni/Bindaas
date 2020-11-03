@@ -90,7 +90,13 @@ public class Favourite_Sound_F extends RootFragment implements Player.EventListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.activity_sound_list, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.activity_sound_list, container, false);
+
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
 
         context = getContext();
         try {

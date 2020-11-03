@@ -28,16 +28,32 @@ public class EventsModel {
     private String soundImage;
     @SerializedName("sound_section_id")
     @Expose
-    private SoundSectionId soundSectionId;
+    private String soundSectionId;
     @SerializedName("discover_image")
     @Expose
     private String discoverImage;
     @SerializedName("discover_section_id")
     @Expose
-    private DiscoverSectionId discoverSectionId;
+    private String discoverSectionId;
     @SerializedName("created")
     @Expose
     private String created;
+
+    public String getSoundSectionId() {
+        return soundSectionId;
+    }
+
+    public void setSoundSectionId(String soundSectionId) {
+        this.soundSectionId = soundSectionId;
+    }
+
+    public String getDiscoverSectionId() {
+        return discoverSectionId;
+    }
+
+    public void setDiscoverSectionId(String discoverSectionId) {
+        this.discoverSectionId = discoverSectionId;
+    }
 
     public String getId() {
         return id;
@@ -95,13 +111,6 @@ public class EventsModel {
         this.soundImage = soundImage;
     }
 
-    public SoundSectionId getSoundSectionId() {
-        return soundSectionId;
-    }
-
-    public void setSoundSectionId(SoundSectionId soundSectionId) {
-        this.soundSectionId = soundSectionId;
-    }
 
     public String getDiscoverImage() {
         return discoverImage;
@@ -111,13 +120,6 @@ public class EventsModel {
         this.discoverImage = discoverImage;
     }
 
-    public DiscoverSectionId getDiscoverSectionId() {
-        return discoverSectionId;
-    }
-
-    public void setDiscoverSectionId(DiscoverSectionId discoverSectionId) {
-        this.discoverSectionId = discoverSectionId;
-    }
 
     public String getCreated() {
         return created;
@@ -126,34 +128,5 @@ public class EventsModel {
     public void setCreated(String created) {
         this.created = created;
     }
-    public class DiscoverSectionId {
 
-        @SerializedName("$oid")
-        @Expose
-        private String $oid;
-
-        public String get$oid() {
-            return $oid;
-        }
-
-        public void set$oid(String $oid) {
-            this.$oid = $oid;
-        }
-
-    }
-    public class SoundSectionId {
-
-        @SerializedName("$oid")
-        @Expose
-        private String $oid;
-
-        public String get$oid() {
-            return $oid;
-        }
-
-        public void set$oid(String $oid) {
-            this.$oid = $oid;
-        }
-
-    }
 }

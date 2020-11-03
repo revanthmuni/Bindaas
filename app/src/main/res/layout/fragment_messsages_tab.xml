@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:id="@+id/Inbox_F"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context="com.tachyon.bindaas.Inbox.Inbox_F">
@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/toolbar"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="?layoutBackgroundColor"
                 android:visibility="gone">
 
                 <ImageView
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Whoops!"
-                    android:textColor="@color/dimgray"
+                    android:textColor="?dimGray"
                     android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="@+id/img_no_job"
                     app:layout_constraintStart_toStartOf="@+id/img_no_job"
@@ -69,7 +69,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/no_messages"
                     android:textAlignment="center"
-                    android:textColor="@color/dimgray"
+                    android:textColor="?dimGray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="@+id/whoops"
                     app:layout_constraintStart_toStartOf="@+id/whoops"

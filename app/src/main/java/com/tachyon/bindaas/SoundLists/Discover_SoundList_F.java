@@ -99,7 +99,13 @@ public class Discover_SoundList_F extends RootFragment implements Player.EventLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.activity_discovery_sound_list, container, false);
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+            view = inflater.inflate(R.layout.activity_discovery_sound_list, container, false);
+
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         context = getContext();
         try {
             running_sound_id = "none";

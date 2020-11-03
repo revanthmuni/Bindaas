@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="?layoutBackgroundColor"
         >
 
         <androidx.appcompat.widget.Toolbar
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?toolbarBackgroundColor"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp">
 
@@ -38,7 +38,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
 
                 <TextView
@@ -49,7 +49,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="Upcoming Recipes"
-                    android:textColor="@color/black"
+                    android:textColor="?tintColor"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:indeterminateOnly="true"
-                    android:indeterminateTint="@color/white"
+                    android:indeterminateTint="?textOppsiteColor"
                     android:secondaryProgress="@android:integer/config_shortAnimTime"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"

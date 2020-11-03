@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     tools:context="com.tachyon.bindaas.Profile.UserVideos.UserVideo_F">
 
   <RelativeLayout
@@ -24,7 +24,7 @@
         android:id="@+id/no_data_layout"
         android:paddingTop="50dp"
         android:visibility="gone"
-        android:background="@color/white">
+        android:background="?textOppsiteColor">
 
       <TextView
           android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
           android:layout_below="@+id/img_no_job"
           android:layout_centerHorizontal="true"
           android:text="Whoops!"
-          android:textColor="@color/dimgray"
+          android:textColor="?dimGray"
           android:id="@+id/whoops"
           android:textSize="22sp"/>
 
@@ -42,7 +42,7 @@
           android:layout_below="@+id/whoops"
           android:layout_centerHorizontal="true"
           android:gravity="center"
-          android:textColor="@color/dimgray"
+          android:textColor="?dimGray"
           android:layout_marginLeft="55dp"
           android:layout_marginRight="55dp"
           android:text="@string/no_liked_videos"

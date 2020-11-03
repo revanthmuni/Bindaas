@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#fff</color>
+    <color name="colorPrimaryDark">#fff</color>
     <color name="colorAccent">#E25E14</color>
 
     <color name="maincolor">#E25E14</color>
@@ -31,7 +31,6 @@
     <color name="bindaasgreen">#08a790</color>
     <color name="bindaasgreen_light">#42D8C2</color>
 
-
     <color name="app_color">#c52127</color>
     <color name="colorProfileTabSelector">#66BB6A</color>
 
@@ -50,5 +49,27 @@
     <color name="waveformSelected">#adb5cc</color>
     <color name="waveformUnselected">#adb5cc</color>
     <color name="waveformUnselectedBackground">#e8e6e7</color>
+
+    <!-- Black Theme -->
+    <color name="blackPrimaryColor">#263238</color>
+    <color name="blackPrimaryLightColor">#4f5b62</color>
+    <color name="blackPrimaryDarkColor">#000a12</color>
+    <color name="blackSecondaryColor">#ffffff</color>
+    <color name="blackSecondaryLightColor">#ffffff</color>
+    <color name="blackSecondaryDarkColor">#cccccc</color>
+    <color name="blackPrimaryTextColor">#ffffff</color>
+    <color name="blackTintColor">#ffffff</color>
+    <color name="blackSecondaryTextColor">#000000</color>
+
+    <!-- White Theme -->
+    <color name="whitePrimaryColor">#ffffff</color>
+    <color name="whitePrimaryDarkColor">#cccccc</color>
+    <color name="whiteSecondaryColor">#263238</color>
+    <color name="whiteSecondaryLightColor">#4f5b62</color>
+    <color name="whiteSecondaryDarkColor">#000a12</color>
+    <color name="whitePrimaryTextColor">#000000</color>
+    <color name="whiteTintColor">#000000</color>
+    <color name="whiteSecondaryTextColor">#ffffff</color>
+    <color name="textColor">#000</color>
 
 </resources>

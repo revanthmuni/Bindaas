@@ -11,17 +11,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginTop="24dp"
             android:layout_weight="1"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            android:background="@color/white">
+            android:background="?toolbarBackgroundColor">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,7 +36,7 @@
                     android:layout_marginLeft="10dp"
                     android:scaleType="fitStart"
                     android:id="@+id/back_btn"
-                    android:tint="@color/black"
+                    android:tint="?tintColor"
                     android:background="@color/transparent"/>
 
 
@@ -51,7 +50,7 @@
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"/>
+                    android:textColor="?textColor"/>
 
 
             </RelativeLayout>
@@ -101,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Whoops!"
-                    android:textColor="@color/dimgray"
+                    android:textColor="?dimGray"
                     android:textSize="22sp"
                     app:layout_constraintEnd_toEndOf="@+id/img_no_job"
                     app:layout_constraintStart_toStartOf="@+id/img_no_job"
@@ -113,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/no_followers"
-                    android:textColor="@color/dimgray"
+                    android:textColor="?dimGray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="@+id/whoops"
                     app:layout_constraintStart_toStartOf="@+id/whoops"

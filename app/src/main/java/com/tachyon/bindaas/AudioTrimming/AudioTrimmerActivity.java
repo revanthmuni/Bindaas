@@ -135,9 +135,9 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_trim);
         try {
-
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_audio_trim);
             if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
@@ -211,6 +211,8 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             mHandler.postDelayed(mTimerRunnable, 100);
 
+            pickUpFile();
+
 //       pickUpFile();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
@@ -277,7 +279,7 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
             intent_upload.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent_upload, 2000);*/
 
-                pickUpFile();
+//                pickUpFile();
 
 
             } else if (view == txtAudioCancel) {

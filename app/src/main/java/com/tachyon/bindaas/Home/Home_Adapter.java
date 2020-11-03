@@ -55,6 +55,7 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
 
     @Override
     public Home_Adapter.CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+        context.setTheme(Functions.getSavedTheme());
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home_layout, null);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT));
         Home_Adapter.CustomViewHolder viewHolder = new Home_Adapter.CustomViewHolder(view);

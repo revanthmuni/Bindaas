@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?layoutBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?toolbarBackgroundColor"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp">
 
@@ -34,7 +35,7 @@
                     android:background="@color/transparent"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_back"
-                    android:tint="@color/black" />
+                    android:tint="?tintColor" />
 
 
                 <TextView
@@ -45,7 +46,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="Flag Video"
-                    android:textColor="@color/black"
+                    android:textColor="?textColor"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -59,7 +60,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="5dp"
             android:text="Choose a reason"
-            android:textColor="@color/black"
+            android:textColor="?textColor"
             android:textSize="18sp" />
 
         <RadioGroup
@@ -75,35 +76,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Harassment and cyber bullying"
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Violent threats"
 
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Child endangerment"
 
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
                 android:text="Privacy"
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Others"
 
-                android:textColor="@color/black" />
+                android:textColor="?textColor" />
 
         </RadioGroup>
 
@@ -112,7 +113,7 @@
             android:id="@+id/et_reason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="?textColor"
             android:layout_marginLeft="5dp"
             android:hint="Enter Reason"
             android:inputType="textMultiLine"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     tools:context=".Discover.TopsFragment">
 
    <androidx.recyclerview.widget.RecyclerView
@@ -44,19 +44,19 @@
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
 
          </LinearLayout>
@@ -72,78 +72,23 @@
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
             <LinearLayout
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
+                android:background="?shimmerColor" />
 
 
          </LinearLayout>
 
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_margin="15dp"
-             android:layout_marginTop="45dp"
-             android:gravity="center_vertical"
-             android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/gainsboro" />
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
-
-
-         </LinearLayout>
-
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_margin="15dp"
-             android:layout_marginTop="45dp"
-             android:gravity="center_vertical"
-             android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@color/gainsboro" />
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
-
-            <LinearLayout
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="40dp"
-                android:background="@color/gainsboro" />
-
-
-         </LinearLayout>
 
 
       </LinearLayout>

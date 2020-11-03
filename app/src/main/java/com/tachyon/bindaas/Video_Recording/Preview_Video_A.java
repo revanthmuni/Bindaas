@@ -68,7 +68,13 @@ public class Preview_Video_A extends AppCompatActivity implements Player.EventLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_preview_video);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_preview_video);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
+        }
         try {
             Intent intent = getIntent();
             if (intent != null) {

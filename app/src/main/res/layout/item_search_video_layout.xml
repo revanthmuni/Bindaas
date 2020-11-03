@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:background="?layoutBackgroundColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -39,7 +40,7 @@
                 android:id="@+id/username_txt"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:shadowColor="@color/black"
+                android:shadowColor="?textColor"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="3"
@@ -53,11 +54,11 @@
                 android:id="@+id/description_txt"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:shadowColor="@color/black"
+                android:shadowColor="?textColor"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="3"
-                android:textColor="@color/white"/>
+                android:textColor="?textOppsiteColor"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -88,7 +89,7 @@
                         android:textSize="12dp"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:shadowColor="@color/black"
+                        android:shadowColor="?textColor"
                         android:shadowDx="1"
                         android:shadowDy="1"
                         android:shadowRadius="3"
@@ -116,11 +117,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:shadowColor="@color/black"
+                        android:shadowColor="?textColor"
                         android:shadowDx="1"
                         android:shadowDy="1"
                         android:shadowRadius="3"
-                        android:textColor="@color/white"
+                        android:textColor="?textOppsiteColor"
                         android:layout_marginStart="5dp"
                         android:id="@+id/likes_count_txt"/>
                 </LinearLayout>

@@ -75,23 +75,32 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sound_list2);
+        try {
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_sound_list2);
 
-        sounds_recycler = findViewById(R.id.sounds_recycler);
-        shimmer_layout = findViewById(R.id.shimmer_layout);
-        shimmer_layout.startShimmer();
-        Goback = findViewById(R.id.Goback);
-        title = findViewById(R.id.title);
-        Goback.setOnClickListener(view -> finish());
+        } catch (Exception e) {
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
+        try {
+            sounds_recycler = findViewById(R.id.sounds_recycler);
+            shimmer_layout = findViewById(R.id.shimmer_layout);
+            shimmer_layout.startShimmer();
+            Goback = findViewById(R.id.Goback);
+            title = findViewById(R.id.title);
+            Goback.setOnClickListener(view -> finish());
 
-        this.context = SoundListActivity.this;
+            this.context = SoundListActivity.this;
 
-        section_id = getIntent().getStringExtra("section_id");
-        title_text = getIntent().getStringExtra("title");
-        title.setText(title_text);
-        sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        sounds_recycler.setNestedScrollingEnabled(false);
-        loadTrendingSounds();
+            section_id = getIntent().getStringExtra("section_id");
+            title_text = getIntent().getStringExtra("title");
+            title.setText(title_text);
+            sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+            sounds_recycler.setNestedScrollingEnabled(false);
+            loadTrendingSounds();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         // Toast.makeText(this, "" + section_id, Toast.LENGTH_SHORT).show();
     }
 
@@ -123,6 +132,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
         }
     }
+
     public void parseTrendingSounds(String responce) {
 
         Log.d(TAG, "parseTrendingSounds: full data:" + responce);
@@ -187,6 +197,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         }
 
     }
+
     public void Set_adapter() {
         try {
             /*adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
@@ -279,6 +290,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
         }
 
     }
+
     public void playaudio(View view, final Sounds_GetSet item) {
         try {
             previous_view = view;
@@ -342,7 +354,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                     else
                         item.fav = "1";
                     datalist.remove(pos);
-                    datalist.add(pos,item);
+                    datalist.add(pos, item);
                     adapter.notifyDataSetChanged();
                 }
             });

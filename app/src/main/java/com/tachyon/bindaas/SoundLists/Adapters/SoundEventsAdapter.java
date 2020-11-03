@@ -40,7 +40,7 @@ public class SoundEventsAdapter extends RecyclerView.Adapter<SoundEventsAdapter.
         Glide.with(context).load(list.get(position).getDiscoverImage()).placeholder(R.drawable.image_placeholder).into(holder.event_image);
         holder.event_title.setText(list.get(position).getEventName());
         holder.event_description.setText(list.get(position).getShortDescription());
-        holder.itemView.setOnClickListener(view -> listener.onClick(position,list.get(position).getSoundSectionId().get$oid()));
+        holder.itemView.setOnClickListener(view -> listener.onClick(position,list.get(position).getSoundSectionId()));
     }
 
     @Override

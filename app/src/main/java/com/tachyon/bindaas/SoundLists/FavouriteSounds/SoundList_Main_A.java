@@ -59,7 +59,13 @@ public class SoundList_Main_A extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sound_list_main);
+        try{
+            setTheme(Functions.getSavedTheme());
+            setContentView(R.layout.activity_sound_list_main);
+
+        }catch (Exception e){
+            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        }
         try {
             initViews();
             initialiseClickListeners();

@@ -1,6 +1,7 @@
 package com.tachyon.bindaas.SimpleClasses;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -74,7 +76,35 @@ import static com.tachyon.bindaas.Home.Home_F.adapter;
 
 public class Functions {
 
+    public static void setTextWithSmoothAnimation(TextView textView, String message) {
+        try {
+            textView.animate().setDuration(100).setListener(new Animator.AnimatorListener() {
 
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    textView.setText(message);
+                    textView.animate().setListener(null).setDuration(100).alpha(1);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            }).alpha(0);
+        }catch (Exception e){
+            Log.d(TAG, "setTextWithSmoothAnimation: set text animation error:"+e.getMessage());
+        }
+    }
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -1042,6 +1072,18 @@ public class Functions {
             context.startActivity(i);
         } catch (Exception e) {
             Functions.showLogMessage(context, "OpenBrowser", e.getMessage());
+        }
+    }
+
+    public static int getSavedTheme() {
+        String theme = Variables.sharedPreferences.getString(Variables.themes_key,Variables.WHITE_THEME);
+        switch (theme) {
+            case Variables.BLACK_THEME:
+                return R.style.BlackTheme;
+            case Variables.WHITE_THEME:
+                return R.style.WhiteTheme;
+            default:
+                return R.style.WhiteTheme;
         }
     }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="?layoutBackgroundColor"
     android:clickable="true"
     android:id="@+id/Search_Main_F"
     tools:context="com.tachyon.bindaas.Discover.Discover_F">
@@ -65,7 +65,7 @@
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/lightgraycolor"
+            app:cardBackgroundColor="?layoutBackgroundColor"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toStartOf="@+id/swiperefresh"
@@ -75,6 +75,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?layoutBackgroundColor"
                 android:paddingStart="10dp">
 
                 <EditText
@@ -85,8 +86,8 @@
                     android:backgroundTint="@color/transparent"
                     android:hint="Search"
                     android:padding="7dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/darkgray"
+                    android:textColor="?textColor"
+                    android:textColorHint="?textLightColor"
                     android:textSize="14dp" />
 
                 <ImageButton
@@ -98,7 +99,7 @@
                     android:padding="4dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_discovery_gray"
-                    android:tint="@color/dimgray" />
+                    android:tint="?dimGray" />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>

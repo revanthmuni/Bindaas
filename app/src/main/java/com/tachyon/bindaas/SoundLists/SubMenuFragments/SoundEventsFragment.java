@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,23 +50,31 @@ public class SoundEventsFragment extends RootFragment {
     List<EventsModel> list;
     private static final String TAG = "SoundEventsFragment";
     ShimmerFrameLayout shimmer_layout;
+
     public SoundEventsFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        try{
+            getActivity().setTheme(Functions.getSavedTheme());
+        }catch (Exception e){
+            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        }
         View view = inflater.inflate(R.layout.fragment_sound_tops, container, false);
         this.context = getContext();
+        try {
+            list = new ArrayList<>();
 
-        list = new ArrayList<>();
-
-        shimmer_layout = view.findViewById(R.id.shimmer_layout);
-        shimmer_layout.startShimmer();
-        tops_recyclerview = view.findViewById(R.id.tops_recyclerview);
-        tops_recyclerview.setLayoutManager(new GridLayoutManager(context,2));
-        loadEvents();
-
+            shimmer_layout = view.findViewById(R.id.shimmer_layout);
+            shimmer_layout.startShimmer();
+            tops_recyclerview = view.findViewById(R.id.tops_recyclerview);
+            tops_recyclerview.setLayoutManager(new GridLayoutManager(context, 2));
+            loadEvents();
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
+        }
         return view;
     }
 
@@ -73,7 +82,7 @@ public class SoundEventsFragment extends RootFragment {
         try {
             JSONObject params = new JSONObject();
             try {
-                params.put("user_id", "");
+                params.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -93,17 +102,21 @@ public class SoundEventsFragment extends RootFragment {
     }
 
     private void parseEvents(String resp) {
-        GetEvents users = new Gson().fromJson(resp, GetEvents.class);
-        if (users.getCode().equals("200")){
-            adapter = new SoundEventsAdapter(context, users.getEvents(), new SoundEventsAdapter.OnItemClick() {
-                @Override
-                public void onClick(int position, String section_id) {
-                    openSoundsList(position,section_id);
-                }
-            });
-            tops_recyclerview.setAdapter(adapter);
-        }else{
-            Toast.makeText(context, "failed :"+users.getCode(), Toast.LENGTH_SHORT).show();
+        try {
+            GetEvents users = new Gson().fromJson(resp, GetEvents.class);
+            if (users.getCode().equals("200")) {
+                adapter = new SoundEventsAdapter(context, users.getEvents(), new SoundEventsAdapter.OnItemClick() {
+                    @Override
+                    public void onClick(int position, String section_id) {
+                        openSoundsList(position, section_id);
+                    }
+                });
+                tops_recyclerview.setAdapter(adapter);
+            } else {
+                Toast.makeText(context, "failed :" + users.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -111,8 +124,8 @@ public class SoundEventsFragment extends RootFragment {
 
         Intent intent = new Intent(context, SoundListActivity.class);
 
-        intent.putExtra("section_id",section_id);
-        intent.putExtra("title","Event Sounds");
+        intent.putExtra("section_id", section_id);
+        intent.putExtra("title", "Event Sounds");
         startActivityForResult(intent, Sounds_list_Request_code);
 
     }
