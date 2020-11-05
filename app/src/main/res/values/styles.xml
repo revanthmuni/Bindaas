@@ -140,7 +140,10 @@
 
 
     </style>
-
+    <style name="UnSelectedTabsTheme" parent="AppTheme">
+        <item name="android:textColor">?textColor</item>
+        <item name="android:background">?textOppsiteColor</item>
+    </style>
     <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/colorAccent</item>
     </style>

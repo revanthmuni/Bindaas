@@ -555,16 +555,16 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
                     switch (tab.getPosition()) {
                         case 0:
 //                        count.setText("(" + videosCount + ")");
-                            count.setTextColor(getResources().getColor(R.color.textColor));
+                            //count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_my_video_gray));
                             break;
                         case 1:
 //                        count.setText("(" + likesCount + ")");
-                            count.setTextColor(getResources().getColor(R.color.textColor));
+//                            count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_liked_video_gray));
                             break;
                         case 2:
-                            count.setTextColor(getResources().getColor(R.color.textColor));
+//                            count.setTextColor(getResources().getColor(R.color.textColor));
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_lock_gray));
                             break;
                     }
