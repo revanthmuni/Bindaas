@@ -80,8 +80,10 @@ public class TabsView extends RootFragment {
             loadNoficationTab();
             notification_view.setOnClickListener(view -> {
                 frameLayout.setVisibility(View.GONE);
-              /*  messages_view.setBackground(getResources().getDrawable(R.color.white));
+
+                /*  messages_view.setBackground(getResources().getDrawable(R.color.white));
                 messages_view.setAlpha(0.5f);*/
+
                 notification_view.setBackground(getResources().getDrawable(R.color.themecolor));
                 notification_view.setAlpha(1f);
                 if (Functions.getSavedTheme() == R.style.WhiteTheme){

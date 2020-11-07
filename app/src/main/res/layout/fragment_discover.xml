@@ -60,7 +60,6 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/search_layout"
             android:layout_width="match_parent"
@@ -103,7 +102,6 @@
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
-
 
         <include
             android:id="@+id/main_layout"
