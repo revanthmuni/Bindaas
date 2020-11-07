@@ -154,6 +154,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
         // Required empty public constructor
     }
 
+
     int swipe_count = 0;
 
     RelativeLayout upload_video_layout;

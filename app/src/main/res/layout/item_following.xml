@@ -75,7 +75,7 @@
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
             android:text="Friends"
-            android:textColor="@color/colorBlack"
+            android:textColor="?textColor"
             android:textSize="10sp"
             android:textStyle="bold"
             android:visibility="visible"

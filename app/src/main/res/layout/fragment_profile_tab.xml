@@ -199,6 +199,17 @@
                                 android:layout_weight="1"
                                 android:src="@drawable/ic_bio" />
 
+
+
+                            <TextView
+                                android:id="@+id/bio_text2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="7"
+                                android:maxLines="5"
+                                android:text="Hi i'm user"
+                                android:textColor="?textColor" />
                             <ImageView
                                 android:id="@+id/fb_image2"
                                 android:layout_width="0dp"
@@ -213,17 +224,7 @@
                                 android:layout_height="30dp"
                                 android:layout_marginRight="16dp"
                                 android:layout_weight="1"
-                                android:src="@drawable/ic_insta" />
-
-                            <TextView
-                                android:id="@+id/bio_text2"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="7"
-                                android:maxLines="5"
-                                android:text="Hi i'm user"
-                                android:textColor="?textColor" />
+                                android:src="@drawable/ic_insta" />foll
                         </LinearLayout>
 
                         <TextView

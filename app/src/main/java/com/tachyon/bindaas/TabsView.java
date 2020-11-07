@@ -80,18 +80,31 @@ public class TabsView extends RootFragment {
             loadNoficationTab();
             notification_view.setOnClickListener(view -> {
                 frameLayout.setVisibility(View.GONE);
-                messages_view.setBackground(getResources().getDrawable(R.color.white));
-                messages_view.setAlpha(0.5f);
+              /*  messages_view.setBackground(getResources().getDrawable(R.color.white));
+                messages_view.setAlpha(0.5f);*/
                 notification_view.setBackground(getResources().getDrawable(R.color.themecolor));
                 notification_view.setAlpha(1f);
+                if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                    messages_view.setBackground(getResources().getDrawable(R.color.white));
+                    messages_view.setAlpha(0.5f);
+                }else{
+                    messages_view.setBackground(getResources().getDrawable(R.color.blackPrimaryColor));
+                    messages_view.setTextColor(getResources().getColor(R.color.white));
+                }
                 loadNoficationTab();
             });
             messages_view.setOnClickListener(view -> {
                 messages_view.setBackground(getResources().getDrawable(R.color.themecolor));
                 messages_view.setAlpha(1f);
-                notification_view.setBackground(getResources().getDrawable(R.color.white));
-                notification_view.setAlpha(0.5f);
-                loadMessageTab();
+                /*notification_view.setBackground(getResources().getDrawable(R.color.white));
+                notification_view.setAlpha(0.5f);*/
+                if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                    notification_view.setBackground(getResources().getDrawable(R.color.white));
+                    notification_view.setAlpha(0.5f);
+                }else{
+                    notification_view.setBackground(getResources().getDrawable(R.color.blackPrimaryColor));
+                    notification_view.setTextColor(getResources().getColor(R.color.white));
+                }                loadMessageTab();
             });
             view.findViewById(R.id.back_btn2).setOnClickListener(v -> {
                 EventBus.getDefault().post("done");

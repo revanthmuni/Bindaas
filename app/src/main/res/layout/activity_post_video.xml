@@ -214,11 +214,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="5dp"
-                    app:backgroundTint="?textColor"
                     android:theme="@style/spinnerTheme"
                     android:entries="@array/categories"
                     android:gravity="center"
-                    android:popupBackground="?textColor"
+                    android:popupBackground="?layoutBackgroundColor"
                     />
 
                 <TextView
@@ -345,7 +344,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/d_gray_border">
 
             <ImageView
                 android:layout_width="24dp"
@@ -359,7 +359,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:text="Draft"
-                android:textColor="@color/textColor"
+                android:textColor="?textColor"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 

@@ -24,7 +24,7 @@
         <item name="colorAccent">@color/themecolor</item>
         <item name="textColor">@color/blackPrimaryTextColor</item>
         <item name="textLightColor">@color/colorTextGray</item>
-        <item name="textOppsiteColor">@color/whitePrimaryTextColor</item>
+        <item name="textOppsiteColor">@color/blackPrimaryColor</item>
         <item name="tintColor">@color/blackTintColor</item>
         <item name="layoutBackgroundColor">@color/blackPrimaryColor</item>
         <item name="toolbarBackgroundColor">@color/blackPrimaryColor</item>
@@ -63,6 +63,7 @@
     </style>
     <style name="spinnerTheme">
         <item name="android:textColor">?textColor</item>
+        <item name="background">?layoutBackgroundColor</item>
     </style>
     <style name="black_status" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -142,7 +143,7 @@
     </style>
     <style name="UnSelectedTabsTheme" parent="AppTheme">
         <item name="android:textColor">?textColor</item>
-        <item name="android:background">?textOppsiteColor</item>
+        <item name="android:background">?layoutBackgroundColor</item>
     </style>
     <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/colorAccent</item>
@@ -150,6 +151,7 @@
     <style name="AlertDialogCustomTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">?textColor</item>
         <item name="android:background">?layoutBackgroundColor</item>
+        <item name="android:textColorPrimary">?textColor</item>
     </style>
     <style name="TextLabel" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Hint color and label color in FALSE state -->

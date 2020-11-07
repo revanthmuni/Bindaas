@@ -6,7 +6,7 @@
     style="?attr/bottomSheetStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="?layoutBackgroundColor"
     app:behavior_hideable="false"
     app:behavior_peekHeight="30dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="?layoutBackgroundColor">
 
        <LinearLayout
            android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:padding="4dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_discovery_gray"
-                android:tint="@color/dimgray"
+                android:tint="?tintColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,6 +68,7 @@
                 android:text="From Storage"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="?textColor"
                 app:layout_constraintBottom_toBottomOf="@+id/search"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/search"
@@ -78,7 +79,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter video name"
-                android:textColor="@color/black"
+                android:textColorHint="?textLightColor"
+                android:textColor="?textColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/search"
                 app:layout_constraintStart_toStartOf="parent"

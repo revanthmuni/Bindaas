@@ -289,7 +289,7 @@ public class Comment_F extends RootFragment {
             else
                 options = new CharSequence[]{"Delete Comment", "Edit Comment", "Cancel"};
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.AlertDialogCustom);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomTheme);
 
             builder.setTitle(null);
             builder.setCancelable(true);
@@ -306,9 +306,7 @@ public class Comment_F extends RootFragment {
                         startActivity(intent);
                         dialog.dismiss();
 //                    callFlagCommentApi(home_get_set);
-//                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
-
-
+//                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
                     } else if (options[item].equals("Delete Comment")) {
                         callDeleteCommentApi(userId, home_get_set, position);
                         dialog.dismiss();
@@ -334,7 +332,7 @@ public class Comment_F extends RootFragment {
     private void editComment(Comment_Get_Set home_get_set, int position) {
         try {
             View view = LayoutInflater.from(context).inflate(R.layout.edit_comment, null);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
             dialog.setTitle("Edit Comment");
             EditText comment = view.findViewById(R.id.comment_edit);
             ImageView profile = view.findViewById(R.id.profile);
