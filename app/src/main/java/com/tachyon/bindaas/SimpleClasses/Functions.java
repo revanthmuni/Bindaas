@@ -4,7 +4,6 @@ import android.Manifest;
 import android.animation.Animator;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +17,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -101,10 +101,11 @@ public class Functions {
 
                 }
             }).alpha(0);
-        }catch (Exception e){
-            Log.d(TAG, "setTextWithSmoothAnimation: set text animation error:"+e.getMessage());
+        } catch (Exception e) {
+            Log.d(TAG, "setTextWithSmoothAnimation: set text animation error:" + e.getMessage());
         }
     }
+
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -134,8 +135,14 @@ public class Functions {
 
     public static void Show_Alert(Context context, String title, String Message) {
         try {
-            new AlertDialog.Builder(context)
-                    .setTitle(title)
+            androidx.appcompat.app.AlertDialog.Builder builder;
+
+            if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            } else {
+                builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
+            builder.setTitle(title)
                     .setMessage(Message)
                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -153,8 +160,14 @@ public class Functions {
 
     public static void Show_Alert(Context context, String title, String Message, String postivebtn, String negitivebtn, final Callback callback) {
         try {
-            new AlertDialog.Builder(context)
-                    .setTitle(null)
+            androidx.appcompat.app.AlertDialog.Builder builder ;
+
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
+                    builder.setTitle(null)
                     .setMessage(Message)
                     .setNegativeButton(negitivebtn, new DialogInterface.OnClickListener() {
                         @Override
@@ -270,22 +283,22 @@ public class Functions {
     }
 
     public static void refreshAdapter(String item, int position, String follow,
-                                      String follow_status_btn){
-        Log.d(TAG, "hasUserVideosInList: follow status:"+follow + "btn:"+follow_status_btn);
-        Log.d(TAG, "hasUserVideosInList: total records:"+Home_F.data_list.size());
+                                      String follow_status_btn) {
+        Log.d(TAG, "hasUserVideosInList: follow status:" + follow + "btn:" + follow_status_btn);
+        Log.d(TAG, "hasUserVideosInList: total records:" + Home_F.data_list.size());
         ArrayList<Home_Get_Set> tempList = new ArrayList<>();
 
-        for (int i = 0;i< Home_F.data_list.size();i++){
-            if (Home_F.data_list.get(i).user_id.equals(item)){
-                Log.d(TAG, "matched hasUserVideosInList: position"+i);
+        for (int i = 0; i < Home_F.data_list.size(); i++) {
+            if (Home_F.data_list.get(i).user_id.equals(item)) {
+                Log.d(TAG, "matched hasUserVideosInList: position" + i);
                 Home_Get_Set data = Home_F.data_list.get(i);
 
                 data.follow = follow;
                 data.follow_status_button = follow_status_btn;
-                Log.d(TAG, "hasUserVideosInList: follow status:"+data.follow + "btn:"+data.follow_status_button);
+                Log.d(TAG, "hasUserVideosInList: follow status:" + data.follow + "btn:" + data.follow_status_button);
 
                 tempList.add(data);
-            }else{
+            } else {
                 tempList.add(Home_F.data_list.get(i));
             }
         }
@@ -528,7 +541,7 @@ public class Functions {
     // just one time and whenever we need it we will call it
 
     public static void Call_Api_For_like_video(final Activity activity,
-                                               String video_id, String action,String video_user_id,
+                                               String video_id, String action, String video_user_id,
                                                final API_CallBack api_callBack) {
 
         JSONObject parameters = new JSONObject();
@@ -536,7 +549,7 @@ public class Functions {
             parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
             parameters.put("video_id", video_id);
             parameters.put("action", action);
-            parameters.put("video_user_id",video_user_id);
+            parameters.put("video_user_id", video_user_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1076,7 +1089,7 @@ public class Functions {
     }
 
     public static int getSavedTheme() {
-        String theme = Variables.sharedPreferences.getString(Variables.themes_key,Variables.WHITE_THEME);
+        String theme = Variables.sharedPreferences.getString(Variables.themes_key, Variables.WHITE_THEME);
         switch (theme) {
             case Variables.BLACK_THEME:
                 return R.style.BlackTheme;

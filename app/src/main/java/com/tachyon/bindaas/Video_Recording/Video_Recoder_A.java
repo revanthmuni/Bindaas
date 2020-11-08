@@ -118,10 +118,10 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Hide_navigation();
-        try{
+        try {
             setTheme(Functions.getSavedTheme());
             setContentView(R.layout.activity_video_recoder);
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
         }
 
@@ -348,8 +348,14 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
-                new androidx.appcompat.app.AlertDialog.Builder(this)
-                        .setTitle("Permission Needed")
+                androidx.appcompat.app.AlertDialog.Builder builder;
+
+                if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                    builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+                } else {
+                    builder = new androidx.appcompat.app.AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
+                }
+                builder.setTitle("Permission Needed")
                         .setMessage("This permission is needed to access media file in your phone")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -1244,27 +1250,27 @@ public class Video_Recoder_A extends AppCompatActivity implements View.OnClickLi
     public void onBackPressed() {
 
         try {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
             dialog.setTitle("Alert");
             dialog.setMessage("Are you Sure? if you Go back you can't undo this action");
             dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
             dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                            dialog.dismiss();
-                            Release_Resources();
-                            //DeleteFile();
-                            finish();
-                            overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
+                    dialog.dismiss();
+                    Release_Resources();
+                    //DeleteFile();
+                    finish();
+                    overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
 
-                        }
-                    });
+                }
+            });
             dialog.show();
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());

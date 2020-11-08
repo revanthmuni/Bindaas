@@ -182,8 +182,13 @@ public class ReportVideo extends AppCompatActivity {
 
     private void showAlertDialog(final DefaultResponse response) {
         try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(this);
+            }else{
+                builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
 
             builder.setMessage(response.getMsg());

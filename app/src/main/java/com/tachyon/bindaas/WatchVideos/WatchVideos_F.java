@@ -29,6 +29,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+import safety.com.br.android_shake_detector.core.ShakeCallback;
+import safety.com.br.android_shake_detector.core.ShakeDetector;
+import safety.com.br.android_shake_detector.core.ShakeOptions;
 
 import android.text.TextUtils;
 import android.util.Log;

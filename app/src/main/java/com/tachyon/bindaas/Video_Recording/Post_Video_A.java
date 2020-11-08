@@ -413,8 +413,13 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     private void Privacy_dialog() {
         final CharSequence[] options = new CharSequence[]{"Public", "Private"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        AlertDialog.Builder builder ;
 
+        if (Functions.getSavedTheme() == R.style.WhiteTheme){
+            builder = new AlertDialog.Builder(this);
+        }else{
+            builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
+        }
         builder.setTitle(null);
 
         builder.setItems(options, new DialogInterface.OnClickListener() {

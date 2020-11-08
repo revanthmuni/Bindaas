@@ -1313,8 +1313,13 @@ public class Home_F extends RootFragment implements Player.EventListener,
             else
                 options = new String[]{"Save Video", "Flag Video", "Cancel"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
 
             builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -1653,6 +1658,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
     @Override
     public void onStop() {
         super.onStop();
+
         try {
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);

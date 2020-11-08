@@ -1092,8 +1092,13 @@ public class Chat_Activity extends Fragment {
         try {
             final CharSequence[] options = {"Delete this message", "Cancel"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
 
             builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -1169,8 +1174,13 @@ public class Chat_Activity extends Fragment {
             else
                 options = new CharSequence[]{"Block this User", "Cancel"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
 
             builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -1272,8 +1282,13 @@ public class Chat_Activity extends Fragment {
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle("Add Photo!");
 
             builder.setItems(options, new DialogInterface.OnClickListener() {

@@ -261,7 +261,6 @@ public class Search_F extends RootFragment {
 
     }
 
-
     private void OpenWatchVideo(String video_id) {
         try {
 

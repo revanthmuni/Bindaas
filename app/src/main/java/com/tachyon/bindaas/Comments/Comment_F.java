@@ -3,12 +3,12 @@ package com.tachyon.bindaas.Comments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -105,11 +105,11 @@ public class Comment_F extends RootFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        try{
+        try {
             getActivity().setTheme(Functions.getSavedTheme());
             view = inflater.inflate(R.layout.fragment_comment, container, false);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
         try {
@@ -120,12 +120,12 @@ public class Comment_F extends RootFragment {
             comment_screen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (flag.equals("home")){
-                        if (Home_F.privious_player!=null){
+                    if (flag.equals("home")) {
+                        if (Home_F.privious_player != null) {
                             Home_F.privious_player.setPlayWhenReady(true);
                         }
-                    }else{
-                        if (WatchVideos_F.privious_player!=null){
+                    } else {
+                        if (WatchVideos_F.privious_player != null) {
                             WatchVideos_F.privious_player.setPlayWhenReady(true);
                         }
                     }
@@ -137,12 +137,12 @@ public class Comment_F extends RootFragment {
             view.findViewById(R.id.Goback).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (flag.equals("home")){
-                        if (Home_F.privious_player!=null){
+                    if (flag.equals("home")) {
+                        if (Home_F.privious_player != null) {
                             Home_F.privious_player.setPlayWhenReady(true);
                         }
-                    }else{
-                        if (WatchVideos_F.privious_player!=null){
+                    } else {
+                        if (WatchVideos_F.privious_player != null) {
                             WatchVideos_F.privious_player.setPlayWhenReady(true);
                         }
                     }
@@ -157,7 +157,7 @@ public class Comment_F extends RootFragment {
                 user_id = bundle.getString("user_id");
                 flag = bundle.getString("flag");
                 main_position = bundle.getInt("position");
-                mainItems = new Gson().fromJson(bundle.getString("extras"),Home_Get_Set.class);
+                mainItems = new Gson().fromJson(bundle.getString("extras"), Home_Get_Set.class);
             }
 
 
@@ -289,8 +289,13 @@ public class Comment_F extends RootFragment {
             else
                 options = new CharSequence[]{"Delete Comment", "Edit Comment", "Cancel"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogCustomTheme);
+            androidx.appcompat.app.AlertDialog.Builder builder;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            } else {
+                builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
             builder.setCancelable(true);
             builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -332,7 +337,13 @@ public class Comment_F extends RootFragment {
     private void editComment(Comment_Get_Set home_get_set, int position) {
         try {
             View view = LayoutInflater.from(context).inflate(R.layout.edit_comment, null);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            androidx.appcompat.app.AlertDialog.Builder dialog;
+
+            if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                dialog = new androidx.appcompat.app.AlertDialog.Builder(context);
+            } else {
+                dialog = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             dialog.setTitle("Edit Comment");
             EditText comment = view.findViewById(R.id.comment_edit);
             ImageView profile = view.findViewById(R.id.profile);
@@ -375,7 +386,7 @@ public class Comment_F extends RootFragment {
                     item.comments = comment;
                     data_list.add(position, item);
                     adapter.notifyDataSetChanged();
-                   // EventBus.getDefault().post("done");
+                    // EventBus.getDefault().post("done");
                 }
             });
         } catch (Exception e) {
@@ -411,7 +422,7 @@ public class Comment_F extends RootFragment {
                             mainItems.video_comment_count = String.valueOf(Integer.parseInt(mainItems.video_comment_count) - 1);
                             Home_F.data_list.add(main_position, mainItems);
                             Home_F.adapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             WatchVideos_F.data_list.remove(main_position);
                             mainItems.video_comment_count = String.valueOf(Integer.parseInt(mainItems.video_comment_count) - 1);
                             WatchVideos_F.data_list.add(main_position, mainItems);
@@ -492,7 +503,7 @@ public class Comment_F extends RootFragment {
                             fragment_data_send.onDataSent("" + comment_count);
 
                     }
-                   // EventBus.getDefault().post("done");
+                    // EventBus.getDefault().post("done");
                     adapter.notifyDataSetChanged();
 
                 }

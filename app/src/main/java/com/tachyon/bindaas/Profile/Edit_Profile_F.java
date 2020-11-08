@@ -193,8 +193,13 @@ public class Edit_Profile_F extends RootFragment implements View.OnClickListener
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle("Add Photo!");
 
             builder.setItems(options, new DialogInterface.OnClickListener() {

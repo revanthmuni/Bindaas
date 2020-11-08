@@ -1,7 +1,6 @@
 package com.tachyon.bindaas.helper;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -14,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.model.DefaultResponse;
@@ -31,6 +31,8 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Pattern;
+
+import androidx.appcompat.app.AlertDialog;
 
 public class CommonUtils {
     public static Validation validPassword(String password) {
@@ -111,17 +113,24 @@ public class CommonUtils {
         }
         return null;
     }
+
     public static void showAlert(Context context, String message) {
-          new AlertDialog.Builder(context)
-                    .setTitle("Alert")
-                    .setMessage(message)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
-        
+        androidx.appcompat.app.AlertDialog.Builder builder;
+
+        if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+            builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        } else {
+            builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+        }
+        builder.setTitle("Alert")
+                .setMessage(message)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+
     }
 
     public static File getAudioFilePath(Context context, Uri uri) {
@@ -146,6 +155,7 @@ public class CommonUtils {
         }
         return null;
     }
+
     public static String encodeFileToBase64Binary(Uri fileName)
             throws IOException {
         File file = new File(fileName.getPath());
@@ -153,6 +163,7 @@ public class CommonUtils {
         String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
         return encodedString;
     }
+
     private static byte[] loadFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
         long length = file.length();

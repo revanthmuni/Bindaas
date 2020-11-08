@@ -1,9 +1,9 @@
 package com.tachyon.bindaas.Video_Recording;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,74 +57,74 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnClickListener{
+public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnClickListener {
 
 
     CameraView cameraView;
-    int number=0;
+    int number = 0;
 
-    ArrayList<String> videopaths=new ArrayList<>();
+    ArrayList<String> videopaths = new ArrayList<>();
 
     ImageButton record_image;
     ImageButton done_btn;
-    boolean is_recording=false;
-    boolean is_flash_on=false;
+    boolean is_recording = false;
+    boolean is_flash_on = false;
 
     ImageButton flash_btn;
     SegmentedProgressBar video_progress;
     LinearLayout camera_options;
-    ImageButton rotate_camera,cut_video_btn;
+    ImageButton rotate_camera, cut_video_btn;
 
 
-    int sec_passed=0;
-    long time_in_milis=0;
+    int sec_passed = 0;
+    long time_in_milis = 0;
 
     TextView countdown_timer_txt;
     boolean is_recording_timer_enable;
-    int recording_time=3;
+    int recording_time = 3;
 
     Home_Get_Set item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
+        try {
             setTheme(Functions.getSavedTheme());
             setContentView(R.layout.activity_video_recoder_duet);
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
         }
 
         cameraView = findViewById(R.id.camera);
-        camera_options=findViewById(R.id.camera_options);
+        camera_options = findViewById(R.id.camera_options);
 
 
-        record_image=findViewById(R.id.record_image);
+        record_image = findViewById(R.id.record_image);
 
-        cut_video_btn=findViewById(R.id.cut_video_btn);
+        cut_video_btn = findViewById(R.id.cut_video_btn);
         cut_video_btn.setVisibility(View.GONE);
         cut_video_btn.setOnClickListener(this);
 
-        done_btn=findViewById(R.id.done);
+        done_btn = findViewById(R.id.done);
         done_btn.setEnabled(false);
         done_btn.setOnClickListener(this);
 
 
-        rotate_camera=findViewById(R.id.rotate_camera);
+        rotate_camera = findViewById(R.id.rotate_camera);
         rotate_camera.setOnClickListener(this);
-        flash_btn=findViewById(R.id.flash_camera);
+        flash_btn = findViewById(R.id.flash_camera);
         flash_btn.setOnClickListener(this);
 
         findViewById(R.id.Goback).setOnClickListener(this);
 
         findViewById(R.id.time_btn).setOnClickListener(this);
 
-        Intent intent=getIntent();
-        if(intent.hasExtra("data")){
-            item=(Home_Get_Set) intent.getSerializableExtra("data");
+        Intent intent = getIntent();
+        if (intent.hasExtra("data")) {
+            item = (Home_Get_Set) intent.getSerializableExtra("data");
         }
 
-        Variables.recording_duration=(int) Functions.getfileduration(this,Uri.parse(Variables.app_folder+ item.video_id+".mp4"));
+        Variables.recording_duration = (int) Functions.getfileduration(this, Uri.parse(Variables.app_folder + item.video_id + ".mp4"));
 
         Set_Player();
 
@@ -134,7 +134,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                 Start_or_Stop_Recording();
             }
         });
-        countdown_timer_txt=findViewById(R.id.countdown_timer_txt);
+        countdown_timer_txt = findViewById(R.id.countdown_timer_txt);
 
 
         initlize_Video_progress();
@@ -142,9 +142,9 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void initlize_Video_progress(){
-        sec_passed=0;
-        video_progress=findViewById(R.id.video_progress);
+    public void initlize_Video_progress() {
+        sec_passed = 0;
+        video_progress = findViewById(R.id.video_progress);
         video_progress.enableAutoProgressView(Variables.recording_duration);
         video_progress.setDividerColor(Color.WHITE);
         video_progress.setDividerEnabled(true);
@@ -154,15 +154,15 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
         video_progress.SetListener(new ProgressBarListener() {
             @Override
             public void TimeinMill(long mills) {
-                time_in_milis=mills;
-                sec_passed = (int) (mills/1000);
+                time_in_milis = mills;
+                sec_passed = (int) (mills / 1000);
 
-                if(sec_passed>(Variables.recording_duration/1000)-1){
+                if (sec_passed > (Variables.recording_duration / 1000) - 1) {
                     Start_or_Stop_Recording();
                 }
 
-                if(is_recording_timer_enable && sec_passed>=recording_time){
-                    is_recording_timer_enable=false;
+                if (is_recording_timer_enable && sec_passed >= recording_time) {
+                    is_recording_timer_enable = false;
                     Start_or_Stop_Recording();
                 }
 
@@ -173,19 +173,19 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
     // if the Recording is stop then it we start the recording
     // and if the mobile is recording the video then it will stop the recording
-    public void Start_or_Stop_Recording(){
+    public void Start_or_Stop_Recording() {
 
-        if (!is_recording && sec_passed<(Variables.recording_duration/1000)-1) {
-            number=number+1;
+        if (!is_recording && sec_passed < (Variables.recording_duration / 1000) - 1) {
+            number = number + 1;
 
-            is_recording=true;
+            is_recording = true;
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    File file = new File(Variables.app_folder +  "myvideo"+(number)+".mp4");
-                    videopaths.add(Variables.app_folder +  "myvideo"+(number)+".mp4");
+                    File file = new File(Variables.app_folder + "myvideo" + (number) + ".mp4");
+                    videopaths.add(Variables.app_folder + "myvideo" + (number) + ".mp4");
                     cameraView.captureVideo(file);
 
                     video_progress.resume();
@@ -208,12 +208,9 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
             camera_options.setVisibility(View.GONE);
             rotate_camera.setVisibility(View.GONE);
 
-        }
+        } else if (is_recording) {
 
-        else if (is_recording) {
-
-            is_recording=false;
-
+            is_recording = false;
 
 
             new Thread(new Runnable() {
@@ -231,7 +228,6 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
             }).start();
 
 
-
             Check_done_btn_enable();
 
             cut_video_btn.setVisibility(View.VISIBLE);
@@ -239,19 +235,17 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
             record_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_recoding_no));
             camera_options.setVisibility(View.VISIBLE);
 
+        } else if (sec_passed > (Variables.recording_duration / 1000)) {
+            Functions.Show_Alert(this, "Alert", getString(R.string.video_only_can_be) + (int) Variables.recording_duration / 1000 + " S");
         }
-
-        else if(sec_passed>(Variables.recording_duration/1000)){
-            Functions.Show_Alert(this,"Alert",getString(R.string.video_only_can_be)+(int)Variables.recording_duration/1000+" S");
-        }
-
 
 
     }
 
 
     SimpleExoPlayer video_player;
-    public void Set_Player(){
+
+    public void Set_Player() {
 
         DefaultTrackSelector trackSelector = new DefaultTrackSelector();
         video_player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
@@ -259,12 +253,12 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                 Util.getUserAgent(this, "TikTok"));
 
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(Variables.app_folder+item.video_id+".mp4"));
+                .createMediaSource(Uri.parse(Variables.app_folder + item.video_id + ".mp4"));
 
         video_player.prepare(videoSource);
         video_player.setRepeatMode(Player.REPEAT_MODE_OFF);
 
-        final PlayerView playerView=findViewById(R.id.playerview);
+        final PlayerView playerView = findViewById(R.id.playerview);
         playerView.setPlayer(video_player);
 
         playerView.setOnTouchListener(new View.OnTouchListener() {
@@ -280,12 +274,11 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void Check_done_btn_enable(){
-        if(sec_passed>(Variables.min_time_recording/1000)) {
+    public void Check_done_btn_enable() {
+        if (sec_passed > (Variables.min_time_recording / 1000)) {
             done_btn.setBackgroundResource(R.drawable.ic_done);
             done_btn.setEnabled(true);
-        }
-        else {
+        } else {
             done_btn.setBackgroundResource(R.drawable.ic_not_done);
             done_btn.setEnabled(false);
         }
@@ -294,7 +287,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
     // this will apped all the videos parts in one  fullvideo
     private boolean append() {
-        final ProgressDialog progressDialog=new ProgressDialog(Video_Recoder_Duet_A.this);
+        final ProgressDialog progressDialog = new ProgressDialog(Video_Recoder_Duet_A.this);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -308,11 +301,11 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                     }
                 });
 
-                ArrayList<String> video_list=new ArrayList<>();
-                for (int i=0;i<videopaths.size();i++){
+                ArrayList<String> video_list = new ArrayList<>();
+                for (int i = 0; i < videopaths.size(); i++) {
 
-                    File file=new File(videopaths.get(i));
-                    if(file.exists()) {
+                    File file = new File(videopaths.get(i));
+                    if (file.exists()) {
                         try {
                             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                             retriever.setDataSource(Video_Recoder_Duet_A.this, Uri.fromFile(file));
@@ -323,8 +316,8 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                                 Log.d("resp", videopaths.get(i));
                                 video_list.add(videopaths.get(i));
                             }
-                        }catch (Exception e){
-                            Log.d(Variables.tag,e.toString());
+                        } catch (Exception e) {
+                            Log.d(Variables.tag, e.toString());
                         }
                     }
                 }
@@ -333,9 +326,9 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
                     Movie[] inMovies = new Movie[video_list.size()];
 
-                    for (int i=0;i<video_list.size();i++){
+                    for (int i = 0; i < video_list.size(); i++) {
 
-                        inMovies[i]= MovieCreator.build(video_list.get(i));
+                        inMovies[i] = MovieCreator.build(video_list.get(i));
                     }
 
 
@@ -361,8 +354,8 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
                     Container out = new DefaultMp4Builder().build(result);
 
-                    String outputFilePath=null;
-                    outputFilePath=Variables.outputfile2;
+                    String outputFilePath = null;
+                    outputFilePath = Variables.outputfile2;
 
 
                     FileOutputStream fos = new FileOutputStream(new File(outputFilePath));
@@ -374,19 +367,16 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
                             progressDialog.dismiss();
 
-                            if(cameraView.isFacingFront()){
-                                Change_fliped_video(Variables.outputfile2,Variables.output_filter_file);
-                            }
-                            else
+                            if (cameraView.isFacingFront()) {
+                                Change_fliped_video(Variables.outputfile2, Variables.output_filter_file);
+                            } else
                                 Go_To_post_Activity();
 
                         }
                     });
 
 
-
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
 
                 }
 
@@ -395,51 +385,50 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
         }).start();
 
 
-
         return true;
     }
 
 
-    public void RotateCamera(){
+    public void RotateCamera() {
 
         cameraView.toggleFacing();
     }
 
 
-    public void Remove_Last_Section(){
-        if(videopaths.size()>0){
-            File file=new File(videopaths.get(videopaths.size()-1));
-            if(file.exists()) {
+    public void Remove_Last_Section() {
+        if (videopaths.size() > 0) {
+            File file = new File(videopaths.get(videopaths.size() - 1));
+            if (file.exists()) {
 
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 retriever.setDataSource(Video_Recoder_Duet_A.this, Uri.fromFile(file));
                 String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
                 String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                long timeInMillisec = Long.parseLong(time );
+                long timeInMillisec = Long.parseLong(time);
                 boolean isVideo = "yes".equals(hasVideo);
                 if (isVideo) {
-                    time_in_milis=time_in_milis-timeInMillisec;
+                    time_in_milis = time_in_milis - timeInMillisec;
                     video_progress.removeDivider();
-                    videopaths.remove(videopaths.size()-1);
+                    videopaths.remove(videopaths.size() - 1);
                     video_progress.updateProgress(time_in_milis);
                     video_progress.back_countdown(timeInMillisec);
 
-                    if(video_player!=null) {
-                        int audio_backtime = (int) (video_player.getCurrentPosition()- timeInMillisec);
-                        if(audio_backtime<0)
-                            audio_backtime=0;
+                    if (video_player != null) {
+                        int audio_backtime = (int) (video_player.getCurrentPosition() - timeInMillisec);
+                        if (audio_backtime < 0)
+                            audio_backtime = 0;
 
                         video_player.seekTo(audio_backtime);
                     }
 
-                    sec_passed = (int) (time_in_milis/1000);
+                    sec_passed = (int) (time_in_milis / 1000);
 
                     Check_done_btn_enable();
 
                 }
             }
 
-            if(videopaths.isEmpty()){
+            if (videopaths.isEmpty()) {
 
                 cut_video_btn.setVisibility(View.GONE);
                 rotate_camera.setVisibility(View.VISIBLE);
@@ -458,7 +447,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rotate_camera:
                 RotateCamera();
                 break;
@@ -473,7 +462,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                 Functions.Show_Alert(this, null, getString(R.string.discard_last_clip), getString(R.string.delete), getString(R.string.cancel), new Callback() {
                     @Override
                     public void Responce(String resp) {
-                        if(resp.equalsIgnoreCase("yes")){
+                        if (resp.equalsIgnoreCase("yes")) {
                             Remove_Last_Section();
                         }
                     }
@@ -483,13 +472,12 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
             case R.id.flash_camera:
 
-                if(is_flash_on){
-                    is_flash_on=false;
+                if (is_flash_on) {
+                    is_flash_on = false;
                     cameraView.setFlash(0);
                     flash_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_on));
-                }
-                else {
-                    is_flash_on=true;
+                } else {
+                    is_flash_on = true;
                     cameraView.setFlash(CameraKit.Constants.FLASH_TORCH);
                     flash_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_flash_off));
                 }
@@ -501,23 +489,23 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.time_btn:
-                if(sec_passed+1<Variables.recording_duration/1000){
+                if (sec_passed + 1 < Variables.recording_duration / 1000) {
                     RecordingTimeRang_F recordingTimeRang_f = new RecordingTimeRang_F(new Fragment_Callback() {
                         @Override
                         public void Responce(Bundle bundle) {
-                            if(bundle!=null){
-                                is_recording_timer_enable=true;
-                                recording_time=bundle.getInt("end_time");
+                            if (bundle != null) {
+                                is_recording_timer_enable = true;
+                                recording_time = bundle.getInt("end_time");
                                 countdown_timer_txt.setText("3");
                                 countdown_timer_txt.setVisibility(View.VISIBLE);
                                 record_image.setClickable(false);
                                 final Animation scaleAnimation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,
                                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                                new CountDownTimer(4000,1000) {
+                                new CountDownTimer(4000, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
 
-                                        countdown_timer_txt.setText(""+(millisUntilFinished/1000));
+                                        countdown_timer_txt.setText("" + (millisUntilFinished / 1000));
                                         countdown_timer_txt.setAnimation(scaleAnimation);
 
                                     }
@@ -533,13 +521,13 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                             }
                         }
                     });
-                    Bundle bundle=new Bundle();
-                    if(sec_passed<(Variables.recording_duration/1000)-3)
-                        bundle.putInt("end_time",(sec_passed+3));
+                    Bundle bundle = new Bundle();
+                    if (sec_passed < (Variables.recording_duration / 1000) - 3)
+                        bundle.putInt("end_time", (sec_passed + 3));
                     else
-                        bundle.putInt("end_time",(sec_passed+1));
+                        bundle.putInt("end_time", (sec_passed + 1));
 
-                    bundle.putInt("total_time",(Variables.recording_duration/1000));
+                    bundle.putInt("total_time", (Variables.recording_duration / 1000));
                     recordingTimeRang_f.setArguments(bundle);
                     recordingTimeRang_f.show(getSupportFragmentManager(), "");
                 }
@@ -550,7 +538,6 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
 
     }
-
 
 
     @Override
@@ -568,17 +555,17 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void Release_Resources(){
+    public void Release_Resources() {
         try {
             cameraView.stop();
 
-            if(video_player!=null) {
+            if (video_player != null) {
                 video_player.setPlayWhenReady(false);
                 video_player.release();
             }
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         DeleteFile();
@@ -587,8 +574,14 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
 
-        new AlertDialog.Builder(this)
-                .setTitle("Alert")
+        androidx.appcompat.app.AlertDialog.Builder builder;
+
+        if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+            builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        } else {
+            builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
+        }
+        builder.setTitle("Alert")
                 .setMessage("Are you Sure? if you Go back you can't undo this action")
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
@@ -609,11 +602,10 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                     }
                 }).show();
 
-
     }
 
 
-    public void Go_To_post_Activity(){
+    public void Go_To_post_Activity() {
         try {
             Functions.copyFile(new File(Variables.outputfile2),
                     new File(Variables.output_filter_file));
@@ -626,16 +618,16 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
 
     // this function will add the filter to video and save that same video for post the video in post video screen
-    public void Change_fliped_video(String srcMp4Path, final String destMp4Path){
+    public void Change_fliped_video(String srcMp4Path, final String destMp4Path) {
 
-        Functions.Show_determinent_loader(this,false,false);
+        Functions.Show_determinent_loader(this, false, false);
         new GPUMp4Composer(srcMp4Path, destMp4Path)
                 .flipHorizontal(true)
                 .listener(new GPUMp4Composer.Listener() {
                     @Override
                     public void onProgress(double progress) {
-                        Log.d("resp",""+(int) (progress*100));
-                        Functions.Show_loading_progress((int)(progress*100));
+                        Log.d("resp", "" + (int) (progress * 100));
+                        Functions.Show_loading_progress((int) (progress * 100));
                     }
 
                     @Override
@@ -660,7 +652,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onFailed(Exception exception) {
 
-                        Log.d("resp",exception.toString());
+                        Log.d("resp", exception.toString());
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -669,7 +661,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
                                     Functions.cancel_determinent_loader();
 
                                     Toast.makeText(Video_Recoder_Duet_A.this, "Try Again", Toast.LENGTH_SHORT).show();
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                 }
                             }
                         });
@@ -682,10 +674,9 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
     }
 
 
-
-    public void Open_post_activity(){
-        Intent intent =new Intent(this,Post_Video_A.class);
-        intent.putExtra("duet_video_id",item.video_id);
+    public void Open_post_activity() {
+        Intent intent = new Intent(this, Post_Video_A.class);
+        intent.putExtra("duet_video_id", item.video_id);
         startActivity(intent);
         overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
@@ -693,7 +684,7 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
 
 
     // this will delete all the video parts that is create during priviously created video
-    public void DeleteFile(){
+    public void DeleteFile() {
 
         File output = new File(Variables.outputfile);
         File output2 = new File(Variables.outputfile2);
@@ -701,24 +692,24 @@ public class Video_Recoder_Duet_A extends AppCompatActivity implements View.OnCl
         File gallery_trimed_video = new File(Variables.gallery_trimed_video);
         File gallery_resize_video = new File(Variables.gallery_resize_video);
 
-        if(output.exists()){
+        if (output.exists()) {
             output.delete();
         }
 
-        if(output2.exists()){
+        if (output2.exists()) {
 
             output2.delete();
         }
 
-        if(gallery_trimed_video.exists()){
+        if (gallery_trimed_video.exists()) {
             gallery_trimed_video.delete();
         }
 
-        if(gallery_resize_video.exists()){
+        if (gallery_resize_video.exists()) {
             gallery_resize_video.delete();
         }
 
-        for (int i=0;i<=12;i++) {
+        for (int i = 0; i <= 12; i++) {
 
             File file = new File(Variables.app_folder + "myvideo" + (i) + ".mp4");
             if (file.exists()) {

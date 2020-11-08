@@ -148,7 +148,7 @@
     <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/colorAccent</item>
     </style>
-    <style name="AlertDialogCustomTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialogCustomTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:textColor">?textColor</item>
         <item name="android:background">?layoutBackgroundColor</item>
         <item name="android:textColorPrimary">?textColor</item>

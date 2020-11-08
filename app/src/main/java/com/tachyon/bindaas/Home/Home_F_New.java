@@ -100,6 +100,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -1183,8 +1184,13 @@ public class Home_F_New extends RootFragment implements Player.EventListener,
             else
                 options = new String[]{"Save Video", "Flag Video", "Cancel"};
 
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder builder ;
 
+            if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                builder = new AlertDialog.Builder(context);
+            }else{
+                builder = new AlertDialog.Builder(context, R.style.AlertDialogCustomTheme);
+            }
             builder.setTitle(null);
 
             builder.setItems(options, new DialogInterface.OnClickListener() {

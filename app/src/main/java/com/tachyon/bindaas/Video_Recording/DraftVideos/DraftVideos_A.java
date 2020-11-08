@@ -1,6 +1,5 @@
 package com.tachyon.bindaas.Video_Recording.DraftVideos;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,11 +60,11 @@ public class DraftVideos_A extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
+        try {
             setTheme(Functions.getSavedTheme());
             setContentView(R.layout.activity_gallery_videos);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
         }
 
@@ -84,8 +84,14 @@ public class DraftVideos_A extends AppCompatActivity {
                 public void onItemClick(int postion, DraftVideo_Get_Set item, View view) {
                     if (view.getId() == R.id.cross_btn) {
                         try {
-                            new AlertDialog.Builder(DraftVideos_A.this)
-                                    .setTitle("Alert")
+                            androidx.appcompat.app.AlertDialog.Builder builder;
+
+                            if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                                builder = new androidx.appcompat.app.AlertDialog.Builder(DraftVideos_A.this);
+                            } else {
+                                builder = new AlertDialog.Builder(DraftVideos_A.this, R.style.AlertDialogCustomTheme);
+                            }
+                            builder.setTitle("Alert")
                                     .setMessage("Are you sure want to delete the video!!!")
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                         @Override
