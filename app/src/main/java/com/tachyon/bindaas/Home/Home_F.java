@@ -46,6 +46,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.viewpager2.widget.ViewPager2;
+import safety.com.br.android_shake_detector.core.ShakeCallback;
+import safety.com.br.android_shake_detector.core.ShakeDetector;
+import safety.com.br.android_shake_detector.core.ShakeOptions;
 
 import android.util.Log;
 import android.view.GestureDetector;
@@ -144,7 +147,8 @@ public class Home_F extends RootFragment implements Player.EventListener,
     ProgressBar p_bar;
 
     SwipeRefreshLayout swiperefresh;
-
+   /* private ShakeDetector shakeDetector;
+    ShakeOptions options;*/
     boolean is_user_stop_video = false;
     TextView following_btn, related_btn;
     String type = "related";
@@ -221,6 +225,14 @@ public class Home_F extends RootFragment implements Player.EventListener,
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
+
+
+        /*options = new ShakeOptions()
+                .background(true)
+                .interval(1000)
+                .shakeCount(1)
+                .sensibility(2.0f);*/
+
 
         // this is the scroll listener of recycler view which will tell the current item number
 
@@ -987,13 +999,22 @@ public class Home_F extends RootFragment implements Player.EventListener,
         if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
             Functions.Call_Api_For_update_view(getActivity(), item.video_id);
 
-
         swipe_count++;
         if (swipe_count > 6) {
             Show_add();
             swipe_count = 0;
         }
-
+       /* this.shakeDetector = new ShakeDetector(options).start(context, new ShakeCallback() {
+            @Override
+            public void onShake() {
+                Log.d("event", "onShake");
+                if (data_list != null) {
+                    if (currentPage != data_list.size()) {
+                        recyclerView.smoothScrollToPosition(currentPage + 1);
+                    }
+                }
+            }
+        });*/
 
 //        Call_Api_For_Singlevideos(currentPage);
 
@@ -1678,7 +1699,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
     public void onDestroy() {
         super.onDestroy();
         try {
-
+           // shakeDetector.destroy(getApplicationContext());
             if (privious_player != null) {
                 privious_player.release();
             }

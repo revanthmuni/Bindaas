@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
 android {
 
     compileSdkVersion 29
@@ -122,11 +121,11 @@ dependencies {
     //Gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.18'
 
-    // Recommended: Add the Firebase SDK for Google Analytics.
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    // Add the Firebase Crashlytics SDK.
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
-    // Add the Firebase SDK for Crashlytics.
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
+    // Recommended: Add the Google Analytics SDK.
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
 
     //Event Bus
     implementation 'org.greenrobot:eventbus:3.1.1'
@@ -153,7 +152,7 @@ dependencies {
 
     //Dynamic color
     implementation 'com.android.support:palette-v7:28.0.0'
-
+//    implementation 'com.github.safetysystemtechnology:android-shake-detector:v1.2'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'

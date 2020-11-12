@@ -160,8 +160,14 @@ public class Inbox_Adapter extends RecyclerView.Adapter<Inbox_Adapter.CustomView
             // check the status like if the message is seen by the receiver or not
             String status = "" + item.getStatus();
             if (status.equals("0")) {
-                holder.last_message.setTypeface(null, Typeface.BOLD);
-                holder.last_message.setTextColor(context.getResources().getColor(R.color.black));
+                if (Functions.getSavedTheme() == R.style.WhiteTheme){
+                    holder.last_message.setTypeface(null, Typeface.BOLD);
+                    holder.last_message.setTextColor(context.getResources().getColor(R.color.black));
+                }else{
+                    holder.last_message.setTypeface(null, Typeface.BOLD);
+                    holder.last_message.setTextColor(context.getResources().getColor(R.color.white));
+                }
+
             } else {
                 holder.last_message.setTypeface(null, Typeface.NORMAL);
                 holder.last_message.setTextColor(context.getResources().getColor(R.color.dark_gray));

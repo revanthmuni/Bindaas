@@ -356,7 +356,6 @@ public class Comment_F extends RootFragment {
                 dialogInterface.dismiss();
                 callEditCommentsApi(home_get_set, home_get_set.comment_id, comment.getText().toString(), home_get_set.video_id, home_get_set.user_id, position);
             });
-
             dialog.show();
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());/**/
@@ -391,7 +390,6 @@ public class Comment_F extends RootFragment {
             });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
@@ -433,7 +431,6 @@ public class Comment_F extends RootFragment {
             });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
@@ -520,9 +517,7 @@ public class Comment_F extends RootFragment {
             });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
-
     }
 
 
