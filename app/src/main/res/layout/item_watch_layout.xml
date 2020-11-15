@@ -210,8 +210,8 @@
                         android:visibility="gone" />
                     <ImageView
                         android:id="@+id/add_follow"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
                         android:visibility="visible"
                         android:layout_gravity="center|end"
                         android:src="@drawable/ic_plus"/>
