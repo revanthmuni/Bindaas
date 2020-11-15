@@ -212,7 +212,7 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
                     item.type = data.optString("type");
                     item.value = data.optString("value");
 
-                    if (item.type.equalsIgnoreCase("comment_video") || item.type.equalsIgnoreCase("video_like")) {
+                    if (item.type.equalsIgnoreCase("video_comment") || item.type.equalsIgnoreCase("video_like")) {
 
                         item.id = value_data.optString("id");
                         item.video = value_data.optString("video");
@@ -281,7 +281,6 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
             startActivity(intent);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 

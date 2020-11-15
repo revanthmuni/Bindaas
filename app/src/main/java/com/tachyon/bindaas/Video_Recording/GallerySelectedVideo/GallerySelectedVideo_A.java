@@ -373,8 +373,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
 
         return true;
     }
-
-
     // this will add the select audio with the video
     public void Merge_withAudio() {
         try {
