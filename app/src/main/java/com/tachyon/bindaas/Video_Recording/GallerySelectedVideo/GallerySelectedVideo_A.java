@@ -70,12 +70,12 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Hide_navigation();
-        try{
+        try {
             setTheme(Functions.getSavedTheme());
             setContentView(R.layout.activity_gallery_selected_video);
 
-        }catch (Exception e){
-            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
         }
         try {
             Intent intent = getIntent();
@@ -265,7 +265,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
                     audio.prepare();
                     audio.setLooping(true);
 
-
                     video_player.seekTo(0);
                     video_player.setPlayWhenReady(true);
                     audio.start();
@@ -276,7 +275,6 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
             }
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 
@@ -299,20 +297,20 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
 
                 try {
 
-                ArrayList<String> video_list = new ArrayList<>();
+                    ArrayList<String> video_list = new ArrayList<>();
 
-                File file = new File(path);
+                    File file = new File(path);
 
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
-                String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
-                boolean isVideo = "yes".equals(hasVideo);
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(GallerySelectedVideo_A.this, Uri.fromFile(file));
+                    String hasVideo = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_VIDEO);
+                    boolean isVideo = "yes".equals(hasVideo);
 
-                if (isVideo && file.length() > 3000) {
-                    video_list.add(path);
-                }
+                    if (isVideo && file.length() > 3000) {
+                        video_list.add(path);
+                    }
 
-                Movie[] inMovies = new Movie[video_list.size()];
+                    Movie[] inMovies = new Movie[video_list.size()];
 
                     for (int i = 0; i < video_list.size(); i++) {
 
@@ -365,15 +363,13 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
 
                         }
                     });
-
+                    progressDialog.dismiss();
 
                 } catch (Exception e) {
                     Functions.showLogMessage(GallerySelectedVideo_A.this, GallerySelectedVideo_A.this.getClass().getSimpleName(), e.getMessage());
-                    progressDialog.dismiss();
                 }
             }
         }).start();
-
 
         return true;
     }

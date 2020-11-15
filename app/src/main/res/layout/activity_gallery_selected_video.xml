@@ -61,7 +61,7 @@
                 android:textStyle="bold"
                 android:padding="5dp"
                 android:id="@+id/add_sound_txt"
-                android:textColor="?textOppsiteColor"/>
+                android:textColor="?textColor"/>
         </LinearLayout>
 
         <TextView

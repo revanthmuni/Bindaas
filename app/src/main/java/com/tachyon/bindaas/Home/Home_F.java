@@ -46,9 +46,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.SnapHelper;
 import androidx.viewpager2.widget.ViewPager2;
-import safety.com.br.android_shake_detector.core.ShakeCallback;
-import safety.com.br.android_shake_detector.core.ShakeDetector;
-import safety.com.br.android_shake_detector.core.ShakeOptions;
 
 import android.util.Log;
 import android.view.GestureDetector;
@@ -501,7 +498,6 @@ public class Home_F extends RootFragment implements Player.EventListener,
         });
 
         adapter.setHasStableIds(true);
-
         recyclerView.setAdapter(adapter);
 
     }

@@ -411,30 +411,33 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
     }
 
     private void Privacy_dialog() {
-        final CharSequence[] options = new CharSequence[]{"Public", "Private"};
+        try {
+            final CharSequence[] options = new CharSequence[]{"Public", "Private"};
 
-        AlertDialog.Builder builder ;
+            AlertDialog.Builder builder;
 
-        if (Functions.getSavedTheme() == R.style.WhiteTheme){
-            builder = new AlertDialog.Builder(this);
-        }else{
-            builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
-        }
-        builder.setTitle(null);
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-
-            @Override
-
-            public void onClick(DialogInterface dialog, int item) {
-                privcy_type_txt.setText(options[item]);
-
+            if (Functions.getSavedTheme() == R.style.WhiteTheme) {
+                builder = new AlertDialog.Builder(this);
+            } else {
+                builder = new AlertDialog.Builder(this, R.style.AlertDialogCustomTheme);
             }
+            builder.setTitle(null);
 
-        });
+            builder.setItems(options, new DialogInterface.OnClickListener() {
 
-        builder.show();
+                @Override
 
+                public void onClick(DialogInterface dialog, int item) {
+                    privcy_type_txt.setText(options[item]);
+
+                }
+
+            });
+
+            builder.show();
+        }catch (Exception e){
+            Functions.showLogMessage(this,this.getClass().getSimpleName(),e.getMessage());
+        }
     }
 
     // this will start the service for uploading the video into database
@@ -483,11 +486,8 @@ public class Post_Video_A extends AppCompatActivity implements ServiceCallback, 
             }
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
-
     }
-
 
     @Override
     public void onBackPressed() {
