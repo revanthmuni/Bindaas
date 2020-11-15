@@ -70,7 +70,7 @@
                     android:textSize="14dp"
                     android:id="@+id/message_edit"
                     android:textColorHint="@color/darkgray"
-                    android:textColor="?textColor"
+                    android:textColor="?textOppsiteColor"
                     android:layout_toLeftOf="@+id/send_btn_layout"
                     android:backgroundTint="@color/transparent"/>
 

@@ -25,6 +25,7 @@ import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Preferences.LanguageAdapter;
 import com.tachyon.bindaas.R;
+import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -245,11 +246,17 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.white_theme:
-                        saveAndSendTheme("White");
+                        if (Functions.isMyServiceRunning(getActivity(), new Upload_Service().getClass())) {
+                            Toast.makeText(context, "Please wait the videos is uploading.", Toast.LENGTH_SHORT).show();
+                        }else
+                            saveAndSendTheme("White");
 //                            Toast.makeText(context, "No one", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.black_theme:
-                        saveAndSendTheme("Black");
+                        if (Functions.isMyServiceRunning(getActivity(), new Upload_Service().getClass())) {
+                            Toast.makeText(context, "Please wait the videos is uploading.", Toast.LENGTH_SHORT).show();
+                        }else
+                            saveAndSendTheme("Black");
 //                            Toast.makeText(context, "Mutual", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -263,48 +270,51 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
     }
 
     private void saveAndSendTheme(String white) {
-        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
-        editor.putString(Variables.themes_key, white);
-        editor.commit();
 
-        try {
-            Functions.Show_loader(context, true, true);
+            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+            editor.putString(Variables.themes_key, white);
+            editor.commit();
 
-            JSONObject parameters = new JSONObject();
             try {
-                parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
-                parameters.put("language", Variables.sharedPreferences.getString(Variables.language, "all"));
-                parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message, "anyone"));
-                parameters.put("auto_scroll", "" + auto_scrool_enabled.isChecked());
-                parameters.put("show_video_preview", "" + show_preview_switch.isChecked());
-                parameters.put("who_can_tag_me", "" + Variables.sharedPreferences.getString(Variables.who_can_tagme, ""));
-                parameters.put("theme", "" + Variables.sharedPreferences.getString(Variables.themes_key, "White"));
+                Functions.Show_loader(context, true, true);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "save Prefernces : " + new Gson().toJson(parameters));
-            ApiRequest.Call_Api(context, Variables.SAVE_PREFERENCES, parameters, new Callback() {
-                @Override
-                public void Responce(String resp) {
-                    Functions.cancel_loader();
-                    Log.d(TAG, "Responce: " + resp);
-                    String languages = Variables.sharedPreferences.getString(Variables.language, "");
-                    if (languages.equals("all")) {
-                        selected_languages.setText("No Language Selected");
-                    } else {
-                        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
-                    }
-                    Intent intent = new Intent(context,MainMenuActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intent);
-                    //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
+                JSONObject parameters = new JSONObject();
+                try {
+                    parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+                    parameters.put("language", Variables.sharedPreferences.getString(Variables.language, "all"));
+                    parameters.put("anyone_can_message", "" + Variables.sharedPreferences.getString(Variables.anyone_can_message, "anyone"));
+                    parameters.put("auto_scroll", "" + auto_scrool_enabled.isChecked());
+                    parameters.put("show_video_preview", "" + show_preview_switch.isChecked());
+                    parameters.put("who_can_tag_me", "" + Variables.sharedPreferences.getString(Variables.who_can_tagme, ""));
+                    parameters.put("theme", "" + Variables.sharedPreferences.getString(Variables.themes_key, "White"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (Exception e) {
-            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+                Log.d(TAG, "save Prefernces : " + new Gson().toJson(parameters));
+                ApiRequest.Call_Api(context, Variables.SAVE_PREFERENCES, parameters, new Callback() {
+                    @Override
+                    public void Responce(String resp) {
+                        Functions.cancel_loader();
+                        Log.d(TAG, "Responce: " + resp);
+                        String languages = Variables.sharedPreferences.getString(Variables.language, "");
+                        if (languages.equals("all")) {
+                            selected_languages.setText("No Language Selected");
+                        } else {
+                            selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        }
+                        Intent intent = new Intent(context,MainMenuActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        context.startActivity(intent);
+                        //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        }
+            }
+
+
     }
 
     private void saveWhoCanTagme(String no_one) {
