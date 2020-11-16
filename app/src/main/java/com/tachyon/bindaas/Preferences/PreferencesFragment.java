@@ -118,12 +118,12 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         mutual_friendsTagme = view.findViewById(R.id.only_mutual_friends);
 
         view.findViewById(R.id.Goback).setOnClickListener(this);
-        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
         String languages = Variables.sharedPreferences.getString(Variables.language, "");
         if (languages.equals("all")) {
             selected_languages.setText("No language selected");
         } else {
-            selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+            selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
         }
 
         auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));

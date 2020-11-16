@@ -171,7 +171,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/d_bottom_gray_line"
                     android:orientation="horizontal">
 
 
@@ -197,7 +196,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/d_bottom_gray_line"
                         android:padding="15dp"
                         android:text="Who can message me"
                         android:textColor="?textColor"
@@ -253,7 +251,6 @@
                 android:id="@+id/linearLayout10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/d_bottom_gray_line"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -262,7 +259,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/d_bottom_gray_line"
                     android:orientation="horizontal">
 
 
@@ -277,7 +273,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/d_bottom_gray_line"
                         android:padding="15dp"
                         android:text="Who can Tag me"
                         android:textColor="?textColor"
@@ -416,6 +411,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:text="Selected Languages are: "
+                    android:layout_marginBottom="10dp"
                     android:textColor="?textColor" />
 
             </LinearLayout>
