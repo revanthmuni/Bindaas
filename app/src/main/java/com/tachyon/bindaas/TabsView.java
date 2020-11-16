@@ -2,45 +2,23 @@ package com.tachyon.bindaas;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.tachyon.bindaas.Inbox.Inbox_F;
-import com.tachyon.bindaas.Main_Menu.MainMenuFragment;
+import com.tachyon.bindaas.Inbox.MessagesTab;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
-import com.tachyon.bindaas.Notifications.Notification_Adapter;
-import com.tachyon.bindaas.Notifications.Notification_Get_Set;
-import com.tachyon.bindaas.Profile.Profile_F;
-import com.tachyon.bindaas.R;
-import com.tachyon.bindaas.SimpleClasses.ApiRequest;
-import com.tachyon.bindaas.SimpleClasses.Callback;
-import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
+import com.tachyon.bindaas.Notifications.NotificationTab;
 import com.tachyon.bindaas.SimpleClasses.Functions;
-import com.tachyon.bindaas.SimpleClasses.Variables;
-import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.

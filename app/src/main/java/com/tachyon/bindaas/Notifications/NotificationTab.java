@@ -1,4 +1,4 @@
-package com.tachyon.bindaas;
+package com.tachyon.bindaas.Notifications;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Notifications.Notification_Adapter;
 import com.tachyon.bindaas.Notifications.Notification_Get_Set;
 import com.tachyon.bindaas.Profile.Profile_F;
+import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;

@@ -40,6 +40,7 @@ import com.downloader.OnStartOrResumeListener;
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.downloader.Progress;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Comments.Comment_Get_Set;
 import com.tachyon.bindaas.Constant;
@@ -193,7 +194,7 @@ public class Functions {
     public static void showLogMessage(Context context, String class_name, String msg) {
 
         Log.d("Crash Exections:", class_name + ": " + msg);
-
+        FirebaseCrashlytics.getInstance().setCustomKey("Bindaar_Crash",class_name + ":"+msg);
 
         //send custom crash report
 
@@ -1099,5 +1100,4 @@ public class Functions {
                 return R.style.WhiteTheme;
         }
     }
-
 }

@@ -13,10 +13,6 @@ public class LinearLayoutManagerWithSmoothScroller extends LinearLayoutManager {
         super(context, VERTICAL, false);
     }
 
-    public LinearLayoutManagerWithSmoothScroller(Context context, int orientation, boolean reverseLayout) {
-        super(context, orientation, reverseLayout);
-    }
-
     @Override
     public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state,
                                        int position) {

@@ -1,4 +1,4 @@
-package com.tachyon.bindaas;
+package com.tachyon.bindaas.Inbox;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,6 +20,7 @@ import com.tachyon.bindaas.Chat.Chat_Activity;
 import com.tachyon.bindaas.Inbox.Inbox_Adapter;
 import com.tachyon.bindaas.Inbox.Inbox_Get_Set;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
+import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
