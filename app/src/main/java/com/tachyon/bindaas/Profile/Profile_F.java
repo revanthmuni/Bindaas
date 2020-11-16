@@ -438,21 +438,21 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         }
 
     }
-    private void loadStartMeter() {
+    private void loadStartMeter(float star_meter) {
         final int min = 1;
         final int max = 10;
         final int random = new Random().nextInt((max - min) + 1) + min;
-        float value = (float)random;
-        float up_value = (float) (10-random);
-        Toast.makeText(context, ""+random, Toast.LENGTH_SHORT).show();
+        float value = (float)star_meter;
+        float up_value = (float) (10-star_meter);
+       // Toast.makeText(context, ""+star_meter, Toast.LENGTH_SHORT).show();
         // star_meter.setImageLevel(random);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                75,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 value
         );
         LinearLayout.LayoutParams paramup = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                75,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 up_value
         );
@@ -514,7 +514,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 bio_textview.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
 //                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
                 String anyone_can_message = user_info.optString("anyone_can_message");
-
+                loadStartMeter(Float.parseFloat(user_info.getString("star_meter")));
 
                 String has_new_notification = data.optString("has_new_notification");
                 Log.d("TAG", "Parse_data: "+has_new_notification);

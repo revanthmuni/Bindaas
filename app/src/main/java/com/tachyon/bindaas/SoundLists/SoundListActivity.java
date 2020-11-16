@@ -252,7 +252,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                         StopPlaying();
                         Down_load_mp3(item.id, item.sound_name, item.acc_path);
                     } else if (view.getId() == R.id.fav_btn) {
-                        StopPlaying();
+                        //StopPlaying();
                         Call_Api_For_Fav_sound(postion, item);
                     } else if (view.getId() == R.id.play_arrow) {
                         if (thread != null && !thread.isAlive()) {

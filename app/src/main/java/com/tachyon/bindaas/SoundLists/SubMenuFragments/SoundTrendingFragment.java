@@ -263,7 +263,7 @@ public class SoundTrendingFragment extends RootFragment implements Player.EventL
                                 Down_load_mp3(item.id, item.sound_name, item.acc_path);
                             } else if (view.getId() == R.id.fav_btn) {
                                 Log.d(TAG, "onItemClick: fav clicked");
-                                StopPlaying();
+                                //StopPlaying();
                                 Call_Api_For_Fav_sound(postion, item);
                             } else if (view.getId() == R.id.play_arrow) {
                                 Log.d(TAG, "onItemClick: play clicked");
