@@ -119,6 +119,7 @@ public class TabsView extends RootFragment {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             //transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
             transaction.replace(R.id.tabs_container, fragment).commit();
+            transaction.addToBackStack(null);
             frameLayout.setVisibility(View.VISIBLE);
 
         } catch (Exception e) {

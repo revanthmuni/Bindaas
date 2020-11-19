@@ -135,6 +135,10 @@ public class TaggedUsersList extends RootFragment {
                 if (Variables.sharedPreferences.getString(Variables.u_id, "0").equals(item.user_id)) {
                     try {
                         getActivity().onBackPressed();
+                        getActivity().onBackPressed();
+                        getActivity().onBackPressed();
+                        getActivity().onBackPressed();
+                        getActivity().onBackPressed();
                         TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                         profile.select();
                     } catch (Exception e) {

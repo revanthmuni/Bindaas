@@ -447,12 +447,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
        // Toast.makeText(context, ""+star_meter, Toast.LENGTH_SHORT).show();
         // star_meter.setImageLevel(random);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                75,
+                55,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 value
         );
         LinearLayout.LayoutParams paramup = new LinearLayout.LayoutParams(
-                75,
+                55,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 up_value
         );

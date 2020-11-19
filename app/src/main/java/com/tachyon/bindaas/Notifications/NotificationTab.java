@@ -26,6 +26,7 @@ import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Fragment_Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.WatchVideos.WatchSingleVideoFragment;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
 import org.json.JSONArray;
@@ -55,80 +56,80 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
         // Required empty public constructor
     }
 
-    @Override
-    public boolean onBackPressed() {
-        return super.onBackPressed();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        try{
-            getActivity().setTheme(Functions.getSavedTheme());
-            view = inflater.inflate(R.layout.fragment_notification_tab, container, false);
-
-        }catch (Exception e){
-            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+        @Override
+        public boolean onBackPressed() {
+            return super.onBackPressed();
         }
-        try {
-            context = getContext();
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            try{
+                getActivity().setTheme(Functions.getSavedTheme());
+                view = inflater.inflate(R.layout.fragment_notification_tab, container, false);
+
+            }catch (Exception e){
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
+            }
+            try {
+                context = getContext();
 
 
-            datalist = new ArrayList<>();
+                datalist = new ArrayList<>();
 
 
-            recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
-            final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setHasFixedSize(true);
+                recyclerView = (RecyclerView) view.findViewById(R.id.recylerview);
+                final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setHasFixedSize(true);
 
 
-            adapter = new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int postion, Notification_Get_Set item) {
+                adapter = new Notification_Adapter(context, datalist, new Notification_Adapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int postion, Notification_Get_Set item) {
 
-                    switch (view.getId()) {
-                        case R.id.watch_btn:
-                            OpenWatchVideo(item);
-                            break;
-                        default:
-                            Open_Profile(item);
-                            break;
+                        switch (view.getId()) {
+                            case R.id.watch_btn:
+                                OpenWatchVideo(item);
+                                break;
+                            default:
+                                Open_Profile(item);
+                                break;
+                        }
                     }
                 }
-            }
-            );
+                );
 
-            recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
 
-            view.findViewById(R.id.inbox_btn).setOnClickListener(this);
+                view.findViewById(R.id.inbox_btn).setOnClickListener(this);
 
-            swiperefresh = view.findViewById(R.id.swiperefresh);
-            swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
+                swiperefresh = view.findViewById(R.id.swiperefresh);
+                swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Call_api();
+                    }
+                });
+                view.findViewById(R.id.back_btn2).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        getActivity().onBackPressed();
+
+                    }
+                });
+
+
+                if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
                     Call_api();
-                }
-            });
-            view.findViewById(R.id.back_btn2).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            } catch (Exception e) {
+                Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-                    getActivity().onBackPressed();
-
-                }
-            });
-
-
-            if (Variables.sharedPreferences.getBoolean(Variables.islogin, false))
-                Call_api();
-        } catch (Exception e) {
-            Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
-
+            }
+            return view;
         }
-        return view;
-    }
 
 
     AdView adView;
@@ -273,13 +274,21 @@ public class NotificationTab extends RootFragment implements View.OnClickListene
     private void OpenWatchVideo(Notification_Get_Set item) {
         Log.d("Test", "OpenWatchVideo: "+new Gson().toJson(item));
         try {
-            Intent intent = new Intent(getActivity(), WatchVideos_F.class);
+            WatchSingleVideoFragment fragment = new WatchSingleVideoFragment();
+//            Notification_F notification_F = new Notification_F();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            Bundle bundle = new Bundle();
             if (item.type.equals("tagged")){
-                intent.putExtra("video_id", item.value);
+                bundle.putString("video_id", item.value);
             }else{
-                intent.putExtra("video_id", item.id);
+                bundle.putString("video_id", item.id);
             }
-            startActivity(intent);
+            //transaction.setCustomAnimations(R.anim.in_from_bottom, R.anim.out_to_top, R.anim.in_from_top, R.anim.out_from_bottom);
+
+            fragment.setArguments(bundle);
+            transaction.addToBackStack(null);
+            transaction.replace(R.id.MainMenuFragment, fragment).commit();
+
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
