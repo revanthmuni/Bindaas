@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:background="?layoutBackgroundColor"
     tools:context="com.tachyon.bindaas.Settings.Setting_F">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
     <RelativeLayout
@@ -80,7 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="15dp"
+                    android:padding="@dimen/pd_10dp"
                     android:text="Auto Scroll"
                     android:textColor="?textColor"
                     android:textSize="15dp"
@@ -112,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="15dp"
+                    android:padding="@dimen/pd_10dp"
                     android:text="Night Mode"
                     android:textColor="?textColor"
                     android:textSize="15dp"
@@ -130,7 +135,6 @@
                     android:id="@+id/themes_rg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:paddingLeft="10dp">
 
@@ -196,7 +200,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="15dp"
+                        android:padding="@dimen/pd_10dp"
                         android:text="Who can message me"
                         android:textColor="?textColor"
                         android:textSize="15dp"
@@ -211,7 +215,6 @@
                     android:id="@+id/who_can_msg_rbtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:paddingLeft="10dp">
 
@@ -273,7 +276,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:padding="15dp"
+                        android:padding="@dimen/pd_10dp"
                         android:text="Who can Tag me"
                         android:textColor="?textColor"
                         android:textSize="15dp"
@@ -295,7 +298,6 @@
                     android:id="@+id/who_can_tag_me"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:paddingLeft="10dp">
 
@@ -338,7 +340,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="15dp"
+                    android:padding="@dimen/pd_10dp"
                     android:text="Show Video Preview"
                     android:textColor="?textColor"
                     android:textSize="15dp"
@@ -384,7 +386,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:padding="15dp"
+                        android:padding="@dimen/pd_10dp"
                         android:text="Language"
                         android:textColor="?textColor"
                         android:textSize="15dp"
@@ -420,5 +422,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
-
+    </ScrollView>
 </FrameLayout>
