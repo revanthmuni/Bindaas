@@ -90,10 +90,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public String pic_url;
     private TextView tvVideosCount;
     private TextView tvLikesCount;
-    private ImageView insta_view,fb_view,bio_view;
+    private ImageView insta_view, fb_view, bio_view;
     private TextView bio_textview;
-    private String fb_link="";
-    private String inst_link="";
+    private String fb_link = "";
+    private String inst_link = "";
     TextView star_percentage;
 
     LinearLayout uployout,downloayout;
@@ -111,10 +111,10 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        try{
+        try {
             getActivity().setTheme(Functions.getSavedTheme());
             view = inflater.inflate(R.layout.fragment_profile, container, false);
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
         context = getContext();
@@ -127,7 +127,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
             }
-             Log.d("USR_TST", "onCreateView: " + user_id);
+            Log.d("USR_TST", "onCreateView: " + user_id);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -188,11 +188,11 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     getActivity().onBackPressed();
                     break;
                 case R.id.insta_image:
-                    Functions.openBrowser(context,inst_link);
+                    Functions.openBrowser(context, inst_link);
                     break;
                 case R.id.fb_image:
-                    Log.d("TAG", "onClick: "+fb_link);
-                    Functions.openBrowser(context,fb_link);
+                    Log.d("TAG", "onClick: " + fb_link);
+                    Functions.openBrowser(context, fb_link);
                     break;
 
             }
@@ -236,16 +236,16 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             pager.setAdapter(adapter);
             tabLayout.setupWithViewPager(pager);
 
-            insta_view = view.findViewById(R.id.insta_image);
-            fb_view = view.findViewById(R.id.fb_image);
-            bio_textview  = view.findViewById(R.id.bio_text);
-            bio_view = view.findViewById(R.id.bio_image);
+            insta_view = view.findViewById(R.id.insta_image2);
+            fb_view = view.findViewById(R.id.fb_image2);
+            bio_textview = view.findViewById(R.id.bio_text2);
+            bio_view = view.findViewById(R.id.bio_image2);
             fb_view.setOnClickListener(this);
             insta_view.setOnClickListener(this);
 
             setupTabIcons();
 
-           // loadStartMeter();
+            // loadStartMeter();
 
             tabs_main_layout = view.findViewById(R.id.tabs_main_layout);
             top_layout = view.findViewById(R.id.top_layout);
@@ -438,13 +438,14 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         }
 
     }
+
     private void loadStartMeter(float star_meter) {
         final int min = 1;
         final int max = 10;
         final int random = new Random().nextInt((max - min) + 1) + min;
-        float value = (float)star_meter;
-        float up_value = (float) (10-star_meter);
-       // Toast.makeText(context, ""+star_meter, Toast.LENGTH_SHORT).show();
+        float value = (float) star_meter;
+        float up_value = (float) (10 - star_meter);
+        // Toast.makeText(context, ""+star_meter, Toast.LENGTH_SHORT).show();
         // star_meter.setImageLevel(random);
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                 55,
@@ -458,7 +459,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         );
         downloayout.setLayoutParams(paramup);
         uployout.setLayoutParams(param);
-        star_percentage.setText(value*10+"%");
+        star_percentage.setText(value * 10 + "%");
     }
     boolean is_run_first_time = false;
 
@@ -507,17 +508,17 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 fb_link = user_info.optString("fb_link");
                 inst_link = user_info.optString("insta_link");
                 String bio_text = user_info.optString("bio");
-                fb_view.setVisibility(fb_link.equals("")?View.GONE:View.VISIBLE);
-                insta_view.setVisibility(inst_link.equals("")?View.GONE:View.VISIBLE);
-                bio_view.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
-                bio_textview.setText(bio_text.equals("")?"":bio_text);
-                bio_textview.setVisibility(bio_text.equals("")?View.GONE:View.VISIBLE);
+                fb_view.setVisibility(fb_link.equals("") ? View.GONE : View.VISIBLE);
+                insta_view.setVisibility(inst_link.equals("") ? View.GONE : View.VISIBLE);
+                bio_view.setVisibility(bio_text.equals("") ? View.GONE : View.VISIBLE);
+                bio_textview.setText(bio_text.equals("") ? "" : bio_text);
+                bio_textview.setVisibility(bio_text.equals("") ? View.GONE : View.VISIBLE);
 //                bio_textview.setText(bio_text.equals("")?"[Add About-me in Edit Profile]":bio_text);
                 String anyone_can_message = user_info.optString("anyone_can_message");
                 loadStartMeter(Float.parseFloat(user_info.getString("star_meter")));
 
                 String has_new_notification = data.optString("has_new_notification");
-                Log.d("TAG", "Parse_data: "+has_new_notification);
+                Log.d("TAG", "Parse_data: " + has_new_notification);
 
 
                 pic_url = user_info.optString("profile_pic");
@@ -543,7 +544,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
 //                    Toast.makeText(context, ""+anyone_can_message, Toast.LENGTH_SHORT).show();
 
-                    setting_btn.setVisibility(anyone_can_message.equals("anyone")||anyone_can_message.equals("mutual_followers")?View.VISIBLE:View.GONE);
+                    setting_btn.setVisibility(anyone_can_message.equals("anyone") || anyone_can_message.equals("mutual_followers") ? View.VISIBLE : View.GONE);
                    /* setting_btn.setVisibility(follow_Status.optString("follow_status_button").equalsIgnoreCase("UnFollow")
                             &&follow_Status.optString("follow").equals("1")?View.VISIBLE:View.GONE);*/
                 }
@@ -574,10 +575,9 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
 
     public void Open_Setting() {
 
-        if(Variables.sharedPreferences.getBoolean(Variables.islogin,false)) {
+        if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
             Open_Chat_F();
-        }
-        else {
+        } else {
             Toast.makeText(context, R.string.login_to_app, Toast.LENGTH_SHORT).show();
         }
 
@@ -620,8 +620,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                                         String follow_status_button = follow_Status.optString("follow_status_button");
                                         Log.d("TTTT", "OnSuccess: " + follow);
                                         Log.d("TTTT", "OnSuccess: " + follow_status_button);
-                                        follow_unfollow_btn.setText(""+follow_status_button);
-                                        Functions.refreshAdapter(user_id,0,follow,follow_status_button);
+                                        follow_unfollow_btn.setText("" + follow_status_button);
+                                        Functions.refreshAdapter(user_id, 0, follow, follow_status_button);
                                         Call_Api_For_get_Allvideos();
 
                                     }

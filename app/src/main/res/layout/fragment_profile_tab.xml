@@ -182,7 +182,7 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:id="@+id/linearLayout13"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -193,39 +193,41 @@
 
                             <ImageView
                                 android:id="@+id/bio_image2"
-                                android:layout_width="0dp"
+                                android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_marginLeft="16dp"
-                                android:layout_weight="1"
+                                android:layout_centerVertical="true"
                                 android:src="@drawable/ic_bio" />
-
-
 
                             <TextView
                                 android:id="@+id/bio_text2"
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_weight="7"
-                                android:maxLines="5"
                                 android:text="Hi i'm user"
+                                android:layout_marginLeft="50dp"
+                                android:layout_marginRight="80dp"
+                                android:layout_centerVertical="true"
                                 android:textColor="?textColor" />
+
                             <ImageView
                                 android:id="@+id/fb_image2"
-                                android:layout_width="0dp"
+                                android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:layout_marginRight="4dp"
-                                android:layout_weight="1"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="45dp"
                                 android:src="@drawable/ic_facebook" />
 
                             <ImageView
                                 android:id="@+id/insta_image2"
-                                android:layout_width="0dp"
+                                android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_weight="1"
-                                android:src="@drawable/ic_insta" />foll
-                        </LinearLayout>
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/ic_insta" />
+                        </RelativeLayout>
 
                         <TextView
                             android:id="@+id/edit_profile_btn"

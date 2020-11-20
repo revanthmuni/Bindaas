@@ -87,7 +87,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/constraintLayout4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -98,46 +98,44 @@
                         fresco:layout_constraintEnd_toEndOf="parent">
 
                         <ImageView
-                            android:id="@+id/bio_image"
-                            android:layout_width="29dp"
+                            android:id="@+id/bio_image2"
+                            android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:visibility="gone"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-
+                            android:layout_marginLeft="16dp"
+                            android:layout_centerVertical="true"
                             android:src="@drawable/ic_bio" />
+
                         <TextView
-                            android:id="@+id/bio_text"
-                            android:layout_width="0dp"
+                            android:id="@+id/bio_text2"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:layout_weight="7"
-                            android:maxLines="5"
-                            android:visibility="gone"
                             android:layout_gravity="center"
                             android:text="Hi i'm user"
-                            android:textColor="?textColor"/>
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="80dp"
+                            android:layout_centerVertical="true"
+                            android:textColor="?textColor" />
+
                         <ImageView
-                            android:id="@+id/fb_image"
-                            android:layout_width="0dp"
+                            android:id="@+id/fb_image2"
+                            android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:visibility="gone"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="4dp"
-                            android:src="@drawable/ic_facebook"
-                        />
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="45dp"
+                            android:src="@drawable/ic_facebook" />
+
                         <ImageView
-                            android:id="@+id/insta_image"
-                            android:layout_width="0dp"
+                            android:id="@+id/insta_image2"
+                            android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:visibility="gone"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="4dp"
-                            android:src="@drawable/ic_insta"
-                          />
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/ic_insta" />
 
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/llUserNameLayout"

@@ -108,14 +108,11 @@ public class Comment_F extends RootFragment {
         try {
             getActivity().setTheme(Functions.getSavedTheme());
             view = inflater.inflate(R.layout.fragment_comment, container, false);
-
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
         try {
             context = getContext();
-
-
             comment_screen = view.findViewById(R.id.comment_screen);
             comment_screen.setOnClickListener(new View.OnClickListener() {
                 @Override
