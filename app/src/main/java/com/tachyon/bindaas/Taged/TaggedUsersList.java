@@ -137,8 +137,6 @@ public class TaggedUsersList extends RootFragment {
                         getActivity().onBackPressed();
                         getActivity().onBackPressed();
                         getActivity().onBackPressed();
-                        getActivity().onBackPressed();
-                        getActivity().onBackPressed();
                         TabLayout.Tab profile = MainMenuFragment.tabLayout.getTabAt(2);
                         profile.select();
                     } catch (Exception e) {

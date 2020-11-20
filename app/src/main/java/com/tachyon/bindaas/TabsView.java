@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+import com.tachyon.bindaas.Discover.CategoryFragment;
+import com.tachyon.bindaas.Discover.EventStatePagerAdapter;
+import com.tachyon.bindaas.Discover.TopsFragment;
+import com.tachyon.bindaas.Discover.TrendingFragment;
 import com.tachyon.bindaas.Inbox.MessagesTab;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Notifications.NotificationTab;
@@ -29,6 +35,10 @@ public class TabsView extends RootFragment {
     Context context;
     TextView notification_view, messages_view;
     FrameLayout frameLayout;
+
+    EventStatePagerAdapter mainViewPagerAdapter;
+    ViewPager mainViewPager;
+    TabLayout mainTabLayout;
     public TabsView() {
         // Required empty public constructor
     }
@@ -51,16 +61,25 @@ public class TabsView extends RootFragment {
         }
         try {
             context = getContext();
+            mainViewPager = view.findViewById(R.id.main_viewpager);
+            mainTabLayout = view.findViewById(R.id.tabLayout2);
 
-            frameLayout = view.findViewById(R.id.tabs_container);
+            mainViewPagerAdapter = new EventStatePagerAdapter(getChildFragmentManager());
+            mainViewPager.setOffscreenPageLimit(3);
+            mainViewPagerAdapter.addFrag(new NotificationTab(), "Notifications");
+            mainViewPagerAdapter.addFrag(new MessagesTab(), "Messages");
+            mainViewPager.setAdapter(mainViewPagerAdapter);
+            mainTabLayout.setupWithViewPager(mainViewPager);
+
+            /*frameLayout = view.findViewById(R.id.tabs_container);
             notification_view = view.findViewById(R.id.textView3);
             messages_view = view.findViewById(R.id.textView4);
             loadNoficationTab();
             notification_view.setOnClickListener(view -> {
                 frameLayout.setVisibility(View.GONE);
 
-                /*  messages_view.setBackground(getResources().getDrawable(R.color.white));
-                messages_view.setAlpha(0.5f);*/
+                *//*  messages_view.setBackground(getResources().getDrawable(R.color.white));
+                messages_view.setAlpha(0.5f);*//*
 
                 notification_view.setBackground(getResources().getDrawable(R.color.themecolor));
                 notification_view.setAlpha(1f);
@@ -76,8 +95,8 @@ public class TabsView extends RootFragment {
             messages_view.setOnClickListener(view -> {
                 messages_view.setBackground(getResources().getDrawable(R.color.themecolor));
                 messages_view.setAlpha(1f);
-                /*notification_view.setBackground(getResources().getDrawable(R.color.white));
-                notification_view.setAlpha(0.5f);*/
+                *//*notification_view.setBackground(getResources().getDrawable(R.color.white));
+                notification_view.setAlpha(0.5f);*//*
                 if (Functions.getSavedTheme() == R.style.WhiteTheme){
                     notification_view.setBackground(getResources().getDrawable(R.color.white));
                     notification_view.setAlpha(0.5f);
@@ -89,7 +108,7 @@ public class TabsView extends RootFragment {
             view.findViewById(R.id.back_btn2).setOnClickListener(v -> {
                 EventBus.getDefault().post("done");
                 getActivity().onBackPressed();
-            });
+            });*/
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -98,7 +117,7 @@ public class TabsView extends RootFragment {
     }
 
     private void loadMessageTab() {
-        try {
+        /*try {
             MessagesTab fragment = new MessagesTab();
 //            Notification_F notification_F = new Notification_F();
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -108,11 +127,12 @@ public class TabsView extends RootFragment {
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
-        }
+        }*/
     }
 
     private void loadNoficationTab() {
 
+/*
         try {
             NotificationTab fragment = new NotificationTab();
 //            Notification_F notification_F = new Notification_F();
@@ -126,6 +146,7 @@ public class TabsView extends RootFragment {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
+*/
     }
 
 }

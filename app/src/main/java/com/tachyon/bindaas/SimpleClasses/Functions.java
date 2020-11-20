@@ -194,7 +194,7 @@ public class Functions {
     public static void showLogMessage(Context context, String class_name, String msg) {
 
         Log.d("Crash Exections:", class_name + ": " + msg);
-        FirebaseCrashlytics.getInstance().setCustomKey("Bindaar_Crash",class_name + ":"+msg);
+        FirebaseCrashlytics.getInstance().setCustomKey("Bindaas_Crash",class_name + ":"+msg);
 
         //send custom crash report
 
