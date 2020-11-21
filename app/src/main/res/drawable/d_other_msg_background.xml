@@ -6,7 +6,7 @@
                 android:topRightRadius="25dp"
                 android:topLeftRadius="25dp"
                 android:bottomLeftRadius="0dp"/>
-            <solid android:color="?dimGray" />
+            <solid android:color="@color/cream" />
         </shape>
     </item>
     <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
@@ -16,7 +16,7 @@
                 android:topRightRadius="25dp"
                 android:topLeftRadius="25dp"
                 android:bottomLeftRadius="0dp"/>
-            <solid android:color="?dimGray"></solid>
+            <solid android:color="@color/cream"></solid>
         </shape>
     </item>
 </layer-list>

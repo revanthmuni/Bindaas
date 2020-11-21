@@ -22,7 +22,7 @@
         android:id="@+id/msgtxt"
         android:textSize="15dp"
         android:background="@drawable/d_other_msg_background"
-        android:textColor="?textColor"
+        android:textColor="@color/black"
         android:paddingLeft="20dp"
         android:paddingRight="15dp"
         android:paddingTop="10dp"
