@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_lock" />
-                            <entry key="sourceFile" value="C:\Users\revanth\Downloads\ic_select_rectangle.svg" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_duet" />
+                            <entry key="sourceFile" value="D:\SCI\Resources\SVG\ic_duet.svg" />
                           </map>
                         </option>
                       </PersistentState>
