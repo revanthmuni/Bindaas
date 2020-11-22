@@ -468,9 +468,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         ImageView imageView4 = view4.findViewById(R.id.image);
         imageView4.setImageResource(R.drawable.ic_outline_person_24);
 //        imageView4.setColorFilter(ContextCompat.getColor(context, R.color.colorwhite_50), android.graphics.PorterDuff.Mode.SRC_IN);
-        TextView tex4 = view4.findViewById(R.id.text);
+        /*TextView tex4 = view4.findViewById(R.id.text);
         tex4.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
-        tab4.setCustomView(view4);
+        tab4.setCustomView(view4);*/
 
 
       /*

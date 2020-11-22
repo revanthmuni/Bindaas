@@ -98,6 +98,48 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
             sounds_recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
             sounds_recycler.setNestedScrollingEnabled(false);
             loadTrendingSounds();
+
+            adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion, Sounds_GetSet item) {
+                    adapter_position = postion;
+                    previous_view = view;
+                    if (view.getId() == R.id.done) {
+                        StopPlaying();
+                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
+                    } else if (view.getId() == R.id.fav_btn) {
+                        //StopPlaying();
+                        Call_Api_For_Fav_sound(postion, item);
+                    } else if (view.getId() == R.id.play_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    } else if (view.getId() == R.id.pause_arrow) {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    } else {
+                        if (thread != null && !thread.isAlive()) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        } else if (thread == null) {
+                            StopPlaying();
+                            playaudio(view, item);
+                        }
+                    }
+
+                }
+            });
+
+            sounds_recycler.setAdapter(adapter);
         } catch (Exception e) {
             Functions.showLogMessage(context, this.getClass().getSimpleName(), e.getMessage());
         }
@@ -183,8 +225,10 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
                     }
 
                 }
+                adapter.setList(datalist);
+                adapter.notifyDataSetChanged();
 
-                Set_adapter();
+                //Set_adapter();
 
 
             } else {
@@ -200,90 +244,7 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
     public void Set_adapter() {
         try {
-            /*adapter = new Sounds_Adapter(context, datalist, new Sounds_Adapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int postion, Sounds_GetSet item) {
 
-                    Log.d("resp", item.acc_path);
-
-                    if (view.getId() == R.id.done) {
-                        StopPlaying();
-                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
-                    } else if (view.getId() == R.id.fav_btn) {
-                        StopPlaying();
-                        Call_Api_For_Fav_sound(postion, item.id);
-
-                    } else if (view.getId() == R.id.play_arrow) {
-
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                    } else if (view.getId() == R.id.pause_arrow) {
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                        Toast.makeText(context, R.string.pause_pressed, Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                    }
-
-                }
-            });*/
-            adapter = new SoundsAdapter(context, datalist, "sound_list", new SoundsAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int postion, Sounds_GetSet item) {
-                    adapter_position = postion;
-                    previous_view = view;
-                    if (view.getId() == R.id.done) {
-                        StopPlaying();
-                        Down_load_mp3(item.id, item.sound_name, item.acc_path);
-                    } else if (view.getId() == R.id.fav_btn) {
-                        //StopPlaying();
-                        Call_Api_For_Fav_sound(postion, item);
-                    } else if (view.getId() == R.id.play_arrow) {
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                    } else if (view.getId() == R.id.pause_arrow) {
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                    } else {
-                        if (thread != null && !thread.isAlive()) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        } else if (thread == null) {
-                            StopPlaying();
-                            playaudio(view, item);
-                        }
-                    }
-
-                }
-            });
-
-            sounds_recycler.setAdapter(adapter);
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -380,8 +341,12 @@ public class SoundListActivity extends AppCompatActivity implements Player.Event
 
         }
     }
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        mCurrentPlayingPosition = -1;
+        adapter.notifyDataSetChanged();
+    }
     @Override
     public void onStart() {
         super.onStart();

@@ -34,6 +34,10 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
     String flag;
    public static int mCurrentPlayingPosition = -1; // if -1 nothing is playing
 
+    public void setList(ArrayList<Sounds_GetSet> list) {
+        this.list = list;
+    }
+
     public SoundsAdapter(Context context, ArrayList<Sounds_GetSet> list, String flag, OnItemClickListener listener) {
         this.context = context;
         this.list = list;
