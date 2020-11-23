@@ -105,10 +105,11 @@ public class TabsView extends RootFragment {
                     notification_view.setTextColor(getResources().getColor(R.color.white));
                 }                loadMessageTab();
             });
+           */
             view.findViewById(R.id.back_btn2).setOnClickListener(v -> {
                 EventBus.getDefault().post("done");
                 getActivity().onBackPressed();
-            });*/
+            });
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 

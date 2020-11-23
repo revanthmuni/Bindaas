@@ -549,6 +549,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         case R.id.tagged_users:
                             onPause();
                             showTaggedUsers(item);
+                            break;
                         case R.id.add_follow:
                             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
                                 addToFollow(item,postion);

@@ -301,7 +301,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
                     }
                     Intent intent = new Intent(context, MainMenuActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -427,7 +427,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
                     }
                     //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
                 }
@@ -467,7 +467,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
                     }
                     //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
                 }
