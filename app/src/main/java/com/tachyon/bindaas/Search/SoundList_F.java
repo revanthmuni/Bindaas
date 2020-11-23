@@ -156,6 +156,11 @@ public class SoundList_F extends RootFragment implements Player.EventListener {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Call_Api();
+    }
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         try {

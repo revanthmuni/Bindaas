@@ -339,10 +339,10 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
         try {
             EventBus.getDefault().register(this);
             Show_draft_count();
-            Call_Api_For_get_Allvideos();
-            /*if (view != null && Variables.Reload_my_videos) {
+            if (view != null /*&& Variables.Reload_my_videos*/) {
                 Variables.Reload_my_videos = false;
-            }*/
+                Call_Api_For_get_Allvideos();
+            }
         } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
@@ -663,7 +663,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
         //loadStartMeter();
 
-        Functions.Show_loader(context, false, false);
+        Functions.Show_loader(context, true, false);
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Outline;
@@ -299,8 +300,16 @@ public class Home_F extends RootFragment implements Player.EventListener,
             }
         });
 
-        Call_Api_For_get_Allvideos();
-
+        if (!Variables.sharedPreferences.getString("big_data","").equals("")){
+            Parse_data(Variables.sharedPreferences.getString("big_data",""));
+            SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+            editor.putString("big_data","");
+            editor.commit();
+            Log.d("Enhan:", "Big Data After Deleted:"+Variables.sharedPreferences.getString("big_data",""));
+        }else{
+            Call_Api_For_get_Allvideos();
+        }
+        Log.d("Enhan:", "Big Data:"+Variables.sharedPreferences.getString("big_data","").equals(""));
 
         if (!Variables.is_remove_ads)
             Load_add();

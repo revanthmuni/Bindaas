@@ -376,13 +376,7 @@ public class Discover_F extends RootFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         try {
-            String s = search_edit.getText().toString();
-            if (s.length() == 0) {
 
-            } else {
-                // Toast.makeText(context, search_edit.getText().toString(), Toast.LENGTH_SHORT).show();
-                Perform_search();
-            }
         /*if (search_edit.getText().toString().length() != 0){
             search_frame.setVisibility(View.VISIBLE);
             swiperefresh.setVisibility(View.GONE);

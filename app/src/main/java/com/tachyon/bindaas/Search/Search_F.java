@@ -89,6 +89,11 @@ public class Search_F extends RootFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Call_Api();
+    }
 
     public void Call_Api() {
 

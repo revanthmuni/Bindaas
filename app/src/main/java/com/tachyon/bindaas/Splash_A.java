@@ -9,14 +9,22 @@ import android.os.CountDownTimer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
+import com.tachyon.bindaas.SimpleClasses.ApiRequest;
+import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Splash_A extends AppCompatActivity {
 
@@ -34,7 +42,7 @@ public class Splash_A extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         VideoView videoView = findViewById(R.id.video_view);
         String uriPath = "android.resource://"+getPackageName()+"/raw/myvideo";
-
+        Call_Api_For_get_Allvideos();
         videoView.setVideoURI(Uri.parse(uriPath));
         videoView.start();
         try {
@@ -72,7 +80,31 @@ public class Splash_A extends AppCompatActivity {
 
         }
     }
+    private void Call_Api_For_get_Allvideos() {
 
+        Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);
+        SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
+        JSONObject parameters = new JSONObject();
+        try {
+            Log.d("test--", "Call_Api_For_get_Allvideos: " + Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, "0"));
+            parameters.put("token", FirebaseInstanceId.getInstance().getToken());
+            parameters.put("type", "related");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("TEST", "Call_Api_For_get_Allvideos: " + new Gson().toJson(parameters));
+        ApiRequest.Call_Api(this, Variables.showAllVideos, parameters, new Callback() {
+            @Override
+            public void Responce(String resp) {
+                Log.d("Enhan:", "Responce: " + resp);
+                editor.putString("big_data",resp);
+                editor.commit();
+            }
+        });
+
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
