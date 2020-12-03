@@ -26,6 +26,7 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.gson.Gson;
 import com.nineoldandroids.view.ViewHelper;
 import com.tachyon.bindaas.Chat.Chat_Activity;
@@ -103,7 +104,6 @@ public class Home_Adapter_New extends RecyclerView.Adapter<Home_Adapter_New.Cust
             holder.username.setText(item.first_name + " " + item.last_name);
             holder.username_newsfeed.setText(item.first_name + " " + item.last_name);
 
-
            /* MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             if (Build.VERSION.SDK_INT >= 14) {
                 retriever.setDataSource(item.video_url, new HashMap<String, String>());
@@ -146,7 +146,6 @@ public class Home_Adapter_New extends RecyclerView.Adapter<Home_Adapter_New.Cust
 
             } else if (item.sound_pic.equals(""))
                 item.sound_pic = "Null";
-
 
             /*Picasso.with(context).
                     load(item.sound_pic).centerCrop()

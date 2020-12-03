@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -124,6 +125,8 @@ public class Comment_F extends RootFragment {
                     } else {
                         if (WatchVideos_F.privious_player != null) {
                             WatchVideos_F.privious_player.setPlayWhenReady(true);
+                            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                         }
                     }
                     getActivity().onBackPressed();
@@ -141,6 +144,8 @@ public class Comment_F extends RootFragment {
                     } else {
                         if (WatchVideos_F.privious_player != null) {
                             WatchVideos_F.privious_player.setPlayWhenReady(true);
+                            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
                         }
                     }
                     getActivity().onBackPressed();

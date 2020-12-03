@@ -144,7 +144,7 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this;
         try{
           setTheme(Functions.getSavedTheme());
@@ -466,9 +466,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
                         case R.id.user_pic:
                             onPause();
-                            Log.d("USR_TST", "onItemClick: " + item.user_id);
-
                             OpenProfile(item, false);
+
                             break;
 
                         case R.id.like_layout:
@@ -528,12 +527,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                             bundle.putString("user_id", item.user_id);
                             bundle.putSerializable("data", item);
                             fragment.setArguments(bundle);
-
                             fragment.show(getSupportFragmentManager(), "");
-
                             break;
-
-
                         case R.id.sound_image_layout:
                             if (Variables.sharedPreferences.getBoolean(Variables.islogin, false)) {
                                 if (check_permissions()) {
@@ -688,6 +683,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
     @Override
     public void onResume() {
         super.onResume();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         try {
             keyboardHeightProvider.setKeyboardHeightObserver(this);
         } catch (Exception e) {
@@ -730,8 +727,6 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
                         if (!TextUtils.isEmpty(comment_txt)) {
                             Send_Comments(data_list.get(currentPage).user_id, data_list.get(currentPage).video_id, comment_txt);
                         }
-
-
                     } else {
                         Toast.makeText(context, "Please Login into app", Toast.LENGTH_SHORT).show();
                     }
@@ -1073,6 +1068,8 @@ public class WatchVideos_F extends AppCompatActivity implements Player.EventList
 
     // this will open the comment screen
     public void OpenComment(Home_Get_Set item, int position) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         try {
             if (privious_player != null) {
                 privious_player.setPlayWhenReady(false);
