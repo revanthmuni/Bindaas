@@ -663,7 +663,7 @@ public class Profile_Tab_F extends RootFragment implements View.OnClickListener 
 
         //loadStartMeter();
 
-        Functions.Show_loader(context, true, false);
+        Functions.Show_loader(context, true, true);
         JSONObject parameters = new JSONObject();
         try {
             parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));

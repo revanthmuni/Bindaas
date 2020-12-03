@@ -141,23 +141,10 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
                         if (!video_player.getPlayWhenReady()) {
                             is_user_stop_video = false;
                             video_player.setPlayWhenReady(true);
-
-                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
-
-                            autoScrollVideos();
-                        }*/
                         } else {
                             is_user_stop_video = true;
-
                             video_player.setPlayWhenReady(false);
-
-                      /*  if (Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false)) {
-                            Toast.makeText(context, "timer stopped", Toast.LENGTH_SHORT).show();
-                            timer.cancel();
-                        }*/
                         }
-
-
                         return true;
                     }
 
@@ -185,18 +172,12 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
             video_player.setPlayWhenReady(true);
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
-
     }
-
-
     @Override
     public void onClick(View v) {
         try {
             switch (v.getId()) {
-
-
                 case R.id.Goback:
                     finish();
                     overridePendingTransition(R.anim.in_from_top, R.anim.out_from_bottom);
@@ -239,13 +220,10 @@ public class GallerySelectedVideo_A extends AppCompatActivity implements
                         Variables.Selected_sound_id = data.getStringExtra("sound_id");
                         PreparedAudio();
                     }
-
                 }
-
             }
         } catch (Exception e) {
             Functions.showLogMessage(this, this.getClass().getSimpleName(), e.getMessage());
-
         }
     }
 

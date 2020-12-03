@@ -118,12 +118,12 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         mutual_friendsTagme = view.findViewById(R.id.only_mutual_friends);
 
         view.findViewById(R.id.Goback).setOnClickListener(this);
-        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+        selected_languages.setText("Selected Languages are: " + "\n\n" + addSpace2Languages(Variables.sharedPreferences.getString(Variables.language, "")));
         String languages = Variables.sharedPreferences.getString(Variables.language, "");
         if (languages.equals("all")) {
             selected_languages.setText("No language selected");
         } else {
-            selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+            selected_languages.setText("Selected Languages are: " + "\n\n" + addSpace2Languages(Variables.sharedPreferences.getString(Variables.language, "")));
         }
 
         auto_scrool_enabled.setChecked(Variables.sharedPreferences.getBoolean(Variables.auto_scroll_key, false));
@@ -269,6 +269,13 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
         return view;
     }
 
+    public String addSpace2Languages(String langs){
+        if (!langs.equals("")){
+            return langs.replace(",",", ");
+        }
+        return "";
+    }
+
     private void saveAndSendTheme(String white) {
 
         SharedPreferences.Editor editor = Variables.sharedPreferences.edit();
@@ -301,7 +308,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + addSpace2Languages(Variables.sharedPreferences.getString(Variables.language, "")));
                     }
                     Intent intent = new Intent(context, MainMenuActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -427,7 +434,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + addSpace2Languages(Variables.sharedPreferences.getString(Variables.language, "")));
                     }
                     //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
                 }
@@ -467,7 +474,7 @@ public class PreferencesFragment extends RootFragment implements View.OnClickLis
                     if (languages.equals("all")) {
                         selected_languages.setText("No Language Selected");
                     } else {
-                        selected_languages.setText("Selected Languages are: " + "\n\n" + Variables.sharedPreferences.getString(Variables.language, ""));
+                        selected_languages.setText("Selected Languages are: " + "\n\n" + addSpace2Languages(Variables.sharedPreferences.getString(Variables.language, "")));
                     }
                     //  Toast.makeText(context, resp, Toast.LENGTH_SHORT).show();
                 }
