@@ -59,7 +59,7 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar"
@@ -99,7 +99,38 @@
 
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/d_bottom_gray_line"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
 
+
+                <TextView
+                    android:id="@+id/show_preview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="@dimen/pd_10dp"
+                    android:text="Show Video Preview"
+                    android:textColor="?textColor"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/show_preview_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:checked="true" />
+
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearLayout44"
                 android:layout_width="match_parent"
@@ -118,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="@dimen/pd_10dp"
-                    android:text="Night Mode"
+                    android:text="Theme"
                     android:textColor="?textColor"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -255,6 +286,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="@drawable/d_bottom_gray_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
@@ -323,38 +355,7 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayout11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/d_bottom_gray_line"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
 
-
-                <TextView
-                    android:id="@+id/show_preview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="@dimen/pd_10dp"
-                    android:text="Show Video Preview"
-                    android:textColor="?textColor"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <Switch
-                    android:id="@+id/show_preview_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:checked="true" />
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -418,7 +419,7 @@
             </LinearLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </RelativeLayout>
     </ScrollView>
