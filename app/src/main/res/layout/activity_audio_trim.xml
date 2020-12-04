@@ -208,6 +208,7 @@
                             android:id="@+id/txtAudioPlay"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
                             android:background="@drawable/ic_play_btn" />
 
                         <TextView

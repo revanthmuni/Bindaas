@@ -259,6 +259,12 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        handlePause();
+    }
+
+    @Override
     public void onClick(View view) {
         try {
             if (view == txtAudioRecord) {
@@ -347,10 +353,14 @@ public class AudioTrimmerActivity extends AppCompatActivity implements View.OnCl
 
             } else if (view == txtAudioReset) {
 
+                resetPositions();
+                handlePause();
                 Log.d(TAG, "onClick: txtAudioReset");
                 audioWaveform.setIsDrawBorder(true);
                 mPlayer = new SamplePlayer(mRecordedSoundFile);
-                finishOpeningSoundFile(mRecordedSoundFile, 1);
+                Log.d(TAG, "onClick: txtAudioPlay");
+                updateDisplay();
+               // finishOpeningSoundFile(mRecordedSoundFile, 1);
 
             } else if (view == txtAudioCrop) {
                 Log.d(TAG, "onClick: txtAudioCrop");
