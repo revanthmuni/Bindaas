@@ -17,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Home.Home_Get_Set;
+import com.tachyon.bindaas.Home.MessageEvent;
 import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -65,6 +67,15 @@ public class Liked_Video_F extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoUploadService(String res) {
+        Call_Api_For_get_Allvideos();
+    }
+
+    private static final String TAG = "NewsFeedFragment";
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEventTrggered(MessageEvent item){
+        Log.d(TAG, "onEventTrggered:NewsFeed "+new Gson().toJson(item));
+        user_id = item.getUser_id();
         Call_Api_For_get_Allvideos();
     }
     @Override

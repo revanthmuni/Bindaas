@@ -18,6 +18,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Main_Menu.MainMenuActivity;
+import com.tachyon.bindaas.Services.Upload_Service;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
@@ -46,6 +47,13 @@ public class Splash_A extends AppCompatActivity {
         videoView.setVideoURI(Uri.parse(uriPath));
         videoView.start();
         try {
+
+            Upload_Service mService = new Upload_Service();
+            if (Functions.isMyServiceRunning(this, mService.getClass())) {
+                // Toast.makeText(this, "service is running", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, Upload_Service.class);
+                stopService(intent);
+            }
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
             Variables.sharedPreferences = getSharedPreferences(Variables.pref_name, MODE_PRIVATE);

@@ -8,6 +8,9 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+import com.tachyon.bindaas.Home.Home_Get_Set;
+import com.tachyon.bindaas.Home.MessageEvent;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.google.android.material.tabs.TabLayout;
@@ -20,6 +23,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.telecom.Call;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -48,6 +52,9 @@ import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +102,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     private String fb_link = "";
     private String inst_link = "";
     TextView star_percentage;
+    boolean is_run_first_time = false;
 
     LinearLayout uployout,downloayout;
     public Profile_F() {
@@ -236,6 +244,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             pager.setAdapter(adapter);
             tabLayout.setupWithViewPager(pager);
 
+
             insta_view = view.findViewById(R.id.insta_image2);
             fb_view = view.findViewById(R.id.fb_image2);
             bio_textview = view.findViewById(R.id.bio_text2);
@@ -295,6 +304,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
         try {
             if (is_run_first_time) {
 
@@ -305,6 +315,12 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
 
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     private void setupTabIcons() {
@@ -461,8 +477,6 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         uployout.setLayoutParams(param);
         star_percentage.setText(value * 10 + "%");
     }
-    boolean is_run_first_time = false;
-
     private void Call_Api_For_get_Allvideos() {
         try {
             if (bundle == null) {
@@ -473,8 +487,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             try {
                 parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
                 parameters.put("user_id", user_id);
-                Log.d("USR_TST", "Call_Api_For_get_Allvideos: " + user_id);
-
+            //    Log.d("USR_TST", "Call_Api_For_get_Allvideos: " + user_id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -580,6 +593,31 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
         } else {
             Toast.makeText(context, R.string.login_to_app, Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private static final String TAG = "NewsFeedFragment";
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEventTrggered(MessageEvent item){
+        Log.d(TAG, "onEventTrggered:Profile "+new Gson().toJson(item));
+        user_id = item.getUser_id();
+
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
+            parameters.put("user_id", user_id);
+            Log.d("USR_TST", "Call_Api_For_get_Allvideos: " + user_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
+            @Override
+            public void Responce(String resp) {
+                Parse_data(resp);
+            }
+        });
 
     }
 

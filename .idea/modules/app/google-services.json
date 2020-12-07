@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "829287734458",
+    "firebase_url": "https://tachyon-bindaas.firebaseio.com",
+    "project_id": "tachyon-bindaas",
+    "storage_bucket": "tachyon-bindaas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829287734458:android:c335cea173e2bb288b3683",
+        "android_client_info": {
+          "package_name": "com.tachyon.bindaas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829287734458-tbhh29pq8gs5fs51mur9og54one0ba28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "bab15ecdc3ef62ab3bca22b536dcd7a3ed5592eb"
+          }
+        },
+        {
+          "client_id": "829287734458-d10qohcphaj2jp7irteht981ia97lb6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tachyon.bindaas",
+            "certificate_hash": "b03a3d5d5fcba6d210dc0cc3fa5dffa75cfe15a9"
+          }
+        },
+        {
+          "client_id": "829287734458-4hs129kr2k24gm06giv07v0q5ajvemka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUQFdfIQVTN4wMGKNG1O6BJumehi-HLe4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829287734458-2gsjhltva0vlqfifcfgkkf8ilb6eljjb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

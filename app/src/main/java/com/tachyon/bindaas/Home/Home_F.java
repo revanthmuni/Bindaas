@@ -269,13 +269,14 @@ public class Home_F extends RootFragment implements Player.EventListener,
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+                Log.d(TAG, "onScrollStateChanged: here");
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 //here we find the current item number
+                Log.d(TAG, "onScrolled: here");
 
                 final int scrollOffset = recyclerView.computeVerticalScrollOffset();
                 final int height = recyclerView.getHeight();
@@ -826,8 +827,10 @@ public class Home_F extends RootFragment implements Player.EventListener,
     // this will call when swipe for another video and
     // this function will set the player to the current video
     public void Set_Player(final int currentPage) {
+
         final Home_Get_Set item = data_list.get(currentPage);
 
+        EventBus.getDefault().post(new MessageEvent(item.user_id));
         /*Call_cache();
 
         HttpProxyCacheServer proxy = Bindaas.getProxy(context);

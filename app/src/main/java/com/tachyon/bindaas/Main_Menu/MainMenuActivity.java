@@ -36,19 +36,19 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
-           setTheme(Functions.getSavedTheme());
+        try {
+            setTheme(Functions.getSavedTheme());
             setContentView(R.layout.activity_main_menu);
 
-        }catch (Exception e){
-            Functions.showLogMessage(this,getClass().getSimpleName(), e.getMessage());
+        } catch (Exception e) {
+            Functions.showLogMessage(this, getClass().getSimpleName(), e.getMessage());
         }
 
 
         Upload_Service mService = new Upload_Service();
         if (Functions.isMyServiceRunning(this, mService.getClass())) {
-           // Toast.makeText(this, "service is running", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this,Upload_Service.class);
+            // Toast.makeText(this, "service is running", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Upload_Service.class);
             stopService(intent);
         }
 
@@ -72,7 +72,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
 
             token = FirebaseInstanceId.getInstance().getToken();
-            Log.d("token::", "onCreate: "+token);
+            Log.d("token::", "onCreate: " + token);
             if (token == null || (token.equals("") || token.equals("null")))
                 token = Variables.sharedPreferences.getString(Variables.device_token, "null");
 

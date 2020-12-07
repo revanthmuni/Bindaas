@@ -45,12 +45,11 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
         void onLoadDuration(long mills);
     }
 
-    public Home_Adapter(Context context, ArrayList<Home_Get_Set> dataList, Home_Adapter.OnItemClickListener listener) {
+    public  Home_Adapter(Context context, ArrayList<Home_Get_Set> dataList, Home_Adapter.OnItemClickListener listener) {
         this.context = context;
         this.dataList = dataList;
         this.listener = listener;
         // this.videoDurationListner = videoDurationListner;
-
     }
 
     @Override
@@ -72,7 +71,9 @@ public class Home_Adapter extends RecyclerView.Adapter<Home_Adapter.CustomViewHo
     @Override
     public void onBindViewHolder(final Home_Adapter.CustomViewHolder holder, final int i) {
         try {
+
             final Home_Get_Set item = dataList.get(i);
+            Log.d("NewsFeedFragment", "onBindViewHolder: "+i+":"+item.first_name);
             holder.setIsRecyclable(false);
 
             // holder.setVideoData(item);

@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.tachyon.bindaas.Accounts.Login_A;
 import com.tachyon.bindaas.Home.Home_F;
 import com.tachyon.bindaas.Home.Home_F_New;
+import com.tachyon.bindaas.Home.MainHomeDemo;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.OnBackPressListener;
 import com.tachyon.bindaas.Main_Menu.RelateToFragment_OnBack.RootFragment;
 import com.tachyon.bindaas.Profile.Profile_Tab_F;
@@ -177,6 +178,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                     switch (tab.getPosition()) {
                         case 0:
+                            if (MainHomeDemo.demo_viewpager!=null){
+                                MainHomeDemo.demo_viewpager.setCurrentItem(1);
+                            }
 //                        OnHome_Click();
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
 //                        title.setTextColor(context.getResources().getColor(R.color.white));
@@ -369,8 +373,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             switch (position) {
                 case 0:
                     //One line comment for smooth left and right swipe functionality
-                  result = new Home_F();
+//                  result = new Home_F();
 //                    result = new Home_F_New();
+
+                    //Uncomment this line for swipe profiling...
+                    result = new MainHomeDemo();
                     break;
 
                 /*case 1:

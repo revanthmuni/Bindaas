@@ -19,7 +19,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tachyon.bindaas.Home.Home_Get_Set;
+import com.tachyon.bindaas.Home.MessageEvent;
 import com.tachyon.bindaas.Profile.MyVideos_Adapter;
 import com.tachyon.bindaas.R;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
@@ -41,6 +43,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class UserVideo_F extends Fragment {
+    private static final String TAG = "NewsFeedFragment";
 
     public RecyclerView recyclerView;
     ArrayList<Home_Get_Set> data_list;
@@ -64,7 +67,12 @@ public class UserVideo_F extends Fragment {
         this.is_my_profile = is_my_profile;
         this.user_id = user_id;
     }
-
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEventTrggered(MessageEvent item){
+        Log.d(TAG, "onEventTrggered:NewsFeed "+new Gson().toJson(item));
+        user_id = item.getUser_id();
+        Call_Api_For_get_Allvideos();
+    }
     private class NewVideoBroadCast extends BroadcastReceiver {
 
         @Override
@@ -85,12 +93,13 @@ public class UserVideo_F extends Fragment {
         try{
             getActivity().setTheme(Functions.getSavedTheme());
             view = inflater.inflate(R.layout.fragment_user_video, container, false);
+            context = getContext();
+            Log.d(TAG, "onCreateView: after User id"+user_id);
         }catch (Exception e){
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
 
         try {
-            context = getContext();
 
 
             recyclerView = view.findViewById(R.id.recylerview);

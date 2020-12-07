@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Bindaas.iml" filepath="$PROJECT_DIR$/.idea/modules/Bindaas.iml" group="Bindaas" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bindaas-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bindaas-app.iml" group="Bindaas/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SCI-Bindaas.iml" filepath="$PROJECT_DIR$/.idea/modules/SCI-Bindaas.iml" group="Bindaas" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Bindaas/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Bindaas.iml" filepath="$PROJECT_DIR$/.idea/modules/Bindaas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bindaas.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bindaas.app.iml" />
     </modules>
   </component>
 </project>
