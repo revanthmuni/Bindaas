@@ -62,9 +62,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        try{
+        try {
             getActivity().setTheme(Functions.getSavedTheme());
-        }catch (Exception e){
+        } catch (Exception e) {
             Functions.showLogMessage(context, context.getClass().getSimpleName(), e.getMessage());
         }
 
@@ -132,7 +132,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             ImageView imageView1 = view1.findViewById(R.id.image);
 //        TextView title1 = view1.findViewById(R.id.text);
             imageView1.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
-   //        title1.setText("");
+            //        title1.setText("");
 //        title1.setTextColor(context.getResources().getColor(R.color.white));
             tabLayout.getTabAt(0).setCustomView(view1);
 
@@ -178,8 +178,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 
                     switch (tab.getPosition()) {
                         case 0:
-                            if (MainHomeDemo.demo_viewpager!=null){
+                            if (MainHomeDemo.demo_viewpager != null) {
                                 MainHomeDemo.demo_viewpager.setCurrentItem(1);
+                            }
+                            if (Home_F.privious_player != null) {
+                                Home_F.privious_player.setPlayWhenReady(true);
                             }
 //                        OnHome_Click();
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_white));
@@ -201,7 +204,10 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                         title.setTextColor(context.getResources().getColor(R.color.app_color));
                         break;*/
                         case 2:
-//                        Onother_Tab_Click();
+//                          Onother_Tab_Click();
+                            if (Home_F.privious_player != null) {
+                                Home_F.privious_player.setPlayWhenReady(false);
+                            }
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_user_profile_red));
 //                        image.setColorFilter(ContextCompat.getColor(context, R.color.app_color), android.graphics.PorterDuff.Mode.SRC_IN);
 //                        title.setTextColor(context.getResources().getColor(R.color.app_color));
@@ -254,7 +260,7 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
                 @Override
                 public void onClick(View v) {
 
-                    if(Functions.check_permissions(getActivity())) {
+                    if (Functions.check_permissions(getActivity())) {
                         Functions.make_directry(Variables.app_hidden_folder);
                         Functions.make_directry(Variables.app_folder);
                         Functions.make_directry(Variables.draft_app_folder);
@@ -315,7 +321,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
             });
 
             OnHome_Click();
-
 
 
             if (MainMenuActivity.intent != null) {
@@ -446,7 +451,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
     }
 
     public void OnHome_Click() {
-
 //        TabLayout.Tab tab1=tabLayout.getTabAt(1);
 //        View view1=tab1.getCustomView();
 //        ImageView imageView1= view1.findViewById(R.id.image);
@@ -454,13 +458,11 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 //        TextView tex1=view1.findViewById(R.id.text);
 //        tex1.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
 //        tab1.setCustomView(view1);
-
         TabLayout.Tab tab2 = tabLayout.getTabAt(1);
         View view2 = tab2.getCustomView();
         ImageView image = view2.findViewById(R.id.image);
         image.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_add_white));
         tab2.setCustomView(view2);
-
 //        TabLayout.Tab tab3=tabLayout.getTabAt(3);
 //        View view3=tab3.getCustomView();
 //        ImageView imageView3= view3.findViewById(R.id.image);
@@ -468,8 +470,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 //        TextView tex3=view3.findViewById(R.id.text);
 //        tex3.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
 //        tab3.setCustomView(view3);
-
-
         TabLayout.Tab tab4 = tabLayout.getTabAt(2);
         View view4 = tab4.getCustomView();
         ImageView imageView4 = view4.findViewById(R.id.image);
@@ -478,8 +478,6 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
         /*TextView tex4 = view4.findViewById(R.id.text);
         tex4.setTextColor(context.getResources().getColor(R.color.colorwhite_50));
         tab4.setCustomView(view4);*/
-
-
       /*
         RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         pager.setLayoutParams(params);*/
