@@ -28,6 +28,7 @@ import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
 import com.tachyon.bindaas.SimpleClasses.Functions;
 import com.tachyon.bindaas.SimpleClasses.Variables;
+import com.tachyon.bindaas.WatchFragmentNew;
 import com.tachyon.bindaas.WatchVideos.WatchVideos_F;
 
 import org.greenrobot.eventbus.EventBus;
@@ -313,6 +314,7 @@ public class UserVideo_F extends Fragment {
 
     private void OpenWatchVideo(int postion) {
         try {
+//            Intent intent = new Intent(getActivity(), WatchFragmentNew.class);
             Intent intent = new Intent(getActivity(), WatchVideos_F.class);
             intent.putExtra("arraylist", data_list);
             intent.putExtra("position", postion);
