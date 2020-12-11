@@ -302,6 +302,7 @@ public class Search_F extends RootFragment {
                 args.putString("user_id", user_id);
                 args.putString("user_name", first_name + " " + last_name);
                 args.putString("user_pic", profile_pic);
+                args.putString("user_flag","from_others");
                 profile_f.setArguments(args);
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.Search_Main_F, profile_f).commit();

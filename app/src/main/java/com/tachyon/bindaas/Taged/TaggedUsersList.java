@@ -158,6 +158,8 @@ public class TaggedUsersList extends RootFragment {
                     args.putString("user_id", item.user_id);
                     args.putString("user_name", item.first_name + " " + item.last_name);
                     args.putString("user_pic", item.profile_pic);
+                    args.putString("user_flag","from_others");
+
                     profile_f.setArguments(args);
                     transaction.addToBackStack(null);
                     if (flag.equals("home")) {

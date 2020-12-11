@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.tachyon.bindaas.Home.Home_Get_Set;
+import com.tachyon.bindaas.Home.MainHomeDemo;
 import com.tachyon.bindaas.Home.MessageEvent;
 import com.tachyon.bindaas.SimpleClasses.ApiRequest;
 import com.tachyon.bindaas.SimpleClasses.Callback;
@@ -105,6 +106,8 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
     boolean is_run_first_time = false;
 
     LinearLayout uployout,downloayout;
+    private String flag = null;
+
     public Profile_F() {
     }
 
@@ -134,6 +137,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                 user_id = bundle.getString("user_id");
                 user_name = bundle.getString("user_name");
                 user_pic = bundle.getString("user_pic");
+                flag = bundle.getString("user_flag");
             }
             Log.d("USR_TST", "onCreateView: " + user_id);
         } catch (Exception e) {
@@ -193,7 +197,13 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
                     break;
 
                 case R.id.back_btn:
-                    getActivity().onBackPressed();
+                    if (flag == null){
+                        if (MainHomeDemo.demo_viewpager != null) {
+                            MainHomeDemo.demo_viewpager.setCurrentItem(1);
+                        }
+                    }else{
+                        getActivity().onBackPressed();
+                    }
                     break;
                 case R.id.insta_image:
                     Functions.openBrowser(context, inst_link);
@@ -495,7 +505,7 @@ public class Profile_F extends RootFragment implements View.OnClickListener {
             ApiRequest.Call_Api(context, Variables.showMyAllVideos, parameters, new Callback() {
                 @Override
                 public void Responce(String resp) {
-                    is_run_first_time = true;
+                    is_run_first_time = false;
                     Parse_data(resp);
                 }
             });

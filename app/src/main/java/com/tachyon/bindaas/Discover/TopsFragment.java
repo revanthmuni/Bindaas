@@ -112,6 +112,8 @@ public class TopsFragment extends Fragment {
                 args.putString("user_id", item.getUserId());
                 args.putString("user_name", item.getFirstName() + " " + item.getLastName());
                 args.putString("user_pic", item.getProfilePic());
+                args.putString("user_flag","from_others");
+
                 profile_f.setArguments(args);
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.MainMenuFragment, profile_f).commit();

@@ -120,6 +120,7 @@ public class NewsFeedFragment extends Fragment {
 
     private void parseNewsFeed(String resp) {
         try {
+            Log.d(TAG, "parseNewsFeed: "+resp);
             JSONObject jsonObject = new JSONObject(resp);
             String code = jsonObject.optString("code");
             if (code.equals("200")) {
