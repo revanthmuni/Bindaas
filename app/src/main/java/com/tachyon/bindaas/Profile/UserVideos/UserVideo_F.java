@@ -198,8 +198,11 @@ public class UserVideo_F extends Fragment {
             try {
                 parameters.put("my_user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
                 if (is_my_profile) {
+//                    Toast.makeText(context, "my profile", Toast.LENGTH_SHORT).show();
+                    Log.d("Test", "Call_Api_For_get_Allvideos: my profile");
                     parameters.put("user_id", Variables.sharedPreferences.getString(Variables.u_id, ""));
                 } else {
+                    Log.d("Test", "Call_Api_For_get_Allvideos: Others profile");
                     parameters.put("user_id", user_id);
                 }
 

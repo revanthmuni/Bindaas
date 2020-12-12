@@ -207,7 +207,9 @@ public class MainMenuFragment extends RootFragment implements View.OnClickListen
 //                          Onother_Tab_Click();
                             if (Home_F.privious_player != null) {
                                 Home_F.privious_player.setPlayWhenReady(false);
+                                Home_F.is_user_stop_video = true;
                             }
+
                             image.setImageDrawable(getResources().getDrawable(R.drawable.ic_user_profile_red));
 //                        image.setColorFilter(ContextCompat.getColor(context, R.color.app_color), android.graphics.PorterDuff.Mode.SRC_IN);
 //                        title.setTextColor(context.getResources().getColor(R.color.app_color));

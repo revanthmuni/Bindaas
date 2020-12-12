@@ -147,7 +147,7 @@ public class Home_F extends RootFragment implements Player.EventListener,
     SwipeRefreshLayout swiperefresh;
    /* private ShakeDetector shakeDetector;
     ShakeOptions options;*/
-    boolean is_user_stop_video = false;
+    public static boolean is_user_stop_video = false;
     TextView following_btn, related_btn;
     String type = "related";
    // Timer timer;
